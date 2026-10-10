@@ -8,6 +8,7 @@ import localFont from "next/font/local"
 import { Music2, Disc3 } from "lucide-react"
 import { motion, useReducedMotion, type Variants } from "motion/react"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
+import { TintedDeco } from "@/components/tinted-deco"
 
 interface SpotifyPlaybackUpdate {
   playingURI: string
@@ -100,15 +101,15 @@ const aboveTheBeyond = localFont({
 })
 
 // Palette lives in globals.css → motif / welcome tokens.
-// Card is plain light with teal text; buttons are coral (#D0899A).
-const TEAL = "#1F3460"
-const BUTTON = "#D0899A"
+// Card is plain light with teal text; buttons are coral (var(--color-romantic-coral)).
+const TEAL = "var(--color-welcome-navy)"
+const BUTTON = "var(--color-romantic-coral)"
 const IVORY = "var(--color-motif-soft)"
 const PAPER = "var(--color-motif-soft)"
 const NAVY = TEAL
 const BODY = TEAL
 const ACCENT = TEAL
-const HAIRLINE = "color-mix(in srgb, #1F3460 22%, transparent)"
+const HAIRLINE = "color-mix(in srgb, var(--color-welcome-navy) 22%, transparent)"
 
 // Section background = the hero's circle pattern (PlainBubbles paints its own aqua base)
 const sectionBg = "var(--color-bg-pattern-base)"
@@ -142,11 +143,7 @@ const revealVariants: Variants = {
 }
 
 function DecoImg({ src, className }: { src: string; className: string }) {
-  if (!src) return null
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} loading="lazy" decoding="async" alt="" aria-hidden="true" className={className} />
-  )
+  return <TintedDeco src={src} className={className} />
 }
 
 // Sits directly on the circle pattern, so drawn in ivory
@@ -401,18 +398,18 @@ export function WeddingPlaylist() {
                 <span
                   aria-hidden
                   className="my-5 hidden h-px w-24 md:block"
-                  style={{ background: "linear-gradient(to right, color-mix(in srgb, #1F3460 45%, transparent), transparent)" }}
+                  style={{ background: "linear-gradient(to right, color-mix(in srgb, var(--color-welcome-navy) 45%, transparent), transparent)" }}
                 />
                 <a
                   href={spotifyUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${cinzel.className} mt-5 hidden items-center sm:inline-flex justify-center gap-2 rounded-full border px-7 py-2.5 font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1F3460] sm:py-3 md:mt-0 ${ct.btn}`}
+                  className={`${cinzel.className} mt-5 hidden items-center sm:inline-flex justify-center gap-2 rounded-full border px-7 py-2.5 font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-welcome-navy)] sm:py-3 md:mt-0 ${ct.btn}`}
                   style={{
                     background: BUTTON,
                     borderColor: BUTTON,
                     color: IVORY,
-                    boxShadow: "0 12px 24px -12px color-mix(in srgb, #D0899A 60%, transparent)",
+                    boxShadow: "0 12px 24px -12px color-mix(in srgb, var(--color-romantic-coral) 60%, transparent)",
                   }}
                 >
                   <Music2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -430,14 +427,14 @@ export function WeddingPlaylist() {
                   title={`${playlistName} — Spotify playlist`}
                   aria-label={`${playlistName} — Spotify playlist`}
                   className="h-[352px] w-full overflow-hidden rounded-[12px] [&_iframe]:block [&_iframe]:border-0"
-                  style={{ background: "color-mix(in srgb, #1F3460 8%, transparent)" }}
+                  style={{ background: "color-mix(in srgb, var(--color-welcome-navy) 8%, transparent)" }}
                 />
                 {/* Placeholder while the Spotify embed loads */}
                 {!playerReady && (
                   <div
                     aria-hidden
                     className="pointer-events-none absolute inset-1 flex flex-col items-center justify-center gap-3 rounded-[12px] sm:inset-2"
-                    style={{ background: "color-mix(in srgb, #1F3460 8%, var(--color-motif-soft))" }}
+                    style={{ background: "color-mix(in srgb, var(--color-welcome-navy) 8%, var(--color-motif-soft))" }}
                   >
                     <Disc3
                       className={`h-9 w-9 opacity-60 ${reduceMotion ? "" : "animate-[spin_3s_linear_infinite]"}`}
@@ -462,7 +459,7 @@ export function WeddingPlaylist() {
                 style={{
                   background: BUTTON,
                   color: IVORY,
-                  boxShadow: "0 10px 20px -12px color-mix(in srgb, #D0899A 60%, transparent)",
+                  boxShadow: "0 10px 20px -12px color-mix(in srgb, var(--color-romantic-coral) 60%, transparent)",
                 }}
               >
                 <Music2 className="h-3.5 w-3.5" />

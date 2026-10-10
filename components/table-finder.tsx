@@ -18,6 +18,7 @@ import localFont from "next/font/local"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
 import { sectionBackground } from "@/lib/section-background"
+import { TintedDeco } from "@/components/tinted-deco"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -464,19 +465,19 @@ export function TableFinder() {
     >
       <div className="pointer-events-none absolute left-0 top-0 z-10">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        {tfDecos.topLeft ? <img src={tfDecos.topLeft} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} /> : null}
+        {tfDecos.topLeft ? <TintedDeco src={tfDecos.topLeft} className={CORNER_DECO_CLASS} /> : null}
       </div>
       <div className="pointer-events-none absolute right-0 top-0 z-10">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        {tfDecos.topRight ? <img src={tfDecos.topRight} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} /> : null}
+        {tfDecos.topRight ? <TintedDeco src={tfDecos.topRight} className={CORNER_DECO_CLASS} /> : null}
       </div>
       <div className="pointer-events-none absolute bottom-0 left-0 z-10">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        {tfDecos.bottomLeft ? <img src={tfDecos.bottomLeft} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} /> : null}
+        {tfDecos.bottomLeft ? <TintedDeco src={tfDecos.bottomLeft} className={CORNER_DECO_CLASS} /> : null}
       </div>
       <div className="pointer-events-none absolute bottom-0 right-0 z-10">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        {tfDecos.bottomRight ? <img src={tfDecos.bottomRight} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} /> : null}
+        {tfDecos.bottomRight ? <TintedDeco src={tfDecos.bottomRight} className={CORNER_DECO_CLASS} /> : null}
       </div>
 
       <section className="relative z-20 mx-auto max-w-6xl px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-14 md:px-8">

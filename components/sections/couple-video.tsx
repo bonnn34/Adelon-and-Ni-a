@@ -11,6 +11,7 @@ import localFont from "next/font/local"
 import Image from "next/image"
 import React from "react"
 import "@/components/loader/loading-screen.css"
+import { TintedDeco } from "@/components/tinted-deco"
 
 const theSeasons = localFont({
   src: "../../Font/Fontspring-DEMO-theseasons-reg.otf",
@@ -111,13 +112,7 @@ function SectionCornerDecos({
   return (
     <div className="invite-section-corners" aria-hidden="true">
       {corners.map(({ src, className }) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          key={src}
-          src={src}
-          alt=""
-          className={`invite-section-corner-img absolute ${className}`}
-        />
+        <TintedDeco key={src} src={src} className={`invite-section-corner-img absolute ${className}`} />
       ))}
     </div>
   )

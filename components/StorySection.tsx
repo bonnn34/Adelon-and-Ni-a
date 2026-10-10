@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "motion/react"
 import { sectionType, storyChapterTitleSize } from "@/lib/section-typography"
 import Image from "next/image"
 import { TornPaperEdge } from "./TornPaperEdge"
+import { TintedDeco } from "@/components/tinted-deco"
 
 const theSeasons = localFont({
   src: "../Font/Fontspring-DEMO-theseasons-reg.otf",
@@ -18,7 +19,7 @@ const darkBg = "var(--color-welcome-green)"
 const revealEase = [0.22, 1, 0.36, 1] as const
 
 // Plain cards: flat palette colors — teal text on light cards, light text on teal cards
-const TEAL = "#1F3460"
+const TEAL = "var(--color-welcome-navy)"
 const ON_TEAL = "var(--color-motif-soft)"
 
 export type LoveStoryEucalyptusDecos = {
@@ -46,24 +47,9 @@ interface StorySectionProps {
 function PlainEucalyptusDecos({ decos }: { decos: LoveStoryEucalyptusDecos }) {
   return (
     <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={decos.timelineTop}
-        alt=""
-        className="story-plain-card__euc story-plain-card__euc--center"
-      />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={decos.topLeft}
-        alt=""
-        className="story-plain-card__euc story-plain-card__euc--left"
-      />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={decos.bottomRight}
-        alt=""
-        className="story-plain-card__euc story-plain-card__euc--right"
-      />
+      <TintedDeco src={decos.timelineTop} className="story-plain-card__euc story-plain-card__euc--center" />
+      <TintedDeco src={decos.topLeft} className="story-plain-card__euc story-plain-card__euc--left" />
+      <TintedDeco src={decos.bottomRight} className="story-plain-card__euc story-plain-card__euc--right" />
     </>
   )
 }
@@ -71,13 +57,13 @@ function PlainEucalyptusDecos({ decos }: { decos: LoveStoryEucalyptusDecos }) {
 function PlainChapterDivider({ dark }: { dark: boolean }) {
   const line = dark
     ? "color-mix(in srgb, var(--color-motif-soft) 45%, transparent)"
-    : "color-mix(in srgb, #1F3460 35%, transparent)"
+    : "color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)"
   return (
     <div className="mb-4 flex items-center justify-center gap-1.5 sm:mb-5">
       <span className="h-px w-8 sm:w-12" style={{ background: line }} />
       <span
         className="h-1 w-1 rotate-45"
-        style={{ background: dark ? "var(--color-motif-blush)" : "#D0899A" }}
+        style={{ background: dark ? "var(--color-motif-blush)" : "var(--color-romantic-coral)" }}
         aria-hidden
       />
       <span className="h-px w-8 sm:w-12" style={{ background: line }} />

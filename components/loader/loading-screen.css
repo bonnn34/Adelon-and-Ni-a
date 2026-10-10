@@ -2487,9 +2487,10 @@
   100% { transform: translate3d(var(--drift), -105vh, 0); opacity: 0; }
 }
 
-/* Corner foliage sways gently */
+/* Corner foliage stays still so it lines up with the envelope hero's corners
+   on handoff (re-enable the sway with: animation: ls-plain-sway 7s ease-in-out infinite alternate;) */
 .loading-screen--plain .loading-screen__plain-corner-slot {
-  animation: ls-plain-sway 7s ease-in-out infinite alternate;
+  animation: none;
 }
 
 .loading-screen--plain .loading-screen__plain-corner-slot.left-0.top-0 { transform-origin: top left; }
@@ -3130,9 +3131,9 @@
   100% { opacity: 0.6; transform: scale(1.6); }
 }
 
-/* Petals and corner leaves settle out with the card */
-.loading-screen--plain.is-fading .ls-plain-motes,
-.loading-screen--plain.is-fading .loading-screen__plain-corners {
+/* Petals settle out with the card; the corner leaves stay put — the envelope
+   hero shows identical corners in the same spot */
+.loading-screen--plain.is-fading .ls-plain-motes {
   opacity: 0;
   transition: opacity 0.9s ease 0.2s;
 }
@@ -3193,26 +3194,26 @@
 }
 
 .love-story-plain-track::before {
-  background: color-mix(in srgb, #1F3460 25%, transparent);
+  background: color-mix(in srgb, var(--color-welcome-navy) 25%, transparent);
 }
 
 .love-story-plain-track--first::before,
 .love-story-plain-track--last::before {
-  background: color-mix(in srgb, #1F3460 25%, transparent);
+  background: color-mix(in srgb, var(--color-welcome-navy) 25%, transparent);
 }
 
 .story-plain-card {
-  border: 1px solid color-mix(in srgb, #1F3460 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-welcome-navy) 20%, transparent);
   background: var(--color-motif-soft);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  box-shadow: 0 14px 32px -18px color-mix(in srgb, #1F3460 45%, transparent);
+  box-shadow: 0 14px 32px -18px color-mix(in srgb, var(--color-welcome-navy) 45%, transparent);
 }
 
 .story-plain-card--dark {
-  border-color: #1F3460;
-  background: #1F3460;
-  box-shadow: 0 14px 32px -18px color-mix(in srgb, #1F3460 70%, transparent);
+  border-color: var(--color-welcome-navy);
+  background: var(--color-welcome-navy);
+  box-shadow: 0 14px 32px -18px color-mix(in srgb, var(--color-welcome-navy) 70%, transparent);
 }
 
 .story-plain-card__frost {
@@ -3220,7 +3221,7 @@
 }
 
 .story-plain-card .wedding-frame-inner {
-  border-color: color-mix(in srgb, #1F3460 18%, transparent);
+  border-color: color-mix(in srgb, var(--color-welcome-navy) 18%, transparent);
 }
 
 .story-plain-card--dark .wedding-frame-inner {
@@ -3228,7 +3229,7 @@
 }
 
 .story-plain-card__dot {
-  background: #D0899A;
+  background: var(--color-romantic-coral);
   box-shadow: 0 0 0 4px var(--color-motif-soft);
 }
 
@@ -3237,7 +3238,7 @@
 }
 
 .story-plain-chapter-label {
-  color: #D0899A;
+  color: var(--color-romantic-coral);
 }
 
 .story-plain-card--dark .story-plain-chapter-label {
@@ -3245,7 +3246,7 @@
 }
 
 .story-plain-chapter-line {
-  background: color-mix(in srgb, #1F3460 22%, transparent);
+  background: color-mix(in srgb, var(--color-welcome-navy) 22%, transparent);
 }
 
 .story-plain-chapter-line--dark {
@@ -3253,5 +3254,123 @@
 }
 
 .story-plain-chapter-connector__stem {
-  background: color-mix(in srgb, #1F3460 30%, transparent);
+  background: color-mix(in srgb, var(--color-welcome-navy) 30%, transparent);
+}
+
+/* ---- Couple names set in type: nickname (The Seasons) · "and" (Above the Beyond) · nickname ---- */
+.loading-screen__std-names--text,
+.loading-screen--plain .loading-screen__std-names--text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+  max-width: 94%;
+  aspect-ratio: auto;
+  margin: 0 auto;
+  padding: 0.1em 0.35em;
+  -webkit-mask-image: none;
+  mask-image: none;
+  background: none;
+  text-align: center;
+  font-weight: 400;
+}
+
+/* Each word clips the gradient itself so the script "and" is always filled */
+.ls-names__nick,
+.ls-names__and {
+  display: block;
+  padding: 0 0.15em;
+  background: linear-gradient(
+    118deg,
+    var(--couple-name-fill, var(--color-welcome-navy)) 0%,
+    var(--couple-name-fill-mid, var(--color-motif-deep)) 48%,
+    var(--couple-name-fill-accent, var(--color-welcome-heading)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.loading-screen--invitation:not(.loading-screen--plain) .ls-names__nick,
+.loading-screen--invitation:not(.loading-screen--plain) .ls-names__and {
+  background: var(--couple-name-fill-soft, var(--color-motif-soft));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.ls-names__nick {
+  font-size: clamp(2.6rem, 12vw, 4.75rem);
+  line-height: 1;
+  letter-spacing: 0.06em;
+}
+
+.ls-names__and {
+  margin: -0.2em 0 -0.1em;
+  font-size: clamp(1.5rem, 6.5vw, 2.4rem);
+  line-height: 1.15;
+}
+
+/* Script "and" in the motif accent so it stands apart from the names */
+.ls-names__and,
+.loading-screen--invitation:not(.loading-screen--plain) .ls-names__and {
+  background: none;
+  color: var(--color-motif-accent);
+  -webkit-text-fill-color: var(--color-motif-accent);
+}
+
+.loading-screen--invitation:not(.loading-screen--plain) .ls-names__and {
+  color: var(--color-motif-medium);
+  -webkit-text-fill-color: var(--color-motif-medium);
+}
+
+/* ---- Readability: darker ink for all loader text (plain mode). Kept last so it wins. ---- */
+.loading-screen--plain {
+  --ls-text-dark: var(--color-ink-deep);
+  --ls-text-accent-dark: var(--color-ink-accent);
+  --ls-text-highlight: var(--color-highlight-deep);
+}
+
+.loading-screen--plain .loading-screen__std-venue-name,
+.loading-screen--plain .loading-screen__std-copy,
+.loading-screen--plain .loading-screen__plain-line,
+.loading-screen--plain .ls-silk-date__side:first-child {
+  color: var(--ls-text-dark);
+  -webkit-text-fill-color: var(--ls-text-dark);
+}
+
+.loading-screen--plain .loading-screen__std-kicker,
+.loading-screen--plain .loading-screen__std-eyebrow,
+.loading-screen--plain .loading-screen__std-venue-time,
+.loading-screen--plain .loading-screen__std-status,
+.loading-screen--plain .ls-silk-date__weekday,
+.loading-screen--plain .ls-silk-date__side:last-child {
+  color: var(--ls-text-accent-dark);
+  -webkit-text-fill-color: var(--ls-text-accent-dark);
+}
+
+.loading-screen--plain .ls-names__nick {
+  background: none;
+}
+
+/* Switched pair: "Save" / "Date" and the couple names dark; "the" and "and" light */
+.loading-screen--plain .ls-headline__letter,
+.loading-screen--plain .ls-names__nick {
+  color: var(--ls-text-accent-dark);
+  -webkit-text-fill-color: var(--ls-text-accent-dark);
+}
+
+/* Highlights — "the", "and" and the day number (globals.css → --color-highlight-deep) */
+.loading-screen--plain .ls-headline__script,
+.loading-screen--plain .ls-names__and,
+.loading-screen--plain .ls-silk-date__day,
+.loading-screen--plain .ls-silk-date__digit-inner {
+  color: var(--ls-text-highlight);
+  -webkit-text-fill-color: var(--ls-text-highlight);
+}
+
+
+/* Top ornament above "Save the Date" — nudged slightly up */
+.loading-screen--plain .loading-screen__plain-ornament {
+  margin-top: -0.75rem;
 }

@@ -8,6 +8,7 @@ import React, {
   useState,
 } from 'react';
 import Image from 'next/image';
+import localFont from 'next/font/local';
 import {
   motion,
   useReducedMotion,
@@ -21,7 +22,18 @@ import { InviteParticles } from '@/components/loader/InviteParticles';
 import { InvitePhotoBackdrop } from '@/components/loader/invite-photo-backdrop';
 import { PlainAtmosphere } from '@/components/loader/PlainAtmosphere';
 import { PlainBubbles } from '@/components/loader/PlainBubbles';
+import { TintedDeco } from '@/components/tinted-deco';
 import './envelope-invite.css';
+
+const theSeasons = localFont({
+  src: '../../Font/Fontspring-DEMO-theseasons-reg.otf',
+  display: 'swap',
+});
+
+const aboveTheBeyond = localFont({
+  src: '../../Font/above-the-beyond-script.otf',
+  display: 'swap',
+});
 
 interface HeroProps {
   onOpen: () => void;
@@ -537,8 +549,7 @@ export const Hero: React.FC<HeroProps> = ({
               ] as const
             ).map(({ src, className }) => (
               <div key={src} className={`pointer-events-none absolute ${className}`}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={src} alt="" className="env-invite-plain-corner-img" />
+                <TintedDeco src={src} className="env-invite-plain-corner-img" />
               </div>
             ))}
           </div>
@@ -687,13 +698,7 @@ export const Hero: React.FC<HeroProps> = ({
                     <div className="env-invite-letter-frame" aria-hidden="true" />
                     <div className="env-invite-letter-inner">
                       {isPlain && plainInvite.ornament && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={plainInvite.ornament}
-                          alt=""
-                          aria-hidden="true"
-                          className="env-invite-letter-ornament"
-                        />
+                        <TintedDeco src={plainInvite.ornament} className="env-invite-letter-ornament" />
                       )}
                       <span className="env-invite-letter-label" aria-label={content.headline}>
                         {content.headline.split(/\s+/).filter(Boolean).map((word, i) => (
@@ -712,15 +717,17 @@ export const Hero: React.FC<HeroProps> = ({
                       </span>
                       <span className="env-invite-letter-date">{letterDateNumeric}</span>
                       <span className="env-invite-letter-invited">{content.eyebrow}</span>
-                      <div
-                        className="env-invite-letter-names couple-name-lockup"
-                        role="img"
-                        aria-label={coupleNames}
-                        style={{
-                          maskImage: `url("${content.coupleNameImage}")`,
-                          WebkitMaskImage: `url("${content.coupleNameImage}")`,
-                        }}
-                      />
+                      <h2 className="env-invite-letter-names env-invite-letter-names--text" aria-label={coupleNames}>
+                        <span className={`${theSeasons.className} env-invite-names__nick`} aria-hidden="true">
+                          {groomName}
+                        </span>
+                        <span className={`${aboveTheBeyond.className} env-invite-names__and`} aria-hidden="true">
+                          and
+                        </span>
+                        <span className={`${theSeasons.className} env-invite-names__nick`} aria-hidden="true">
+                          {brideName}
+                        </span>
+                      </h2>
                     </div>
                   </motion.div>
 

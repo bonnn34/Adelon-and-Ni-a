@@ -11,6 +11,7 @@ import { PlainAtmosphere } from "@/components/loader/PlainAtmosphere"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
 import { siteConfig as defaultSiteConfig } from "@/content/site"
 import "@/components/loader/loading-screen.css"
+import { TintedDeco } from "@/components/tinted-deco"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -272,12 +273,7 @@ export function Hero() {
                 { src: cornerDecos.bottomRight, className: "right-0 bottom-0" },
               ] as const
             ).map(({ src, className }) => (
-              <img
-                key={src}
-                src={src}
-                alt=""
-                className={`home-hero-plain-corner-img absolute ${className}`}
-              />
+              <TintedDeco key={src} src={src} className={`home-hero-plain-corner-img absolute ${className}`} />
             ))}
           </div>
         </>

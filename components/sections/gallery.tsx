@@ -10,6 +10,7 @@ import { Cinzel } from "next/font/google"
 import { Section } from "@/components/section"
 import { sectionType } from "@/lib/section-typography"
 import { useSiteConfig } from "@/hooks/use-site-config"
+import { TintedDeco } from "@/components/tinted-deco"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -74,10 +75,7 @@ const CORNER_DECO_CLASS =
   "block h-auto w-auto max-w-[130px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[320px] select-none opacity-90"
 
 function DecoImg({ src, className }: { src: string; className: string }) {
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} loading="lazy" decoding="async" alt="" aria-hidden="true" className={className} />
-  )
+  return <TintedDeco src={src} className={className} />
 }
 
 function DiamondDivider({ children }: { children?: React.ReactNode }) {

@@ -1253,7 +1253,7 @@
 }
 
 .env-invite-seal-letter {
-  fill: #16264A;
+  fill: var(--color-motif-deep);
   font-family: "Cormorant Garamond", "Crimson Text", "Times New Roman", serif;
   font-weight: 500;
   font-style: normal;
@@ -2526,7 +2526,7 @@
   --env-envelope: var(--color-envelope-paper);
 }
 
-/* Crease lines read better as a soft light hairline on dark paper */
+/* Crease lines: soft cocoa hairline on the blush paper */
 .env-invite-envelope .env-invite-creases line {
   stroke: var(--color-envelope-crease);
 }
@@ -2541,7 +2541,8 @@
 
 /* ---- Plain mode: arriving from the loading screen ----
    The background is identical to the loader's, so it simply fades; the
-   envelope drops gently into place, the corner leaves and hint follow.
+   envelope drops gently into place and the hint follows. The corner leaves
+   don't animate: they sit exactly where the loader's corners were.
    `backwards` fill: nothing lingers on the elements once it has played. */
 
 .env-invite-screen--plain.is-arriving .env-invite-stage {
@@ -2554,9 +2555,6 @@
   to { opacity: 1; transform: none; filter: none; }
 }
 
-.env-invite-screen--plain.is-arriving .env-invite-plain-corners {
-  animation: env-arrive-fade 1.4s ease 0.35s backwards;
-}
 
 .env-invite-screen--plain.is-arriving .env-invite-ghost-date {
   animation: env-arrive-fade 1.6s ease 0.7s backwards;
@@ -2568,7 +2566,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .env-invite-screen--plain.is-arriving .env-invite-stage,
-  .env-invite-screen--plain.is-arriving .env-invite-plain-corners,
   .env-invite-screen--plain.is-arriving .env-invite-ghost-date {
     animation: none;
   }
@@ -2668,23 +2665,75 @@
 }
 
 /* ==========================================================================
-   "Open invitation" button — solid coral (#D0899A) with light text in every
+   "Open invitation" button — solid deep cocoa (--color-ink-deep) with light text in every
    mode (plain / photo, all breakpoints). Kept last so it wins over the rules above.
    ========================================================================== */
 .env-invite-screen .env-invite-enter-btn {
   color: var(--color-motif-soft);
-  background: #D0899A;
-  border-color: #D0899A;
+  background: var(--color-ink-deep);
+  border-color: var(--color-ink-deep);
   text-shadow: none;
-  box-shadow: 0 10px 24px color-mix(in srgb, #D0899A 45%, transparent);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--color-ink-deep) 45%, transparent);
 }
 
 .env-invite-screen .env-invite-enter-btn:hover {
   color: var(--color-motif-soft);
-  background: color-mix(in srgb, #D0899A 85%, black);
-  box-shadow: 0 12px 28px color-mix(in srgb, #D0899A 55%, transparent);
+  background: color-mix(in srgb, var(--color-ink-deep) 80%, black);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--color-ink-deep) 55%, transparent);
 }
 
 .env-invite-screen .env-invite-enter-btn:focus-visible {
-  outline-color: #D0899A;
+  outline-color: var(--color-ink-deep);
+}
+
+
+/* Corner leaves match the loader's exactly (size + opacity) so the handoff
+   from the loading screen doesn't shift them */
+.env-invite-screen--plain .env-invite-plain-corner-img {
+  opacity: 0.9;
+}
+
+@media (min-width: 1024px) {
+  .env-invite-screen--plain .env-invite-plain-corner-img {
+    max-width: 400px;
+  }
+}
+
+/* ---- Couple names set in type (matches the loading screen): nickname · "and" · nickname ---- */
+.env-invite-letter-names--text,
+.env-invite-screen--plain .env-invite-letter-names--text,
+.env-invite-screen:not(.env-invite-screen--plain) .env-invite-letter-names--text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+  max-width: 94%;
+  min-height: 0;
+  aspect-ratio: auto;
+  margin: 0.2em auto 0.35em;
+  padding: 0;
+  background: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+  filter: none;
+  text-align: center;
+  font-weight: 400;
+}
+
+.env-invite-names__nick {
+  display: block;
+  font-size: clamp(1.7rem, calc(var(--env-letter-w, 300px) * 0.13), 2.6rem);
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-deep);
+  -webkit-text-fill-color: var(--color-ink-deep);
+}
+
+.env-invite-names__and {
+  display: block;
+  margin: -0.15em 0 -0.05em;
+  font-size: clamp(1.05rem, calc(var(--env-letter-w, 300px) * 0.075), 1.5rem);
+  line-height: 1.15;
+  color: var(--color-ink-accent);
+  -webkit-text-fill-color: var(--color-ink-accent);
 }

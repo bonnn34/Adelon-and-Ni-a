@@ -8,6 +8,7 @@ import localFont from "next/font/local"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
+import { TintedDeco } from "@/components/tinted-deco"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -27,9 +28,9 @@ const aboveTheBeyond = localFont({
 })
 
 // Palette lives in globals.css → motif / welcome tokens.
-// Card is plain light with teal text; active badge and links are coral (#D0899A).
-const TEAL = "#1F3460"
-const BUTTON = "#D0899A"
+// Card is plain light with teal text; active badge and links are coral (var(--color-romantic-coral)).
+const TEAL = "var(--color-welcome-navy)"
+const BUTTON = "var(--color-romantic-coral)"
 const IVORY = "var(--color-motif-soft)"
 const PAPER = "var(--color-motif-soft)"
 const NAVY = TEAL
@@ -52,7 +53,7 @@ const cardStyle = {
 } as const
 
 const dividerLineStyle = {
-  background: "linear-gradient(to right, transparent, color-mix(in srgb, #1F3460 45%, transparent), transparent)",
+  background: "linear-gradient(to right, transparent, color-mix(in srgb, var(--color-welcome-navy) 45%, transparent), transparent)",
 } as const
 
 const CORNER_DECO_CLASS =
@@ -81,11 +82,7 @@ const itemVariants: Variants = {
 }
 
 function DecoImg({ src, className }: { src: string; className: string }) {
-  if (!src) return null
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} loading="lazy" decoding="async" alt="" aria-hidden="true" className={className} />
-  )
+  return <TintedDeco src={src} className={className} />
 }
 
 // Sits directly on the circle pattern, so drawn in ivory
@@ -297,8 +294,8 @@ export function FAQ() {
                     className="relative overflow-hidden rounded-2xl transition-all duration-300"
                     style={{
                       background: isOpen
-                        ? "color-mix(in srgb, #1F3460 7%, var(--color-motif-soft))"
-                        : "color-mix(in srgb, #1F3460 3%, var(--color-motif-soft))",
+                        ? "color-mix(in srgb, var(--color-welcome-navy) 7%, var(--color-motif-soft))"
+                        : "color-mix(in srgb, var(--color-welcome-navy) 3%, var(--color-motif-soft))",
                       boxShadow: isOpen
                         ? "0 12px 24px -16px color-mix(in srgb, var(--color-welcome-navy) 45%, transparent)"
                         : "none",
@@ -307,7 +304,7 @@ export function FAQ() {
                     <button
                       type="button"
                       onClick={() => setOpenIndex(isOpen ? null : index)}
-                      className="group flex w-full items-center gap-3 px-3.5 py-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-[#1F3460] sm:px-5 sm:py-3.5"
+                      className="group flex w-full items-center gap-3 px-3.5 py-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-welcome-navy)] sm:px-5 sm:py-3.5"
                       aria-expanded={isOpen}
                       aria-controls={contentId}
                     >
@@ -319,7 +316,7 @@ export function FAQ() {
                                 background: BUTTON,
                                 color: IVORY,
                               }
-                            : { background: "color-mix(in srgb, #1F3460 12%, transparent)", color: TEAL }
+                            : { background: "color-mix(in srgb, var(--color-welcome-navy) 12%, transparent)", color: TEAL }
                         }
                         aria-hidden
                       >
@@ -333,7 +330,7 @@ export function FAQ() {
                       </span>
                       <span
                         className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${isOpen ? "rotate-180" : "group-hover:translate-y-0.5"}`}
-                        style={{ background: isOpen ? IVORY : "color-mix(in srgb, #1F3460 10%, transparent)" }}
+                        style={{ background: isOpen ? IVORY : "color-mix(in srgb, var(--color-welcome-navy) 10%, transparent)" }}
                         aria-hidden
                       >
                         <ChevronDown className="h-4 w-4" style={{ color: ACCENT }} />

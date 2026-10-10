@@ -7,6 +7,7 @@ import { motion } from "motion/react"
 import { Cinzel } from "next/font/google"
 import localFont from "next/font/local"
 import Image from "next/image"
+import { TintedDeco } from "@/components/tinted-deco"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -56,11 +57,7 @@ interface TimelineEvent {
 }
 
 function DecoImg({ src, className }: { src: string; className: string }) {
-  if (!src) return null
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} loading="lazy" decoding="async" alt="" aria-hidden="true" className={className} />
-  )
+  return <TintedDeco src={src} className={className} />
 }
 
 // The Seasons has no clean glyphs for symbols / digits — render only those

@@ -12,6 +12,7 @@ import { Cinzel } from "next/font/google"
 import { Shirt, Copy, Check, Navigation, Heart, MapPin } from "lucide-react"
 import { motion, useReducedMotion, type Variants } from "motion/react"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
+import { TintedDeco } from "@/components/tinted-deco"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -73,11 +74,7 @@ const CORNER_DECO_CLASS =
   "block h-auto w-auto max-w-[130px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[320px] select-none opacity-90"
 
 function DecoImg({ src, className }: { src: string; className: string }) {
-  if (!src) return null
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} loading="lazy" decoding="async" alt="" aria-hidden="true" className={className} />
-  )
+  return <TintedDeco src={src} className={className} />
 }
 
 function SectionIconDivider({ icon }: { icon: ReactNode }) {

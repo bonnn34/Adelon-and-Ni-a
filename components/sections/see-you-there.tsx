@@ -6,6 +6,7 @@ import Image from "next/image"
 import { motion, useReducedMotion, type Variants } from "motion/react"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
+import { TintedDeco } from "@/components/tinted-deco"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -54,11 +55,7 @@ const rise: Variants = {
 }
 
 function DecoImg({ src, className }: { src: string; className: string }) {
-  if (!src) return null
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} loading="lazy" decoding="async" alt="" aria-hidden="true" className={className} />
-  )
+  return <TintedDeco src={src} className={className} />
 }
 
 // "!" and other symbols in Cinzel, letters in The Seasons

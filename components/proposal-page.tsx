@@ -27,6 +27,7 @@ import { siteConfig as defaultSiteConfig } from "@/content/site"
 import { parseWeddingDate } from "@/lib/wedding-date"
 import type { ProposalRole } from "@/lib/proposal-types"
 import { parseInviteeNameFromSearchParams } from "@/lib/proposal-invite-link"
+import { TintedDeco } from "@/components/tinted-deco"
 
 const Silk = dynamic(() => import("@/components/silk"), { ssr: false })
 
@@ -394,8 +395,7 @@ function CardHeader() {
   return (
     <header className="mb-8 sm:mb-10">
       {ornament ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={ornament} alt="" aria-hidden className="mx-auto mb-3 block h-auto w-24 select-none sm:mb-4 sm:w-32" />
+        <TintedDeco src={ornament} className="mx-auto mb-3 block h-auto w-24 select-none sm:mb-4 sm:w-32" />
       ) : null}
       {labels.headerEyebrow ? (
         <SmallCaps className="mb-4">
@@ -406,12 +406,10 @@ function CardHeader() {
       {/* Names flanked by eucalyptus sprigs */}
       <div className="relative mx-auto max-w-md px-10 sm:px-16">
         {nameDecos?.left ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={nameDecos.left} alt="" aria-hidden className={`${sprig} left-0`} />
+          <TintedDeco src={nameDecos.left} className={`${sprig} left-0`} />
         ) : null}
         {nameDecos?.right ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={nameDecos.right} alt="" aria-hidden className={`${sprig} right-0`} />
+          <TintedDeco src={nameDecos.right} className={`${sprig} right-0`} />
         ) : null}
         {coupleNameImage ? (
           <CoupleNameLockup src={coupleNameImage} alt={`${groom} and ${bride}`} />

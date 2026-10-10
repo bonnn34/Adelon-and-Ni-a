@@ -9,6 +9,7 @@ import { useSiteConfig } from "@/hooks/use-site-config"
 import { siteConfig as defaultSiteConfig } from "@/content/site"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
 import "@/components/loader/loading-screen.css"
+import { TintedDeco } from "@/components/tinted-deco"
 
 const theSeasons = localFont({
   src: "../../Font/Fontspring-DEMO-theseasons-reg.otf",
@@ -46,14 +47,14 @@ function OrnamentalDivider() {
       <span
         className="h-px w-6 sm:w-10"
         style={{
-          background: "color-mix(in srgb, #1F3460 35%, transparent)",
+          background: "color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)",
         }}
       />
       <span className="h-0.5 w-0.5 rounded-full bg-motif-deep sm:h-1 sm:w-1" aria-hidden />
       <span
         className="h-px w-6 sm:w-10"
         style={{
-          background: "color-mix(in srgb, #1F3460 35%, transparent)",
+          background: "color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)",
         }}
       />
     </div>
@@ -81,7 +82,7 @@ function LoveStoryTitle({
         className={`${theSeasons.className} block pb-1 uppercase leading-[0.78] tracking-[0.08em] min-[400px]:tracking-[0.11em] sm:tracking-[0.13em] md:tracking-[0.14em]`}
         style={{
           fontSize: "var(--title-size)",
-          color: "#1F3460",
+          color: "var(--color-welcome-navy)",
           textShadow: onBgGlow,
         }}
       >
@@ -92,7 +93,7 @@ function LoveStoryTitle({
         className={`${aboveTheBeyond.className} mx-auto mt-2 block w-fit max-w-full px-1 leading-[0.88] sm:mt-2.5 sm:leading-[0.9] md:mt-3`}
         style={{
           fontSize: "var(--script-size)",
-          color: "#D0899A",
+          color: "var(--color-romantic-coral)",
           textShadow: onBgGlow,
         }}
       >
@@ -133,13 +134,7 @@ function SectionCornerDecos({
   return (
     <div className="invite-section-corners" aria-hidden="true">
       {corners.map(({ src, className, anim }) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          key={src}
-          src={src}
-          alt=""
-          className={`invite-section-corner-img absolute ${className} ${anim}`}
-        />
+        <TintedDeco key={src} src={src} className={`invite-section-corner-img absolute ${className} ${anim}`} />
       ))}
     </div>
   )
@@ -243,24 +238,19 @@ export function LoveStory() {
           <blockquote className="mt-5 sm:mt-6">
             <p
               className={`font-goudy-italic ${sectionType.textRelaxed} italic leading-relaxed`}
-              style={{ color: "#1F3460", textShadow: onBgGlow }}
+              style={{ color: "var(--color-welcome-navy)", textShadow: onBgGlow }}
             >
               &ldquo;{loveStory.closingQuote}&rdquo;
             </p>
             <footer
               className={`font-goudy-italic mt-2 sm:mt-3 ${sectionType.label} not-italic tracking-wide`}
-              style={{ color: "#D0899A", textShadow: onBgGlow }}
+              style={{ color: "var(--color-romantic-coral)", textShadow: onBgGlow }}
             >
               — {loveStory.closingCitation}
             </footer>
           </blockquote>
           {isPlain && eucalyptusDecos.sectionBottom ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={eucalyptusDecos.sectionBottom}
-              alt=""
-              className="love-story-footer-euc mx-auto mt-8 sm:mt-10"
-            />
+            <TintedDeco src={eucalyptusDecos.sectionBottom} className="love-story-footer-euc mx-auto mt-8 sm:mt-10" />
           ) : null}
         </motion.div>
       </footer>

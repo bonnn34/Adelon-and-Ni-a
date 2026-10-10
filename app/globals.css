@@ -69,8 +69,8 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  /* Primary: light blue #AFC8E6 */
-  --primary: #AFC8E6;
+  /* Primary: cocoa brown #835643 */
+  --primary: #835643;
   --primary-foreground: oklch(0.145 0 0);
   /* Secondary: dusty pink #D8B0B0 */
   --secondary: #D8B0B0;
@@ -87,7 +87,7 @@
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: #AFC8E6;
+  --ring: #835643;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -96,24 +96,25 @@
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #AFC8E6;
+  --sidebar-primary: #835643;
   --sidebar-primary-foreground: oklch(0.145 0 0);
   --sidebar-accent: #D8B0B0;
   --sidebar-accent-foreground: oklch(0.145 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: #AFC8E6;
+  --sidebar-ring: #835643;
 
-  /* Decoration tint: the botanical PNGs in /public/deco are painted in sage
-     (hue ≈ 92°). This recolors them to the motif navy (--color-motif-teal
-     #1F3460): grayscale + sepia flattens the sage, then hue-rotate/
-     saturate/brightness land it on navy while keeping the watercolor shading.
-     Set to "none" to show the original artwork. */
-  --deco-filter: grayscale(1) sepia(1) hue-rotate(185deg) saturate(2.8) brightness(0.5);
+/* Decoration tint: the botanical PNGs in /public/deco are painted in sage
+   (hue ≈ 92°). This recolors them to the wedding motif's warm terracotta
+   and cocoa-brown palette: grayscale + sepia flattens the sage, then
+   hue-rotate/saturate/brightness create a warm earthy tint while keeping
+   the watercolor shading.
+   Set to "none" to show the original artwork. */
+--deco-filter: grayscale(1) sepia(1) hue-rotate(345deg) saturate(1.6) brightness(0.55);
 
-  /* QR codes (every QR on the site + dashboard): darkest motif color on white.
-     Read at runtime by hooks/use-css-color, so any CSS color works here. */
-  --color-qr-fg: var(--color-coastal-deep);
-  --color-qr-bg: #FFFFFF;
+/* QR codes (every QR on the site + dashboard): darkest motif color on white.
+   Read at runtime by hooks/use-css-color, so any CSS color works here. */
+--color-qr-fg: var(--color-coastal-deep);
+--color-qr-bg: #FFFFFF;
 }
 
 .dark {
@@ -123,7 +124,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.145 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: #AFC8E6;
+  --primary: #835643;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: #D8B0B0;
   --secondary-foreground: oklch(0.985 0 0);
@@ -137,7 +138,7 @@
   --destructive-foreground: oklch(0.637 0.237 25.331);
   --border: oklch(0.269 0 0);
   --input: oklch(0.269 0 0);
-  --ring: #AFC8E6;
+  --ring: #835643;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -145,12 +146,12 @@
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: #AFC8E6;
+  --sidebar-primary: #835643;
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: #D8B0B0;
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: #AFC8E6;
+  --sidebar-ring: #835643;
 }
 
 @theme inline {
@@ -159,424 +160,580 @@
   --font-serif: "Great Vibes", "Great Vibes Fallback";
   
 /* ==========================================
+
  *  MOTIF COLORS
- *  Theme: Navy Blue + Blush Pink
- *  Deep Navy + Blush Rose + Soft Pink + Ivory
+
+ *  Theme: Nude Beige + Terracotta
+
+ *  Cocoa Brown + Dusty Blush + Terracotta + Warm Ivory
+
  * ========================================== */
 
+
 /* ------------------------------------------
+
  * Background / Linen
+
  * ------------------------------------------ */
 
- --color-motif-cream: #FAF4F4;
- /* Soft blush ivory */
- 
- --color-motif-yellow: #E9D9DC;
- /* Pink-tinted sand */
- 
- --color-motif-soft: #FDFAFA;
- /* Almost-white romantic paper */
- 
- 
- /* ------------------------------------------
-  * Blush Pink Accents
-  * ------------------------------------------ */
- 
- --color-motif-accent: #E3A3AE;
- /* Blush rose */
- 
- --color-motif-deep: #D0899A;
- /* Deep blush rose */
- 
- --color-motif-medium: #EFBFC6;
- /* Soft pink */
- 
- 
- /* ------------------------------------------
-  * Navy Blue Accents
-  * ------------------------------------------ */
- 
- --color-motif-teal: #1F3460;
- /* Navy blue */
- 
- --color-motif-teal-medium: #4F6694;
- /* Soft navy / dusty blue */
- 
- --color-motif-teal-light: #B4C2DC;
- /* Pale powder blue */
- 
- 
- /* ------------------------------------------
-  * Floral / Romantic Accent
-  * ------------------------------------------ */
- 
- --color-motif-blush: #F6D3D8;
- /* Blush pink */
- 
- 
- /* ------------------------------------------
-  * Neutral / Paper
-  * ------------------------------------------ */
- 
- --color-motif-silver: #E3E8F2;
- /* Very light blue-gray neutral */
- 
- 
- /* ==========================================
-  *  WELCOME SECTION
-  * ========================================== */
- 
- 
- /* ------------------------------------------
-  * Main background
-  * ------------------------------------------ */
- 
- --color-welcome-bg:
-     color-mix(
-         in srgb,
-         var(--color-motif-cream) 72%,
-         white
-     );
- 
- 
- /* ------------------------------------------
-  * Soft background
-  * ------------------------------------------ */
- 
- --color-welcome-bg-soft:
-     color-mix(
-         in srgb,
-         var(--color-motif-teal-light) 22%,
-         white
-     );
- 
- 
- /* ==========================================
-  *  TYPOGRAPHY
-  * ========================================== */
- 
- 
- /* ------------------------------------------
-  * Main body text
-  * ------------------------------------------ */
- 
- --color-welcome-text: #1F3460;
- /* Navy blue */
- 
- 
- /* ------------------------------------------
-  * Secondary / softer text
-  * ------------------------------------------ */
- 
- --color-welcome-text-soft:
-     color-mix(
-         in srgb,
-         #1F3460 62%,
-         white
-     );
- 
- 
- /* ------------------------------------------
-  * Small headings
-  * ------------------------------------------ */
- 
- --color-welcome-heading: #D0899A;
- /* Deep blush rose */
- 
- 
- /* ------------------------------------------
-  * Script / romantic accent
-  * ------------------------------------------ */
- 
- --color-welcome-script: #E3A3AE;
- /* Blush rose */
- 
- 
- /* ------------------------------------------
-  * Main hero heading
-  * ------------------------------------------ */
- 
- --color-welcome-navy: #16264A;
- /* Navy blue */
- 
- 
- /* ==========================================
-  *  BUTTONS / DECORATION
-  * ========================================== */
- 
- 
- /* ------------------------------------------
-  * Buttons
-  * ------------------------------------------ */
- 
- --color-welcome-green: #1F3460;
- /* Navy blue */
- 
- 
- /* ------------------------------------------
-  * Decorative coastal / floral lines
-  * ------------------------------------------ */
- 
- --color-welcome-botanical: #4F6694;
- /* Dusty blue */
- 
- 
- /* ------------------------------------------
-  * Gold decorative details
-  * ------------------------------------------ */
- 
- --color-welcome-gold: #EFBFC6;
- /* Pink replaces traditional gold */
- 
- 
- /* ------------------------------------------
-  * Floral accents
-  * ------------------------------------------ */
- 
- --color-welcome-blush: #F6D3D8;
- /* Soft blush pink */
- 
- 
- /* ==========================================
-  *  ADDITIONAL NAVY + BLUSH COLORS
-  * ========================================== */
- 
- /* Deep navy */
- --color-coastal-deep: #16264A;
- 
- /* Dusty blue */
- --color-coastal-teal: #1F3460;
- 
- /* Dusty blue */
- --color-coastal-soft: #4F6694;
- 
- /* Powder blue */
- --color-coastal-light: #B4C2DC;
- 
- /* Blush rose */
- --color-romantic-coral: #E3A3AE;
- 
- /* Deep blush rose */
- --color-romantic-deep: #D0899A;
- 
- /* Pink */
- --color-romantic-peach: #EFBFC6;
- 
- /* Blush pink */
- --color-romantic-blush: #F6D3D8;
- 
- /* Pink sand */
- --color-coastal-sand: #E9D9DC;
- 
- /* Blush ivory */
- --color-coastal-ivory: #FAF4F4;
- 
- 
- /* ==========================================
-  *  COUPLE NAME MASK / LOCKUP
-  * ========================================== */
- 
- --couple-name-fill: var(--color-welcome-navy);
- 
- /* mid + accent match the fill → the names render in one plain color */
- --couple-name-fill-mid: var(--couple-name-fill);
- 
- --couple-name-fill-accent: var(--couple-name-fill);
- 
- --couple-name-fill-soft: var(--color-motif-soft);
+
+--color-motif-cream: #F2E9E2;
+/* Warm ivory */
 
 
- /* ==========================================
-  *  BACKGROUND — CIRCLE PATTERN
-  *  Used by every plain-mode section (loader,
-  *  envelope, hero, details, entourage, ...)
-  *  via components/loader/PlainBubbles.
-  *  Light + blush pink, flat colors (no gradients).
-  * ========================================== */
- 
- /* Flat base painted behind the circles — light blush */
- --color-bg-pattern-base:
-     color-mix(
-         in srgb,
-         var(--color-romantic-blush) 30%,
-         var(--color-motif-cream)
-     );
- 
- /* Main circles — blush pink family */
- --color-bg-circle-deep: color-mix(in srgb, var(--color-romantic-peach) 40%, transparent);
- --color-bg-circle-mid: color-mix(in srgb, var(--color-romantic-blush) 55%, transparent);
- --color-bg-circle-light: color-mix(in srgb, white 55%, transparent);
- 
- /* Accent circles — a touch of other palette colors */
- --color-bg-circle-accent-1: color-mix(in srgb, var(--color-romantic-coral) 30%, transparent);
- --color-bg-circle-accent-2: color-mix(in srgb, var(--color-coastal-light) 40%, transparent);
- --color-bg-circle-accent-3: color-mix(in srgb, var(--color-coastal-sand) 60%, transparent);
- 
- /* Rose + soft peach circles scattered through the pattern */
- --color-bg-circle-rose: color-mix(in srgb, #D98A98 38%, transparent);
- --color-bg-circle-peach: color-mix(in srgb, #F6C3A5 50%, transparent);
- 
- /* Text and divider lines sitting directly on the pattern */
- --color-on-pattern: var(--color-welcome-navy);
- --color-on-pattern-soft: var(--color-motif-teal);
- --color-on-pattern-glow: color-mix(in srgb, white 70%, transparent);
- --color-on-pattern-line: var(--color-romantic-coral);
- 
- 
- /* ==========================================
-  *  HERO COUNTDOWN — fades up from the bottom
-  *  (components/sections/hero.tsx, plain mode)
-  * ========================================== */
- 
- /* Solid at the very bottom, fading to transparent upward */
- --color-countdown-fade: var(--color-coastal-deep);
- 
- /* Numbers + heading on the faded band */
- --color-countdown-text: var(--color-motif-soft);
- 
- /* Unit labels (Days, Hours, ...) */
- --color-countdown-label: var(--color-romantic-blush);
- 
- 
- /* ==========================================
-  *  ENVELOPE — NAVY FAMILY
-  *  The invitation envelope (components/loader/
-  *  envelope-invite.css). Letter inside stays light.
-  * ========================================== */
- 
- /* Main paper */
- --color-envelope-paper:
-     color-mix(
-         in srgb,
-         var(--color-motif-teal) 88%,
-         var(--color-motif-teal-medium)
-     );
- 
- /* Back panel / inside */
- --color-envelope-base: var(--color-motif-teal);
- 
- /* Lit edges */
- --color-envelope-highlight:
-     color-mix(
-         in srgb,
-         var(--color-motif-teal-medium) 85%,
-         var(--color-motif-teal-light)
-     );
- 
- /* Flap folds */
- --color-envelope-fold:
-     color-mix(
-         in srgb,
-         var(--color-motif-teal) 62%,
-         var(--color-coastal-deep)
-     );
- 
- /* Shadows */
- --color-envelope-shadow: var(--color-coastal-deep);
- 
- /* Crease hairlines on the paper */
- --color-envelope-crease: color-mix(in srgb, var(--color-motif-soft) 22%, transparent);
+--color-motif-yellow: #CBAFA1;
+/* Muted beige taupe */
 
 
- /* ==========================================
-  *  OPTIONAL SEMANTIC COLORS
-  *  Use these when assigning colors to
-  *  specific UI components.
-  * ========================================== */
- 
- /* Primary CTA */
- --color-primary: #1F3460;
- 
- /* Primary CTA hover */
- --color-primary-hover: #16264A;
- 
- /* Romantic CTA */
- --color-romantic: #E3A3AE;
- 
- /* Romantic hover */
- --color-romantic-hover: #D0899A;
- 
- /* Soft highlight */
- --color-highlight: #EFBFC6;
- 
- /* Section accent */
- --color-section-accent: #4F6694;
- 
- /* Light section */
- --color-section-light: #B4C2DC;
- 
- /* Card background */
- --color-card: #FDFAFA;
- 
- /* Border */
- --color-border: #E9D9DC;
- 
- /* Dark text */
- --color-text-dark: #16264A;
- 
- /* Muted text */
- --color-text-muted:
-     color-mix(
-         in srgb,
-         #16264A 60%,
-         white
-     );
+--color-motif-soft: #F8F2ED;
+/* Soft warm ivory paper */
 
 
- /* ==========================================
-  *  DASHBOARD
-  *  Every dashboard color comes from here and is
-  *  derived from the palette above — change the
-  *  palette and the whole dashboard follows.
-  *  Use as Tailwind classes: bg-dash-primary,
-  *  text-dash-ink, border-dash-border, ...
-  *  Plain colors only (gradients: page bg only).
-  * ========================================== */
+/* ------------------------------------------
 
- /* Buttons, active states, icons */
- --color-dash-primary: var(--color-primary);
- --color-dash-primary-hover: var(--color-primary-hover);
+ * Blush Pink Accents
 
- /* Secondary accent (ampersands, check marks, links) */
- --color-dash-accent: var(--color-section-accent);
-
- /* Text */
- --color-dash-ink: var(--color-text-dark);
- --color-dash-ink-strong: color-mix(in srgb, var(--color-text-dark) 80%, black);
- --color-dash-text: color-mix(in srgb, var(--color-text-dark) 80%, white);
- --color-dash-muted: var(--color-text-muted);
- --color-dash-faint: color-mix(in srgb, var(--color-text-dark) 45%, white);
-
- /* Lines + borders */
- --color-dash-line: var(--color-section-light);
- --color-dash-focus: color-mix(in srgb, var(--color-section-accent) 55%, white);
- --color-dash-border: color-mix(in srgb, var(--color-section-light) 50%, white);
-
- /* Surfaces */
- --color-dash-tint: color-mix(in srgb, var(--color-section-light) 26%, white);
- --color-dash-surface: color-mix(in srgb, var(--color-section-light) 12%, white);
- --color-dash-bg: color-mix(in srgb, var(--color-motif-cream) 60%, white);
- --color-dash-bg-deep: var(--color-motif-cream);
-
- /* Small badges */
- --color-dash-badge-bg: color-mix(in srgb, var(--color-romantic-blush) 55%, white);
- --color-dash-badge-text: color-mix(in srgb, var(--color-romantic-deep) 55%, black);
-
- /* Delete / danger — romantic coral family, darkened for contrast */
- --color-dash-danger: color-mix(in srgb, var(--color-romantic-deep) 45%, #7A2E2E);
- --color-dash-danger-text: color-mix(in srgb, var(--color-romantic-deep) 35%, #6E2A2A);
- --color-dash-danger-soft: color-mix(in srgb, var(--color-romantic-blush) 35%, white);
- --color-dash-danger-softer: color-mix(in srgb, var(--color-romantic-blush) 18%, white);
- --color-dash-danger-border: color-mix(in srgb, var(--color-romantic-blush) 60%, white);
+ * ------------------------------------------ */
 
 
- /* ==========================================
-  *  COLOR USAGE GUIDE
-  * ========================================== */
- 
- /*
-    NAVY BLUE
-    #1F3460
+--color-motif-accent: #C48C73;
+/* Terracotta nude */
+
+
+--color-motif-deep: #835643;
+/* Deep cocoa brown */
+
+
+--color-motif-medium: #E3CAC5;
+/* Dusty blush pink */
+
+
+/* ------------------------------------------
+
+ * Navy Blue Accents
+
+ * ------------------------------------------ */
+
+
+--color-motif-teal: #835643;
+/* Deep cocoa brown */
+
+
+--color-motif-teal-medium: #CBAFA1;
+/* Muted beige taupe */
+
+
+--color-motif-teal-light: #E3CAC5;
+/* Dusty blush pink */
+
+
+/* ------------------------------------------
+
+ * Floral / Romantic Accent
+
+ * ------------------------------------------ */
+
+
+--color-motif-blush: #E3CAC5;
+/* Dusty blush pink */
+
+
+/* ------------------------------------------
+
+ * Neutral / Paper
+
+ * ------------------------------------------ */
+
+
+--color-motif-silver: #E3CAC5;
+/* Soft blush neutral */
+
+
+/* ==========================================
+
+ *  WELCOME SECTION
+
+ * ========================================== */
+
+
+/* ------------------------------------------
+
+ * Main background
+
+ * ------------------------------------------ */
+
+
+--color-welcome-bg:
+    color-mix(
+        in srgb,
+        var(--color-motif-cream) 72%,
+        white
+    );
+
+
+/* ------------------------------------------
+
+ * Soft background
+
+ * ------------------------------------------ */
+
+
+--color-welcome-bg-soft:
+    color-mix(
+        in srgb,
+        var(--color-motif-teal-light) 22%,
+        white
+    );
+
+
+/* ==========================================
+
+ *  TYPOGRAPHY
+
+ * ========================================== */
+
+
+/* ------------------------------------------
+
+ * Main body text
+
+ * ------------------------------------------ */
+
+
+--color-welcome-text: #835643;
+/* Deep cocoa brown */
+
+
+/* ------------------------------------------
+
+ * Secondary / softer text
+
+ * ------------------------------------------ */
+
+
+--color-welcome-text-soft:
+    color-mix(
+        in srgb,
+        #835643 62%,
+        white
+    );
+
+
+/* ------------------------------------------
+
+ * Small headings
+
+ * ------------------------------------------ */
+
+
+--color-welcome-heading: #835643;
+/* Deep cocoa brown */
+
+
+/* ------------------------------------------
+
+ * Script / romantic accent
+
+ * ------------------------------------------ */
+
+
+--color-welcome-script: #C48C73;
+/* Terracotta nude */
+
+
+/* ------------------------------------------
+
+ * Main hero heading
+
+ * ------------------------------------------ */
+
+
+--color-welcome-navy: #835643;
+/* Deep cocoa brown */
+
+
+/* ==========================================
+
+ *  BUTTONS / DECORATION
+
+ * ========================================== */
+
+
+/* ------------------------------------------
+
+ * Buttons
+
+ * ------------------------------------------ */
+
+
+--color-welcome-green: #835643;
+/* Deep cocoa brown */
+
+
+/* ------------------------------------------
+
+ * Decorative coastal / floral lines
+
+ * ------------------------------------------ */
+
+
+--color-welcome-botanical: #CBAFA1;
+/* Muted beige taupe */
+
+
+/* ------------------------------------------
+
+ * Gold decorative details
+
+ * ------------------------------------------ */
+
+
+--color-welcome-gold: #E3CAC5;
+/* Dusty blush replaces traditional gold */
+
+
+/* ------------------------------------------
+
+ * Floral accents
+
+ * ------------------------------------------ */
+
+
+--color-welcome-blush: #E3CAC5;
+/* Soft blush pink */
+
+
+/* ==========================================
+
+ *  ADDITIONAL NUDE + TERRACOTTA COLORS
+
+ * ========================================== */
+
+
+/* Deep cocoa brown */
+--color-coastal-deep: #835643;
+
+
+/* Cocoa brown */
+--color-coastal-teal: #835643;
+
+
+/* Muted beige taupe */
+--color-coastal-soft: #CBAFA1;
+
+
+/* Dusty blush pink */
+--color-coastal-light: #E3CAC5;
+
+
+/* Terracotta nude */
+--color-romantic-coral: #C48C73;
+
+
+/* Deep cocoa brown */
+--color-romantic-deep: #835643;
+
+
+/* Dusty blush pink */
+--color-romantic-peach: #E3CAC5;
+
+
+/* Dusty blush pink */
+--color-romantic-blush: #E3CAC5;
+
+
+/* Muted beige taupe */
+--color-coastal-sand: #CBAFA1;
+
+
+/* Warm ivory */
+--color-coastal-ivory: #F2E9E2;
+
+
+/* ==========================================
+
+ *  COUPLE NAME MASK / LOCKUP
+
+ * ========================================== */
+
+
+--couple-name-fill: var(--color-welcome-navy);
+
+
+/* mid + accent match the fill → the names render in one plain color */
+--couple-name-fill-mid: var(--couple-name-fill);
+
+
+--couple-name-fill-accent: var(--couple-name-fill);
+
+
+--couple-name-fill-soft: var(--color-motif-soft);
+
+
+/* ==========================================
+
+ *  BACKGROUND — CIRCLE PATTERN
+
+ *  Used by every plain-mode section (loader,
+ *  envelope, hero, details, entourage, ...)
+ *  via components/loader/PlainBubbles.
+ *  Light + blush pink, flat colors (no gradients).
+
+ * ========================================== */
+
+
+/* Flat base painted behind the circles — light blush */
+--color-bg-pattern-base:
+    color-mix(
+        in srgb,
+        var(--color-romantic-blush) 30%,
+        var(--color-motif-cream)
+    );
+
+
+/* Main circles — blush pink family */
+--color-bg-circle-deep: color-mix(in srgb, var(--color-romantic-peach) 40%, transparent);
+
+--color-bg-circle-mid: color-mix(in srgb, var(--color-romantic-blush) 55%, transparent);
+
+--color-bg-circle-light: color-mix(in srgb, white 55%, transparent);
+
+
+/* Accent circles — a touch of other palette colors */
+--color-bg-circle-accent-1: color-mix(in srgb, var(--color-romantic-coral) 30%, transparent);
+
+--color-bg-circle-accent-2: color-mix(in srgb, var(--color-coastal-light) 40%, transparent);
+
+--color-bg-circle-accent-3: color-mix(in srgb, var(--color-coastal-sand) 60%, transparent);
+
+
+/* Rose + soft peach circles scattered through the pattern */
+--color-bg-circle-rose: color-mix(in srgb, #C48C73 38%, transparent);
+
+--color-bg-circle-peach: color-mix(in srgb, #C48C73 50%, transparent);
+
+
+/* Text and divider lines sitting directly on the pattern */
+--color-on-pattern: var(--color-welcome-navy);
+
+--color-on-pattern-soft: var(--color-motif-teal);
+
+--color-on-pattern-glow: color-mix(in srgb, white 70%, transparent);
+
+--color-on-pattern-line: var(--color-romantic-coral);
+
+
+/* ==========================================
+
+ *  HERO COUNTDOWN — fades up from the bottom
+
+ * ========================================== */
+
+
+/* Solid at the very bottom, fading to transparent upward */
+--color-countdown-fade: var(--color-coastal-deep);
+
+
+/* Numbers + heading on the faded band */
+--color-countdown-text: var(--color-motif-soft);
+
+
+/* Unit labels (Days, Hours, ...) */
+--color-countdown-label: var(--color-romantic-blush);
+
+
+/* ==========================================
+
+ *  ENVELOPE — DUSTY BLUSH FAMILY
+
+ *  The invitation envelope (components/loader/
+ *  envelope-invite.css). Letter inside stays light.
+
+ * ========================================== */
+
+
+/* Main paper — dusty blush */
+--color-envelope-paper: #E3CAC5;
+
+
+/* Back panel / inside */
+--color-envelope-base: color-mix(in srgb, #E3CAC5 86%, var(--color-motif-deep));
+
+
+/* Lit edges */
+--color-envelope-highlight: color-mix(in srgb, #E3CAC5 60%, white);
+
+
+/* Flap folds */
+--color-envelope-fold: color-mix(in srgb, #E3CAC5 80%, var(--color-motif-deep));
+
+
+/* Shadows */
+--color-envelope-shadow: color-mix(in srgb, var(--color-motif-deep) 70%, #E3CAC5);
+
+
+/* Crease hairlines on the paper */
+--color-envelope-crease: color-mix(in srgb, var(--color-motif-deep) 22%, transparent);
+
+
+/* ==========================================
+
+ *  OPTIONAL SEMANTIC COLORS
+
+ *  Use these when assigning colors to
+ *  specific UI components.
+
+ * ========================================== */
+
+
+/* Primary CTA */
+--color-primary: #835643;
+
+
+/* Primary CTA hover */
+--color-primary-hover: #835643;
+
+
+/* Romantic CTA */
+--color-romantic: #C48C73;
+
+
+/* Romantic hover */
+--color-romantic-hover: #835643;
+
+
+/* Soft highlight */
+--color-highlight: #E3CAC5;
+
+
+/* Highlight, slightly deeper — loader "Save Date", couple names, day number */
+--color-highlight-deep: color-mix(in srgb, var(--color-highlight) 60%, var(--color-motif-deep));
+
+
+/* Decorations (corner leaves, ornaments) — flat silhouette color */
+--color-deco: var(--color-motif-accent);
+
+
+/* Section accent */
+--color-section-accent: #CBAFA1;
+
+
+/* Light section */
+--color-section-light: #E3CAC5;
+
+
+/* Card background */
+--color-card: #F8F2ED;
+
+
+/* Border */
+--color-border: #CBAFA1;
+
+
+/* Dark text */
+--color-text-dark: #835643;
+
+
+/* Deepest ink — high-contrast text on light backgrounds (loader, envelope, buttons) */
+--color-ink-deep: #4A2C20;
+
+
+/* Deep accent ink — script words, small labels on light backgrounds */
+--color-ink-accent: #8A4E36;
+
+
+/* Muted text */
+--color-text-muted:
+    color-mix(
+        in srgb,
+        #835643 60%,
+        white
+    );
+
+
+/* ==========================================
+
+ *  DASHBOARD
+
+ *  Every dashboard color comes from here and is
+ *  derived from the palette above — change the
+ *  palette and the whole dashboard follows.
+ *  Use as Tailwind classes: bg-dash-primary,
+ *  text-dash-ink, border-dash-border, ...
+ *  Plain colors only (gradients: page bg only).
+
+ * ========================================== */
+
+
+/* Buttons, active states, icons */
+--color-dash-primary: var(--color-primary);
+
+--color-dash-primary-hover: var(--color-primary-hover);
+
+
+/* Secondary accent (ampersands, check marks, links) */
+--color-dash-accent: var(--color-section-accent);
+
+
+/* Text */
+--color-dash-ink: var(--color-text-dark);
+
+--color-dash-ink-strong: color-mix(in srgb, var(--color-text-dark) 80%, black);
+
+--color-dash-text: color-mix(in srgb, var(--color-text-dark) 80%, white);
+
+--color-dash-muted: var(--color-text-muted);
+
+--color-dash-faint: color-mix(in srgb, var(--color-text-dark) 45%, white);
+
+
+/* Lines + borders */
+--color-dash-line: var(--color-section-light);
+
+--color-dash-focus: color-mix(in srgb, var(--color-section-accent) 55%, white);
+
+--color-dash-border: color-mix(in srgb, var(--color-section-light) 50%, white);
+
+
+/* Surfaces */
+--color-dash-tint: color-mix(in srgb, var(--color-section-light) 26%, white);
+
+--color-dash-surface: color-mix(in srgb, var(--color-section-light) 12%, white);
+
+--color-dash-bg: color-mix(in srgb, var(--color-motif-cream) 60%, white);
+
+--color-dash-bg-deep: var(--color-motif-cream);
+
+
+/* Small badges */
+--color-dash-badge-bg: color-mix(in srgb, var(--color-romantic-blush) 55%, white);
+
+--color-dash-badge-text: color-mix(in srgb, var(--color-romantic-deep) 55%, black);
+
+
+/* Delete / danger — romantic coral family, darkened for contrast */
+--color-dash-danger: color-mix(in srgb, var(--color-romantic-deep) 45%, #835643);
+
+--color-dash-danger-text: color-mix(in srgb, var(--color-romantic-deep) 35%, #835643);
+
+--color-dash-danger-soft: color-mix(in srgb, var(--color-romantic-blush) 35%, white);
+
+--color-dash-danger-softer: color-mix(in srgb, var(--color-romantic-blush) 18%, white);
+
+--color-dash-danger-border: color-mix(in srgb, var(--color-romantic-blush) 60%, white);
+
+
+/* ==========================================
+
+ *  COLOR USAGE GUIDE
+
+ * ========================================== */
+
+
+/*
+    DEEP COCOA BROWN
+    #835643
+
     Use for:
     - Buttons
     - Important headings
@@ -584,84 +741,94 @@
     - Navigation
     - Strong text
     - Primary UI elements
- 
- 
-    DEEP NAVY
-    #16264A
+
+
+    DEEP COCOA BROWN
+    #835643
+
     Use for:
     - Hero couple names
     - Main heading
     - Dark overlays
     - Strong contrast elements
- 
- 
-    DUSTY BLUE
-    #4F6694
+
+
+    MUTED BEIGE TAUPE
+    #CBAFA1
+
     Use for:
     - Decorative leaves
     - Lines
     - Borders
     - Secondary buttons
     - Section accents
- 
- 
-    POWDER BLUE
-    #B4C2DC
+
+
+    DUSTY BLUSH PINK
+    #E3CAC5
+
     Use for:
     - Soft backgrounds
     - Decorative circles
     - Image overlays
     - Subtle cards
- 
- 
-    BLUSH ROSE
-    #E3A3AE
+
+
+    TERRACOTTA NUDE
+    #C48C73
+
     Use for:
     - Romantic script
     - Floral elements
     - Small highlights
     - Important decorative details
- 
- 
-    DEEP BLUSH ROSE
-    #D0899A
+
+
+    DEEP COCOA BROWN
+    #835643
+
     Use sparingly for:
     - Hover states
     - Active states
     - Small emphasis
- 
- 
-    PINK
-    #EFBFC6
+
+
+    DUSTY BLUSH PINK
+    #E3CAC5
+
     Use for:
     - Secondary decorative elements
     - Small badges
     - Accent backgrounds
     - Romantic highlights
- 
- 
-    BLUSH PINK
-    #F6D3D8
+
+
+    DUSTY BLUSH PINK
+    #E3CAC5
+
     Use for:
     - Flowers
     - Soft decorations
     - Background shapes
- 
-    PINK SAND
-    #E9D9DC
+
+
+    MUTED BEIGE TAUPE
+    #CBAFA1
+
     Use for:
     - Borders
     - Paper texture
     - Neutral decorative elements
- 
- 
-    IVORY
-    #FAF4F4
+
+
+    WARM IVORY
+    #F2E9E2
+
     Use for:
     - Main page background
     - Linen sections
     - Large negative spaces
- */
+*/
 
   /* ─────────────────────────────────────────────────────────── */
   --font-imperial-script: "Imperial Script", cursive;
@@ -824,7 +991,7 @@ img[src*="%2Flovestorydeco%2F"] {
 
 /* Updated scrollbar color to primary */
 ::-webkit-scrollbar-thumb {
-  background: #AFC8E6;
+  background: #835643;
   border-radius: 4px;
 }
 
@@ -923,7 +1090,7 @@ img[src*="%2Flovestorydeco%2F"] {
 
 /* Wedding colors for Love Story section */
 .bg-wedding-brown {
-  background-color: #16264A;
+  background-color: var(--color-motif-deep);
 }
 
 .bg-wedding-paper {
@@ -931,7 +1098,7 @@ img[src*="%2Flovestorydeco%2F"] {
 }
 
 .text-wedding-brown {
-  color: #16264A;
+  color: var(--color-motif-deep);
 }
 
 .text-wedding-paper {
@@ -1279,4 +1446,22 @@ img[src*="%2Flovestorydeco%2F"] {
 }
 @media (prefers-reduced-motion: reduce) {
   .dash-pop, .dash-pop-badge { animation: none; }
+}
+
+
+/* Flat-tinted decoration image (components/tinted-deco.tsx) — color: --color-deco */
+.tinted-deco {
+  display: block;
+  background-color: var(--color-deco);
+  -webkit-mask: var(--deco-src) center / 100% 100% no-repeat;
+  mask: var(--deco-src) center / 100% 100% no-repeat;
+  user-select: none;
+  pointer-events: none;
+}
+
+.tinted-deco__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  visibility: hidden;
 }

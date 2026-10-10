@@ -66,14 +66,14 @@ export type AttireColor = string | { name: string; hex: string }
 
 // ── The couple ──────────────────────────────────────────────────────────────
 const COUPLE = {
-  bride: "Ellaine Capili",
-  brideNickname: "Ellaine",
-  groom: "Carl Domingo",
-  groomNickname: "Carl",
+  bride: "Claudine Tamayo",
+  brideNickname: "Claudine",
+  groom: "Ivanne Biason",
+  groomNickname: "Ivanne",
 }
 
 // ── Date & times ────────────────────────────────────────────────────────────
-const WEDDING_DATE = "January 23, 2027" // e.g. "June 5, 2027"
+const WEDDING_DATE = "March 20, 2027" // e.g. "June 5, 2027"
 const WEDDING_DAY = "Saturday"
 const TIMES = {
   entourageCall: "1:00 PM", // entourage arrival
@@ -85,16 +85,16 @@ const TIMES = {
 // ── Venues ──────────────────────────────────────────────────────────────────
 
 const CEREMONY_VENUE = {
-  name: "Chat's Resort Hotel & Events Place",
-  address: "Mc Arthur highway Cambio, San Miguel, 3011 Bulakan",
-  map: "https://maps.app.goo.gl/XBBqUeQBtBcSpnFn7",
-  photos: ["/Details/new-ceremony (1).jpg", "/Details/new-ceremony (2).jpg", "/Details/new-ceremony (3).jpg"],
+  name: "Metropolitan Cathedral Parish of St. John the Evangelist",
+  address: "Burgos St, Downtown District, Dagupan City, Pangasinan",
+  map: "https://maps.app.goo.gl/gyVBV2CdvQ4KgAC87",
+  photos: ["/Details/ceremony.jpg", "/Details/ceremony.webp", "/Details/ceremony (2).png"],
 }
 const RECEPTION_VENUE = {
-  name: "Chat's Resort Hotel & Events Place",
-  address: "Mc Arthur highway Cambio, San Miguel, 3011 Bulakan",
-  map: "https://maps.app.goo.gl/XBBqUeQBtBcSpnFn7",
-  photos: ["/Details/new-ceremony (1).jpg", "/Details/new-ceremony (2).jpg", "/Details/new-ceremony (3).jpg"],
+  name: "The Village Royale",
+  address: "Bued, Calasiao, Pangasinan, Philippines",
+  map: "https://maps.app.goo.gl/DqfzZCzJHT76Z1vh8",
+  photos: ["/Details/reception (1).jpg", "/Details/reception (2).jpg"],
 }
 
 // ── Venue cards (Event Details section) ─────────────────────────────────────
@@ -107,7 +107,7 @@ const RECEPTION_VENUE = {
 // showDate     = show the big Month / Day / Year
 // showArrival  = show "Arrival: <guest arrival time>" (otherwise "At <time>")
 const VENUE_CARDS = {
-  layout: "combined" as "separate" | "combined",
+  layout: "separate" as "separate" | "combined",
   // Used when layout is "combined"
   combined: {
     badge: "Ceremony & Reception",
@@ -139,11 +139,11 @@ const VENUE_CARDS = {
 
 // ── RSVP & contact ──────────────────────────────────────────────────────────
 const RSVP = {
-  deadline: "December 1, 2026",
+  deadline: "February 20, 2027",
   coordinator: "{groom} / {bride}", // {groom} / {bride} → couple nicknames
   phone: "to be announced",
 }
-const HASHTAGS = ["#EllaineCarlWedding"] // ⚠ check — looks like it's from a previous couple
+const HASHTAGS = ["#IvAndClaudineWedding"] // ⚠ check — looks like it's from a previous couple
 
 // ── Attire guide (Event Details → Attire Guidelines) ────────────────────────
 // SHOW = which cards to display AND their order, top to bottom. Examples:
@@ -162,12 +162,11 @@ const HASHTAGS = ["#EllaineCarlWedding"] // ⚠ check — looks like it's from a
 //     details:   the dress code text ("" hides this half of the card)
 //     highlight: phrase inside details shown bold + underlined ("" for none)
 const DRESS_CODE_PALETTE: AttireColor[] = [
-  { name: "Warm Sand", hex: "#E1CDC6" },
-  { name: "Seafoam", hex: "#9DC6CA" },
-  { name: "Soft Peach", hex: "#FB9F8A" },
-  { name: "Ocean Teal", hex: "#6BB6BC" },
-  { name: "Coral Rose", hex: "#EA8684" },
-  { name: "Coastal Teal", hex: "#097A88" },
+  { name: "Deep Cocoa Brown", hex: "#835643" },
+  { name: "Terracotta Nude", hex: "#C48C73" },
+  { name: "Dusty Blush Pink", hex: "#E3CAC5" },
+  { name: "Muted Beige Taupe", hex: "#CBAFA1" },
+  { name: "Warm Ivory", hex: "#F2E9E2" },
 ];
 
 
@@ -217,7 +216,7 @@ const ATTIRE = {
 
   guests: {
     title: "Guests",
-    image: "/Details/guest-new.png",
+    image: "/Details/guest.png",
     palette: DRESS_CODE_PALETTE,
 
     ladies: {
@@ -252,9 +251,9 @@ const DISPLAY_MODE = "plain" as "photos" | "plain"
 
 // ── Shared images ───────────────────────────────────────────────────────────
 const BRAND = {
-  monogram: "/monogram/monogram-newpo.png",
+  monogram: "/monogram/monogram.png",
   coupleNameImage: "/Details/newcoupelNames.png", // couple-name lettering (loader, envelope)
-  seal: "/monogram/monogram_new.png", // envelope wax seal
+  seal: "/monogram/seal.png", // envelope wax seal
   backgroundMusic: "/background_music/Goodness Of God X Oceans X Gratitude (Wedding Entrance version).mp3",
 }
 
@@ -340,7 +339,7 @@ export const siteConfig = {
     venue: CEREMONY_VENUE.name,
     tagline: "are getting married!!!!!",
     theme: "Navy Blue & Blush Pink",
-    motif: "#16264A, #1F3460, #B4C2DC, #F6D3D8, #E3A3AE",
+    motif: "#835643, #C48C73, #CBAFA1, #E3CAC5, #F2E9E2",
   },
   // Opening "Save the Date" loading screen (components/loader/LoadingScreen.tsx).
   // Couple names, wedding date and ceremony details come from couple / wedding / ceremony above.
@@ -983,17 +982,17 @@ export const siteConfig = {
     signature: "Ellaine and Carl", // "" falls back to "{groom} & {bride}" nicknames
     // Colors — any CSS color or a palette token from app/globals.css (e.g. "var(--color-motif-accent)")
     colors: {
-      title: "#1F3460",                                              // "Gift Guide", account names
-      script: "#1F3460",                                             // drop cap, couple signature
-      eyebrow: "#1F3460",                                            // small caps labels, icons
-      body: "#1F3460",                                               // paragraphs
-      soft: "color-mix(in srgb, #1F3460 70%, transparent)",          // "With love," and secondary text
+      title: "var(--color-welcome-navy)",                                              // "Gift Guide", account names
+      script: "var(--color-welcome-navy)",                                             // drop cap, couple signature
+      eyebrow: "var(--color-welcome-navy)",                                            // small caps labels, icons
+      body: "var(--color-welcome-navy)",                                               // paragraphs
+      soft: "color-mix(in srgb, var(--color-welcome-navy) 70%, transparent)",          // "With love," and secondary text
       card: "var(--color-motif-soft)",                               // letter card (plain light)
       cardEdge: "var(--color-motif-soft)",                           // letter card (plain light)
-      accountCard: "color-mix(in srgb, #1F3460 6%, var(--color-motif-soft))", // e-gift account cards
-      button: "#D0899A",                                             // gift seal, selected tab
-      line: "color-mix(in srgb, #1F3460 45%, transparent)",          // dividers
-      glow: "color-mix(in srgb, #1F3460 12%, transparent)",          // tab track / letter badge
+      accountCard: "color-mix(in srgb, var(--color-welcome-navy) 6%, var(--color-motif-soft))", // e-gift account cards
+      button: "var(--color-romantic-coral)",                                             // gift seal, selected tab
+      line: "color-mix(in srgb, var(--color-welcome-navy) 45%, transparent)",          // dividers
+      glow: "color-mix(in srgb, var(--color-welcome-navy) 12%, transparent)",          // tab track / letter badge
       background: "var(--color-motif-cream)",      // section background
     },
     // E-gift accounts — optional, as many as you like.
@@ -1337,8 +1336,8 @@ export const siteConfig = {
       title: "Guests",
       label: "Guests",
       description: "Casual attire: Whimsical Spring.",
-      image: "/Details/new-guest.png",
-      palette: ["#FFCA8B", "#FFB383", "#F6CEC8", "#E99997", "#C8C29E"],
+      image: "/Details/guest.png",
+      palette: ["#835643", "#C48C73", "#E3CAC5", "#CBAFA1", "#F2E9E2"],
     },
     paletteNote:
       "Our theme is Whimsical Spring Minimalist. Entourage: women, a flowy spring sage green dress, strictly floor length; gentlemen, a black and white suit, a white and gray suit, or sage green long sleeves with gray or brown pants — strictly no rubber shoes. Guests: casual attire, Whimsical Spring.",
@@ -1388,8 +1387,8 @@ Now, as they prepare to say yes before God and the people they love most, Cather
     decos: { ...CORNER_DECOS, headerOrnament: DECOR.headerOrnament },
     embedUrl:
     //https://open.spotify.com/embed/playlist/5sT43YjdM8pJ3xtEkrxyEY?utm_source=generator&si=e5e64aa63fd04356
-      "https://open.spotify.com/embed/playlist/5sT43YjdM8pJ3xtEkrxyEY?utm_source=generator&si=e5e64aa63fd04356",
-    spotifyUrl: "https://open.spotify.com/playlist/5sT43YjdM8pJ3xtEkrxyEY",
+      "https://open.spotify.com/embed/playlist/68XdzLgHkUegQRLF8xlQOW?utm_source=generator&si=da5b4d6b1fe541ab",
+    spotifyUrl: "https://open.spotify.com/playlist/68XdzLgHkUegQRLF8xlQOW",
   },
   // Closing "See you there!" section (components/sections/see-you-there.tsx).
   //   photos mode (loadingScreen.display "photos") → full-screen couple photo

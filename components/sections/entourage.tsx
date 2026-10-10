@@ -10,6 +10,7 @@ import { useSiteConfig } from "@/hooks/use-site-config"
 import { fetchUntilReady, isAbortError } from "@/lib/fetch-until-ready"
 import { fetchInvitationList, readCachedInvitationList } from "@/lib/invitation-data"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
+import { TintedDeco } from "@/components/tinted-deco"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -31,8 +32,8 @@ const aboveTheBeyond = localFont({
 // Palette lives in globals.css → motif / welcome tokens.
 const PAPER = "var(--color-welcome-bg-soft)"
 const ACCENT = "var(--color-motif-accent)"
-const NAVY = "var(--color-welcome-navy)"
-const SCRIPT = "var(--color-welcome-script)"
+const NAVY = "var(--color-ink-deep)"
+const SCRIPT = "var(--color-ink-accent)"
 const BODY = "var(--color-welcome-text)"
 const HAIRLINE = "color-mix(in srgb, var(--color-motif-medium) 60%, transparent)"
 
@@ -41,12 +42,13 @@ const sectionBg = "var(--color-bg-pattern-base)"
 
 // Text sitting directly on the circle pattern (colors: globals.css → --color-on-pattern*)
 const onBg = {
-  color: "var(--color-on-pattern)",
-  textShadow: "0 1px 0 var(--color-on-pattern-glow), 0 2px 12px var(--color-on-pattern-glow)",
+  color: "var(--color-ink-deep)",
+  textShadow:
+    "0 0 1px var(--color-on-pattern-glow), 0 1px 0 var(--color-on-pattern-glow), 0 0 14px var(--color-on-pattern-glow), 0 0 26px var(--color-on-pattern-glow)",
 } as const
 
 const onBgLineStyle = {
-  background: "var(--color-on-pattern-line)",
+  background: "var(--color-ink-accent)",
 } as const
 
 const dividerLineStyle = {
@@ -60,7 +62,7 @@ const cardStyle = {
 } as const
 
 const CORNER_DECO_CLASS =
-  "block h-auto w-auto max-w-[130px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[320px] select-none opacity-90"
+  "block h-auto w-auto max-w-[92px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[320px] select-none opacity-90"
 
 const palette = {
   body: BODY,
@@ -70,19 +72,15 @@ const palette = {
 } as const
 
 function DecoImg({ src, className }: { src: string; className: string }) {
-  if (!src) return null
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} loading="lazy" decoding="async" alt="" aria-hidden="true" className={className} />
-  )
+  return <TintedDeco src={src} className={className} />
 }
 
 function OutsideDivider() {
   return (
     <div className="flex items-center justify-center gap-2">
-      <span className="h-px w-10 sm:w-16" style={{ background: "var(--color-on-pattern-line)" }} />
-      <span className="h-1.5 w-1.5 rotate-45" style={{ background: "var(--color-on-pattern-line)" }} aria-hidden />
-      <span className="h-px w-10 sm:w-16" style={{ background: "var(--color-on-pattern-line)" }} />
+      <span className="h-px w-10 sm:w-16" style={{ background: "var(--color-ink-accent)" }} />
+      <span className="h-1.5 w-1.5 rotate-45" style={{ background: "var(--color-ink-accent)" }} aria-hidden />
+      <span className="h-px w-10 sm:w-16" style={{ background: "var(--color-ink-accent)" }} />
     </div>
   )
 }
@@ -177,7 +175,7 @@ function MixedFontText({
 
 function CouplePromiseMark({ kicker, line }: { kicker: string; line: string }) {
   return (
-    <div className="-mt-3 mb-4 text-center sm:-mt-4 sm:mb-5 md:-mt-5 md:mb-6">
+    <div className="-mt-2 mb-3 text-center sm:-mt-4 sm:mb-5 md:-mt-5 md:mb-6">
       <p
         className={`${cinzel.className} text-[0.5625rem] font-semibold uppercase tracking-[0.2em] sm:text-[0.625rem] sm:tracking-[0.24em] md:text-[0.6875rem] md:tracking-[0.28em]`}
         style={{ color: ACCENT }}
@@ -600,7 +598,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
       align === "right" ? "text-right" : align === "left" ? "text-left" : "text-center"
     return (
       <h3
-        className={`relative ${SECTION_TITLE_CLASS} mb-1.5 sm:mb-2 md:mb-2.5 ${textAlign} ${className} transition-all duration-300`}
+        className={`relative ${SECTION_TITLE_CLASS} mb-1 sm:mb-2 md:mb-2.5 ${textAlign} ${className} transition-all duration-300`}
         style={{ color: NAVY }}
       >
         {typeof children === "string" ? (
@@ -634,7 +632,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
     const displayRole = member.roleTitle ? toDisplayName(member.roleTitle) : ""
     return (
       <div
-        className={`relative flex flex-col ${containerAlign} justify-center py-1 sm:py-1.5 min-w-0 w-full max-w-full group/item transition-all duration-300`}
+        className={`relative flex flex-col ${containerAlign} justify-center py-0.5 sm:py-1.5 min-w-0 w-full max-w-full group/item transition-all duration-300`}
       >
         <div
           className="absolute inset-0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 rounded-md"
@@ -712,7 +710,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
   }) => {
     if (singleTitle) {
       return (
-        <div className="mb-2 sm:mb-2.5 md:mb-3">
+        <div className="mb-1.5 sm:mb-2.5 md:mb-3">
           <SectionTitle>{singleTitle}</SectionTitle>
           <div
             className={`grid grid-cols-2 gap-x-1.5 sm:gap-x-3 md:gap-x-5 gap-y-1 sm:gap-y-1.5 ${centerContent ? "max-w-3xl mx-auto" : ""}`}
@@ -724,7 +722,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
     }
 
     return (
-      <div className="mb-2 sm:mb-2.5 md:mb-3">
+      <div className="mb-1.5 sm:mb-2.5 md:mb-3">
         <div className="grid grid-cols-2 gap-x-1.5 sm:gap-x-3 md:gap-x-5 mb-2 sm:mb-2.5 md:mb-3">
           {leftTitle && (
             <SectionTitle align="right" className="pr-0.5 sm:pr-1">
@@ -756,7 +754,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
       <PlainBubbles />
       <Section
         id="entourage"
-        className="relative z-10 overflow-hidden pt-8 pb-8 sm:pt-10 sm:pb-10 md:pt-12 md:pb-12 lg:pt-14 lg:pb-14"
+        className="relative z-10 overflow-hidden pt-5 pb-5 sm:pt-10 sm:pb-10 md:pt-12 md:pb-12 lg:pt-14 lg:pb-14"
       >
         {/* Corner decorations (from site.ts) */}
         <div className="pointer-events-none absolute left-0 top-0 z-10">
@@ -772,12 +770,12 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
           <DecoImg src={decos.bottomRight} className={CORNER_DECO_CLASS} />
         </div>
 
-      <div className={`relative z-20 mx-auto mb-8 max-w-5xl px-3 text-center @container/entourage sm:mb-10 sm:px-4 md:mb-12 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"}`}>
+      <div className={`relative z-20 mx-auto mb-5 max-w-5xl px-3 text-center @container/entourage sm:mb-10 sm:px-4 md:mb-12 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"}`}>
         <DecoImg
           src={decos.headerOrnament}
-          className="mx-auto mb-3 block h-auto w-28 select-none sm:mb-4 sm:w-36 md:w-44"
+          className="mx-auto mb-2 block h-auto w-20 select-none sm:mb-4 sm:w-36 md:w-44"
         />
-        <div className="mx-auto mb-4 sm:mb-5 md:mb-6">
+        <div className="mx-auto mb-2.5 sm:mb-5 md:mb-6">
           <OutsideDivider />
         </div>
         <p
@@ -786,18 +784,18 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
         >
           {content.eyebrow}
         </p>
-        <div className="mx-auto mt-3 sm:mt-4 md:mt-5">
+        <div className="mx-auto mt-2 sm:mt-4 md:mt-5">
           <EntourageTitle title={content.title} subtitle={content.subtitle} />
         </div>
 
         <p
-          className="font-goudy-italic mx-auto mt-4 max-w-xl px-2 text-sm leading-relaxed sm:mt-5 sm:text-base md:mt-6"
+          className="font-goudy-italic mx-auto mt-2.5 max-w-xl px-2 text-[0.8rem] leading-snug sm:mt-5 sm:text-base sm:leading-relaxed md:mt-6"
           style={{ ...onBg, fontWeight: 600 }}
         >
           {content.description}
         </p>
 
-        <div className="mt-4 flex items-center justify-center sm:mt-5">
+        <div className="mt-3 flex items-center justify-center sm:mt-5">
           <span
             className="h-px w-16 sm:w-24 md:w-32"
             style={onBgLineStyle}
@@ -806,7 +804,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
       </div>
 
       <div
-        className={`relative z-20 mx-auto max-w-3xl px-4 pb-2 sm:max-w-4xl sm:px-6 md:px-8 @container/entourage-card transition-all duration-1000 delay-300 ${
+        className={`relative z-20 mx-auto max-w-3xl px-2.5 pb-1 sm:max-w-4xl sm:px-6 md:px-8 @container/entourage-card transition-all duration-1000 delay-300 ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
         }`}
       >
@@ -816,12 +814,12 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
             style={cardStyle}
           >
             <div
-              className="pointer-events-none absolute inset-3 z-30 rounded-t-full sm:inset-4 md:inset-5"
+              className="pointer-events-none absolute inset-2 z-30 rounded-t-full sm:inset-4 md:inset-5"
               style={{ border: `1px solid ${HAIRLINE}` }}
               aria-hidden
             />
 
-            <div className="relative z-20 px-5 pb-10 pt-[22%] sm:px-8 sm:pb-12 md:px-12 md:pb-14 lg:px-14">
+            <div className="relative z-20 px-3 pb-7 pt-[18%] sm:px-8 sm:pt-[22%] sm:pb-12 md:px-12 md:pb-14 lg:px-14">
             {isLoading ? (
               <div className="flex items-center justify-center py-24 sm:py-28 md:py-32">
                 <div className="text-center">
@@ -848,7 +846,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
             ) : (
             <>
               <CouplePromiseMark kicker={content.coupleKicker} line={content.coupleLine} />
-              <div className="mb-2 sm:mb-2.5 md:mb-3">
+              <div className="mb-1.5 sm:mb-2.5 md:mb-3">
                 <SectionTitle>{content.coupleHeading}</SectionTitle>
                 <div className="grid grid-cols-2 gap-x-1.5 sm:gap-x-3 md:gap-x-5 gap-y-1 sm:gap-y-1.5">
                   <div className="px-0.5 sm:px-1 md:px-1.5 min-w-0">
@@ -923,7 +921,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                     return (
                       <div key="Parents">
                         {categoryIndex > 0 && (
-                          <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
+                          <div className="flex justify-center py-1 sm:py-2.5 md:py-3 mb-1.5 sm:mb-2.5 md:mb-3">
                             <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                           </div>
                         )}
@@ -990,7 +988,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                           const officiating = grouped["OFFICIATING MINISTER"] || []
                           if (officiating.length === 0) return null
                           return (
-                            <div key="OfficiatingMinisterBeforeSponsors" className="mt-4 sm:mt-5 md:mt-6">
+                            <div key="OfficiatingMinisterBeforeSponsors" className="mt-3 sm:mt-5 md:mt-6">
                               <TwoColumnLayout singleTitle="OFFICIATING MINISTER" centerContent={true}>
                                 {officiating.map((member, idx) => (
                                   <div
@@ -1007,7 +1005,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
 
                         {sponsors.length > 0 && (
                           <div key="SponsorsAfterParents">
-                            <div className="flex justify-center py-1.5 sm:py-2 md:py-2.5 mb-2 sm:mb-2.5 md:mb-3" />
+                            <div className="flex justify-center py-1 sm:py-2 md:py-2.5 mb-1.5 sm:mb-2.5 md:mb-3" />
                             <TwoColumnLayout singleTitle="Principal Sponsors" centerContent={true}>
                               {sponsors.map((sponsor, idx) => (
                                 <React.Fragment key={`sponsor-row-${idx}`}>
@@ -1054,7 +1052,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                           if (peerSponsors.length === 0) return null
                           return (
                             <div key="PeerSponsorsAfterPrincipal">
-                              <div className="flex justify-center py-1.5 sm:py-2 md:py-2.5 mb-2 sm:mb-2.5 md:mb-3" />
+                              <div className="flex justify-center py-1 sm:py-2 md:py-2.5 mb-1.5 sm:mb-2.5 md:mb-3" />
                               <TwoColumnLayout singleTitle="Peer Sponsors" centerContent={true}>
                                 {peerSponsors.length === 2 ? (
                                   <>
@@ -1130,7 +1128,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                     return (
                       <div key="Family">
                         {categoryIndex > 0 && (
-                          <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
+                          <div className="flex justify-center py-1 sm:py-2.5 md:py-3 mb-1.5 sm:mb-2.5 md:mb-3">
                             <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                           </div>
                         )}
@@ -1185,7 +1183,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                   return (
                     <div key="HonorAttendants">
                       {categoryIndex > 0 && (
-                        <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
+                        <div className="flex justify-center py-1 sm:py-2.5 md:py-3 mb-1.5 sm:mb-2.5 md:mb-3">
                           <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                         </div>
                       )}
@@ -1204,7 +1202,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                       )}
 
                       {manOfHonor.length > 0 && (hasSideHonors || hasMatron) && (
-                        <div className="flex justify-center py-1.5 sm:py-2 md:py-2.5 mb-2 sm:mb-2.5 md:mb-3">
+                        <div className="flex justify-center py-1 sm:py-2 md:py-2.5 mb-1.5 sm:mb-2.5 md:mb-3">
                           <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                         </div>
                       )}
@@ -1248,7 +1246,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                       )}
 
                       {hasSideHonors && hasMatron && (
-                        <div className="flex justify-center py-1.5 sm:py-2 md:py-2.5 mb-2 sm:mb-2.5 md:mb-3">
+                        <div className="flex justify-center py-1 sm:py-2 md:py-2.5 mb-1.5 sm:mb-2.5 md:mb-3">
                           <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                         </div>
                       )}
@@ -1281,7 +1279,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                   return (
                     <div key="BearerBlock">
                       {categoryIndex > 0 && (
-                        <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
+                        <div className="flex justify-center py-1 sm:py-2.5 md:py-3 mb-1.5 sm:mb-2.5 md:mb-3">
                           <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                         </div>
                       )}
@@ -1323,7 +1321,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                   return (
                     <div key={pairedSection.key}>
                       {categoryIndex > 0 && (
-                        <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
+                        <div className="flex justify-center py-1 sm:py-2.5 md:py-3 mb-1.5 sm:mb-2.5 md:mb-3">
                           <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                         </div>
                       )}
@@ -1348,7 +1346,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                     return (
                       <div key="LittleOnes">
                         {categoryIndex > 0 && (
-                          <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
+                          <div className="flex justify-center py-1 sm:py-2.5 md:py-3 mb-1.5 sm:mb-2.5 md:mb-3">
                             <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                           </div>
                         )}
@@ -1386,7 +1384,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                   return (
                     <div key="FlowerLadies">
                       {categoryIndex > 0 && (
-                        <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
+                        <div className="flex justify-center py-1 sm:py-2.5 md:py-3 mb-1.5 sm:mb-2.5 md:mb-3">
                           <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                         </div>
                       )}
@@ -1450,7 +1448,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                         {/* Groomsmen/Bridesmaids section */}
                         <div key="BridalParty">
                           {categoryIndex > 0 && (
-                            <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
+                            <div className="flex justify-center py-1 sm:py-2.5 md:py-3 mb-1.5 sm:mb-2.5 md:mb-3">
                               <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                             </div>
                           )}
@@ -1503,7 +1501,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                     if (TWO_COLUMN_SECONDARY_GROUPS.has(groupName) && grpMembers.length > 1) {
                       const half = Math.ceil(grpMembers.length / 2)
                       return (
-                        <div key={groupName} className="mb-2 sm:mb-2.5 md:mb-3">
+                        <div key={groupName} className="mb-1.5 sm:mb-2.5 md:mb-3">
                           <TwoColumnLayout singleTitle={displayRoleCategory(groupName)} centerContent={true}>
                             {renderPairRows(groupName, grpMembers.slice(0, half), grpMembers.slice(half))}
                           </TwoColumnLayout>
@@ -1511,7 +1509,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                       )
                     }
                     return (
-                      <div key={groupName} className="mb-2 sm:mb-2.5 md:mb-3">
+                      <div key={groupName} className="mb-1.5 sm:mb-2.5 md:mb-3">
                         <TwoColumnLayout singleTitle={displayRoleCategory(groupName)} centerContent={true}>
                           {grpMembers.length === 2 ? (
                             <>
@@ -1539,12 +1537,12 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                   return (
                     <div key="SecondarySponsorBlock">
                       {categoryIndex > 0 && (
-                        <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
+                        <div className="flex justify-center py-1 sm:py-2.5 md:py-3 mb-1.5 sm:mb-2.5 md:mb-3">
                           <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                         </div>
                       )}
                       {/* Parent heading */}
-                      <div className="mb-2 sm:mb-2.5 md:mb-3">
+                      <div className="mb-1.5 sm:mb-2.5 md:mb-3">
                         <SectionTitle>Secondary Sponsors</SectionTitle>
                       </div>
                       {secondarySponsorGroups.map(renderPairedGroup)}
@@ -1556,7 +1554,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                 return (
                   <div key={category}>
                     {categoryIndex > 0 && (
-                      <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
+                      <div className="flex justify-center py-1 sm:py-2.5 md:py-3 mb-1.5 sm:mb-2.5 md:mb-3">
                             <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                       </div>
                     )}
@@ -1621,7 +1619,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                 const members = grouped[category]
                 return (
                   <div key={category}>
-                    <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
+                    <div className="flex justify-center py-1 sm:py-2.5 md:py-3 mb-1.5 sm:mb-2.5 md:mb-3">
                       <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                     </div>
                     <TwoColumnLayout singleTitle={displayRoleCategory(category)} centerContent={true}>
@@ -1671,7 +1669,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
         </div>
         <DecoImg
           src={decos.footerVine}
-          className="relative z-20 mx-auto mt-10 block h-auto w-56 select-none opacity-90 sm:mt-12 sm:w-72 md:w-96"
+          className="relative z-20 mx-auto mt-6 block h-auto w-40 select-none opacity-90 sm:mt-12 sm:w-72 md:w-96"
         />
       </div>
       </Section>
