@@ -1017,8 +1017,8 @@ export const siteConfig = {
     // "Find Your Table" QR card on the dashboard (components/table-finder-qr-card.tsx)
     // {couple} → "Groom & Bride" nicknames. "" hides a line or image.
     qrCard: {
-      coupleNameImage: BRAND.coupleNameImage, // couple-name lettering; "" shows the names as text
-      coupleImage: "/Details/coupleimage.png", // couple illustration beside the text
+      coupleNameImage: BRAND.coupleNameImage, // unused: the card sets the names in type like the loader
+      coupleImage: "/Details/coupleImages.png", // couple illustration beside the text
       eyebrow: "The wedding of",
       title: "Find Your Table",
       script: "please be seated",
@@ -1040,8 +1040,8 @@ export const siteConfig = {
   // A list ([...]) shows one paragraph per line; "" or [] hides that part.
   proposal: {
     decos: { ...CORNER_DECOS },
-    coupleNameImage: BRAND.coupleNameImage, // couple-name lettering at the top of the card; "" shows text names
-    coupleImage: "/deco/coupleImage.png", // couple illustration above the question
+    coupleNameImage: BRAND.coupleNameImage, // unused: names are set in type like the loader
+    coupleImage: "/Details/coupleImages.png", // couple illustration above the question
     ornament: DECOR.headerOrnament, // small sprig at the top of the card; "" to hide
     // Eucalyptus sprigs on either side of the couple name; "" to hide one
     nameDecos: { left: DECOR.sideLeft, right: DECOR.sideRight },
@@ -1050,31 +1050,32 @@ export const siteConfig = {
     honorAttendant: "Matron of Honor" as "Matron of Honor" | "Maid of Honor",
     roles: proposalRoleDefinitions,
     roleIdAliases: proposalRoleIdAliases,
-    // Shared labels used on every invitation
+    // Shared labels used on every invitation.
+    // Placeholders: {name} invitee, {role} role title, {groom} / {bride} nicknames.
     labels: {
       headerEyebrow: "A Personal Invitation",
-      headerScript: "from our hearts to yours",
+      headerScript: "written just for you",
       saveTheDate: "Save the Date",
-      roleOffered: "Role offered",
-      preparedFor: "Prepared for",
+      roleOffered: "Your role",
+      preparedFor: "Written for",
       askQuestion: "Will you be our",
-      registeredName: "Registered name",
-      returnButton: "Return to Wedding Page",
+      registeredName: "Your name on our list",
+      returnButton: "Return to Our Wedding Page",
       saving: "Saving...",
       sending: "Sending...",
-      sendButton: "Send Response",
+      sendButton: "Send My Response",
       goBack: "Go Back",
-      saveError: "We couldn't save your response. Please try again.",
+      saveError: "We couldn't save your response just now. Please try again.",
       // Shown when the invite link has no name and the guest says yes
       nameForm: {
         title: "You Said Yes",
-        script: "we're so happy",
-        subheader: "One quick detail",
-        body: "We couldn't be happier to have you by our side! Please confirm the name you'd like on our invitation and guest lists.",
+        script: "our hearts are full",
+        subheader: "Just one little thing",
+        body: "We're so happy to have you with us! How would you like your name to appear on our invitation and guest list?",
         label: "Your Preferred Name",
-        placeholder: "e.g. Aunt Maria Clara / Mr. James Bond",
-        required: "Please type your preferred name so we can add it to our invitation.",
-        submit: "Submit Response",
+        placeholder: "e.g. Tita Maria Clara / Mr. James Reyes",
+        required: "Please type your preferred name so we can include you properly.",
+        submit: "Confirm My Name",
         cancel: "Cancel",
       },
     },
@@ -1082,44 +1083,44 @@ export const siteConfig = {
       party: {
         greeting: "Dear",
         intro: [
-          "We have some wonderful news that we would love to share with you.",
-          "We are happy and excited to announce that we are getting married and will be beginning a new chapter of our lives together.",
+          "Before anything else, we wanted you to hear this from us personally.",
+          "We're getting married! After everything we've shared so far, we're ready to begin the next chapter of our lives together, and we couldn't wait to tell you.",
         ],
         body: [
-          "But this isn't just a save-the-date. This is a personal ask, especially meant for you.",
-          "As we imagine our wedding day, we find ourselves thinking about the people we would want beside us as we celebrate one of the biggest moments of our lives.",
-          "You are someone we would genuinely love to have there — not just as a guest, but as someone who will stand beside us, celebrate with us, laugh with us, and share in the memories we will carry for years to come.",
+          "This little letter isn't a general invitation. We wrote it with you in mind.",
+          "When we pictured our wedding day, we thought about the people who have walked with us, laughed with us and cheered us on. Your name came up right away.",
+          "We would love for you to be more than a guest. We'd love you right beside us, sharing the nerves, the joy, the happy tears and every memory we'll keep from that day.",
         ],
-        askLead: "So, with all our hearts, we would like to ask you",
+        askLead: "So, with all our hearts, we'd like to ask you",
         askNote:
-          "We know that being part of the wedding party comes with time, effort, and a little bit of responsibility. More than anything, we hope it will be a chance for us to celebrate this beautiful moment together.",
+          "We know it takes a bit of your time and effort, and we don't take that lightly. More than anything, we just want you there with us, celebrating this moment together.",
         yesButton: "Yes, I'd Love To!",
-        noButton: "No, With Love & Warm Wishes",
-        signOff: "With love,",
+        noButton: "I Can't, But With Love",
+        signOff: "With all our love,",
         yes: {
           title: "You Said Yes",
           script: "thank you",
-          subheader: "We couldn't be happier",
-          roleLine: "Standing as our {role}",
+          subheader: "You just made our day",
+          roleLine: "Standing with us as our {role}",
           body: [
-            "Thank you for being willing to share this special moment with us. We can't wait to celebrate, laugh, make memories, and experience this beautiful day together. Having you beside us will make our wedding day even more special. Let's make some unforgettable memories together!",
+            "Thank you, {name}. Knowing you'll be right beside us makes our wedding feel even more like us. We can't wait to celebrate, laugh, and make memories with you. We'll be in touch soon with all the little details!",
           ],
-          signOff: "With love,",
+          signOff: "With so much love,",
         },
         no: {
           title: "Thank You",
-          script: "for responding",
+          script: "for telling us",
           subheader: "We completely understand",
           body: [
-            "Thank you for taking the time to consider being part of our wedding party. Please know that there are absolutely no hard feelings. Whether you're standing beside us or cheering for us from wherever you are, we will always be grateful to have you in our lives.",
+            "Thank you for taking the time to read our letter and think it over. There are truly no hard feelings. Whether you're beside us or cheering from wherever you are, we're grateful to have you in our lives.",
           ],
         },
         sent: {
           title: "Response Sent",
-          script: "successfully",
-          subheader: "Your message has reached us",
+          script: "with love",
+          subheader: "Your reply has reached us",
           body: [
-            "We hope you'll still celebrate this beautiful day with us in your own way. Your love and warmest wishes mean the world to us.",
+            "We hope you'll still celebrate with us in your own way. Your love and good wishes mean the world to us.",
           ],
           signOff: "With love and warmest wishes,",
         },
@@ -1127,43 +1128,43 @@ export const siteConfig = {
       sponsor: {
         greeting: "Dear",
         intro: [
-          "We have some wonderful news that we would love to share with you.",
-          "We are happy and excited to announce that we are getting married and will be beginning a new chapter of our lives together.",
+          "We wanted to share some happy news with you, and we wanted you to hear it from us first.",
+          "We're getting married, and we're about to begin a new life together as husband and wife.",
         ],
         body: [
-          "This is not a general invitation. This is a personal ask, especially meant for you.",
-          "As we prepare for our wedding, we find ourselves thinking about the people we would be grateful to have by our side on one of the most meaningful days of our lives.",
-          "For us, having a {role} is more than simply being part of the wedding ceremony. It means having someone we respect, someone whose experiences we can learn from, and someone whose wisdom and blessings we would be grateful to have as we build our life together.",
+          "This letter is not a general invitation. It's a personal request, written especially for you.",
+          "As we prepare for this day, we keep thinking of the people we look up to. You have shown us, in ways you may not even realize, what a loving and faithful life looks like.",
+          "To us, a {role} is more than a name in our program. It is someone whose wisdom we trust, whose prayers we hold dear, and whose example we hope to follow as we build our own home.",
         ],
-        askLead: "With great respect and sincerity, we would like to ask you a very special question:",
-        askNote: "Having you share this moment with us would truly make our wedding more meaningful.",
+        askLead: "With deep respect and sincerity, we'd like to ask you",
+        askNote: "Having you stand with us, and having your blessing on our marriage, would mean more to us than we can say.",
         yesButton: "Yes, I'd Be Honored 🤍",
-        noButton: "No, With Love & Warm Wishes",
+        noButton: "I Can't, But With Love",
         signOff: "With love and respect,",
         yes: {
           title: "You Said Yes",
           script: "thank you",
-          subheader: "Thank you for saying yes!",
+          subheader: "We are truly honored",
           roleLine: "Our {role}",
           body: [
-            "We are truly happy and honored to have you accept this special role in our wedding. Your support means a lot to us, and we look forward to celebrating this beautiful day with you and creating a memory we can cherish for years to come. Thank you for being part of this special moment.",
+            "Thank you, {name}, for accepting this role with such an open heart. Your guidance and prayers mean so much to us, and we're grateful to begin our marriage with you beside us. We'll reach out soon with the details.",
           ],
           signOff: "With love and heartfelt gratitude,",
         },
         no: {
           title: "Thank You",
-          script: "for responding",
+          script: "for your kindness",
           subheader: "We completely understand and respect your decision",
           body: [
-            "Thank you for taking the time to read our letter and consider our request. We sincerely appreciate your kindness and the thought you have given to our invitation. There are no hard feelings at all. We are simply grateful to have shared this moment with you and to have you celebrate our happiness in your own way.",
+            "Thank you for reading our letter and giving our request your thought. There are no hard feelings at all. We're simply grateful for you, and we'd be happy to have your prayers and blessings in whatever way you can share them.",
           ],
         },
         sent: {
           title: "Response Sent",
-          script: "successfully",
-          subheader: "Your message has reached us",
+          script: "with gratitude",
+          subheader: "Your reply has reached us",
           body: [
-            "We are simply grateful to have shared this moment with you. Your love and warmest wishes mean the world to us.",
+            "Thank you for being part of our story. Your love and good wishes mean the world to us.",
           ],
           signOff: "With love and warmest wishes,",
         },
@@ -1171,80 +1172,80 @@ export const siteConfig = {
       bearer: {
         greeting: "Hi",
         intro: [
-          "We have a very special day coming up, and we would love for you to be part of it! 🤍",
+          "Guess what? We have the happiest news, and we wanted to tell you first! 🤍",
           "{groom} & {bride} are getting married!",
         ],
         body: [
-          "Our wedding day is a very important moment for us, and we would love to have you take part in making it even more special.",
+          "Our wedding is going to be a very special day, and it wouldn't feel complete without you there with us.",
         ],
-        askLead: "So we have a very important question for you:",
-        askNote: "We would be so happy to have you walk down the aisle and carry this special part of our wedding ceremony.",
+        askLead: "So we have a super important question, just for you:",
+        askNote: "You'd get to walk down the aisle and carry something very precious for our ceremony. We think you'd be amazing at it!",
         yesButton: "Yes, I'd Love To! 🤍",
         noButton: "Maybe Next Time 🤍",
         signOff: "With lots of love,",
         yes: {
           title: "Yay!",
           script: "you said yes!",
-          subheader: "We are so excited to have you on our team!",
+          subheader: "You're officially on our team!",
           roleLine: "Our {role}",
           body: [
-            "We are so excited to have you as our {role}! We can't wait to see you walk down the aisle and be part of our special day. Your little role will be a very special part of our wedding, and we hope you have lots of fun celebrating with us! See you on our big day! 🤍",
+            "We're so excited to have you as our {role}! We can't wait to see you walk down the aisle. You have a very special job, and we know you'll do great. See you on our big day! 🤍",
           ],
           signOff: "With lots of love,",
         },
         no: {
           title: "That's Okay!",
           script: "we understand",
-          subheader: "We completely understand 😊",
+          subheader: "No worries at all 😊",
           body: [
-            "Thank you for considering being our {role}. We hope you know that you are special to us, and we'll be happy to have you celebrate our wedding with us in any way.",
+            "Thank you for thinking about being our {role}. You are special to us no matter what, and we'd love to celebrate with you either way.",
           ],
         },
         sent: {
           title: "Response Sent",
-          script: "successfully",
-          subheader: "Thank you for letting us know",
-          body: ["We hope you know how special you are to us, and we look forward to celebrating with you."],
+          script: "thank you",
+          subheader: "Thanks for letting us know",
+          body: ["You are so special to us, and we can't wait to celebrate with you."],
           signOff: "With lots of love,",
         },
       },
       flowerGirl: {
         greeting: "Hi",
         intro: [
-          "We have a very special day coming up, and we would love for you to be part of it! 🤍",
+          "Guess what? We have the happiest news, and we wanted to tell you first! 🤍",
           "{groom} & {bride} are getting married!",
         ],
         body: [
-          "Our wedding day wouldn't be complete without some extra sweetness, smiles, and a little bit of magic.",
+          "Our wedding needs a little extra sweetness, lots of smiles, and a sprinkle of magic. We thought of you right away.",
         ],
-        askLead: "And we have a very special role we would love for you to have.",
-        askNote: "We would love to have you walk down the aisle and help make our wedding day even more beautiful and memorable.",
+        askLead: "And we have a very special role we'd love for you to have:",
+        askNote: "You'd get to walk down the aisle before the bride and make our day even more beautiful. We think you'd be perfect!",
         yesButton: "Yes, I'd Love To! 🌸",
         noButton: "Maybe Next Time 🤍",
         signOff: "With lots of love,",
         yes: {
           title: "Yay!",
           script: "you said yes!",
-          subheader: "We are so happy to have you as our Flower Girl!",
+          subheader: "We're so happy you'll be our Flower Girl!",
           roleLine: "Our {role}",
           body: [
-            "We can't wait to see you walk down the aisle and be part of our special day. We hope you have lots of fun, smile big, and enjoy every moment! We can't wait to see you on our big day! 🤍",
+            "We can't wait to see you walk down the aisle! Have fun, smile big, and enjoy every moment. See you on our big day! 🤍",
           ],
           signOff: "With lots of love,",
         },
         no: {
           title: "That's Okay!",
           script: "we understand",
-          subheader: "We completely understand 😊",
+          subheader: "No worries at all 😊",
           body: [
-            "Thank you for taking the time to consider being our Flower Girl. Whether you're able to be part of our wedding or not, we hope you know how special you are to us. We'll still be very happy to celebrate our special day with you!",
+            "Thank you for thinking about being our Flower Girl. You are special to us no matter what, and we'd love to celebrate with you either way!",
           ],
         },
         sent: {
           title: "Response Sent",
-          script: "successfully",
-          subheader: "Thank you for letting us know",
-          body: ["We hope you know how special you are to us, and we look forward to celebrating with you."],
+          script: "thank you",
+          subheader: "Thanks for letting us know",
+          body: ["You are so special to us, and we can't wait to celebrate with you."],
           signOff: "With lots of love,",
         },
       },

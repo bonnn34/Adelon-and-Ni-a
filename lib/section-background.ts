@@ -1,17 +1,19 @@
-// Sage Green Botanical motif (mirrors app/globals.css)
+// Motif roles (CSS variables from app/globals.css)
 export const sectionPalette = {
-  forest: "#4F674D", // --color-motif-deep
-  sage: "#AAB9A0", // --color-motif-medium
-  mustard: "#C3CFB8", // --color-motif-blush (sage beige)
-  butter: "#DDE5D4", // --color-motif-silver (pale sage)
-  cream: "#F4F5EA", // --color-motif-cream
+  forest: "var(--color-motif-deep)",
+  sage: "var(--color-motif-medium)",
+  mustard: "var(--color-motif-blush)",
+  butter: "var(--color-motif-silver)",
+  cream: "var(--color-motif-cream)",
 } as const
 
+// Page background for invitation surfaces — built from app/globals.css tokens,
+// so it follows the palette (no hardcoded colors).
 export const sectionBackground = `
-  radial-gradient(920px 520px at 50% 8%, color-mix(in srgb, ${sectionPalette.butter} 35%, transparent) 0%, transparent 55%),
-  radial-gradient(640px 420px at 12% 88%, color-mix(in srgb, ${sectionPalette.sage} 16%, transparent) 0%, transparent 58%),
-  radial-gradient(560px 380px at 92% 78%, color-mix(in srgb, ${sectionPalette.mustard} 14%, transparent) 0%, transparent 55%),
-  linear-gradient(180deg, ${sectionPalette.cream} 0%, #FBFCF7 48%, ${sectionPalette.cream} 100%)
+  radial-gradient(920px 520px at 50% 8%, color-mix(in srgb, var(--color-highlight) 35%, transparent) 0%, transparent 55%),
+  radial-gradient(640px 420px at 12% 88%, color-mix(in srgb, var(--color-motif-accent) 14%, transparent) 0%, transparent 58%),
+  radial-gradient(560px 380px at 92% 78%, color-mix(in srgb, var(--color-motif-yellow) 18%, transparent) 0%, transparent 55%),
+  linear-gradient(180deg, var(--color-motif-cream) 0%, var(--invite-page-bg) 48%, var(--color-motif-cream) 100%)
 `.trim()
 
 export const sectionText = {

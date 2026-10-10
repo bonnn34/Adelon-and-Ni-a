@@ -3326,9 +3326,10 @@
 
 /* ---- Readability: darker ink for all loader text (plain mode). Kept last so it wins. ---- */
 .loading-screen--plain {
-  --ls-text-dark: var(--color-ink-deep);
-  --ls-text-accent-dark: var(--color-ink-accent);
-  --ls-text-highlight: var(--color-highlight-deep);
+  /* Shared invitation roles (app/globals.css → --invite-*) */
+  --ls-text-dark: var(--invite-ink);
+  --ls-text-accent-dark: var(--invite-title);
+  --ls-text-highlight: var(--invite-script);
 }
 
 .loading-screen--plain .loading-screen__std-venue-name,

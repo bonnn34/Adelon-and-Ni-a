@@ -2665,25 +2665,25 @@
 }
 
 /* ==========================================================================
-   "Open invitation" button — solid deep cocoa (--color-ink-deep) with light text in every
+   "Open invitation" button — solid deep cocoa (--invite-ink) with light text in every
    mode (plain / photo, all breakpoints). Kept last so it wins over the rules above.
    ========================================================================== */
 .env-invite-screen .env-invite-enter-btn {
-  color: var(--color-motif-soft);
-  background: var(--color-ink-deep);
-  border-color: var(--color-ink-deep);
+  color: var(--invite-button-text);
+  background: var(--invite-ink);
+  border-color: var(--invite-ink);
   text-shadow: none;
-  box-shadow: 0 10px 24px color-mix(in srgb, var(--color-ink-deep) 45%, transparent);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--invite-ink) 45%, transparent);
 }
 
 .env-invite-screen .env-invite-enter-btn:hover {
-  color: var(--color-motif-soft);
-  background: color-mix(in srgb, var(--color-ink-deep) 80%, black);
-  box-shadow: 0 12px 28px color-mix(in srgb, var(--color-ink-deep) 55%, transparent);
+  color: var(--invite-button-text);
+  background: color-mix(in srgb, var(--invite-ink) 80%, black);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--invite-ink) 55%, transparent);
 }
 
 .env-invite-screen .env-invite-enter-btn:focus-visible {
-  outline-color: var(--color-ink-deep);
+  outline-color: var(--invite-ink);
 }
 
 
@@ -2725,8 +2725,8 @@
   font-size: clamp(1.7rem, calc(var(--env-letter-w, 300px) * 0.13), 2.6rem);
   line-height: 1;
   letter-spacing: 0.06em;
-  color: var(--color-ink-deep);
-  -webkit-text-fill-color: var(--color-ink-deep);
+  color: var(--invite-title);
+  -webkit-text-fill-color: var(--invite-title);
 }
 
 .env-invite-names__and {
@@ -2734,6 +2734,6 @@
   margin: -0.15em 0 -0.05em;
   font-size: clamp(1.05rem, calc(var(--env-letter-w, 300px) * 0.075), 1.5rem);
   line-height: 1.15;
-  color: var(--color-ink-accent);
-  -webkit-text-fill-color: var(--color-ink-accent);
+  color: var(--invite-script);
+  -webkit-text-fill-color: var(--invite-script);
 }

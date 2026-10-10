@@ -614,6 +614,48 @@
 --color-deco: var(--color-motif-accent);
 
 
+/* ------------------------------------------
+ * INVITATION DESIGN SYSTEM
+ * One set of roles used by the loader, envelope, special (proposal) invitation,
+ * table card and modals. Change the palette above and every surface follows.
+ * ------------------------------------------ */
+
+/* Strong text: body copy, labels */
+--invite-ink: var(--color-ink-deep);
+
+/* Display lettering: "Save" / "Date", couple names, big titles */
+--invite-title: var(--color-ink-accent);
+
+/* Script & joining words: "the", "and", script subtitles, big day number */
+--invite-script: var(--color-highlight-deep);
+
+/* Small accents: icons, eyebrows, diamonds */
+--invite-accent: var(--color-motif-accent);
+
+/* Paragraph text */
+--invite-body: var(--color-welcome-text);
+
+/* Paper surfaces (cards, modals) */
+--invite-paper: var(--color-motif-soft);
+--invite-paper-tint: color-mix(in srgb, var(--color-highlight) 28%, var(--color-motif-soft));
+
+/* Hairlines and frames */
+--invite-line: color-mix(in srgb, var(--color-motif-accent) 45%, transparent);
+--invite-line-soft: color-mix(in srgb, var(--color-motif-accent) 22%, transparent);
+
+/* Buttons */
+--invite-button: var(--color-ink-accent);
+--invite-button-text: var(--color-motif-soft);
+
+/* Depth: modal veil, card shadow, soft glow */
+--invite-overlay: color-mix(in srgb, var(--color-ink-deep) 45%, transparent);
+--invite-shadow: color-mix(in srgb, var(--color-ink-deep) 35%, transparent);
+--invite-glow: color-mix(in srgb, var(--color-highlight) 45%, transparent);
+
+/* Page background behind invitation cards */
+--invite-page-bg: var(--color-welcome-bg);
+
+
 /* Section accent */
 --color-section-accent: #CBAFA1;
 
@@ -1464,4 +1506,139 @@ img[src*="%2Flovestorydeco%2F"] {
   width: 100%;
   height: auto;
   visibility: hidden;
+}
+
+
+/* ==========================================================================
+   Invitation design system — shared pieces (tokens: --invite-* above)
+   ========================================================================== */
+
+/* Couple names, loading-screen style: nickname · "and" · nickname.
+   Fonts come from the component (The Seasons / Above the Beyond). */
+.invite-names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-weight: 400;
+}
+
+.invite-names__nick {
+  display: block;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--invite-title);
+}
+
+.invite-names__and {
+  display: block;
+  margin: -0.15em 0 -0.05em;
+  line-height: 1.15;
+  color: var(--invite-script);
+}
+
+/* Modal veil + panel (any dialog on an invitation surface) */
+.invite-modal-backdrop {
+  background: var(--invite-overlay);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.invite-modal-panel {
+  background: var(--invite-paper);
+  border: 1px solid var(--invite-line-soft);
+  box-shadow: 0 30px 60px -24px var(--invite-shadow);
+  color: var(--invite-ink);
+}
+
+/* --------------------------------------------------------------------------
+   Special invitation — page frame (components/proposal-page.tsx)
+   Corner decorations pinned to the screen corners, behind the card.
+   Color: --color-deco (TintedDeco). Size: --invite-corner-size.
+   -------------------------------------------------------------------------- */
+.invite-corners {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  --invite-corner-size: min(48vw, 200px);
+}
+
+@media (min-width: 640px) {
+  .invite-corners { --invite-corner-size: 300px; }
+}
+
+@media (min-width: 1024px) {
+  .invite-corners { --invite-corner-size: 400px; }
+}
+
+@media (min-width: 1440px) {
+  .invite-corners { --invite-corner-size: 480px; }
+}
+
+.invite-corner {
+  position: absolute;
+  opacity: 0;
+  animation:
+    invite-corner-in 1.6s cubic-bezier(0.22, 1, 0.36, 1) var(--invite-corner-delay, 0.2s) forwards,
+    invite-corner-sway 9s ease-in-out calc(var(--invite-corner-delay, 0.2s) + 1.6s) infinite alternate;
+}
+
+.invite-corner .tinted-deco {
+  width: var(--invite-corner-size);
+  max-width: none;
+}
+
+.invite-corner--tl { left: 0; top: 0; transform-origin: top left; --invite-corner-from: translate(-12%, -12%); }
+.invite-corner--tr { right: 0; top: 0; transform-origin: top right; --invite-corner-from: translate(12%, -12%); --invite-corner-delay: 0.35s; }
+.invite-corner--bl { left: 0; bottom: 0; transform-origin: bottom left; --invite-corner-from: translate(-12%, 12%); --invite-corner-delay: 0.5s; }
+.invite-corner--br { right: 0; bottom: 0; transform-origin: bottom right; --invite-corner-from: translate(12%, 12%); --invite-corner-delay: 0.65s; }
+
+@keyframes invite-corner-in {
+  from { opacity: 0; transform: var(--invite-corner-from) scale(0.9); }
+  to { opacity: 0.95; transform: none; }
+}
+
+@keyframes invite-corner-sway {
+  from { opacity: 0.95; transform: rotate(0deg) scale(1); }
+  to { opacity: 0.95; transform: rotate(1.6deg) scale(1.025); }
+}
+
+/* Soft petals drifting up behind the card (colors: --invite-script / --invite-accent) */
+.invite-motes {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.invite-mote {
+  position: absolute;
+  left: var(--x);
+  bottom: -24px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: var(--c);
+  opacity: 0;
+  animation: invite-mote-rise var(--dur) linear var(--delay) infinite;
+}
+
+.invite-mote--petal {
+  width: calc(var(--size) * 1.6);
+  border-radius: 80% 0 80% 0;
+}
+
+@keyframes invite-mote-rise {
+  0% { opacity: 0; transform: translate3d(0, 0, 0) rotate(0deg); }
+  12% { opacity: 0.7; }
+  85% { opacity: 0.55; }
+  100% { opacity: 0; transform: translate3d(var(--drift), -105vh, 0) rotate(var(--spin)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .invite-corner { animation: none; opacity: 0.95; }
+  .invite-motes { display: none; }
 }

@@ -117,20 +117,31 @@ export function TableFinderQrCard() {
     link.click()
   }
 
-  const coupleNames: ReactNode = card.coupleNameImage ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={card.coupleNameImage}
-      alt={coupleLine}
-      className="mx-auto block h-auto w-full max-w-[15rem] select-none sm:mx-0 sm:max-w-[17rem]"
-    />
-  ) : (
-    <p
-      className={`${theSeasons.className} text-[1.35rem] uppercase leading-tight tracking-[0.14em]`}
-      style={{ color: NAVY }}
+  // Couple names set in type, matching the loading screen: nickname · "and" · nickname
+  const coupleNames: ReactNode = (
+    <h2
+      className="invite-names sm:items-start sm:text-left"
+      aria-label={coupleLine}
     >
-      <SpecialCharFont text={coupleLine} className={`${aboveTheBeyond.className} mx-1 text-[1.2em] normal-case`} />
-    </p>
+      <span
+        className={`${theSeasons.className} invite-names__nick text-[2.1rem] sm:text-[2.4rem]`}
+        aria-hidden
+      >
+        {groomName}
+      </span>
+      <span
+        className={`${aboveTheBeyond.className} invite-names__and text-[1.3rem] sm:pl-[1.4em] sm:text-[1.45rem]`}
+        aria-hidden
+      >
+        and
+      </span>
+      <span
+        className={`${theSeasons.className} invite-names__nick text-[2.1rem] sm:text-[2.4rem]`}
+        aria-hidden
+      >
+        {brideName}
+      </span>
+    </h2>
   )
 
   return (

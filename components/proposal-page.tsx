@@ -1,6 +1,8 @@
 "use client"
 
 import {
+  createContext,
+  useContext,
   useState,
   useEffect,
   useCallback,
@@ -12,7 +14,7 @@ import {
 import { useSearchParams } from "next/navigation"
 import dynamic from "next/dynamic"
 import Link from "next/link"
-import { motion, AnimatePresence } from "motion/react"
+import { motion, AnimatePresence, useReducedMotion, type Variants } from "motion/react"
 import { Heart, Check, X, Sparkles, MapPin } from "lucide-react"
 import localFont from "next/font/local"
 import { Cinzel, Playfair_Display } from "next/font/google"
@@ -28,14 +30,39 @@ import { parseWeddingDate } from "@/lib/wedding-date"
 import type { ProposalRole } from "@/lib/proposal-types"
 import { parseInviteeNameFromSearchParams } from "@/lib/proposal-invite-link"
 import { TintedDeco } from "@/components/tinted-deco"
+import { useCssColor } from "@/hooks/use-css-color"
 
 const Silk = dynamic(() => import("@/components/silk"), { ssr: false })
 
 const proposalEntryEase = [0.22, 1, 0.36, 1] as const
 const CINEMATIC_ENTRY_MS = 3000
 
-const CORNER_DECO_CLASS =
-  "block h-auto w-auto max-w-[52px] min-[380px]:max-w-[60px] sm:max-w-[130px] md:max-w-[185px] lg:max-w-[220px] select-none pointer-events-none opacity-90 sm:opacity-100"
+// True once the invitation is on screen, so the header reveal plays when guests can see it
+const RevealContext = createContext(true)
+
+const revealEase = [0.22, 1, 0.36, 1] as const
+
+const headerStagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.14, delayChildren: 0.35 } },
+}
+
+const headerItem: Variants = {
+  hidden: { opacity: 0, y: 14, filter: "blur(4px)" },
+  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.9, ease: revealEase } },
+}
+
+// Petals drifting behind the card, in the invitation's script / accent colors
+const PETALS = Array.from({ length: 18 }, (_, i) => ({
+  x: (i * 41 + 7) % 100,
+  size: 5 + ((i * 7) % 6),
+  dur: 16 + ((i * 5) % 10),
+  delay: -((i * 3.3) % 20),
+  drift: (i % 2 === 0 ? 1 : -1) * (14 + ((i * 11) % 30)),
+  spin: (i % 2 === 0 ? 1 : -1) * (160 + ((i * 47) % 300)),
+  color: i % 3 === 0 ? "var(--invite-accent)" : "var(--invite-script)",
+  petal: i % 2 === 0,
+}))
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -62,53 +89,48 @@ const aboveTheBeyond = localFont({
   variable: "--font-above-beyond",
 })
 
-const IVORY = "var(--color-motif-soft)"
-const CHAMPAGNE = "var(--color-welcome-gold)"
-const INK = "var(--color-welcome-navy)"
-const CREAM = "var(--color-welcome-text)"
-const LABEL_GOLD = "var(--color-welcome-heading)"
-const SCRIPT_GREEN = "var(--color-welcome-green)"
-const GOLD_BORDER = "color-mix(in srgb, var(--color-welcome-gold) 38%, transparent)"
-const GOLD_BORDER_SOFT = "color-mix(in srgb, var(--color-welcome-gold) 22%, transparent)"
-const INNER_SURFACE = "var(--color-welcome-bg-soft)"
+// Every color is a shared invitation role from app/globals.css (--invite-*),
+// so the palette there restyles this page, its cards and its dialogs.
+const IVORY = "var(--invite-paper)"
+const CHAMPAGNE = "var(--invite-accent)"
+const INK = "var(--invite-ink)"
+const CREAM = "var(--invite-body)"
+const LABEL_GOLD = "var(--invite-accent)"
+const SCRIPT_GREEN = "var(--invite-script)"
+const TITLE = "var(--invite-title)"
+const GOLD_BORDER = "var(--invite-line)"
+const GOLD_BORDER_SOFT = "var(--invite-line-soft)"
+const INNER_SURFACE = "var(--invite-paper-tint)"
 
-const goldGradientText: CSSProperties = {
-  background:
-    "linear-gradient(168deg, var(--color-welcome-navy) 0%, var(--color-welcome-heading) 55%, color-mix(in srgb, var(--color-welcome-green) 70%, var(--color-welcome-navy)) 100%)",
-  WebkitBackgroundClip: "text",
-  backgroundClip: "text",
-  color: "transparent",
-}
+// Display lettering is flat, like the loading screen's "Save Date"
+const goldGradientText: CSSProperties = { color: TITLE }
 
 const palette = {
   body: CREAM,
-  bodySoft: "var(--color-welcome-text-soft)",
+  bodySoft: "color-mix(in srgb, var(--invite-body) 80%, transparent)",
   heading: INK,
   label: LABEL_GOLD,
   script: SCRIPT_GREEN,
 } as const
 
 const ambientGlowStyle = {
-  background:
-    "radial-gradient(ellipse 80% 65% at 50% 50%, color-mix(in srgb, var(--color-welcome-gold) 18%, transparent), transparent 68%)",
+  background: "radial-gradient(ellipse 80% 65% at 50% 50%, var(--invite-glow), transparent 68%)",
 } as const
 
 const dividerLineStyle = {
-  background:
-    "linear-gradient(to right, transparent, color-mix(in srgb, var(--color-welcome-gold) 65%, transparent), transparent)",
+  background: "linear-gradient(to right, transparent, var(--invite-line), transparent)",
 } as const
 
 const primaryBtnStyle: CSSProperties = {
-  background:
-    "linear-gradient(180deg, var(--color-motif-accent) 0%, var(--color-motif-deep) 55%, var(--color-welcome-navy) 100%)",
-  borderColor: GOLD_BORDER,
-  color: IVORY,
-  boxShadow: "0 12px 24px -12px color-mix(in srgb, var(--color-welcome-navy) 70%, transparent)",
+  background: "var(--invite-button)",
+  borderColor: "var(--invite-button)",
+  color: "var(--invite-button-text)",
+  boxShadow: "0 12px 24px -12px var(--invite-shadow)",
 }
 
 const secondaryBtnStyle: CSSProperties = {
   color: INK,
-  backgroundColor: "color-mix(in srgb, var(--color-welcome-bg-soft) 85%, transparent)",
+  backgroundColor: "color-mix(in srgb, var(--invite-paper) 85%, transparent)",
   borderColor: GOLD_BORDER,
 }
 
@@ -148,23 +170,47 @@ function T({ text, className = "" }: { text: string; className?: string }) {
   )
 }
 
-function ProposalCornerDecorations() {
+/** Large corner decorations pinned to the screen corners, behind the card, plus drifting petals. */
+function ProposalPageFrame() {
   const decos = useSiteConfig().proposal.decos
+  const reduceMotion = useReducedMotion()
   const corners = [
-    { src: decos.topLeft, pos: "left-0 top-0" },
-    { src: decos.topRight, pos: "right-0 top-0" },
-    { src: decos.bottomLeft, pos: "bottom-0 left-0" },
-    { src: decos.bottomRight, pos: "bottom-0 right-0" },
+    { src: decos.topLeft, pos: "tl" },
+    { src: decos.topRight, pos: "tr" },
+    { src: decos.bottomLeft, pos: "bl" },
+    { src: decos.bottomRight, pos: "br" },
   ]
   return (
     <>
-      {corners.map(({ src, pos }) =>
-        src ? (
-          <div key={pos} className={`pointer-events-none absolute z-[5] ${pos}`}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={src} alt="" aria-hidden className={CORNER_DECO_CLASS} />
-          </div>
-        ) : null,
+      <div className="invite-corners" aria-hidden>
+        {corners.map(({ src, pos }) =>
+          src ? (
+            <div key={pos} className={`invite-corner invite-corner--${pos}`}>
+              <TintedDeco src={src} />
+            </div>
+          ) : null,
+        )}
+      </div>
+      {!reduceMotion && (
+        <div className="invite-motes" aria-hidden>
+          {PETALS.map((m, i) => (
+            <span
+              key={i}
+              className={`invite-mote${m.petal ? " invite-mote--petal" : ""}`}
+              style={
+                {
+                  "--x": `${m.x}%`,
+                  "--size": `${m.size}px`,
+                  "--dur": `${m.dur}s`,
+                  "--delay": `${m.delay}s`,
+                  "--drift": `${m.drift}px`,
+                  "--spin": `${m.spin}deg`,
+                  "--c": m.color,
+                } as CSSProperties
+              }
+            />
+          ))}
+        </div>
       )}
     </>
   )
@@ -176,15 +222,28 @@ function OrnamentalDivider({ compact = false }: { compact?: boolean }) {
       className={`mx-auto flex items-center justify-center gap-2 ${compact ? "max-w-[10rem]" : "max-w-xs sm:max-w-sm"}`}
       aria-hidden
     >
-      <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[color-mix(in_srgb,var(--color-welcome-gold)_65%,transparent)] to-transparent" />
-      <span className="h-1 w-1 rotate-45 bg-[var(--color-welcome-gold)]" />
-      <span className="h-px flex-1 bg-gradient-to-l from-transparent via-[color-mix(in_srgb,var(--color-welcome-gold)_65%,transparent)] to-transparent" />
+      <span className="h-px flex-1 bg-gradient-to-r from-transparent to-[var(--invite-line)]" />
+      <span className="h-1 w-1 rotate-45 bg-[var(--invite-script)]" />
+      <span className="h-1.5 w-1.5 rotate-45 border border-[var(--invite-accent)]" />
+      <span className="h-1 w-1 rotate-45 bg-[var(--invite-script)]" />
+      <span className="h-px flex-1 bg-gradient-to-l from-transparent to-[var(--invite-line)]" />
     </div>
   )
 }
 
 function DividerLine({ className = "w-16 sm:w-24 md:w-32" }: { className?: string }) {
   return <span className={`block h-px ${className}`} style={dividerLineStyle} aria-hidden />
+}
+
+/** Small-caps line between two short hairlines — the invitation's eyebrow. */
+function Eyebrow({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return (
+    <div className={`flex items-center justify-center gap-3 ${className}`}>
+      <span className="h-px w-8 sm:w-12" style={{ background: "linear-gradient(to right, transparent, var(--invite-line))" }} aria-hidden />
+      <SmallCaps className="tracking-[0.3em] sm:tracking-[0.36em]">{children}</SmallCaps>
+      <span className="h-px w-8 sm:w-12" style={{ background: "linear-gradient(to left, transparent, var(--invite-line))" }} aria-hidden />
+    </div>
+  )
 }
 
 function SmallCaps({
@@ -212,7 +271,7 @@ function CoupleNamesText({ className = "" }: { className?: string }) {
   const groom = siteConfig.couple.groomNickname || siteConfig.couple.groom
   const bride = siteConfig.couple.brideNickname || siteConfig.couple.bride
   return (
-    <p className={`${theSeasons.className} uppercase leading-snug tracking-[0.12em] ${className}`} style={{ color: INK }}>
+    <p className={`${theSeasons.className} uppercase leading-snug tracking-[0.12em] ${className}`} style={{ color: TITLE }}>
       {groom}
       <span
         className={`${aboveTheBeyond.className} mx-2 inline-block text-[1.25em] normal-case tracking-normal`}
@@ -261,14 +320,52 @@ function LayeredProposalTitle({ main, script }: { main: string; script: string }
   )
 }
 
+const scrollReveal: Variants = {
+  hidden: { opacity: 0, y: 26, filter: "blur(5px)" },
+  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.9, ease: revealEase } },
+}
+
+/** Fades and lifts its content in as it scrolls into view (once). Waits until the invitation is open. */
+function Reveal({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+}: {
+  children: ReactNode
+  className?: string
+  delay?: number
+  as?: "div" | "p"
+}) {
+  const revealed = useContext(RevealContext)
+  const reduceMotion = useReducedMotion()
+  if (reduceMotion) {
+    const Tag = as
+    return <Tag className={className}>{children}</Tag>
+  }
+  const MotionTag = as === "p" ? motion.p : motion.div
+  return (
+    <MotionTag
+      className={className}
+      variants={scrollReveal}
+      initial="hidden"
+      whileInView={revealed ? "show" : undefined}
+      viewport={{ once: true, amount: 0.35, margin: "0px 0px -8% 0px" }}
+      transition={{ delay }}
+    >
+      {children}
+    </MotionTag>
+  )
+}
+
 function Paragraphs({ lines, className = "" }: { lines: readonly string[]; className?: string }) {
   if (lines.length === 0) return null
   return (
     <div className={`mx-auto max-w-md space-y-3.5 text-pretty sm:space-y-4 ${className}`} style={{ color: palette.body }}>
       {lines.map((line, i) => (
-        <p key={i}>
+        <Reveal key={i} as="p">
           <T text={line} />
-        </p>
+        </Reveal>
       ))}
     </div>
   )
@@ -277,68 +374,59 @@ function Paragraphs({ lines, className = "" }: { lines: readonly string[]; class
 /* ── Card shell ───────────────────────────────────────────────────────────── */
 
 function ProposalCard({ children }: { children: ReactNode }) {
+  // Arched top like a chapel window; the frames follow the same curve
+  const arch = "rounded-t-[9rem] rounded-b-[1.5rem] sm:rounded-t-[15rem] sm:rounded-b-[2rem]"
+  const archInner = "rounded-t-[8.4rem] rounded-b-[1.1rem] sm:rounded-t-[14rem] sm:rounded-b-[1.5rem]"
+  const archInnermost = "rounded-t-[8rem] rounded-b-[0.85rem] sm:rounded-t-[13.4rem] sm:rounded-b-[1.2rem]"
   return (
     <div className="relative mx-auto w-full max-w-2xl">
-      <div className="pointer-events-none absolute -inset-3 rounded-[2rem] opacity-60 blur-2xl" style={ambientGlowStyle} aria-hidden />
+      <div className={`pointer-events-none absolute -inset-4 opacity-70 blur-2xl ${arch}`} style={ambientGlowStyle} aria-hidden />
       <div
-        className="relative overflow-hidden rounded-[1.5rem] border sm:rounded-[1.85rem]"
+        className={`relative overflow-hidden border ${arch}`}
         style={{
-          background: `linear-gradient(170deg, ${IVORY} 0%, var(--color-welcome-bg-soft) 50%, var(--color-motif-cream) 100%)`,
+          background: `linear-gradient(175deg, ${IVORY} 0%, ${IVORY} 55%, ${INNER_SURFACE} 100%)`,
           borderColor: GOLD_BORDER,
-          boxShadow:
-            "0 24px 56px -30px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent), inset 0 1px 0 rgb(255 255 255 / 85%)",
+          boxShadow: "0 30px 70px -36px var(--invite-shadow), inset 0 1px 0 rgb(255 255 255 / 85%)",
         }}
       >
-        {/* Double hairline frame, with a small diamond on the top and bottom edge */}
+        {/* Double hairline frame following the arch, diamond at the top and bottom */}
         <div
-          className="pointer-events-none absolute inset-2.5 rounded-[1.15rem] sm:inset-4 sm:rounded-[1.4rem]"
+          className={`pointer-events-none absolute inset-2.5 sm:inset-4 ${archInner}`}
           style={{ border: `1px solid ${GOLD_BORDER_SOFT}` }}
           aria-hidden
         >
-          <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rotate-45" style={{ background: CHAMPAGNE }} />
-          <span className="absolute bottom-0 left-1/2 h-2 w-2 -translate-x-1/2 translate-y-1/2 rotate-45" style={{ background: CHAMPAGNE }} />
+          <span className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rotate-45" style={{ background: CHAMPAGNE }} />
+          <span className="absolute bottom-0 left-1/2 h-2.5 w-2.5 -translate-x-1/2 translate-y-1/2 rotate-45" style={{ background: CHAMPAGNE }} />
         </div>
         <div
-          className="pointer-events-none absolute inset-[0.95rem] rounded-[0.95rem] sm:inset-[1.4rem] sm:rounded-[1.15rem]"
-          style={{ border: "1px solid color-mix(in srgb, var(--color-welcome-gold) 12%, transparent)" }}
+          className={`pointer-events-none absolute inset-[0.95rem] sm:inset-[1.45rem] ${archInnermost}`}
+          style={{ border: "1px solid color-mix(in srgb, var(--invite-accent) 12%, transparent)" }}
           aria-hidden
         />
 
-        <div className="relative z-20 px-6 py-10 text-center sm:px-12 sm:py-14 md:px-14">{children}</div>
+        <div className="relative z-20 px-6 pb-12 pt-16 text-center sm:px-14 sm:pb-16 sm:pt-24 md:px-16">{children}</div>
       </div>
     </div>
   )
 }
 
-/**
- * Couple-name lettering tinted with the motif gradient (same treatment as the opening screen).
- * The PNG is used as a mask, so any lettering image picks up the theme colours.
- */
-function CoupleNameLockup({ src, alt }: { src: string; alt: string }) {
+/** Couple names set in type like the loading screen: nickname · "and" · nickname. */
+function CoupleNamesStack() {
+  const siteConfig = useSiteConfig()
+  const groom = siteConfig.couple.groomNickname || siteConfig.couple.groom
+  const bride = siteConfig.couple.brideNickname || siteConfig.couple.bride
   return (
-    <div className="relative mx-auto w-full max-w-[14rem] sm:max-w-[18rem]">
-      {/* Invisible copy keeps the image's natural proportions */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={alt} className="block h-auto w-full select-none opacity-0" />
-      <div
-        aria-hidden
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(118deg, var(--couple-name-fill, var(--color-welcome-navy)) 0%, var(--couple-name-fill-mid, var(--color-motif-deep)) 48%, var(--couple-name-fill-accent, var(--color-welcome-heading)) 100%)",
-          WebkitMaskImage: `url("${src}")`,
-          maskImage: `url("${src}")`,
-          WebkitMaskSize: "contain",
-          maskSize: "contain",
-          WebkitMaskRepeat: "no-repeat",
-          maskRepeat: "no-repeat",
-          WebkitMaskPosition: "center",
-          maskPosition: "center",
-          filter:
-            "drop-shadow(0 1px 0 rgb(255 255 255 / 70%)) drop-shadow(0 6px 14px color-mix(in srgb, var(--color-welcome-navy) 18%, transparent))",
-        }}
-      />
-    </div>
+    <h1 className="invite-names" aria-label={`${groom} and ${bride}`}>
+      <span className={`${theSeasons.className} invite-names__nick text-[clamp(2.1rem,10vw,3.4rem)]`} aria-hidden>
+        <T text={groom} />
+      </span>
+      <span className={`${aboveTheBeyond.className} invite-names__and text-[clamp(1.25rem,5.6vw,1.9rem)]`} aria-hidden>
+        and
+      </span>
+      <span className={`${theSeasons.className} invite-names__nick text-[clamp(2.1rem,10vw,3.4rem)]`} aria-hidden>
+        <T text={bride} />
+      </span>
+    </h1>
   )
 }
 
@@ -353,7 +441,7 @@ function DateLockup() {
 
   return (
     <div className="mx-auto mt-6 w-full max-w-sm sm:mt-7" aria-label={`${weekday}, ${dateStr} at ${time}`}>
-      <p className={`${theSeasons.className} text-[clamp(1.05rem,4.4vw,1.4rem)] uppercase leading-none tracking-[0.22em]`} style={{ color: INK }}>
+      <p className={`${theSeasons.className} text-[clamp(1.05rem,4.4vw,1.4rem)] uppercase leading-none tracking-[0.22em]`} style={{ color: TITLE }}>
         {parsed.month}
       </p>
       <div className="mt-2 flex items-center justify-center gap-2 sm:gap-3">
@@ -366,7 +454,7 @@ function DateLockup() {
           <span className="absolute inset-0 -z-0 rounded-full opacity-80 blur-xl" style={ambientGlowStyle} aria-hidden />
           <span
             className={`${playfair.className} relative block text-[clamp(2.8rem,13vw,4.25rem)] font-semibold italic leading-[0.95] tabular-nums`}
-            style={goldGradientText}
+            style={{ color: SCRIPT_GREEN }}
           >
             {parsed.day}
           </span>
@@ -387,49 +475,62 @@ function DateLockup() {
 /** Top of the invitation card: sprig, eyebrow, couple names with sprigs, script line, date. */
 function CardHeader() {
   const siteConfig = useSiteConfig()
-  const { ornament, labels, coupleNameImage, nameDecos, showDate } = siteConfig.proposal
-  const groom = siteConfig.couple.groomNickname || siteConfig.couple.groom
-  const bride = siteConfig.couple.brideNickname || siteConfig.couple.bride
+  const revealed = useContext(RevealContext)
+  const reduceMotion = useReducedMotion()
+  const { ornament, labels, nameDecos, showDate } = siteConfig.proposal
   const sprig = "pointer-events-none absolute top-1/2 h-auto w-12 -translate-y-1/2 select-none opacity-90 sm:w-20"
 
   return (
-    <header className="mb-8 sm:mb-10">
+    <motion.header
+      className="mb-9 sm:mb-12"
+      variants={headerStagger}
+      initial={reduceMotion ? false : "hidden"}
+      animate={revealed ? "show" : "hidden"}
+    >
       {ornament ? (
-        <TintedDeco src={ornament} className="mx-auto mb-3 block h-auto w-24 select-none sm:mb-4 sm:w-32" />
+        <motion.div variants={headerItem}>
+          <TintedDeco src={ornament} className="mx-auto mb-4 block h-auto w-24 select-none sm:mb-5 sm:w-32" />
+        </motion.div>
       ) : null}
       {labels.headerEyebrow ? (
-        <SmallCaps className="mb-4">
-          <T text={labels.headerEyebrow} />
-        </SmallCaps>
+        <motion.div variants={headerItem}>
+          <Eyebrow className="mb-5 sm:mb-6">
+            <T text={labels.headerEyebrow} />
+          </Eyebrow>
+        </motion.div>
       ) : null}
 
       {/* Names flanked by eucalyptus sprigs */}
-      <div className="relative mx-auto max-w-md px-10 sm:px-16">
+      <motion.div variants={headerItem} className="relative mx-auto max-w-md px-10 sm:px-16">
         {nameDecos?.left ? (
           <TintedDeco src={nameDecos.left} className={`${sprig} left-0`} />
         ) : null}
         {nameDecos?.right ? (
           <TintedDeco src={nameDecos.right} className={`${sprig} right-0`} />
         ) : null}
-        {coupleNameImage ? (
-          <CoupleNameLockup src={coupleNameImage} alt={`${groom} and ${bride}`} />
-        ) : (
-          <CoupleNamesText className="text-[clamp(1.3rem,5vw,1.8rem)]" />
-        )}
-      </div>
+        <CoupleNamesStack />
+      </motion.div>
 
       {labels.headerScript ? (
-        <p className={`${aboveTheBeyond.className} mt-3 text-[clamp(1.05rem,4.6vw,1.5rem)] leading-none`} style={{ color: SCRIPT_GREEN }}>
+        <motion.p
+          variants={headerItem}
+          className={`${aboveTheBeyond.className} mt-4 text-[clamp(1.1rem,4.8vw,1.6rem)] leading-none`}
+          style={{ color: SCRIPT_GREEN }}
+        >
           <T text={labels.headerScript} />
-        </p>
+        </motion.p>
       ) : null}
 
-      {showDate ? <DateLockup /> : null}
+      {showDate ? (
+        <motion.div variants={headerItem}>
+          <DateLockup />
+        </motion.div>
+      ) : null}
 
-      <div className="mt-6">
+      <motion.div variants={headerItem} className="mt-7 sm:mt-8">
         <OrnamentalDivider />
-      </div>
-    </header>
+      </motion.div>
+    </motion.header>
   )
 }
 
@@ -441,6 +542,85 @@ function SignOff({ line }: { line: string }) {
         <T text={line} />
       </SmallCaps>
       <CoupleNamesText className="mt-1 text-base" />
+    </div>
+  )
+}
+
+/** Ceremony start in Philippine time (GMT+8), from the site's date + time strings. */
+function useCeremonyTimestamp() {
+  const siteConfig = useSiteConfig()
+  const dateStr = siteConfig.ceremony.date ?? siteConfig.wedding.date ?? defaultSiteConfig.ceremony.date
+  const timeStr = siteConfig.ceremony.time ?? siteConfig.wedding.time ?? defaultSiteConfig.ceremony.time
+  return useMemo(() => {
+    const parsed = parseWeddingDate(dateStr)
+    const monthIndex = new Date(`${parsed.month} 1, 2000`).getMonth()
+    const t = String(timeStr).match(/(\d+):(\d+)\s*(AM|PM)/i)
+    let hour = 15
+    let minute = 0
+    if (t) {
+      hour = Number(t[1]) % 12 + (t[3].toUpperCase() === "PM" ? 12 : 0)
+      minute = Number(t[2])
+    }
+    const ts = Date.UTC(Number(parsed.year), monthIndex, Number(parsed.day), hour - 8, minute)
+    return Number.isNaN(ts) ? null : ts
+  }, [dateStr, timeStr])
+}
+
+/** One large day count until the ceremony — quiet, like an engraved line — plus the venue. */
+function CountdownPanel({ venue }: { venue: string }) {
+  const target = useCeremonyTimestamp()
+  const [now, setNow] = useState<number | null>(null)
+
+  useEffect(() => {
+    setNow(Date.now())
+    const id = window.setInterval(() => setNow(Date.now()), 60_000)
+    return () => window.clearInterval(id)
+  }, [])
+
+  const diff = target !== null && now !== null ? target - now : null
+  const days = diff === null ? null : Math.max(0, Math.ceil(diff / 86_400_000))
+  const isDay = diff !== null && days === 0
+
+  return (
+    <div className="relative mx-auto max-w-md px-2 py-2">
+      <p className={`${aboveTheBeyond.className} text-[clamp(1.2rem,5vw,1.55rem)] leading-none`} style={{ color: SCRIPT_GREEN }}>
+        {isDay ? "today is the day" : "only"}
+      </p>
+
+      {!isDay ? (
+        <div className="mt-3 flex items-center justify-center gap-4 sm:gap-6" role="timer" aria-live="off">
+          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, var(--invite-line))" }} aria-hidden />
+          <span className="relative">
+            <span className="absolute inset-0 -z-0 rounded-full opacity-80 blur-xl" style={ambientGlowStyle} aria-hidden />
+            <span
+              className={`${playfair.className} relative block text-[clamp(3.4rem,16vw,5rem)] font-semibold italic leading-[0.9] tabular-nums`}
+              style={{ color: TITLE }}
+            >
+              {days === null ? "\u00a0" : days.toLocaleString()}
+            </span>
+          </span>
+          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, var(--invite-line))" }} aria-hidden />
+        </div>
+      ) : null}
+
+      {!isDay ? (
+        <SmallCaps className="mt-3 tracking-[0.3em]">
+          {days === 1 ? "day until we say “I do”" : "days until we say “I do”"}
+        </SmallCaps>
+      ) : null}
+
+      <div className="mt-5">
+        <OrnamentalDivider compact />
+      </div>
+      <p
+        className="font-goudy-italic mx-auto mt-4 flex max-w-sm items-start justify-center gap-1.5 text-[0.9rem] leading-snug sm:text-[0.95rem]"
+        style={{ color: palette.body }}
+      >
+        <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" style={{ color: palette.label }} aria-hidden />
+        <span>
+          <T text={venue} />
+        </span>
+      </p>
     </div>
   )
 }
@@ -465,9 +645,6 @@ function ProposalLetter({
   const { labels } = siteConfig.proposal
   const playful = isPlayful(copyKey)
 
-  const ceremonyDate = siteConfig.ceremony.date ?? siteConfig.wedding.date ?? defaultSiteConfig.ceremony.date
-  const ceremonyDay = siteConfig.ceremony.day ?? defaultSiteConfig.ceremony.day
-  const ceremonyTime = siteConfig.ceremony.time ?? siteConfig.wedding.time ?? defaultSiteConfig.ceremony.time
   const venueName = siteConfig.ceremony.location ?? defaultSiteConfig.ceremony.location
   const venueDetail = siteConfig.ceremony.venue ?? defaultSiteConfig.ceremony.venue
   const venue = `${venueName}${venueDetail && venueDetail !== venueName ? `, ${venueDetail}` : ""}`
@@ -476,63 +653,38 @@ function ProposalLetter({
   return (
     <div className="mx-auto w-full max-w-lg space-y-7 text-center sm:space-y-8">
       {/* Greeting */}
-      <div className="space-y-3">
+      <Reveal className="space-y-3">
         <p
           className={
             playful
               ? `${playfair.className} text-[clamp(1.4rem,6vw,1.9rem)] font-semibold leading-tight [overflow-wrap:anywhere]`
               : `${theSeasons.className} text-[clamp(1.3rem,5.6vw,1.9rem)] leading-tight tracking-[0.05em] [overflow-wrap:anywhere]`
           }
-          style={{ color: INK }}
+          style={{ color: TITLE }}
         >
           <T text={`${fill(copy.greeting)} ${greetingName},`} />
         </p>
         <OrnamentalDivider compact />
-      </div>
+      </Reveal>
 
       <Paragraphs lines={copy.intro.map(fill)} className={bodyClass} />
 
-      {/* Save the date */}
-      <div
-        className="relative mx-auto max-w-md overflow-hidden rounded-2xl border px-5 py-6 sm:px-8 sm:py-7"
-        style={{ background: INNER_SURFACE, borderColor: GOLD_BORDER_SOFT }}
-      >
-        <div className="pointer-events-none absolute inset-1.5 rounded-xl" style={{ border: `1px solid ${GOLD_BORDER_SOFT}` }} aria-hidden />
-        {labels.saveTheDate ? (
-          <SmallCaps className="relative tracking-[0.32em]">
-            <T text={labels.saveTheDate} />
-          </SmallCaps>
-        ) : null}
-        <p className={`${cinzel.className} relative mt-3 text-[0.8rem] font-medium tracking-[0.1em] sm:text-sm sm:tracking-[0.14em]`} style={{ color: INK }}>
-          {ceremonyDate}
-        </p>
-        <p className={`${cinzel.className} relative mt-1 text-[0.7rem] tracking-[0.12em] sm:text-xs`} style={{ color: palette.bodySoft }}>
-          {ceremonyDay}
-          <span className="mx-2 opacity-50" aria-hidden>·</span>
-          {ceremonyTime}
-        </p>
-        <DividerLine className="relative mx-auto my-3.5 w-16" />
-        <p
-          className="font-goudy-italic relative mx-auto flex max-w-sm items-start justify-center gap-1.5 text-[0.9rem] leading-snug sm:text-[0.95rem]"
-          style={{ color: palette.body }}
-        >
-          <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" style={{ color: palette.label }} aria-hidden />
-          <span>
-            <T text={venue} />
-          </span>
-        </p>
-      </div>
+      {/* Live countdown to the ceremony + venue (the date itself is already in the header) */}
+      <Reveal>
+        <CountdownPanel venue={venue} />
+      </Reveal>
 
       <Paragraphs lines={copy.body.map(fill)} className={bodyClass} />
 
       {/* Role / name summary (wedding party only, when the link carries a name) */}
       {copyKey === "party" && inviteeName.trim() ? (
+        <Reveal>
         <div
           className="mx-auto grid max-w-md grid-cols-2 gap-px overflow-hidden rounded-2xl border"
           style={{ borderColor: GOLD_BORDER_SOFT, background: GOLD_BORDER_SOFT }}
         >
           {[
-            { label: labels.roleOffered, value: roleTitle, color: INK },
+            { label: labels.roleOffered, value: roleTitle, color: TITLE },
             { label: labels.preparedFor, value: inviteeName.trim(), color: SCRIPT_GREEN },
           ].map((cell) => (
             <div key={cell.label} className="px-3 py-4 sm:px-4 sm:py-5" style={{ background: IVORY }}>
@@ -548,12 +700,15 @@ function ProposalLetter({
             </div>
           ))}
         </div>
+        </Reveal>
       ) : null}
 
       {copy.askLead ? (
-        <SmallCaps className="mx-auto max-w-sm">
-          <T text={fill(copy.askLead)} />
-        </SmallCaps>
+        <Reveal>
+          <SmallCaps className="mx-auto max-w-sm">
+            <T text={fill(copy.askLead)} />
+          </SmallCaps>
+        </Reveal>
       ) : null}
     </div>
   )
@@ -581,28 +736,28 @@ function ProposalAsk({
   const { labels, coupleImage } = siteConfig.proposal
 
   return (
-    <div
-      className="relative mx-auto mt-8 w-full max-w-lg rounded-2xl border px-5 py-8 sm:mt-10 sm:px-8 sm:py-10"
-      style={{ borderColor: GOLD_BORDER_SOFT, background: "color-mix(in srgb, var(--color-welcome-bg-soft) 60%, transparent)" }}
-    >
+    <div className="relative mx-auto mt-9 w-full max-w-lg px-1 sm:mt-11">
       {coupleImage ? (
-        <div className="relative mx-auto mb-5 w-[7.5rem] sm:mb-7 sm:w-[9.5rem]">
+        <Reveal className="relative mx-auto mb-5 w-[7.5rem] sm:mb-7 sm:w-[9.5rem]">
           <div className="absolute -inset-3 rounded-full opacity-70 blur-xl" style={ambientGlowStyle} aria-hidden />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={coupleImage}
             alt="The couple"
-            className="relative mx-auto block h-auto w-full select-none drop-shadow-[0_14px_28px_rgba(48,74,52,0.18)]"
+            className="relative mx-auto block h-auto w-full select-none"
+            style={{ filter: "drop-shadow(0 14px 28px var(--invite-shadow))" }}
           />
-        </div>
+        </Reveal>
       ) : null}
 
-      <h2 className={`${theSeasons.className} mx-auto max-w-md text-[clamp(1.15rem,5.2vw,1.6rem)] leading-snug tracking-[0.04em]`} style={{ color: INK }}>
-        <T text={labels.askQuestion} />
-        <span className="block pt-1 text-[1.3em] capitalize [overflow-wrap:anywhere]" style={goldGradientText}>
-          <T text={`${roleTitle}?`} />
-        </span>
-      </h2>
+      <Reveal>
+        <h2 className={`${theSeasons.className} mx-auto max-w-md text-[clamp(1.15rem,5.2vw,1.6rem)] leading-snug tracking-[0.04em]`} style={{ color: INK }}>
+          <T text={labels.askQuestion} />
+          <span className="block pt-1 text-[1.3em] capitalize [overflow-wrap:anywhere]" style={goldGradientText}>
+            <T text={`${roleTitle}?`} />
+          </span>
+        </h2>
+      </Reveal>
 
       {copy.askNote ? (
         <div className="mt-4">
@@ -610,14 +765,14 @@ function ProposalAsk({
         </div>
       ) : null}
 
-      <div className="mx-auto mt-7 flex w-full max-w-sm flex-col gap-3 sm:mt-9">
+      <Reveal className="mx-auto mt-7 flex w-full max-w-sm flex-col gap-3 sm:mt-9">
         <button type="button" disabled={submitting} onClick={onYes} className={primaryBtnClass} style={primaryBtnStyle}>
           {submitting ? labels.saving : <T text={fill(copy.yesButton)} />}
         </button>
         <button type="button" disabled={submitting} onClick={onNo} className={secondaryBtnClass} style={secondaryBtnStyle}>
           <T text={fill(copy.noButton)} />
         </button>
-      </div>
+      </Reveal>
     </div>
   )
 }
@@ -638,8 +793,12 @@ function FlowHeader({
 }) {
   const iconNode = (
     <div
-      className="flex h-14 w-14 items-center justify-center rounded-full border shadow-sm"
-      style={{ borderColor: GOLD_BORDER, background: INNER_SURFACE }}
+      className="flex h-16 w-16 items-center justify-center rounded-full border"
+      style={{
+        borderColor: GOLD_BORDER,
+        background: INNER_SURFACE,
+        boxShadow: `0 0 0 5px ${IVORY}, 0 0 0 6px ${GOLD_BORDER_SOFT}, 0 14px 28px -14px var(--invite-shadow)`,
+      }}
     >
       {icon}
     </div>
@@ -663,6 +822,13 @@ function FlowHeader({
       ) : null}
     </div>
   )
+}
+
+/** "rgb(r, g, b)" → "#rrggbb" (canvas-only consumers such as Silk). */
+function rgbToHex(rgb: string) {
+  const m = rgb.match(/\d+/g)
+  if (!m || m.length < 3 || rgb.startsWith("#")) return rgb
+  return `#${m.slice(0, 3).map((n) => Number(n).toString(16).padStart(2, "0")).join("")}`
 }
 
 /* ── Page ─────────────────────────────────────────────────────────────────── */
@@ -719,6 +885,8 @@ function ProposalPageInner({ role }: ProposalPageProps) {
 
   const siteConfig = useSiteConfig()
   const { labels } = siteConfig.proposal
+  // Silk paints on canvas, so resolve the CSS token to a hex color
+  const silkColor = rgbToHex(useCssColor("--color-motif-accent", "#C48C73"))
   const copyKey = copyKeyFor(role)
   const copy = siteConfig.proposal.copy[copyKey]
   const confirmedDisplayName = (inviteeFromLink || preferredName).trim()
@@ -817,7 +985,7 @@ function ProposalPageInner({ role }: ProposalPageProps) {
   }
 
   const errorLine = validationError ? (
-    <p className="mt-4 text-center text-sm font-medium" style={{ color: "var(--color-motif-deep)" }} role="alert">
+    <p className="mt-4 text-center text-sm font-medium" style={{ color: TITLE }} role="alert">
       <T text={validationError} />
     </p>
   ) : null
@@ -836,7 +1004,7 @@ function ProposalPageInner({ role }: ProposalPageProps) {
     >
       <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.22]" aria-hidden>
         <Suspense fallback={<div className="h-full w-full" style={{ background: sectionBackground }} />}>
-          <Silk speed={6} scale={1} color="#9EAF91" noiseIntensity={0} rotation={0.25} />
+          <Silk speed={6} scale={1} color={silkColor} noiseIntensity={0} rotation={0.25} />
         </Suspense>
       </div>
 
@@ -861,7 +1029,7 @@ function ProposalPageInner({ role }: ProposalPageProps) {
 
       {cinematicEntry && (
         <motion.div
-          className="pointer-events-none fixed inset-0 z-[28] bg-[var(--color-welcome-bg)]"
+          className="pointer-events-none fixed inset-0 z-[28] bg-[var(--invite-page-bg)]"
           aria-hidden="true"
           initial={{ clipPath: "circle(0% at 50% 46%)", opacity: 0.98 }}
           animate={{ clipPath: "circle(145% at 50% 46%)", opacity: 0 }}
@@ -869,6 +1037,9 @@ function ProposalPageInner({ role }: ProposalPageProps) {
         />
       )}
 
+      {proposalVisible && <ProposalPageFrame />}
+
+      <RevealContext.Provider value={proposalVisible}>
       <motion.div
         initial={false}
         animate={proposalVisible ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 40, filter: "blur(8px)" }}
@@ -876,8 +1047,6 @@ function ProposalPageInner({ role }: ProposalPageProps) {
         className={`relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center justify-start pt-6 pb-4 sm:min-h-[calc(100dvh-8rem)] sm:justify-center sm:pt-0 ${proposalVisible ? "" : "pointer-events-none"}`}
         style={{ color: palette.body }}
       >
-        {proposalVisible && <ProposalCornerDecorations />}
-
         <AnimatePresence mode="wait">
           {flowState === "question" && (
             <motion.div key="question" className="relative z-10 w-full" {...cardMotion}>
@@ -900,10 +1069,10 @@ function ProposalPageInner({ role }: ProposalPageProps) {
                   bodyClass={bodyClass}
                 />
                 {errorLine}
-                <div className="mt-9 space-y-4 sm:mt-10">
+                <Reveal className="mt-9 space-y-4 sm:mt-10">
                   <OrnamentalDivider compact />
                   <SignOff line={fill(copy.signOff)} />
-                </div>
+                </Reveal>
               </ProposalCard>
             </motion.div>
           )}
@@ -933,12 +1102,12 @@ function ProposalPageInner({ role }: ProposalPageProps) {
                     value={preferredName}
                     onChange={(e) => setPreferredName(e.target.value)}
                     // 16px text on phones so iOS doesn't zoom in while typing
-                    className="font-goudy-italic w-full select-text rounded-xl px-4 py-3 text-base transition-all focus:outline-none focus:ring-2 focus:ring-[color-mix(in_srgb,var(--color-welcome-gold)_45%,transparent)]"
+                    className="font-goudy-italic w-full select-text rounded-xl px-4 py-3 text-base transition-all focus:outline-none focus:ring-2 focus:ring-[var(--invite-glow)] placeholder:text-[color-mix(in_srgb,var(--invite-accent)_80%,transparent)]"
                     style={{
                       color: INK,
                       backgroundColor: IVORY,
                       border: `1px solid ${GOLD_BORDER}`,
-                      boxShadow: "inset 0 1px 2px color-mix(in srgb, var(--color-welcome-navy) 6%, transparent)",
+                      boxShadow: "inset 0 1px 2px color-mix(in srgb, var(--invite-ink) 6%, transparent)",
                     }}
                   />
                 </div>
@@ -1053,6 +1222,7 @@ function ProposalPageInner({ role }: ProposalPageProps) {
           )}
         </AnimatePresence>
       </motion.div>
+      </RevealContext.Provider>
     </div>
   )
 }
