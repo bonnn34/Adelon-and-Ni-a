@@ -349,7 +349,7 @@ const COUPLE_LABEL = `${COUPLE.groomNickname} & ${COUPLE.brideNickname}`
    ============================================================================ */
 
 // Principal sponsors Google Apps Script — used by the main page and /inviteone
-const SPONSORS_API = "https://script.google.com/macros/s/AKfycbzpIMdH4ASCzch4vtmw7URHvPD5Q4AtGLz0tqpevalrtKWBPzQONJYsFFxk9LeHj2dy/exec"
+const SPONSORS_API = "https://script.google.com/macros/s/AKfycbw-RZJ0Tv_rA9XitBWXLjCMXqWEUUp71uVD7hxmJe-dxdgaARb-V3HiH6abv0wk0UZZ/exec"
 
 export const siteConfig = {
   siteUrl: SITE_URL,
@@ -360,17 +360,17 @@ export const siteConfig = {
     backgroundMusic: BRAND.backgroundMusic,
   },
   googleAPI:{
-    messageForm: "https://docs.google.com/forms/d/e/1FAIpQLSeWdM9ejwjSaRuagEHWgTp1Mawflp_PnqG-VATHy8mYi0m9CA/formResponse",   //done
-    message: "https://script.google.com/macros/s/AKfycbyVvIeiPxEJuFR2ffFbV3ehIZuOiqprgudVNaKVcQwWTtfduIKzBoaA-ycqllRtcuyj/exec",  //done
-    guestList: "https://script.google.com/macros/s/AKfycbxuL_2IhMmL8kA7k8Mrkrl5NgfC49-bUCw0i01Q-mx8uoIgDg9g8DWEPA2N1KbWd61P/exec",  //done
-    guestRequest: "https://script.google.com/macros/s/AKfycbxhcs7yr2kHdTd9ZCiKpUgtmC0MsRTeR6HjKRmxuMjKz5e_NU0rE1dUkxMH6QaKC_0/exec",   //done
-    entourage: "https://script.google.com/macros/s/AKfycby-U_6dVWcA0BinbzmF_W_y7W-WUZ8vOWCD9ZHysWr0qFrJBMCB15G5egLbcJ9xwKuo/exec",  //done
+    messageForm: "https://docs.google.com/forms/d/e/1FAIpQLSdihP1g_XmEItehhMjLd2jXFYGWHminOvddY8yS5UsNwEwyZQ/formResponse",   //done
+    message: "https://script.google.com/macros/s/AKfycbx1CPW_j70C4TSI--fWC7HnTqa1H5I83KrkourqDT2M3-sxggBK8YEEPqKJ6JcHpoY/exec",  //done
+    guestList: "https://script.google.com/macros/s/AKfycbx_yVFDUloW8ApJRxdS3hdJSxs3iexAybuKwqqYS0ZuvZ540jmki_7r9xypw9KD9Po7/exec",  //done
+    guestRequest: "https://script.google.com/macros/s/AKfycbx88ES8E0Hj4oGjSbCMSbg1WO5XMgxV5hvXs3BFKPHOOVHACGfJyYPxM1eaiDqjWkwI/exec",   //done
+    entourage: "https://script.google.com/macros/s/AKfycbx6GJsQVVXwPh70HYeJDS2TH4AH7VlGhjBwMCDoXpp9yNfJONIYdgwf13aYeErntOVU/exec",  //done
     sponsors: SPONSORS_API,  //done 
     // Principal sponsors shown on /inviteone and /invitetwo (entourage section)
     sponsorsInviteOne: SPONSORS_API, // same sheet as sponsors above
-    sponsorsInviteTwo: "https://script.google.com/macros/s/AKfycbzpIMdH4ASCzch4vtmw7URHvPD5Q4AtGLz0tqpevalrtKWBPzQONJYsFFxk9LeHj2dy/exec",
+    sponsorsInviteTwo: "https://script.google.com/macros/s/AKfycbw-RZJ0Tv_rA9XitBWXLjCMXqWEUUp71uVD7hxmJe-dxdgaARb-V3HiH6abv0wk0UZZ/exec",
 ////google share 
-    googleShare: "https://docs.google.com/spreadsheets/d/1dHiDweo9s5cvXUA5vD0kRoKkngjl8QWo6fO6P5umM5g/edit?usp=sharing",
+    googleShare: "https://docs.google.com/spreadsheets/d/1vts33ruuGmS0jQKo4h-ASy-sOPt61XW6ui6vdbJlib4/edit?usp=sharing",
     videoMessageForm:
       "https://docs.google.com/forms/d/e/1FAIpQLSfeGlEl4CMXWefdvCw6AOPHFS1ROku_rs-Gbofa2LkVJ0sLGQ/viewform", 
   },
@@ -1565,7 +1565,7 @@ Now, as they prepare to say yes before God and the people they love most, Cather
   // Snap & Share (components/sections/snap-share.tsx). {couple} → "Groom & Bride" nicknames.
   snapShare: {
     googleDriveLink:
-      "https://drive.google.com/drive/folders/1DneJZmbRWGb6YTmk9uOUZYlgzP5ZG5ks?usp=sharing",
+      "https://drive.google.com/drive/folders/1qVjxLcmkcWEmoDRYv_cgFgCKiYMmcf6j?usp=sharing",
     albumQR: "/QR/AlbumQR.png",
     hashtag: HASHTAGS,
     instructions: "Please scan this QR Code and upload the photos and videos you have taken during our wedding reception. We are delighted to see your snaps too!",
