@@ -193,9 +193,9 @@ const ATTIRE = {
       details: "",
       highlight: "",
       roles: [
-        { role: "Bride", attire: "White gown with veil, carrying a big yellow and blue bouquet." },
-        { role: "Maid of Honor", attire: "Dark yellow long gown, carrying a small yellow and light blue bouquet." },
-        { role: "Bridesmaids", attire: "Pastel yellow gowns, carrying small yellow and light blue bouquets." },
+        { role: "Bride", attire: "White gown and veil with a yellow and blue bouquet." },
+        { role: "Maid of Honor", attire: "Dark yellow long gown with a small yellow and light blue bouquet." },
+        { role: "Bridesmaids", attire: "Pastel yellow gowns with small yellow and light blue bouquets." },
       ],
     },
     gentlemen: {
@@ -203,9 +203,9 @@ const ATTIRE = {
       details: "",
       highlight: "",
       roles: [
-        { role: "Groom", attire: "White suit and white long sleeves with black slacks and a black bow tie." },
-        { role: "Best Man", attire: "Black suit, black long sleeves and black trousers with a navy-blue necktie." },
-        { role: "Groomsmen", attire: "Black suit, white long sleeves and black trousers with a navy-blue necktie and a yellow corsage." },
+        { role: "Groom", attire: "White suit, black slacks and a black bow tie." },
+        { role: "Best Man", attire: "All-black suit with a navy blue necktie." },
+        { role: "Groomsmen", attire: "Black suit, white shirt, navy blue necktie and a yellow corsage." },
       ],
     },
   },
@@ -234,7 +234,7 @@ const ATTIRE = {
       highlight: "",
       roles: [
         { role: "Fathers of the Bride & Groom", attire: "Black suit with a blue necktie." },
-        { role: "Brothers", attire: "Black suit, black necktie, black slacks and black shoes." },
+        { role: "Brothers", attire: "All-black suit and necktie." },
       ],
     },
   },
@@ -255,8 +255,8 @@ const ATTIRE = {
     },
     gentlemen: {
       label: "Ninong",
-      details: "Black suit with a black necktie and black trousers.",
-      highlight: "Black suit",
+      details: "All-black suit and necktie.",
+      highlight: "All-black suit",
       roles: [] as { role: string; attire: string }[],
     },
   },
@@ -268,13 +268,13 @@ const ATTIRE = {
     palette: DRESS_CODE_PALETTE,
     ladies: {
       label: "Ladies",
-      details: "A floral long dress, or a long dress in light blue, light yellow or light green.",
-      highlight: "floral long dress",
+      details: "Floral long dress, or a long dress in light blue, yellow or green.",
+      highlight: "long dress",
       roles: [] as { role: string; attire: string }[],
     },
     gentlemen: {
       label: "Gentlemen",
-      details: "A long-sleeve polo in light blue, light yellow or light green, paired with black slacks.",
+      details: "Long-sleeve polo in light blue, yellow or green with black slacks.",
       highlight: "long-sleeve polo",
       roles: [] as { role: string; attire: string }[],
     },
