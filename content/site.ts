@@ -300,7 +300,7 @@ const BRAND = {
   monogram: "/monogram/monogramnew.png",
   coupleNameImage: "/Details/newcoupelNames.png", // couple-name lettering (loader, envelope)
   seal: "/monogram/newSeal.png", // envelope wax seal
-  backgroundMusic: "/background_music/Goodness Of God X Oceans X Gratitude (Wedding Entrance version).mp3",
+  backgroundMusic: "/background_music/Libu-Libong Buwan (Uuwian) - Kyle Raphael (Lyric Video).mp3",
 }
 
 // Couple photos reused across the site (gallery, loader, reminders, snap & share, closing)
@@ -454,8 +454,8 @@ export const siteConfig = {
     subtitle: "from a swipe to forever",
     // Shown above a chapter's title when it has no date, e.g. "Chapter 03"
     chapterLabel: "Chapter",
-    closingQuote: "This is the day the Lord has made; let us rejoice and be glad in it.",
-    closingCitation: "Psalm 118: 24",
+    closingQuote: "When the time is right, I, the Lord, will make it happen.",
+    closingCitation: "Isaiah 60:22",
     eucalyptusDecos: {
       topLeft: DECOR.sideLeft,
       bottomRight: DECOR.sideRight,
