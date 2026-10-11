@@ -86,13 +86,13 @@ const TIMES = {
 
 const CEREMONY_VENUE = {
   name: "Kingfisher Way",
-  address: "KM 27 Sumulong Hwy, Antipolo, 1870 Rizal, Philippines",
+  address: "Sumulong Hwy, Antipolo, 1870 Rizal, Philippines",
   map: "https://maps.app.goo.gl/vmXYtcLymvdfLxTJA",
   photos: ["/Details/ceremony.jpg", "/Details/ceremony2.jpg", "/Details/ceremony3.png"],
 }
 const RECEPTION_VENUE = {
   name: "Kingfisher Way",
-  address: "KM 27 Sumulong Hwy, Antipolo, 1870 Rizal, Philippines",
+  address: "Sumulong Hwy, Antipolo, 1870 Rizal, Philippines",
   map: "https://maps.app.goo.gl/vmXYtcLymvdfLxTJA",
   photos: ["/Details/ceremony.jpg", "/Details/ceremony2.jpg", "/Details/ceremony3.png"],
 }
