@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback, useRef } from "react"
+import { useState, useEffect, useLayoutEffect, useCallback, useRef } from "react"
 import { createPortal } from "react-dom"
 import Image from "next/image"
 import Link from "next/link"
@@ -11,6 +11,7 @@ import { Section } from "@/components/section"
 import { sectionType } from "@/lib/section-typography"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { TintedDeco } from "@/components/tinted-deco"
+import { PlainBubbles } from "@/components/loader/PlainBubbles"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -33,31 +34,33 @@ const aboveTheBeyond = localFont({
 const C = {
   title: "var(--color-welcome-navy)",
   script: "var(--color-welcome-script)",
-  eyebrow: "var(--color-motif-accent)",
+  eyebrow: "var(--color-welcome-heading)",
   body: "var(--color-welcome-text)",
-  soft: "var(--color-welcome-text-soft)",
+  soft: "var(--color-welcome-text)",
   accent: "var(--color-motif-accent)",
+  leaf: "var(--color-motif-yellow)",
+  blue: "var(--color-welcome-heading)",
   deep: "var(--color-motif-deep)",
   paper: "var(--color-welcome-bg-soft)",
   light: "var(--color-motif-soft)",
 } as const
 
-const sectionBg = `
-  radial-gradient(760px 420px at 50% 0%, color-mix(in srgb, var(--color-motif-silver) 70%, transparent) 0%, transparent 65%),
-  radial-gradient(520px 360px at 0% 100%, color-mix(in srgb, var(--color-motif-blush) 35%, transparent) 0%, transparent 60%),
-  radial-gradient(520px 360px at 100% 100%, color-mix(in srgb, var(--color-motif-blush) 35%, transparent) 0%, transparent 60%),
-  linear-gradient(180deg, var(--color-welcome-bg-soft) 0%, var(--color-motif-cream) 100%)
-`.trim()
+// Same circle pattern as the video / love story / details sections (PlainBubbles paints the base)
+const sectionBg = "var(--color-bg-pattern-base)"
 
+// Soft white edge so text stays crisp over the circles
+const onBgGlow = "0 1px 0 rgb(255 255 255 / 85%), 0 0 12px rgb(255 255 255 / 70%)"
+
+// Sage hairlines either side of a sunshine diamond
 const lineRight = {
-  background: "linear-gradient(to right, transparent, color-mix(in srgb, var(--color-motif-accent) 60%, transparent))",
+  background: "linear-gradient(to right, transparent, var(--color-motif-yellow))",
 } as const
 const lineLeft = {
-  background: "linear-gradient(to left, transparent, color-mix(in srgb, var(--color-motif-accent) 60%, transparent))",
+  background: "linear-gradient(to left, transparent, var(--color-motif-yellow))",
 } as const
 
 const frameStyle: React.CSSProperties = {
-  background: C.paper,
+  background: "#FFFFFF",
   border: "1px solid color-mix(in srgb, var(--color-motif-medium) 70%, transparent)",
   boxShadow: "0 14px 30px -18px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
 }
@@ -110,7 +113,7 @@ function GalleryTitle({ title, subtitle }: { title: string; subtitle: string }) 
       <span
         aria-hidden
         className={`${theSeasons.className} block uppercase leading-[0.9] tracking-[0.04em] min-[400px]:tracking-[0.08em] sm:tracking-[0.12em] md:tracking-[0.14em]`}
-        style={{ fontSize: "var(--title-size)", color: C.title }}
+        style={{ fontSize: "var(--title-size)", color: C.title, textShadow: onBgGlow }}
       >
         {title}
       </span>
@@ -120,7 +123,7 @@ function GalleryTitle({ title, subtitle }: { title: string; subtitle: string }) 
         style={{
           fontSize: "var(--script-size)",
           color: C.script,
-          textShadow: "0 1px 0 var(--color-motif-soft)",
+          textShadow: onBgGlow,
         }}
       >
         {subtitle}
@@ -130,6 +133,155 @@ function GalleryTitle({ title, subtitle }: { title: string; subtitle: string }) 
 }
 
 type GalleryItem = { image: string; text: string }
+
+/**
+ * Mobile carousel with endless swiping: the photos are rendered three times and,
+ * once a swipe settles in the first or last copy, the strip jumps (invisibly) to
+ * the same photo in the middle copy. Dots show and jump to the current photo.
+ */
+function MobileInfiniteCarousel({
+  items,
+  onOpen,
+  onPointerDown,
+  onPointerMove,
+}: {
+  items: GalleryItem[]
+  onOpen: (item: GalleryItem, index: number) => void
+  onPointerDown: (e: React.PointerEvent) => void
+  onPointerMove: (e: React.PointerEvent) => void
+}) {
+  const stripRef = useRef<HTMLDivElement>(null)
+  const settleTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const n = items.length
+  const loop = n > 1
+  const slides = loop ? [...items, ...items, ...items] : items
+  const [active, setActive] = useState(0)
+
+  const slideAt = (i: number) => stripRef.current?.children[i] as HTMLElement | undefined
+
+  const centerOn = useCallback((i: number, behavior: ScrollBehavior) => {
+    const strip = stripRef.current
+    const slide = strip?.children[i] as HTMLElement | undefined
+    if (!strip || !slide) return
+    strip.scrollTo({ left: slide.offsetLeft - (strip.clientWidth - slide.clientWidth) / 2, behavior })
+  }, [])
+
+  // Index of the slide nearest the centre
+  const nearest = () => {
+    const strip = stripRef.current
+    const first = slideAt(0)
+    const second = slideAt(1)
+    if (!strip || !first) return 0
+    const step = second ? second.offsetLeft - first.offsetLeft : first.clientWidth
+    const offset = first.offsetLeft - (strip.clientWidth - first.clientWidth) / 2
+    return Math.max(0, Math.min(slides.length - 1, Math.round((strip.scrollLeft - offset) / step)))
+  }
+
+  // Start on the first photo of the middle copy
+  useLayoutEffect(() => {
+    if (loop) centerOn(n, "auto")
+  }, [loop, n, centerOn])
+
+  const handleScroll = () => {
+    const i = nearest()
+    setActive(i % n)
+    if (!loop) return
+    if (settleTimer.current) clearTimeout(settleTimer.current)
+    settleTimer.current = setTimeout(() => {
+      const j = nearest()
+      if (j < n) centerOn(j + n, "auto")
+      else if (j >= 2 * n) centerOn(j - n, "auto")
+    }, 140)
+  }
+
+  useEffect(() => () => {
+    if (settleTimer.current) clearTimeout(settleTimer.current)
+  }, [])
+
+  return (
+    <div className="sm:hidden">
+      <div
+        ref={stripRef}
+        onScroll={handleScroll}
+        className="relative flex gap-2.5 overflow-x-auto pt-1 pb-5 snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        style={{ paddingInline: "7%" }}
+        aria-label="Gallery carousel"
+      >
+        {slides.map((item, i) => {
+          const index = i % n
+          const isActive = index === active
+          return (
+            <button
+              key={`${item.image}-${i}`}
+              type="button"
+              className={`group relative snap-center shrink-0 w-[86%] rounded-xl p-1.5 transition-[transform,opacity] duration-500 ${
+                isActive ? "scale-100 opacity-100" : "scale-[0.94] opacity-75"
+              }`}
+              style={frameStyle}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onClick={() => onOpen(item, index)}
+              aria-label={`Open image ${index + 1}`}
+              tabIndex={loop && (i < n || i >= 2 * n) ? -1 : 0}
+              aria-hidden={loop && (i < n || i >= 2 * n) ? true : undefined}
+            >
+              <div className="relative aspect-[2/3] overflow-hidden rounded-lg">
+                <Image
+                  src={encodeURI(item.image)}
+                  alt={item.text || `Gallery image ${index + 1}`}
+                  fill
+                  sizes="86vw"
+                  className="object-cover"
+                  priority={i === n}
+                />
+                <div className="pointer-events-none absolute inset-0 rounded-lg" style={innerFrameStyle} />
+              </div>
+
+              <div className="absolute top-3.5 right-3.5 rounded-full px-2 py-0.5 backdrop-blur-sm" style={badgeStyle}>
+                <span className="text-[11px] font-medium tracking-wider">
+                  {index + 1}/{n}
+                </span>
+              </div>
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Swipe hint: animated arrows either side, dots for each photo */}
+      {loop && (
+        <div className="flex flex-col items-center gap-2.5">
+          <div className="flex items-center gap-3" style={{ color: C.blue }}>
+            <ChevronLeft className="gallery-swipe-arrow gallery-swipe-arrow--left h-4 w-4" aria-hidden />
+            <span
+              className={`${cinzel.className} text-[0.62rem] font-semibold uppercase tracking-[0.3em]`}
+              style={{ textShadow: onBgGlow }}
+            >
+              Swipe to explore
+            </span>
+            <ChevronRight className="gallery-swipe-arrow gallery-swipe-arrow--right h-4 w-4" aria-hidden />
+          </div>
+          <div className="flex items-center gap-1.5" role="tablist" aria-label="Choose a photo">
+            {items.map((item, idx) => (
+              <button
+                key={item.image + idx}
+                type="button"
+                role="tab"
+                aria-selected={idx === active}
+                aria-label={`Show photo ${idx + 1}`}
+                onClick={() => centerOn(n + idx, "smooth")}
+                className="h-1.5 rounded-full transition-all duration-300"
+                style={{
+                  width: idx === active ? "1.25rem" : "0.375rem",
+                  background: idx === active ? C.accent : "color-mix(in srgb, var(--color-welcome-heading) 35%, transparent)",
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
 
 export function Gallery() {
   const { gallery } = useSiteConfig()
@@ -234,9 +386,9 @@ export function Gallery() {
   useEffect(() => {
     if (selectedImage) {
       const next = new window.Image()
-      next.src = galleryItems[(currentIndex + 1) % galleryItems.length].image
+      next.src = encodeURI(galleryItems[(currentIndex + 1) % galleryItems.length].image)
       const prev = new window.Image()
-      prev.src = galleryItems[(currentIndex - 1 + galleryItems.length) % galleryItems.length].image
+      prev.src = encodeURI(galleryItems[(currentIndex - 1 + galleryItems.length) % galleryItems.length].image)
     }
   }, [selectedImage, currentIndex, galleryItems])
 
@@ -247,6 +399,7 @@ export function Gallery() {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full`}
       style={{ background: sectionBg }}
     >
+      <PlainBubbles />
       <Section
         id="gallery"
         className="relative z-10 overflow-hidden pt-14 pb-10 sm:pt-16 sm:pb-12 md:pt-20 md:pb-16 lg:pt-24 lg:pb-20"
@@ -274,7 +427,7 @@ export function Gallery() {
         <DiamondDivider />
         <p
           className={`${cinzel.className} mx-auto mt-4 max-w-[20rem] px-2 text-[0.6875rem] font-semibold leading-snug tracking-[0.12em] uppercase min-[400px]:max-w-none min-[400px]:text-[0.75rem] min-[400px]:tracking-[0.16em] sm:mt-5 sm:text-[0.9375rem] sm:tracking-[0.2em] md:text-base md:tracking-[0.22em]`}
-          style={{ color: C.eyebrow }}
+          style={{ color: C.eyebrow, textShadow: onBgGlow }}
         >
           {gallery.eyebrow}
         </p>
@@ -283,7 +436,7 @@ export function Gallery() {
         </div>
         <p
           className={`font-goudy-italic mx-auto mt-4 max-w-xl px-2 sm:mt-5 md:mt-6 ${sectionType.textRelaxed}`}
-          style={{ color: C.body }}
+          style={{ color: C.body, textShadow: onBgGlow }}
         >
           {gallery.description}
         </p>
@@ -293,11 +446,11 @@ export function Gallery() {
             <span
               className="flex h-7 w-7 items-center justify-center rounded-full sm:h-8 sm:w-8"
               style={{
-                border: "1px solid color-mix(in srgb, var(--color-motif-accent) 55%, transparent)",
-                background: C.paper,
+                border: "1px solid color-mix(in srgb, var(--color-motif-yellow) 70%, transparent)",
+                background: "#FFFFFF",
               }}
             >
-              <Camera className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: C.accent }} aria-hidden />
+              <Camera className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: C.blue }} aria-hidden />
             </span>
           </DiamondDivider>
         </div>
@@ -310,56 +463,21 @@ export function Gallery() {
             <div
               className="h-12 w-12 animate-spin rounded-full border-[3px]"
               style={{
-                borderColor: "color-mix(in srgb, var(--color-motif-accent) 25%, transparent)",
-                borderTopColor: C.accent,
+                borderColor: "color-mix(in srgb, var(--color-motif-medium) 35%, transparent)",
+                borderTopColor: C.blue,
               }}
             />
           </div>
         ) : (
           <>
-            {/* Mobile: swipeable sliding gallery (scroll-snap carousel) */}
-            <div className="sm:hidden">
-              <div
-                className="flex gap-3 overflow-x-auto px-1 pt-1 pb-4 snap-x snap-mandatory scroll-px-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-                aria-label="Gallery carousel"
-              >
-                {galleryItems.map((item, index) => (
-                  <button
-                    key={item.image + index}
-                    type="button"
-                    className="group relative snap-center shrink-0 w-[80%] rounded-xl p-1.5 transition-transform duration-300 active:scale-[0.98]"
-                    style={frameStyle}
-                    onPointerDown={handleThumbPointerDown}
-                    onPointerMove={handleThumbPointerMove}
-                    onClick={() => openLightbox(item, index)}
-                    aria-label={`Open image ${index + 1}`}
-                  >
-                    <div className="relative aspect-[3/4] overflow-hidden rounded-lg">
-                      <Image
-                        src={item.image}
-                        alt={item.text || `Gallery image ${index + 1}`}
-                        fill
-                        sizes="80vw"
-                        className="object-cover"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-lg" style={innerFrameStyle} />
-                    </div>
-
-                    <div className="absolute top-3.5 right-3.5 rounded-full px-2 py-0.5 backdrop-blur-sm" style={badgeStyle}>
-                      <span className="text-[11px] font-medium tracking-wider">
-                        {index + 1}/{galleryItems.length}
-                      </span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-
-              <p
-                className={`${cinzel.className} mt-1 text-center tracking-[0.2em] uppercase ${sectionType.label}`}
-                style={{ color: C.eyebrow }}
-              >
-                Swipe to explore
-              </p>
+            {/* Mobile: endless swipe carousel; bleeds past the side padding for slimmer margins */}
+            <div className="-mx-6 sm:mx-0">
+              <MobileInfiniteCarousel
+                items={galleryItems}
+                onOpen={openLightbox}
+                onPointerDown={handleThumbPointerDown}
+                onPointerMove={handleThumbPointerMove}
+              />
             </div>
 
             {/* Tablet/Desktop: framed grid with a gentle stagger */}
@@ -377,7 +495,7 @@ export function Gallery() {
                 >
                   <div className="relative aspect-[3/4] overflow-hidden rounded-lg">
                     <Image
-                      src={item.image}
+                      src={encodeURI(item.image)}
                       alt={item.text || `Gallery image ${index + 1}`}
                       fill
                       sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
@@ -410,10 +528,10 @@ export function Gallery() {
                 href={gallery.buttonHref}
                 className={`${cinzel.className} inline-flex items-center justify-center rounded-full border px-8 py-3 text-[0.625rem] font-semibold uppercase tracking-[0.18em] transition-all duration-300 hover:scale-[1.03] hover:brightness-110 active:scale-[0.98] sm:text-[0.6875rem] sm:tracking-[0.22em]`}
                 style={{
-                  background: "var(--color-welcome-green)",
-                  borderColor: "color-mix(in srgb, var(--color-motif-medium) 70%, transparent)",
-                  color: C.light,
-                  boxShadow: "0 10px 22px -10px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
+                  background: C.blue,
+                  borderColor: "rgb(255 255 255 / 70%)",
+                  color: "#FFFFFF",
+                  boxShadow: "0 0 0 4px rgb(255 255 255 / 35%), 0 10px 22px -10px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
                 }}
               >
                 {gallery.buttonText}
@@ -422,7 +540,7 @@ export function Gallery() {
 
             <p
               className={`font-goudy-italic mx-auto mt-6 max-w-lg px-2 text-center leading-relaxed sm:mt-8 ${sectionType.textRelaxed}`}
-              style={{ color: C.soft }}
+              style={{ color: C.soft, textShadow: onBgGlow }}
             >
               {gallery.footnote}
             </p>
@@ -560,7 +678,7 @@ export function Gallery() {
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={selectedImage.image}
+                src={encodeURI(selectedImage.image)}
                 alt={selectedImage.text.trim() || `Gallery image ${currentIndex + 1}`}
                 width={1600}
                 height={2000}

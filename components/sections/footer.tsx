@@ -41,20 +41,21 @@ const aboveTheBeyond = localFont({
 })
 
 // Palette lives in globals.css → motif / welcome tokens.
-// Cards are plain light with teal text; buttons are coral (var(--color-romantic-coral)).
+// White cards, navy headings, body-blue text; dusty-blue buttons that deepen to navy on hover.
 const TEAL = "var(--color-welcome-navy)"
-const BUTTON = "var(--color-romantic-coral)"
-const BUTTON_HOVER = "color-mix(in srgb, var(--color-romantic-coral) 85%, black)"
-const IVORY = "var(--color-motif-soft)"
-const PAPER = "var(--color-motif-soft)"
-const HAIRLINE = "color-mix(in srgb, var(--color-welcome-navy) 22%, transparent)"
+const BUTTON =
+  "linear-gradient(180deg, var(--color-welcome-heading) 0%, color-mix(in srgb, var(--color-welcome-heading) 72%, var(--color-welcome-navy)) 100%)"
+const BUTTON_HOVER = "var(--color-welcome-navy)"
+const BUTTON_SHADOW = "0 8px 18px -10px color-mix(in srgb, var(--color-welcome-navy) 60%, transparent)"
+const IVORY = "#FFFFFF"
+const HAIRLINE = "color-mix(in srgb, var(--color-motif-medium) 60%, transparent)"
 
 const palette = {
-  body: TEAL,
-  soft: "color-mix(in srgb, var(--color-welcome-navy) 70%, transparent)",
+  body: "var(--color-welcome-text)",
+  soft: "color-mix(in srgb, var(--color-welcome-text) 75%, white)",
   heading: TEAL,
-  label: TEAL,
-  accent: TEAL,
+  label: "var(--color-welcome-heading)",
+  accent: "var(--color-welcome-heading)",
 } as const
 
 // Section background = the hero's circle pattern (PlainBubbles paints its own aqua base)
@@ -63,7 +64,7 @@ const sectionBg = "var(--color-bg-pattern-base)"
 // Text sitting directly on the circle pattern (colors: globals.css → --color-on-pattern*)
 const onBg = {
   color: "var(--color-on-pattern)",
-  textShadow: "0 1px 0 var(--color-on-pattern-glow), 0 2px 12px var(--color-on-pattern-glow)",
+  textShadow: "0 1px 0 rgb(255 255 255 / 90%), 0 0 12px rgb(255 255 255 / 75%)",
 } as const
 
 // Same, for the softer lines in the bottom bar
@@ -74,7 +75,7 @@ const onBgLineStyle = {
 } as const
 
 const dividerLineStyle = {
-  background: "linear-gradient(to right, transparent, color-mix(in srgb, var(--color-welcome-navy) 40%, transparent), transparent)",
+  background: "linear-gradient(to right, transparent, var(--color-motif-yellow), transparent)",
 } as const
 
 const CORNER_DECO_CLASS =
@@ -88,9 +89,11 @@ const ct = {
 } as const
 
 const cardStyle = {
-  background: PAPER,
+  background:
+    "radial-gradient(90% 35% at 50% 0%, rgb(255 255 255 / 95%) 0%, transparent 70%), linear-gradient(180deg, #FFFFFF 0%, color-mix(in srgb, var(--color-motif-medium) 10%, white) 100%)",
+  border: `1px solid ${HAIRLINE}`,
   boxShadow:
-    "0 22px 48px -28px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
+    "0 0 0 5px rgb(255 255 255 / 35%), 0 22px 48px -28px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
 } as const
 
 type IconProps = { className?: string }
@@ -376,9 +379,9 @@ export function Footer() {
           ) : null}
 
           <motion.div variants={rise} className="mt-4 flex items-center justify-center gap-2" aria-hidden>
-            <span className="h-px w-12 sm:w-20" style={{ background: "var(--color-on-pattern-line)" }} />
-            <span className="h-1.5 w-1.5 rotate-45" style={{ background: "var(--color-on-pattern-line)" }} />
-            <span className="h-px w-12 sm:w-20" style={{ background: "var(--color-on-pattern-line)" }} />
+            <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, var(--color-motif-yellow))" }} />
+            <span className="h-1.5 w-1.5 rotate-45" style={{ background: "var(--color-motif-accent)" }} />
+            <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, var(--color-motif-yellow))" }} />
           </motion.div>
         </motion.div>
 
@@ -456,7 +459,7 @@ export function Footer() {
                       <div
                         key={key}
                         className="flex items-start gap-3 rounded-2xl px-3 py-2.5"
-                        style={{ background: "color-mix(in srgb, var(--color-welcome-navy) 7%, transparent)" }}
+                        style={{ background: "color-mix(in srgb, var(--color-motif-medium) 14%, white)", boxShadow: `inset 0 0 0 1px ${HAIRLINE}` }}
                       >
                         <span
                           className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
@@ -517,9 +520,9 @@ export function Footer() {
                       className={`${cinzel.className} ${ct.label} mt-4 inline-flex min-h-10 w-full items-center justify-center rounded-full border px-5 py-2.5 font-semibold uppercase tracking-[0.14em] transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110 active:scale-[0.98]`}
                       style={{
                         background: BUTTON,
-                        borderColor: BUTTON,
+                        borderColor: "rgb(255 255 255 / 70%)",
                         color: IVORY,
-                        boxShadow: "0 12px 24px -12px color-mix(in srgb, var(--color-romantic-coral) 60%, transparent)",
+                        boxShadow: `0 0 0 3px color-mix(in srgb, var(--color-motif-medium) 22%, transparent), ${BUTTON_SHADOW}`,
                       }}
                     >
                       {content.rsvp.button}
@@ -555,7 +558,7 @@ export function Footer() {
                             title={label}
                             aria-label={label}
                             className="group inline-flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 hover:-translate-y-0.5"
-                            style={{ background: BUTTON, color: IVORY, boxShadow: "0 6px 14px -8px color-mix(in srgb, var(--color-romantic-coral) 70%, transparent)" }}
+                            style={{ background: BUTTON, color: IVORY, boxShadow: BUTTON_SHADOW }}
                             onMouseEnter={(e) => {
                               e.currentTarget.style.background = BUTTON_HOVER
                             }}
@@ -580,7 +583,7 @@ export function Footer() {
                       href={item.href}
                       onClick={scrollTo(item.href)}
                       className="group flex min-w-0 items-center justify-between gap-1.5 rounded-full py-2 pl-3.5 pr-2 transition-all duration-300 hover:-translate-y-0.5"
-                      style={{ background: BUTTON }}
+                      style={{ background: BUTTON, boxShadow: BUTTON_SHADOW }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.background = BUTTON_HOVER
                       }}
@@ -596,7 +599,7 @@ export function Footer() {
                       </span>
                       <span
                         className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full transition-colors duration-300"
-                        style={{ background: "color-mix(in srgb, var(--color-motif-soft) 22%, transparent)" }}
+                        style={{ background: "rgb(255 255 255 / 22%)" }}
                         aria-hidden
                       >
                         <ChevronRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" style={{ color: IVORY }} />

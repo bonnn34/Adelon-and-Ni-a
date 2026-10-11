@@ -3375,3 +3375,460 @@
 .loading-screen--plain .loading-screen__plain-ornament {
   margin-top: -0.75rem;
 }
+
+
+/* ==========================================================================
+   Plain mode — "sky & garden" card. Kept last so it wins.
+   Paper: clean white fading to a soft sky at the foot (no yellow/sage mixing).
+   Ink: navy titles, dusty-blue details, sage-green script echoing the leaves.
+   Sunshine yellow is used once — the glowing dot on the progress bar.
+   ========================================================================== */
+.loading-screen--plain {
+  --ls-sky: var(--color-motif-medium);          /* #8CBBE5 */
+  --ls-blue: var(--color-welcome-heading);      /* #4E86B7 */
+  --ls-navy: var(--color-welcome-navy);         /* #1F4468 */
+  --ls-ink: var(--color-welcome-text);          /* #2F6496 */
+  --ls-leaf: var(--color-motif-yellow);         /* #959D6C sage */
+  --ls-leaf-ink: color-mix(in srgb, var(--color-motif-yellow) 78%, #3C4424);
+  --ls-sun: var(--color-motif-accent);          /* #FDCC4B */
+
+  --ls-text-dark: var(--ls-ink);
+  --ls-text-accent-dark: var(--ls-blue);
+  --ls-text-highlight: var(--ls-leaf-ink);
+  --ls-date-ink: var(--ls-navy);
+  --ls-date-line: color-mix(in srgb, var(--ls-leaf) 70%, transparent);
+}
+
+/* Paper + a calm sky-blue rim instead of the rotating spectrum */
+.loading-screen--plain .loading-screen__save-date {
+  border: 1.5px solid transparent;
+  background:
+    radial-gradient(85% 38% at 50% 0%, rgb(255 255 255 / 95%) 0%, transparent 72%) padding-box,
+    linear-gradient(
+      180deg,
+      #FFFFFF 0%,
+      var(--color-motif-soft) 48%,
+      color-mix(in srgb, var(--ls-sky) 20%, white) 100%
+    ) padding-box,
+    linear-gradient(180deg, rgb(255 255 255 / 95%) 0%, color-mix(in srgb, var(--ls-sky) 75%, white) 100%) border-box;
+  box-shadow:
+    0 0 0 6px rgb(255 255 255 / 35%),
+    0 30px 60px -28px color-mix(in srgb, var(--ls-navy) 45%, transparent),
+    0 12px 28px -16px color-mix(in srgb, var(--ls-blue) 35%, transparent);
+  animation: ls-plain-card-in 1.3s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* Double inner frame: dusty blue, then a fine sage line */
+.loading-screen--plain .loading-screen__save-date::before {
+  border-color: color-mix(in srgb, var(--ls-blue) 32%, transparent);
+}
+
+.loading-screen--plain .loading-screen__save-date::after {
+  border-color: color-mix(in srgb, var(--ls-leaf) 40%, transparent);
+}
+
+/* Headline + names: navy capitals, sage script joining words */
+.loading-screen--plain .ls-headline__letter,
+.loading-screen--plain .ls-names__nick {
+  color: var(--ls-navy);
+  -webkit-text-fill-color: var(--ls-navy);
+}
+
+.loading-screen--plain .ls-headline__script,
+.loading-screen--plain .ls-names__and {
+  color: var(--ls-leaf-ink);
+  -webkit-text-fill-color: var(--ls-leaf-ink);
+}
+
+/* Small caps details in dusty blue; italic lines in body ink */
+.loading-screen--plain .loading-screen__std-kicker,
+.loading-screen--plain .loading-screen__std-eyebrow,
+.loading-screen--plain .loading-screen__std-venue-time,
+.loading-screen--plain .loading-screen__std-status,
+.loading-screen--plain .ls-silk-date__weekday {
+  color: var(--ls-blue);
+  -webkit-text-fill-color: var(--ls-blue);
+}
+
+/* Date: navy month & year, dusty-blue day, sage hairlines */
+.loading-screen--plain .ls-silk-date__side,
+.loading-screen--plain .ls-silk-date__side:first-child,
+.loading-screen--plain .ls-silk-date__side:last-child {
+  color: var(--ls-navy);
+  -webkit-text-fill-color: var(--ls-navy);
+}
+
+.loading-screen--plain .ls-silk-date__day,
+.loading-screen--plain .ls-silk-date__digit-inner {
+  color: var(--ls-blue);
+  -webkit-text-fill-color: var(--ls-blue);
+}
+
+/* Divider: sky with a sage centre */
+.loading-screen--plain .loading-screen__std-rule {
+  background: linear-gradient(90deg, transparent, var(--ls-sky), var(--ls-leaf), var(--ls-sky), transparent);
+}
+
+/* Progress: sky track, sky → dusty blue fill, sunshine dot */
+.loading-screen--plain .loading-screen__std-track {
+  background: color-mix(in srgb, var(--ls-sky) 35%, transparent);
+}
+
+.loading-screen--plain .loading-screen__std-bar {
+  background: linear-gradient(90deg, var(--ls-sky), var(--ls-blue));
+}
+
+.loading-screen--plain .ls-plain-progress-glow {
+  background: var(--ls-sun);
+  box-shadow:
+    0 0 0 3px rgb(255 255 255 / 90%),
+    0 0 14px 3px color-mix(in srgb, var(--ls-sun) 55%, transparent);
+}
+
+/* Soft white light behind the card so it lifts off the video */
+.loading-screen--plain .ls-plain-glow {
+  background: radial-gradient(55% 45% at 50% 50%, rgb(255 255 255 / 45%) 0%, transparent 70%);
+}
+
+
+/* ==========================================================================
+   Home hero (plain) over the looping video — readability pass. Kept last.
+   A strong white halo sits behind the text block; every line uses a dark
+   ink from the palette (navy / dusty blue) with a tight white edge, so it
+   holds up over bright frames. Sage + sunshine appear only as accents.
+   ========================================================================== */
+.home-hero--plain {
+  --hh-navy: var(--color-welcome-navy);       /* #1F4468 */
+  --hh-blue: var(--color-welcome-heading);    /* #4E86B7 */
+  --hh-ink: var(--color-welcome-text);        /* #2F6496 */
+  --hh-sky: var(--color-motif-medium);        /* #8CBBE5 */
+  --hh-leaf: var(--color-motif-yellow);       /* #959D6C */
+  --hh-butter: var(--color-motif-silver);     /* #FAE292 */
+  /* Tight white edge: keeps thin strokes crisp instead of washing them out */
+  --hh-edge:
+    0 0 1px rgb(255 255 255 / 100%),
+    0 0 4px rgb(255 255 255 / 90%),
+    0 0 14px rgb(255 255 255 / 60%);
+}
+
+/* Strong white halo behind the whole title block */
+.home-hero--plain .home-hero-title-glow {
+  width: min(46rem, 130%);
+  height: min(34rem, 125vw);
+  top: 70%;
+  background: radial-gradient(
+    ellipse at center,
+    rgb(255 255 255 / 88%) 0%,
+    rgb(255 255 255 / 70%) 38%,
+    rgb(255 255 255 / 30%) 58%,
+    transparent 74%
+  );
+  filter: blur(10px);
+}
+
+/* "YOU'RE" — navy; "Invited!" — dusty blue script */
+.home-hero--plain .home-hero-title-main {
+  color: var(--hh-navy);
+  text-shadow: var(--hh-edge);
+}
+
+.home-hero--plain .home-hero-title-script {
+  color: var(--hh-blue);
+  text-shadow: var(--hh-edge);
+}
+
+/* Eyebrow: dusty-blue ink, bold, sage hairlines only where there is room */
+.home-hero--plain .home-hero-eyebrow {
+  color: var(--hh-ink);
+  font-weight: 700;
+  text-shadow: var(--hh-edge);
+}
+
+@media (min-width: 640px) {
+  .home-hero--plain .home-hero-eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75em;
+  }
+
+  .home-hero--plain .home-hero-eyebrow::before,
+  .home-hero--plain .home-hero-eyebrow::after {
+    content: "";
+    flex: 0 0 2.5rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--hh-leaf));
+  }
+
+  .home-hero--plain .home-hero-eyebrow::after {
+    background: linear-gradient(90deg, var(--hh-leaf), transparent);
+  }
+}
+
+/* Date: navy with a hairline stroke so the thin serif reads at a glance */
+.home-hero--plain .home-hero-date {
+  color: var(--hh-navy);
+  -webkit-text-stroke: 0.6px var(--hh-navy);
+  text-shadow: var(--hh-edge);
+}
+
+/* Venue · time: navy, bold */
+.home-hero--plain .home-hero-meta {
+  color: var(--hh-navy);
+  font-weight: 700;
+  text-shadow: var(--hh-edge);
+}
+
+/* Countdown band: dusty blue → navy, lighter at the top so the video
+   still shows through; sky/sage hairline above the heading */
+.home-hero--plain .home-hero-countdown-bar {
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--hh-navy) 94%, transparent) 0%,
+    color-mix(in srgb, var(--hh-navy) 78%, var(--hh-blue)) 45%,
+    color-mix(in srgb, var(--hh-blue) 45%, transparent) 78%,
+    transparent 100%
+  );
+}
+
+.home-hero--plain .home-hero-countdown-bar > div::before {
+  content: "";
+  display: block;
+  width: min(14rem, 55%);
+  height: 1px;
+  margin: 0 auto 0.85rem;
+  background: linear-gradient(90deg, transparent, var(--hh-sky), var(--hh-leaf), var(--hh-sky), transparent);
+}
+
+.home-hero--plain .home-hero-countdown-heading {
+  color: #FFFFFF;
+  text-shadow: 0 1px 8px color-mix(in srgb, var(--hh-navy) 70%, transparent);
+}
+
+.home-hero--plain .home-hero-countdown-value {
+  color: #FFFFFF;
+  text-shadow: 0 2px 10px color-mix(in srgb, var(--hh-navy) 65%, transparent);
+}
+
+.home-hero--plain .home-hero-countdown-label {
+  color: var(--hh-butter);
+  text-shadow: none;
+}
+
+
+/* ---- Home hero: light mist + invitation-style details (overrides the pass above) ----
+   The mist is kept light and unblurred so the video stays visible; legibility
+   comes from dark ink, heavier weights and a crisp white edge on each line. */
+.home-hero--plain .home-hero-mist {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  z-index: -1;
+  width: min(40rem, 115vw);
+  height: min(36rem, 145vw);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgb(255 255 255 / 62%) 0%,
+    rgb(255 255 255 / 45%) 40%,
+    rgb(255 255 255 / 15%) 60%,
+    transparent 74%
+  );
+}
+
+.home-hero--plain .home-hero-title-glow {
+  display: none;
+}
+
+/* "We are getting married" — italic serif, navy */
+.home-hero--plain .home-hero-eyebrow {
+  font-family: "SortsMillGoudy", Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--hh-navy);
+  text-shadow: var(--hh-edge);
+}
+
+/* Date, laid out like the printed card:
+        SUNDAY
+   ─ FEBRUARY ─  08  ─ 2027 ─        */
+.home-hero--plain .home-hero-date-weekday {
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+  padding-left: 0.42em; /* balance trailing letter-spacing */
+  color: var(--hh-blue);
+  text-shadow: var(--hh-edge);
+}
+
+.home-hero--plain .home-hero-date-weekday::before,
+.home-hero--plain .home-hero-date-weekday::after {
+  content: "";
+  width: clamp(1.75rem, 8vw, 3rem);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hh-leaf));
+}
+
+.home-hero--plain .home-hero-date-weekday::after {
+  background: linear-gradient(90deg, var(--hh-leaf), transparent);
+}
+
+.home-hero--plain .home-hero-date-side {
+  min-width: 6.5em;
+  padding: 0.45em 0;
+  border-block: 1px solid color-mix(in srgb, var(--hh-leaf) 75%, transparent);
+  text-align: center;
+  color: var(--hh-navy);
+  text-shadow: var(--hh-edge);
+}
+
+.home-hero--plain .home-hero-date-day {
+  color: var(--hh-navy);
+  -webkit-text-stroke: 0.8px var(--hh-navy);
+  text-shadow: var(--hh-edge);
+}
+
+/* Time in spaced small caps, venue in italic serif */
+.home-hero--plain .home-hero-meta-time {
+  color: var(--hh-blue);
+  text-shadow: var(--hh-edge);
+}
+
+.home-hero--plain .home-hero-meta-venue {
+  font-family: "SortsMillGoudy", Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  color: var(--hh-navy);
+  text-shadow: var(--hh-edge);
+}
+
+
+/* ---- Home hero: soft blur behind the text, centred block, lighter countdown band ---- */
+
+/* Gentle frosted blur only where the text sits; the mask fades it out so
+   the video stays sharp around the edges */
+.home-hero--plain .home-hero-mist {
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 70%);
+  mask-image: radial-gradient(ellipse at center, #000 40%, transparent 70%);
+}
+
+/* Countdown: shorter, lighter band hugging the bottom edge */
+.home-hero--plain .home-hero-countdown-bar {
+  padding-top: clamp(1.25rem, 4vh, 2.25rem);
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--hh-navy) 72%, transparent) 0%,
+    color-mix(in srgb, var(--hh-navy) 50%, transparent) 45%,
+    transparent 100%
+  );
+}
+
+.home-hero--plain .home-hero-countdown-bar > div {
+  padding-top: 0.5rem;
+  padding-bottom: 0.75rem;
+}
+
+.home-hero--plain .home-hero-countdown-bar > div::before {
+  margin-bottom: 0.6rem;
+}
+
+.home-hero--plain .home-hero-countdown-heading,
+.home-hero--plain .home-hero-countdown-value {
+  text-shadow:
+    0 1px 2px color-mix(in srgb, var(--hh-navy) 80%, transparent),
+    0 2px 12px color-mix(in srgb, var(--hh-navy) 70%, transparent);
+}
+
+.home-hero--plain .home-hero-countdown-label {
+  text-shadow: 0 1px 3px color-mix(in srgb, var(--hh-navy) 85%, transparent);
+}
+
+
+/* Home hero: no hairline ornament above the countdown */
+.home-hero--plain .home-hero-countdown-bar > div::before {
+  content: none;
+}
+
+/* ---- Love story: milestone photo inside each plain card ---- */
+.story-plain-photo {
+  padding: 0.5rem 0.5rem 1.4rem;
+  background: #FFFFFF;
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--color-motif-medium) 40%, transparent),
+    0 14px 28px -14px color-mix(in srgb, var(--color-welcome-navy) 45%, transparent);
+  transition: transform 0.5s ease;
+}
+
+.story-plain-card:hover .story-plain-photo {
+  transform: rotate(0deg) scale(1.02);
+}
+
+/* Date / chapter line: dusty blue on light cards, butter on navy cards */
+.story-plain-chapter-label {
+  color: var(--color-welcome-heading);
+  letter-spacing: 0.32em;
+  font-weight: 600;
+}
+
+.story-plain-card--dark .story-plain-chapter-label {
+  color: var(--color-motif-silver);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-plain-photo { transition: none; }
+}
+
+/* ---- Love story: open layout (no cards) — components/StorySection.tsx → PlainOpenChapter ---- */
+.story-open-photo {
+  padding: clamp(0.3rem, 1.2vw, 0.6rem) clamp(0.3rem, 1.2vw, 0.6rem) clamp(0.9rem, 3.5vw, 1.6rem);
+  background: #FFFFFF;
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--color-motif-medium) 40%, transparent),
+    0 18px 34px -16px color-mix(in srgb, var(--color-welcome-navy) 45%, transparent);
+}
+
+.story-open-date {
+  margin: 0 0 0.4rem;
+  font-size: clamp(0.56rem, 2.3vw, 0.72rem);
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-welcome-heading);
+}
+
+.story-open-title {
+  margin: 0;
+  font-size: clamp(1.05rem, 4.6vw, 2.1rem);
+  line-height: 1.12;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-welcome-navy);
+  text-shadow: 0 1px 0 rgb(255 255 255 / 80%);
+}
+
+.story-open-rule {
+  display: block;
+  width: clamp(2rem, 8vw, 3.5rem);
+  height: 1px;
+  margin: clamp(0.55rem, 2vw, 0.9rem) 0;
+  background: var(--color-motif-yellow);
+}
+
+.story-open-text {
+  color: var(--color-welcome-text);
+  text-shadow: 0 0 8px rgb(255 255 255 / 70%);
+}
+
+.story-open-text p + p {
+  margin-top: 0.75rem;
+}
+
+/* Phones: slightly smaller body so long paragraphs sit comfortably beside the photo */
+@media (max-width: 639px) {
+  .story-open-text {
+    font-size: 0.78rem;
+    line-height: 1.55;
+  }
+}

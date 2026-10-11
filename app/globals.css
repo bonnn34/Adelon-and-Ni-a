@@ -69,25 +69,25 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  /* Primary: cocoa brown #835643 */
-  --primary: #835643;
+  /* Primary: dusty blue #4E86B7 */
+  --primary: #4E86B7;
   --primary-foreground: oklch(0.145 0 0);
-  /* Secondary: dusty pink #D8B0B0 */
-  --secondary: #D8B0B0;
+  /* Secondary: sky blue #8CBBE5 */
+  --secondary: #8CBBE5;
   --secondary-foreground: oklch(0.145 0 0);
   /* Sage mapped to secondary */
-  --sage: #D8B0B0;
-  /* Muted/light surfaces: blush ivory #F3ECEE */
-  --muted: #F3ECEE;
+  --sage: #8CBBE5;
+  /* Muted/light surfaces: pale sky #EAF3FB */
+  --muted: #EAF3FB;
   --muted-foreground: oklch(0.145 0 0);
-  /* Accent: dusty pink #D8B0B0 */
-  --accent: #D8B0B0;
+  /* Accent: sky blue #8CBBE5 */
+  --accent: #8CBBE5;
   --accent-foreground: oklch(0.145 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: #835643;
+  --ring: #4E86B7;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -96,23 +96,20 @@
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #835643;
+  --sidebar-primary: #4E86B7;
   --sidebar-primary-foreground: oklch(0.145 0 0);
-  --sidebar-accent: #D8B0B0;
+  --sidebar-accent: #8CBBE5;
   --sidebar-accent-foreground: oklch(0.145 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: #835643;
+  --sidebar-ring: #4E86B7;
 
-/* Decoration tint: the botanical PNGs in /public/deco are painted in sage
-   (hue ≈ 92°). This recolors them to the wedding motif's warm terracotta
-   and cocoa-brown palette: grayscale + sepia flattens the sage, then
-   hue-rotate/saturate/brightness create a warm earthy tint while keeping
-   the watercolor shading.
-   Set to "none" to show the original artwork. */
---deco-filter: grayscale(1) sepia(1) hue-rotate(345deg) saturate(1.6) brightness(0.55);
+/*\* Decoration tint: the botanical PNGs in /public/deco are painted in sage*
+*   (hue ≈ 92°). Kept green to match the sage #959D6C motif (light touch only).*
+*   Set to "none" to show the original artwork. \*/
+--deco-filter: saturate(0.9) brightness(1.02);
 
-/* QR codes (every QR on the site + dashboard): darkest motif color on white.
-   Read at runtime by hooks/use-css-color, so any CSS color works here. */
+/*\* QR codes (every QR on the site + dashboard): darkest motif color on white.*
+*   Read at runtime by hooks/use-css-color, so any CSS color works here. \*/
 --color-qr-fg: var(--color-coastal-deep);
 --color-qr-bg: #FFFFFF;
 }
@@ -124,21 +121,21 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.145 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: #835643;
+  --primary: #4E86B7;
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: #D8B0B0;
+  --secondary: #8CBBE5;
   --secondary-foreground: oklch(0.985 0 0);
   /* Sage for dark mode */
-  --sage: #D8B0B0;
-  --muted: #F3ECEE;
+  --sage: #8CBBE5;
+  --muted: #EAF3FB;
   --muted-foreground: oklch(0.145 0 0);
-  --accent: #D8B0B0;
+  --accent: #8CBBE5;
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
   --border: oklch(0.269 0 0);
   --input: oklch(0.269 0 0);
-  --ring: #835643;
+  --ring: #4E86B7;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -146,12 +143,12 @@
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: #835643;
+  --sidebar-primary: #4E86B7;
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: #D8B0B0;
+  --sidebar-accent: #8CBBE5;
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: #835643;
+  --sidebar-ring: #4E86B7;
 }
 
 @theme inline {
@@ -160,717 +157,353 @@
   --font-serif: "Great Vibes", "Great Vibes Fallback";
   
 /* ==========================================
-
- *  MOTIF COLORS
-
- *  Theme: Nude Beige + Terracotta
-
- *  Cocoa Brown + Dusty Blush + Terracotta + Warm Ivory
-
- * ========================================== */
-
+   MOTIF COLORS
+   Theme: Romantic Minimalist + Fresh Spring
+   Sky Blue #8CBBE5 + Dusty Blue #4E86B7 + Sunshine #FDCC4B + Butter #FAE292 + Sage Leaves #959D6C
+   ========================================== */
 
 /* ------------------------------------------
-
- * Background / Linen
-
- * ------------------------------------------ */
-
-
---color-motif-cream: #F2E9E2;
-/* Warm ivory */
-
-
---color-motif-yellow: #CBAFA1;
-/* Muted beige taupe */
-
-
---color-motif-soft: #F8F2ED;
-/* Soft warm ivory paper */
-
-
-/* ------------------------------------------
-
- * Blush Pink Accents
-
- * ------------------------------------------ */
-
-
---color-motif-accent: #C48C73;
-/* Terracotta nude */
-
-
---color-motif-deep: #835643;
-/* Deep cocoa brown */
-
-
---color-motif-medium: #E3CAC5;
-/* Dusty blush pink */
-
-
-/* ------------------------------------------
-
- * Navy Blue Accents
-
- * ------------------------------------------ */
-
-
---color-motif-teal: #835643;
-/* Deep cocoa brown */
-
-
---color-motif-teal-medium: #CBAFA1;
-/* Muted beige taupe */
-
-
---color-motif-teal-light: #E3CAC5;
-/* Dusty blush pink */
-
-
-/* ------------------------------------------
-
- * Floral / Romantic Accent
-
- * ------------------------------------------ */
-
-
---color-motif-blush: #E3CAC5;
-/* Dusty blush pink */
-
-
-/* ------------------------------------------
-
- * Neutral / Paper
-
- * ------------------------------------------ */
-
-
---color-motif-silver: #E3CAC5;
-/* Soft blush neutral */
-
-
-/* ==========================================
-
- *  WELCOME SECTION
-
- * ========================================== */
-
-
-/* ------------------------------------------
-
- * Main background
-
- * ------------------------------------------ */
-
-
---color-welcome-bg:
-    color-mix(
-        in srgb,
-        var(--color-motif-cream) 72%,
-        white
-    );
-
-
-/* ------------------------------------------
-
- * Soft background
-
- * ------------------------------------------ */
-
-
---color-welcome-bg-soft:
-    color-mix(
-        in srgb,
-        var(--color-motif-teal-light) 22%,
-        white
-    );
-
-
-/* ==========================================
-
- *  TYPOGRAPHY
-
- * ========================================== */
-
-
-/* ------------------------------------------
-
- * Main body text
-
- * ------------------------------------------ */
-
-
---color-welcome-text: #835643;
-/* Deep cocoa brown */
-
-
-/* ------------------------------------------
-
- * Secondary / softer text
-
- * ------------------------------------------ */
-
-
---color-welcome-text-soft:
-    color-mix(
-        in srgb,
-        #835643 62%,
-        white
-    );
-
-
-/* ------------------------------------------
-
- * Small headings
-
- * ------------------------------------------ */
-
-
---color-welcome-heading: #835643;
-/* Deep cocoa brown */
-
-
-/* ------------------------------------------
-
- * Script / romantic accent
-
- * ------------------------------------------ */
-
-
---color-welcome-script: #C48C73;
-/* Terracotta nude */
-
-
-/* ------------------------------------------
-
- * Main hero heading
-
- * ------------------------------------------ */
-
-
---color-welcome-navy: #835643;
-/* Deep cocoa brown */
-
-
-/* ==========================================
-
- *  BUTTONS / DECORATION
-
- * ========================================== */
-
-
-/* ------------------------------------------
-
- * Buttons
-
- * ------------------------------------------ */
-
-
---color-welcome-green: #835643;
-/* Deep cocoa brown */
-
-
-/* ------------------------------------------
-
- * Decorative coastal / floral lines
-
- * ------------------------------------------ */
-
-
---color-welcome-botanical: #CBAFA1;
-/* Muted beige taupe */
-
-
-/* ------------------------------------------
-
- * Gold decorative details
-
- * ------------------------------------------ */
-
-
---color-welcome-gold: #E3CAC5;
-/* Dusty blush replaces traditional gold */
-
-
-/* ------------------------------------------
-
- * Floral accents
-
- * ------------------------------------------ */
-
-
---color-welcome-blush: #E3CAC5;
-/* Soft blush pink */
-
-
-/* ==========================================
-
- *  ADDITIONAL NUDE + TERRACOTTA COLORS
-
- * ========================================== */
-
-
-/* Deep cocoa brown */
---color-coastal-deep: #835643;
-
-
-/* Cocoa brown */
---color-coastal-teal: #835643;
-
-
-/* Muted beige taupe */
---color-coastal-soft: #CBAFA1;
-
-
-/* Dusty blush pink */
---color-coastal-light: #E3CAC5;
-
-
-/* Terracotta nude */
---color-romantic-coral: #C48C73;
-
-
-/* Deep cocoa brown */
---color-romantic-deep: #835643;
-
-
-/* Dusty blush pink */
---color-romantic-peach: #E3CAC5;
-
-
-/* Dusty blush pink */
---color-romantic-blush: #E3CAC5;
-
-
-/* Muted beige taupe */
---color-coastal-sand: #CBAFA1;
-
-
-/* Warm ivory */
---color-coastal-ivory: #F2E9E2;
-
-
-/* ==========================================
-
- *  COUPLE NAME MASK / LOCKUP
-
- * ========================================== */
-
-
---couple-name-fill: var(--color-welcome-navy);
-
-
-/* mid + accent match the fill → the names render in one plain color */
---couple-name-fill-mid: var(--couple-name-fill);
-
-
---couple-name-fill-accent: var(--couple-name-fill);
-
-
---couple-name-fill-soft: var(--color-motif-soft);
-
-
-/* ==========================================
-
- *  BACKGROUND — CIRCLE PATTERN
-
- *  Used by every plain-mode section (loader,
- *  envelope, hero, details, entourage, ...)
- *  via components/loader/PlainBubbles.
- *  Light + blush pink, flat colors (no gradients).
-
- * ========================================== */
-
-
-/* Flat base painted behind the circles — light blush */
---color-bg-pattern-base:
-    color-mix(
-        in srgb,
-        var(--color-romantic-blush) 30%,
-        var(--color-motif-cream)
-    );
-
-
-/* Main circles — blush pink family */
---color-bg-circle-deep: color-mix(in srgb, var(--color-romantic-peach) 40%, transparent);
-
---color-bg-circle-mid: color-mix(in srgb, var(--color-romantic-blush) 55%, transparent);
-
---color-bg-circle-light: color-mix(in srgb, white 55%, transparent);
-
-
-/* Accent circles — a touch of other palette colors */
---color-bg-circle-accent-1: color-mix(in srgb, var(--color-romantic-coral) 30%, transparent);
-
---color-bg-circle-accent-2: color-mix(in srgb, var(--color-coastal-light) 40%, transparent);
-
---color-bg-circle-accent-3: color-mix(in srgb, var(--color-coastal-sand) 60%, transparent);
-
-
-/* Rose + soft peach circles scattered through the pattern */
---color-bg-circle-rose: color-mix(in srgb, #C48C73 38%, transparent);
-
---color-bg-circle-peach: color-mix(in srgb, #C48C73 50%, transparent);
-
-
-/* Text and divider lines sitting directly on the pattern */
---color-on-pattern: var(--color-welcome-navy);
-
---color-on-pattern-soft: var(--color-motif-teal);
-
---color-on-pattern-glow: color-mix(in srgb, white 70%, transparent);
-
---color-on-pattern-line: var(--color-romantic-coral);
-
-
-/* ==========================================
-
- *  HERO COUNTDOWN — fades up from the bottom
-
- * ========================================== */
-
-
-/* Solid at the very bottom, fading to transparent upward */
---color-countdown-fade: var(--color-coastal-deep);
-
-
-/* Numbers + heading on the faded band */
---color-countdown-text: var(--color-motif-soft);
-
-
-/* Unit labels (Days, Hours, ...) */
---color-countdown-label: var(--color-romantic-blush);
-
-
-/* ==========================================
-
- *  ENVELOPE — DUSTY BLUSH FAMILY
-
- *  The invitation envelope (components/loader/
- *  envelope-invite.css). Letter inside stays light.
-
- * ========================================== */
-
-
-/* Main paper — dusty blush */
---color-envelope-paper: #E3CAC5;
-
-
-/* Back panel / inside */
---color-envelope-base: color-mix(in srgb, #E3CAC5 86%, var(--color-motif-deep));
-
-
-/* Lit edges */
---color-envelope-highlight: color-mix(in srgb, #E3CAC5 60%, white);
-
-
-/* Flap folds */
---color-envelope-fold: color-mix(in srgb, #E3CAC5 80%, var(--color-motif-deep));
-
-
-/* Shadows */
---color-envelope-shadow: color-mix(in srgb, var(--color-motif-deep) 70%, #E3CAC5);
-
-
-/* Crease hairlines on the paper */
---color-envelope-crease: color-mix(in srgb, var(--color-motif-deep) 22%, transparent);
-
-
-/* ==========================================
-
- *  OPTIONAL SEMANTIC COLORS
-
- *  Use these when assigning colors to
- *  specific UI components.
-
- * ========================================== */
-
-
-/* Primary CTA */
---color-primary: #835643;
-
-
-/* Primary CTA hover */
---color-primary-hover: #835643;
-
-
-/* Romantic CTA */
---color-romantic: #C48C73;
-
-
-/* Romantic hover */
---color-romantic-hover: #835643;
-
-
-/* Soft highlight */
---color-highlight: #E3CAC5;
-
-
-/* Highlight, slightly deeper — loader "Save Date", couple names, day number */
---color-highlight-deep: color-mix(in srgb, var(--color-highlight) 60%, var(--color-motif-deep));
-
-
-/* Decorations (corner leaves, ornaments) — flat silhouette color */
---color-deco: var(--color-motif-accent);
-
-
-/* ------------------------------------------
- * INVITATION DESIGN SYSTEM
- * One set of roles used by the loader, envelope, special (proposal) invitation,
- * table card and modals. Change the palette above and every surface follows.
- * ------------------------------------------ */
-
-/* Strong text: body copy, labels */
---invite-ink: var(--color-ink-deep);
-
-/* Display lettering: "Save" / "Date", couple names, big titles */
---invite-title: var(--color-ink-accent);
-
-/* Script & joining words: "the", "and", script subtitles, big day number */
---invite-script: var(--color-highlight-deep);
-
-/* Small accents: icons, eyebrows, diamonds */
---invite-accent: var(--color-motif-accent);
-
-/* Paragraph text */
---invite-body: var(--color-welcome-text);
-
-/* Paper surfaces (cards, modals) */
---invite-paper: var(--color-motif-soft);
---invite-paper-tint: color-mix(in srgb, var(--color-highlight) 28%, var(--color-motif-soft));
-
-/* Hairlines and frames */
---invite-line: color-mix(in srgb, var(--color-motif-accent) 45%, transparent);
---invite-line-soft: color-mix(in srgb, var(--color-motif-accent) 22%, transparent);
-
-/* Buttons */
---invite-button: var(--color-ink-accent);
---invite-button-text: var(--color-motif-soft);
-
-/* Depth: modal veil, card shadow, soft glow */
---invite-overlay: color-mix(in srgb, var(--color-ink-deep) 45%, transparent);
---invite-shadow: color-mix(in srgb, var(--color-ink-deep) 35%, transparent);
---invite-glow: color-mix(in srgb, var(--color-highlight) 45%, transparent);
-
-/* Page background behind invitation cards */
---invite-page-bg: var(--color-welcome-bg);
-
-
-/* Section accent */
---color-section-accent: #CBAFA1;
-
-
-/* Light section */
---color-section-light: #E3CAC5;
-
-
-/* Card background */
---color-card: #F8F2ED;
-
-
-/* Border */
---color-border: #CBAFA1;
-
-
-/* Dark text */
---color-text-dark: #835643;
-
-
-/* Deepest ink — high-contrast text on light backgrounds (loader, envelope, buttons) */
---color-ink-deep: #4A2C20;
-
-
-/* Deep accent ink — script words, small labels on light backgrounds */
---color-ink-accent: #8A4E36;
-
-
-/* Muted text */
---color-text-muted:
-    color-mix(
-        in srgb,
-        #835643 60%,
-        white
-    );
-
-
-/* ==========================================
-
- *  DASHBOARD
-
- *  Every dashboard color comes from here and is
- *  derived from the palette above — change the
- *  palette and the whole dashboard follows.
- *  Use as Tailwind classes: bg-dash-primary,
- *  text-dash-ink, border-dash-border, ...
- *  Plain colors only (gradients: page bg only).
-
- * ========================================== */
-
-
-/* Buttons, active states, icons */
---color-dash-primary: var(--color-primary);
-
---color-dash-primary-hover: var(--color-primary-hover);
-
-
-/* Secondary accent (ampersands, check marks, links) */
---color-dash-accent: var(--color-section-accent);
-
-
-/* Text */
---color-dash-ink: var(--color-text-dark);
-
---color-dash-ink-strong: color-mix(in srgb, var(--color-text-dark) 80%, black);
-
---color-dash-text: color-mix(in srgb, var(--color-text-dark) 80%, white);
-
---color-dash-muted: var(--color-text-muted);
-
---color-dash-faint: color-mix(in srgb, var(--color-text-dark) 45%, white);
-
-
-/* Lines + borders */
---color-dash-line: var(--color-section-light);
-
---color-dash-focus: color-mix(in srgb, var(--color-section-accent) 55%, white);
-
---color-dash-border: color-mix(in srgb, var(--color-section-light) 50%, white);
-
-
-/* Surfaces */
---color-dash-tint: color-mix(in srgb, var(--color-section-light) 26%, white);
-
---color-dash-surface: color-mix(in srgb, var(--color-section-light) 12%, white);
-
---color-dash-bg: color-mix(in srgb, var(--color-motif-cream) 60%, white);
-
---color-dash-bg-deep: var(--color-motif-cream);
-
-
-/* Small badges */
---color-dash-badge-bg: color-mix(in srgb, var(--color-romantic-blush) 55%, white);
-
---color-dash-badge-text: color-mix(in srgb, var(--color-romantic-deep) 55%, black);
-
-
-/* Delete / danger — romantic coral family, darkened for contrast */
---color-dash-danger: color-mix(in srgb, var(--color-romantic-deep) 45%, #835643);
-
---color-dash-danger-text: color-mix(in srgb, var(--color-romantic-deep) 35%, #835643);
-
---color-dash-danger-soft: color-mix(in srgb, var(--color-romantic-blush) 35%, white);
-
---color-dash-danger-softer: color-mix(in srgb, var(--color-romantic-blush) 18%, white);
-
---color-dash-danger-border: color-mix(in srgb, var(--color-romantic-blush) 60%, white);
-
-
-/* ==========================================
-
- *  COLOR USAGE GUIDE
-
- * ========================================== */
-
-
-/*
-    DEEP COCOA BROWN
-    #835643
-
-    Use for:
-    - Buttons
-    - Important headings
-    - Icons
-    - Navigation
-    - Strong text
-    - Primary UI elements
-
-
-    DEEP COCOA BROWN
-    #835643
-
-    Use for:
-    - Hero couple names
-    - Main heading
-    - Dark overlays
-    - Strong contrast elements
-
-
-    MUTED BEIGE TAUPE
-    #CBAFA1
-
-    Use for:
-    - Decorative leaves
-    - Lines
-    - Borders
-    - Secondary buttons
-    - Section accents
-
-
-    DUSTY BLUSH PINK
-    #E3CAC5
-
-    Use for:
-    - Soft backgrounds
-    - Decorative circles
-    - Image overlays
-    - Subtle cards
-
-
-    TERRACOTTA NUDE
-    #C48C73
-
-    Use for:
-    - Romantic script
-    - Floral elements
-    - Small highlights
-    - Important decorative details
-
-
-    DEEP COCOA BROWN
-    #835643
-
-    Use sparingly for:
-    - Hover states
-    - Active states
-    - Small emphasis
-
-
-    DUSTY BLUSH PINK
-    #E3CAC5
-
-    Use for:
-    - Secondary decorative elements
-    - Small badges
-    - Accent backgrounds
-    - Romantic highlights
-
-
-    DUSTY BLUSH PINK
-    #E3CAC5
-
-    Use for:
-    - Flowers
-    - Soft decorations
-    - Background shapes
-
-
-    MUTED BEIGE TAUPE
-    #CBAFA1
-
-    Use for:
-    - Borders
-    - Paper texture
-    - Neutral decorative elements
-
-
-    WARM IVORY
-    #F2E9E2
-
-    Use for:
-    - Main page background
-    - Linen sections
-    - Large negative spaces
-*/
+   Background / Linen
+   ------------------------------------------ */
+
+   --color-motif-cream: #EAF3FB /* Pale sky */; /* Warm ivory */
+   --color-motif-yellow: #959D6C /* Sage green */; /* Sage green */
+   --color-motif-soft: #F7FBFF /* Cloud white paper */; /* Soft ivory paper */
+   
+   /* ------------------------------------------
+      Fresh Spring Accents
+      ------------------------------------------ */
+   
+   --color-motif-accent: #FDCC4B; /* Warm yellow */
+   --color-motif-deep: #2F6496; /* Deep dusty blue */
+   --color-motif-medium: #8CBBE5 /* Sky blue */; /* Pale butter yellow */
+   
+   /* ------------------------------------------
+      Dusty Blue Accents
+      ------------------------------------------ */
+   
+   --color-motif-teal: #2F6496; /* Deep dusty blue */
+   --color-motif-teal-medium: #959D6C; /* Sage green */
+   --color-motif-teal-light: #8CBBE5 /* Sky blue */; /* Pale butter yellow */
+   
+   /* ------------------------------------------
+      Botanical / Spring Accent
+      ------------------------------------------ */
+   
+   --color-motif-blush: #FAE292; /* Pale butter yellow */
+   
+   /* ------------------------------------------
+      Neutral / Paper
+      ------------------------------------------ */
+   
+   --color-motif-silver: #FAE292 /* Butter yellow */; /* Pale butter yellow */
+   
+   /* ==========================================
+      WELCOME SECTION
+      ========================================== */
+   
+   /* Main background */
+   --color-welcome-bg: color-mix(in srgb, #8CBBE5 14%, white);
+   
+   /* Soft background */
+   --color-welcome-bg-soft: color-mix(in srgb, #8CBBE5 8%, white);
+   
+   /* ==========================================
+      TYPOGRAPHY
+      ========================================== */
+   
+   /* Main body text */
+   --color-welcome-text: #2F6496;
+   
+   /* Secondary / softer text */
+   --color-welcome-text-soft: color-mix(in srgb, #2F6496 65%, white);
+   
+   /* Small headings */
+   --color-welcome-heading: #4E86B7;
+   
+   /* Script / romantic accent */
+   --color-welcome-script: #4E86B7;
+   
+   /* Main hero heading */
+   --color-welcome-navy: #1F4468;
+   
+   /* ==========================================
+      BUTTONS / DECORATION
+      ========================================== */
+   
+   /* Buttons */
+   --color-welcome-green: #4E86B7;
+   
+   /* Decorative coastal / floral lines */
+   --color-welcome-botanical: #959D6C;
+   
+   /* Gold decorative details */
+   --color-welcome-gold: #FDCC4B;
+   
+   /* Floral accents */
+   --color-welcome-blush: #FAE292;
+   
+   /* ==========================================
+      ADDITIONAL FRESH SPRING COLORS
+      ========================================== */
+   
+   --color-coastal-deep: #2F6496; /* Deep dusty blue */
+   --color-coastal-teal: #4E86B7 /* Dusty blue */; /* Deep blue */
+   --color-coastal-soft: #959D6C; /* Sage green */
+   --color-coastal-light: #8CBBE5 /* Sky blue */; /* Pale butter yellow */
+   
+   --color-romantic-coral: #FDCC4B; /* Warm yellow */
+   --color-romantic-deep: #2F6496; /* Deep dusty blue */
+   --color-romantic-peach: #FAE292; /* Pale butter yellow */
+   --color-romantic-blush: #FAE292; /* Pale butter yellow */
+   
+   --color-coastal-sand: #959D6C; /* Sage green */
+   --color-coastal-ivory: #F7FBFF; /* Warm ivory */
+   
+   /* ==========================================
+      COUPLE NAME MASK / LOCKUP
+      ========================================== */
+   
+   --couple-name-fill: var(--color-welcome-navy);
+   
+   /* Mid + accent match the fill */
+   --couple-name-fill-mid: var(--couple-name-fill);
+   --couple-name-fill-accent: var(--couple-name-fill);
+   --couple-name-fill-soft: var(--color-motif-soft);
+   
+   /* ==========================================
+      BACKGROUND — CIRCLE PATTERN
+      Light ivory + butter yellow, flat colors
+      ========================================== */
+   
+   /* Flat base behind the circles */
+   --color-bg-pattern-base: color-mix(in srgb, #8CBBE5 26%, white);
+   
+   /* Main circles — butter yellow family */
+   --color-bg-circle-deep: color-mix(in srgb, #8CBBE5 45%, transparent);
+   
+   --color-bg-circle-mid: color-mix(in srgb, #8CBBE5 28%, transparent);
+   
+   --color-bg-circle-light: color-mix(in srgb, white 70%, transparent);
+   
+   /* Accent circles */
+   --color-bg-circle-accent-1: color-mix(in srgb, #4E86B7 18%, transparent);
+   
+   --color-bg-circle-accent-2: color-mix(in srgb, white 55%, transparent);
+   
+   --color-bg-circle-accent-3: color-mix(in srgb, #959D6C 22%, transparent);
+   
+   /* Warm yellow circles */
+   --color-bg-circle-rose: color-mix(in srgb, #FAE292 45%, transparent);
+   
+   --color-bg-circle-peach: color-mix(in srgb, #FDCC4B 30%, transparent);
+   
+   /* Text and divider lines */
+   --color-on-pattern: var(--color-welcome-navy);
+   --color-on-pattern-soft: var(--color-motif-teal);
+   
+   --color-on-pattern-glow:
+       color-mix(in srgb, white 70%, transparent);
+   
+   --color-on-pattern-line: #959D6C;
+   
+   /* ==========================================
+      HERO COUNTDOWN
+      ========================================== */
+   
+   /* Bottom fade */
+   --color-countdown-fade: #1F4468;
+   
+   /* Numbers + heading */
+   --color-countdown-text: var(--color-motif-soft);
+   
+   /* Unit labels */
+   --color-countdown-label: #FAE292;
+   
+   /* ==========================================
+      ENVELOPE — SKY BLUE FAMILY (light sky paper, dusty-blue folds)
+      ========================================== */
+   
+   /* Main paper */
+   --color-envelope-paper: color-mix(in srgb, #8CBBE5 70%, white);
+   
+   /* Back panel / inside */
+   --color-envelope-base: #8CBBE5;
+   
+   /* Lit edges */
+   --color-envelope-highlight: color-mix(in srgb, #8CBBE5 45%, white);
+   
+   /* Flap folds */
+   --color-envelope-fold: color-mix(in srgb, #8CBBE5 55%, #4E86B7);
+   
+   /* Shadows */
+   --color-envelope-shadow: #4E86B7;
+   
+   /* Crease hairlines */
+   --color-envelope-crease: rgb(255 255 255 / 55%);
+   
+   /* ==========================================
+      OPTIONAL SEMANTIC COLORS
+      ========================================== */
+   
+   /* Primary CTA */
+   --color-primary: #2F6496;
+   
+   /* Primary CTA hover */
+   --color-primary-hover: #1F4468;
+   
+   /* Romantic CTA */
+   --color-romantic: #FDCC4B;
+   
+   /* Romantic hover */
+   --color-romantic-hover: #E0AE2C;
+   
+   /* Soft highlight */
+   --color-highlight: #FAE292;
+   
+   /* Highlight — Save the Date, couple names, day number */
+   --color-highlight-deep: #4E86B7;
+   
+   /* Decorations — corner leaves, ornaments */
+   --color-deco: #959D6C;
+   
+   /* ==========================================
+      INVITATION DESIGN SYSTEM
+      ========================================== */
+   
+   /* Strong text */
+   --invite-ink: var(--color-ink-deep);
+   
+   /* Display lettering and couple names */
+   --invite-title: var(--color-ink-accent);
+   
+   /* Script and joining words */
+   --invite-script: var(--color-highlight-deep);
+   
+   /* Small accents */
+   --invite-accent: var(--color-welcome-heading); /* dusty blue — readable labels (proposal page) */
+   
+   /* Paragraph text */
+   --invite-body: var(--color-welcome-text);
+   
+   /* Paper surfaces */
+   --invite-paper: var(--color-motif-soft);
+   
+   --invite-paper-tint: color-mix(in srgb, #8CBBE5 12%, var(--color-motif-soft));
+   
+   /* Hairlines and frames */
+   --invite-line: color-mix(in srgb, #959D6C 50%, transparent);
+   
+   --invite-line-soft: color-mix(in srgb, #959D6C 25%, transparent);
+   
+   /* Buttons */
+   --invite-button: var(--color-ink-accent);
+   --invite-button-text: var(--color-motif-soft);
+   
+   /* Depth */
+   --invite-overlay:
+       color-mix(in srgb, var(--color-ink-deep) 45%, transparent);
+   
+   --invite-shadow:
+       color-mix(in srgb, var(--color-ink-deep) 35%, transparent);
+   
+   --invite-glow: color-mix(in srgb, white 70%, transparent);
+   
+   /* Page background */
+   --invite-page-bg: var(--color-welcome-bg);
+   
+   /* Section accent */
+   --color-section-accent: #959D6C;
+   
+   /* Light section */
+   --color-section-light: #D6E7F6;
+   
+   /* Card background */
+   --color-card: #F7FBFF;
+   
+   /* Border */
+   --color-border: #959D6C;
+   
+   /* Dark text */
+   --color-text-dark: #2F6496;
+   
+   /* Deepest ink */
+   --color-ink-deep: #1F4468;
+   
+   /* Deep accent ink */
+   --color-ink-accent: #2F6496;
+   
+   /* Muted text */
+   --color-text-muted: color-mix(in srgb, #2F6496 65%, white);
+   
+   /* ==========================================
+      DASHBOARD
+      ========================================== */
+   
+   /* Buttons, active states, icons */
+   --color-dash-primary: var(--color-primary);
+   --color-dash-primary-hover: var(--color-primary-hover);
+   
+   /* Secondary accent */
+   --color-dash-accent: var(--color-section-accent);
+   
+   /* Text */
+   --color-dash-ink: var(--color-text-dark);
+   
+   --color-dash-ink-strong:
+       color-mix(in srgb, var(--color-text-dark) 80%, black);
+   
+   --color-dash-text:
+       color-mix(in srgb, var(--color-text-dark) 80%, white);
+   
+   --color-dash-muted: var(--color-text-muted);
+   
+   --color-dash-faint:
+       color-mix(in srgb, var(--color-text-dark) 45%, white);
+   
+   /* Lines + borders */
+   --color-dash-line: var(--color-section-light);
+   
+   --color-dash-focus:
+       color-mix(in srgb, var(--color-section-accent) 55%, white);
+   
+   --color-dash-border:
+       color-mix(in srgb, var(--color-section-light) 50%, white);
+   
+   /* Surfaces */
+   --color-dash-tint:
+       color-mix(in srgb, var(--color-section-light) 26%, white);
+   
+   --color-dash-surface:
+       color-mix(in srgb, var(--color-section-light) 12%, white);
+   
+   --color-dash-bg:
+       color-mix(in srgb, var(--color-motif-cream) 60%, white);
+   
+   --color-dash-bg-deep: var(--color-motif-cream);
+   
+   /* Small badges */
+   --color-dash-badge-bg:
+       color-mix(in srgb, var(--color-romantic-blush) 55%, white);
+   
+   --color-dash-badge-text:
+       color-mix(in srgb, var(--color-romantic-deep) 55%, black);
+   
+   /* Delete / danger */
+   --color-dash-danger:
+       color-mix(in srgb, var(--color-romantic-deep) 45%, #2F6496);
+   
+   --color-dash-danger-text:
+       color-mix(in srgb, var(--color-romantic-deep) 35%, #2F6496);
+   
+   --color-dash-danger-soft:
+       color-mix(in srgb, var(--color-romantic-blush) 35%, white);
+   
+   --color-dash-danger-softer:
+       color-mix(in srgb, var(--color-romantic-blush) 18%, white);
+   
+   --color-dash-danger-border:
+       color-mix(in srgb, var(--color-romantic-blush) 60%, white);
 
   /* ─────────────────────────────────────────────────────────── */
   --font-imperial-script: "Imperial Script", cursive;
@@ -1028,17 +661,17 @@ img[src*="%2Flovestorydeco%2F"] {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #EAF3FB;
 }
 
 /* Updated scrollbar color to primary */
 ::-webkit-scrollbar-thumb {
-  background: #835643;
+  background: #4E86B7;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #D8B0B0;
+  background: #959D6C;
 }
 
 /* Shimmer animation for countdown cards */
@@ -1121,9 +754,9 @@ img[src*="%2Flovestorydeco%2F"] {
   font-style: normal;
 }
 
-/* Countdown gradient text — blush pink */
+/* Countdown gradient text — butter to sunshine */
 .countdown-gradient-text * {
-  background: linear-gradient(180deg, #F6D3D8 0%, #E3A3AE 100%);
+  background: linear-gradient(180deg, #FAE292 0%, #FDCC4B 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1136,7 +769,7 @@ img[src*="%2Flovestorydeco%2F"] {
 }
 
 .bg-wedding-paper {
-  background-color: #FAF4F4;
+  background-color: #F7FBFF;
 }
 
 .text-wedding-brown {
@@ -1144,7 +777,7 @@ img[src*="%2Flovestorydeco%2F"] {
 }
 
 .text-wedding-paper {
-  color: #FAF4F4;
+  color: #F7FBFF;
 }
 
 /* Font utilities for Love Story section */
@@ -1605,7 +1238,7 @@ img[src*="%2Flovestorydeco%2F"] {
   to { opacity: 0.95; transform: rotate(1.6deg) scale(1.025); }
 }
 
-/* Soft petals drifting up behind the card (colors: --invite-script / --invite-accent) */
+/* Soft petals drifting up behind the card (colors set per petal in proposal-page.tsx) */
 .invite-motes {
   position: fixed;
   inset: 0;
@@ -1641,4 +1274,107 @@ img[src*="%2Flovestorydeco%2F"] {
 @media (prefers-reduced-motion: reduce) {
   .invite-corner { animation: none; opacity: 0.95; }
   .invite-motes { display: none; }
+}
+
+/* Looping video behind the loading screen and home hero
+   (components/background-video.tsx): fills its positioned parent,
+   with a white wash on top. */
+.background-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--color-motif-soft);
+}
+.background-video__media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.background-video__veil {
+  position: absolute;
+  inset: 0;
+  background: white;
+}
+
+/* ==========================================================================
+   Sky garden backdrop (components/sky-backdrop.tsx)
+   Pale sky at the edges, cloud-white through the middle; clouds tile every
+   900px so long sections stay covered, and drift very slowly sideways.
+   ========================================================================== */
+.sky-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-motif-medium) 24%, white) 0%,
+    var(--color-motif-soft) 22%,
+    #FFFFFF 50%,
+    var(--color-motif-soft) 78%,
+    color-mix(in srgb, var(--color-motif-medium) 24%, white) 100%
+  );
+}
+
+.sky-backdrop__clouds,
+.sky-backdrop__sun,
+.sky-backdrop__haze {
+  position: absolute;
+  inset: 0;
+}
+
+/* Soft clouds: wide white ellipses with a hint of sky shading underneath */
+.sky-backdrop__clouds {
+  inset: 0 -50%;
+  background-image:
+    radial-gradient(22% 9% at 14% 12%, rgb(255 255 255 / 95%) 0%, rgb(255 255 255 / 60%) 45%, transparent 75%),
+    radial-gradient(16% 7% at 22% 15%, color-mix(in srgb, var(--color-motif-medium) 18%, transparent) 0%, transparent 75%),
+    radial-gradient(18% 8% at 62% 34%, rgb(255 255 255 / 90%) 0%, rgb(255 255 255 / 50%) 45%, transparent 75%),
+    radial-gradient(26% 10% at 88% 62%, rgb(255 255 255 / 85%) 0%, rgb(255 255 255 / 45%) 45%, transparent 75%),
+    radial-gradient(14% 6% at 36% 84%, rgb(255 255 255 / 80%) 0%, transparent 75%),
+    radial-gradient(20% 8% at 80% 92%, color-mix(in srgb, var(--color-motif-medium) 14%, transparent) 0%, transparent 75%);
+  background-size: 100% 900px;
+  background-repeat: repeat-y;
+  filter: blur(6px);
+  animation: sky-drift 120s linear infinite alternate;
+}
+
+/* Sun glow top-right (first section of a run) */
+.sky-backdrop__sun {
+  background: radial-gradient(40% 22% at 92% 0%, color-mix(in srgb, var(--color-motif-silver) 45%, transparent) 0%, transparent 70%);
+}
+
+/* Sage haze along the bottom (last section of a run) */
+.sky-backdrop__haze {
+  background:
+    radial-gradient(60% 14% at 0% 100%, color-mix(in srgb, var(--color-motif-yellow) 16%, transparent) 0%, transparent 70%),
+    radial-gradient(60% 14% at 100% 100%, color-mix(in srgb, var(--color-motif-yellow) 14%, transparent) 0%, transparent 70%);
+}
+
+@keyframes sky-drift {
+  from { transform: translateX(-6%); }
+  to { transform: translateX(6%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sky-backdrop__clouds { animation: none; }
+}
+
+/* Gallery (mobile): arrows nudge outward to hint at swiping */
+.gallery-swipe-arrow {
+  animation: gallery-swipe-nudge 1.6s ease-in-out infinite;
+}
+.gallery-swipe-arrow--left { --nudge: -4px; }
+.gallery-swipe-arrow--right { --nudge: 4px; }
+
+@keyframes gallery-swipe-nudge {
+  0%, 100% { transform: translateX(0); opacity: 0.55; }
+  50% { transform: translateX(var(--nudge)); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-swipe-arrow { animation: none; }
 }

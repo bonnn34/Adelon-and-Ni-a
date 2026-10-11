@@ -31,6 +31,9 @@ export type LoveStoryEucalyptusDecos = {
 
 interface StorySectionProps {
   imageSrc?: string
+  imageAlt?: string
+  // Milestone date shown above the title (falls back to "Chapter 0X")
+  date?: string
   title?: string
   text: React.ReactNode
   layout: "image-left" | "image-right"
@@ -71,8 +74,102 @@ function PlainChapterDivider({ dark }: { dark: boolean }) {
   )
 }
 
+/**
+ * Plain mode: open layout, no card. Photo and text sit side by side and swap
+ * sides each chapter (layout "image-left" / "image-right"); text aligns toward
+ * its photo. A small sage divider separates chapters.
+ */
+function PlainOpenChapter({
+  imageSrc,
+  imageAlt,
+  date,
+  title,
+  text,
+  photoLeft,
+  isLast,
+  chapterIndex,
+  fallbackLabel,
+}: {
+  imageSrc?: string
+  imageAlt?: string
+  date?: string
+  title?: string
+  text: React.ReactNode
+  photoLeft: boolean
+  isLast: boolean
+  chapterIndex: number
+  fallbackLabel: string
+}) {
+  const reduceMotion = useReducedMotion()
+  const photoFrom = reduceMotion ? { opacity: 1, x: 0, rotate: 0 } : { opacity: 0, x: photoLeft ? -40 : 40, rotate: 0 }
+  const textFrom = reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }
+  const tilt = photoLeft ? -2.5 : 2.5
+
+  return (
+    <div className={`${theSeasons.variable} story-open relative z-[2] px-4 sm:px-6 md:px-10`}>
+      <div
+        className={`mx-auto flex max-w-5xl items-center gap-4 py-8 sm:gap-8 sm:py-12 md:gap-14 md:py-16 ${
+          photoLeft ? "flex-row" : "flex-row-reverse"
+        }`}
+      >
+        {imageSrc ? (
+          <motion.div
+            className="w-[44%] shrink-0 sm:w-[42%] md:w-5/12"
+            initial={photoFrom}
+            whileInView={{ opacity: 1, x: 0, rotate: tilt }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.95, ease: revealEase }}
+          >
+            <div className="story-open-photo">
+              <div className="relative aspect-[4/5] w-full overflow-hidden">
+                <Image
+                  src={encodeURI(imageSrc)}
+                  alt={imageAlt || "Story moment"}
+                  fill
+                  sizes="(max-width: 640px) 44vw, (max-width: 1024px) 40vw, 420px"
+                  className="object-cover"
+                  quality={85}
+                  priority={chapterIndex < 1}
+                />
+              </div>
+            </div>
+          </motion.div>
+        ) : null}
+
+        <motion.div
+          className={`min-w-0 flex-1 ${photoLeft ? "text-left" : "text-right"}`}
+          initial={textFrom}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.85, delay: 0.15, ease: revealEase }}
+        >
+          <p className={`${theSeasons.className} story-open-date`}>{date || fallbackLabel}</p>
+          {title ? (
+            <h2 className={`${theSeasons.className} story-open-title`}>{title}</h2>
+          ) : null}
+          <span
+            className={`story-open-rule ${photoLeft ? "" : "ml-auto"}`}
+            aria-hidden
+          />
+          <div className={`font-goudy-italic story-open-text ${sectionType.textRelaxed}`}>{text}</div>
+        </motion.div>
+      </div>
+
+      {!isLast && (
+        <div className="flex items-center justify-center gap-1.5" aria-hidden>
+          <span className="h-px w-10 sm:w-16" style={{ background: "linear-gradient(to right, transparent, var(--color-motif-yellow))" }} />
+          <span className="h-1 w-1 rounded-full sm:h-1.5 sm:w-1.5" style={{ background: "var(--color-motif-accent)" }} />
+          <span className="h-px w-10 sm:w-16" style={{ background: "linear-gradient(to left, transparent, var(--color-motif-yellow))" }} />
+        </div>
+      )}
+    </div>
+  )
+}
+
 export const StorySection: React.FC<StorySectionProps> = ({
   imageSrc,
+  imageAlt,
+  date,
   title,
   text,
   layout,
@@ -84,9 +181,26 @@ export const StorySection: React.FC<StorySectionProps> = ({
   eucalyptusDecos,
   chapterLabelText = "Chapter",
 }) => {
+  const reduceMotion = useReducedMotion()
+
+  if (plain) {
+    return (
+      <PlainOpenChapter
+        imageSrc={imageSrc}
+        imageAlt={imageAlt}
+        date={date}
+        title={title}
+        text={text}
+        photoLeft={layout === "image-left"}
+        isLast={isLast}
+        chapterIndex={chapterIndex}
+        fallbackLabel={`${chapterLabelText} ${String(chapterIndex + 1).padStart(2, "0")}`}
+      />
+    )
+  }
+
   const isDark = theme === "dark"
   const showImage = !plain && Boolean(imageSrc)
-  const reduceMotion = useReducedMotion()
   const slideFromLeft = layout === "image-left"
 
   const imageFrameStyle = isDark
@@ -185,7 +299,7 @@ export const StorySection: React.FC<StorySectionProps> = ({
                   <div className="group relative aspect-[3/4] w-full overflow-hidden">
                     <Image
                       src={imageSrc}
-                      alt="Story moment"
+                      alt={imageAlt || "Story moment"}
                       fill
                       sizes="(max-width: 768px) 45vw, (max-width: 1024px) 40vw, 33vw"
                       className="object-cover transition-transform duration-1000 group-hover:scale-105"
@@ -216,10 +330,27 @@ export const StorySection: React.FC<StorySectionProps> = ({
               <span className="story-plain-card__dot" aria-hidden />
               <div className="wedding-frame-inner hidden min-[400px]:block" aria-hidden />
               <div className="relative z-[2]">
+              {imageSrc ? (
+                <div
+                  className={`story-plain-photo mx-auto mb-6 w-[78%] max-w-[18rem] sm:mb-7 ${slideFromLeft ? "-rotate-2" : "rotate-2"}`}
+                >
+                  <div className="relative aspect-[4/5] w-full overflow-hidden">
+                    <Image
+                      src={encodeURI(imageSrc)}
+                      alt={imageAlt || "Story moment"}
+                      fill
+                      sizes="(max-width: 640px) 70vw, 288px"
+                      className="object-cover"
+                      quality={85}
+                      priority={chapterIndex < 1}
+                    />
+                  </div>
+                </div>
+              ) : null}
               <p
-                className={`${theSeasons.className} story-plain-chapter-label mb-2 text-[0.58rem] font-medium uppercase sm:text-[0.62rem]`}
+                className={`${theSeasons.className} story-plain-chapter-label mb-2 text-[0.6rem] font-medium uppercase sm:text-[0.66rem]`}
               >
-                {chapterLabelText} {chapterLabel}
+                {date || `${chapterLabelText} ${chapterLabel}`}
               </p>
               {title ? (
                 <h2

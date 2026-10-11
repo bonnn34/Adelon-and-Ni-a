@@ -7,7 +7,7 @@ import { StorySection } from "@/components/StorySection"
 import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { siteConfig as defaultSiteConfig } from "@/content/site"
-import { PlainBubbles } from "@/components/loader/PlainBubbles"
+import { SkyBackdrop } from "@/components/sky-backdrop"
 import "@/components/loader/loading-screen.css"
 import { TintedDeco } from "@/components/tinted-deco"
 
@@ -25,11 +25,8 @@ const aboveTheBeyond = localFont({
 
 const revealEase = [0.22, 1, 0.36, 1] as const
 
-// Section background = the hero's circle pattern (PlainBubbles paints its own aqua base)
-const sectionBg = "var(--color-bg-pattern-base)"
-
-// Soft white halo so text stays readable over the circles (globals.css → --color-on-pattern-glow)
-const onBgGlow = "0 1px 0 var(--color-on-pattern-glow), 0 2px 12px var(--color-on-pattern-glow)"
+// Soft white edge so text stays crisp over the sky backdrop
+const onBgGlow = "0 1px 0 rgb(255 255 255 / 85%), 0 0 12px rgb(255 255 255 / 70%)"
 
 function formatStoryParagraph(
   paragraph: string,
@@ -45,17 +42,13 @@ function OrnamentalDivider() {
   return (
     <div className="flex items-center justify-center gap-1.5">
       <span
-        className="h-px w-6 sm:w-10"
-        style={{
-          background: "color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)",
-        }}
+        className="h-px w-10 sm:w-16"
+        style={{ background: "linear-gradient(to right, transparent, var(--color-motif-yellow))" }}
       />
-      <span className="h-0.5 w-0.5 rounded-full bg-motif-deep sm:h-1 sm:w-1" aria-hidden />
+      <span className="h-1 w-1 rounded-full sm:h-1.5 sm:w-1.5" style={{ background: "var(--color-motif-accent)" }} aria-hidden />
       <span
-        className="h-px w-6 sm:w-10"
-        style={{
-          background: "color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)",
-        }}
+        className="h-px w-10 sm:w-16"
+        style={{ background: "linear-gradient(to left, transparent, var(--color-motif-yellow))" }}
       />
     </div>
   )
@@ -70,7 +63,7 @@ function LoveStoryTitle({
 }) {
   return (
     <h1
-      className="welcome-title-lockup relative mx-auto mt-6 w-full max-w-full text-center sm:mt-8 md:mt-10"
+      className="welcome-title-lockup relative mx-auto w-full max-w-full text-center"
       style={
         {
           "--title-size": layeredSectionTitleSize.main,
@@ -93,7 +86,7 @@ function LoveStoryTitle({
         className={`${aboveTheBeyond.className} mx-auto mt-2 block w-fit max-w-full px-1 leading-[0.88] sm:mt-2.5 sm:leading-[0.9] md:mt-3`}
         style={{
           fontSize: "var(--script-size)",
-          color: "var(--color-romantic-coral)",
+          color: "var(--color-welcome-heading)",
           textShadow: onBgGlow,
         }}
       >
@@ -101,42 +94,6 @@ function LoveStoryTitle({
       </span>
       <span className="sr-only">{subtitle}</span>
     </h1>
-  )
-}
-
-const CORNER_ANIM_CLASS = {
-  topLeft: "invite-section-corner-img--animated invite-section-corner-img--tl",
-  topRight: "invite-section-corner-img--animated invite-section-corner-img--tr",
-  bottomLeft: "invite-section-corner-img--animated invite-section-corner-img--bl",
-  bottomRight: "invite-section-corner-img--animated invite-section-corner-img--br",
-} as const
-
-function SectionCornerDecos({
-  cornerDecos,
-}: {
-  cornerDecos: (typeof defaultSiteConfig.loadingScreen)["cornerDecos"]
-}) {
-  const corners = [
-    { src: cornerDecos.topLeft, className: "left-0 top-0", anim: CORNER_ANIM_CLASS.topLeft },
-    { src: cornerDecos.topRight, className: "right-0 top-0", anim: CORNER_ANIM_CLASS.topRight },
-    {
-      src: cornerDecos.bottomLeft,
-      className: "left-0 bottom-0",
-      anim: CORNER_ANIM_CLASS.bottomLeft,
-    },
-    {
-      src: cornerDecos.bottomRight,
-      className: "right-0 bottom-0",
-      anim: CORNER_ANIM_CLASS.bottomRight,
-    },
-  ] as const
-
-  return (
-    <div className="invite-section-corners" aria-hidden="true">
-      {corners.map(({ src, className, anim }) => (
-        <TintedDeco key={src} src={src} className={`invite-section-corner-img absolute ${className} ${anim}`} />
-      ))}
-    </div>
   )
 }
 
@@ -161,13 +118,12 @@ function chapterTextFromParagraphs(
   )
 }
 
-export function LoveStory() {
+// skyBackdrop: false when a parent already paints one sky behind this and the previous section
+export function LoveStory({ skyBackdrop = true }: { skyBackdrop?: boolean } = {}) {
   const siteConfig = useSiteConfig()
   const loading = siteConfig.loadingScreen ?? defaultSiteConfig.loadingScreen
   const loveStory = siteConfig.loveStory ?? defaultSiteConfig.loveStory
   const isPlain = loading.display === "plain"
-  const cornerDecos =
-    loading.cornerDecos ?? defaultSiteConfig.loadingScreen.cornerDecos
   const reduceMotion = useReducedMotion()
 
   const groom =
@@ -186,14 +142,11 @@ export function LoveStory() {
     <div
       id="love-story"
       className={`love-story-root ${theSeasons.variable} ${aboveTheBeyond.variable} relative min-h-screen w-full overflow-x-hidden`}
-      style={{ background: sectionBg }}
     >
-      {/* Same circle pattern as the other sections */}
-      <PlainBubbles />
-      <SectionCornerDecos cornerDecos={cornerDecos} />
+      {skyBackdrop && <SkyBackdrop haze />}
 
       <header
-        className="relative z-20 px-4 pb-6 pt-8 text-center sm:px-6 sm:pb-4 sm:pt-10 md:px-8 md:pt-12"
+        className="relative z-20 px-4 pb-2 pt-4 text-center sm:px-6 sm:pt-6 md:px-8 md:pt-8"
       >
         <motion.div
           className="relative mx-auto max-w-5xl @container/love-story"
@@ -202,7 +155,6 @@ export function LoveStory() {
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.75, ease: revealEase }}
         >
-          <OrnamentalDivider />
           <LoveStoryTitle title={loveStory.title} subtitle={loveStory.subtitle} />
         </motion.div>
       </header>
@@ -214,6 +166,8 @@ export function LoveStory() {
           theme={chapter.theme}
           layout={chapter.layout}
           imageSrc={chapter.image}
+          imageAlt={formatStoryParagraph(chapter.imageAlt ?? "", groom, bride)}
+          date={chapter.date}
           text={chapterTextFromParagraphs(chapter.paragraphs, groom, bride)}
           plain={isPlain}
           chapterIndex={index}
@@ -244,7 +198,7 @@ export function LoveStory() {
             </p>
             <footer
               className={`font-goudy-italic mt-2 sm:mt-3 ${sectionType.label} not-italic tracking-wide`}
-              style={{ color: "var(--color-romantic-coral)", textShadow: onBgGlow }}
+              style={{ color: "var(--color-welcome-heading)", textShadow: onBgGlow }}
             >
               — {loveStory.closingCitation}
             </footer>

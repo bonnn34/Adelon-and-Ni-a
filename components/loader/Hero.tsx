@@ -20,8 +20,7 @@ import { siteConfig as defaultSiteConfig } from '@/content/site';
 import { parseWeddingDate } from '@/lib/wedding-date';
 import { InviteParticles } from '@/components/loader/InviteParticles';
 import { InvitePhotoBackdrop } from '@/components/loader/invite-photo-backdrop';
-import { PlainAtmosphere } from '@/components/loader/PlainAtmosphere';
-import { PlainBubbles } from '@/components/loader/PlainBubbles';
+import { BackgroundVideo } from '@/components/background-video';
 import { TintedDeco } from '@/components/tinted-deco';
 import './envelope-invite.css';
 
@@ -537,8 +536,7 @@ export const Hero: React.FC<HeroProps> = ({
 
       {isPlain && (
         <>
-          <PlainAtmosphere fixed baseColor={plainTheme.background} />
-          <PlainBubbles fixed />
+          <BackgroundVideo veil={0.5} />
           <div className="env-invite-plain-corners" aria-hidden="true">
             {(
               [

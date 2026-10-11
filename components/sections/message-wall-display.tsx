@@ -16,14 +16,17 @@ const cinzel = Cinzel({
 })
 
 // Palette lives in globals.css → motif / welcome tokens.
-// Cards are plain light with teal text; buttons are coral with light text.
+// Cards are white paper with navy text; buttons are dusty blue with white text.
 const TEAL = "var(--color-welcome-navy)"
-const BUTTON = "var(--color-romantic-coral)"
-const PAPER = "var(--color-motif-soft)"
-const IVORY = "var(--color-motif-soft)"
+const BLUE = "var(--color-welcome-heading)"
+const BUTTON = "linear-gradient(180deg, var(--color-welcome-heading) 0%, color-mix(in srgb, var(--color-welcome-heading) 72%, var(--color-welcome-navy)) 100%)"
+const BUTTON_EDGE = "rgb(255 255 255 / 70%)"
+const SUN = "var(--color-motif-accent)"
+const PAPER = "#FFFFFF"
+const IVORY = "#FFFFFF"
 const NAVY = TEAL
-const BODY = TEAL
-const ACCENT = TEAL
+const BODY = "var(--color-welcome-text)"
+const ACCENT = BLUE
 
 const palette = {
   body: BODY,
@@ -36,11 +39,11 @@ const messageCardStyle = {
   background: PAPER,
   borderWidth: "1px",
   borderStyle: "solid",
-  borderColor: "color-mix(in srgb, var(--color-welcome-navy) 25%, transparent)",
+  borderColor: "color-mix(in srgb, var(--color-motif-medium) 70%, transparent)",
   boxShadow: "0 16px 34px -22px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
 } as const
 
-const HAIRLINE = "color-mix(in srgb, var(--color-welcome-navy) 22%, transparent)"
+const HAIRLINE = "color-mix(in srgb, var(--color-motif-yellow) 40%, transparent)"
 
 const freshShadow =
   "0 18px 36px -18px color-mix(in srgb, var(--color-welcome-navy) 80%, transparent), inset 0 1px 0 rgb(255 255 255 / 80%)"
@@ -152,14 +155,14 @@ function MessageCard({
       className="group relative overflow-hidden rounded-[1.35rem] border sm:rounded-[1.5rem]"
       style={{
         ...messageCardStyle,
-        borderColor: isNew ? BUTTON : messageCardStyle.borderColor,
+        borderColor: isNew ? SUN : messageCardStyle.borderColor,
         boxShadow: isNew ? freshShadow : messageCardStyle.boxShadow,
       }}
     >
       {/* Hairline inner frame (turns teal on hover) */}
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-1.5 rounded-[1.05rem] border transition-colors duration-300 group-hover:border-[color-mix(in_srgb,#16828F_45%,transparent)] sm:rounded-[1.15rem]"
+        className="pointer-events-none absolute inset-1.5 rounded-[1.05rem] border transition-colors duration-300 group-hover:border-[color-mix(in_srgb,var(--color-welcome-heading)_45%,transparent)] sm:rounded-[1.15rem]"
         style={{ borderColor: HAIRLINE }}
       />
 
@@ -192,7 +195,7 @@ function MessageCard({
       <span
         aria-hidden
         className="font-goudy-italic pointer-events-none absolute bottom-[-0.35em] right-3 select-none text-[5.5rem] leading-none sm:text-[6.5rem]"
-        style={{ color: "color-mix(in srgb, var(--color-welcome-navy) 10%, transparent)" }}
+        style={{ color: "color-mix(in srgb, var(--color-motif-medium) 30%, transparent)" }}
       >
         &rdquo;
       </span>
@@ -206,8 +209,8 @@ function MessageCard({
           <div
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full sm:h-9 sm:w-9 md:h-10 md:w-10"
             style={{
-              background: TEAL,
-              boxShadow: `0 0 0 2px ${IVORY}, 0 0 0 3px ${HAIRLINE}, 0 6px 14px -6px color-mix(in srgb, var(--color-motif-deep) 55%, transparent)`,
+              background: BUTTON,
+              boxShadow: `0 0 0 2px ${IVORY}, 0 0 0 3px color-mix(in srgb, var(--color-motif-medium) 70%, transparent), 0 6px 14px -6px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)`,
             }}
           >
             <span className={`${cinzel.className} ${sectionType.label} font-semibold`} style={{ color: IVORY }}>
@@ -234,7 +237,7 @@ function MessageCard({
         <div className="relative z-10 pl-5 pr-1 sm:pl-6 sm:pr-3">
           <span
             className="font-goudy-italic absolute left-0 top-0 select-none text-2xl leading-none sm:text-3xl"
-            style={{ color: TEAL, opacity: 0.6 }}
+            style={{ color: BLUE, opacity: 0.7 }}
             aria-hidden
           >
             &ldquo;
@@ -265,18 +268,18 @@ function MessageCard({
                 onClick={() => onOpen(msg)}
                 aria-label={`Read the full message from ${msg.name}`}
                 className={`${cinzel.className} group/read relative inline-flex h-full items-center gap-1.5 overflow-hidden rounded-full border pl-1 pr-3 text-[0.58rem] font-semibold uppercase leading-none tracking-[0.14em] transition-all duration-300 hover:-translate-y-px hover:shadow-[0_8px_18px_-8px_color-mix(in_srgb,var(--color-welcome-navy)_55%,transparent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color-mix(in_srgb,var(--color-motif-accent)_45%,transparent)] active:translate-y-0 sm:pr-3.5 sm:text-[0.62rem]`}
-                style={{ color: IVORY, backgroundColor: BUTTON, borderColor: BUTTON }}
+                style={{ color: IVORY, background: BUTTON, borderColor: BUTTON_EDGE }}
               >
                 {/* Fill sweeps in on hover */}
                 <span
                   aria-hidden
                   className="absolute inset-0 origin-left scale-x-0 rounded-full transition-transform duration-500 ease-out group-hover/read:scale-x-100"
-                  style={{ background: "color-mix(in srgb, var(--color-romantic-coral) 85%, black)" }}
+                  style={{ background: "var(--color-welcome-navy)" }}
                 />
                 <span
                   aria-hidden
                   className="relative flex h-5 w-5 items-center justify-center rounded-full sm:h-6 sm:w-6"
-                  style={{ background: "color-mix(in srgb, var(--color-motif-soft) 22%, transparent)" }}
+                  style={{ background: "rgb(255 255 255 / 22%)" }}
                 >
                   <BookOpen className="h-2.5 w-2.5 sm:h-3 sm:w-3" style={{ color: IVORY }} />
                 </span>
@@ -400,8 +403,8 @@ export default function MessageWallDisplay({ messages, loading, freshKey = null 
             className={`${cinzel.className} ${sectionType.label} rounded-full border px-4 py-2 font-semibold uppercase tracking-[0.16em]`}
             style={{
               color: IVORY,
-              backgroundColor: BUTTON,
-              borderColor: BUTTON,
+              background: BUTTON,
+              borderColor: BUTTON_EDGE,
             }}
           >
             Your message will appear here
@@ -466,7 +469,7 @@ export default function MessageWallDisplay({ messages, loading, freshKey = null 
                 className="h-1.5 rounded-full transition-all duration-500"
                 style={{
                   width: isActive ? "1.5rem" : "0.375rem",
-                  background: isActive ? IVORY : "color-mix(in srgb, var(--color-motif-soft) 45%, transparent)",
+                  background: isActive ? "var(--color-motif-silver)" : "rgb(255 255 255 / 50%)",
                 }}
                 aria-label={`Show messages page ${idx + 1} of ${pageCount}`}
                 aria-current={isActive ? "true" : undefined}
@@ -493,8 +496,8 @@ export default function MessageWallDisplay({ messages, loading, freshKey = null 
               <DialogClose
                 className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full border transition-all duration-300 hover:rotate-90 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color-mix(in_srgb,var(--color-motif-accent)_45%,transparent)] sm:right-4 sm:top-4 sm:h-9 sm:w-9"
                 style={{
-                  backgroundColor: BUTTON,
-                  borderColor: BUTTON,
+                  background: BUTTON,
+                  borderColor: BUTTON_EDGE,
                   color: IVORY,
                   boxShadow: "0 6px 14px -6px color-mix(in srgb, var(--color-welcome-navy) 45%, transparent)",
                 }}

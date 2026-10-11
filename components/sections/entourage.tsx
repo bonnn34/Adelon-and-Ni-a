@@ -31,7 +31,7 @@ const aboveTheBeyond = localFont({
 
 // Palette lives in globals.css → motif / welcome tokens.
 const PAPER = "var(--color-welcome-bg-soft)"
-const ACCENT = "var(--color-motif-accent)"
+const ACCENT = "var(--color-welcome-heading)" // dusty blue — readable on light backgrounds (was sunshine yellow)
 const NAVY = "var(--color-ink-deep)"
 const SCRIPT = "var(--color-ink-accent)"
 const BODY = "var(--color-welcome-text)"

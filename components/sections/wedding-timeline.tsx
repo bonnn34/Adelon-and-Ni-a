@@ -29,17 +29,19 @@ const aboveTheBeyond = localFont({
 const CORNER_DECO_CLASS =
   "block h-auto w-auto max-w-[80px] sm:max-w-[120px] md:max-w-[170px] lg:max-w-[205px] xl:max-w-[245px] select-none"
 
-// Light palette — the section has no background and sits on the sage Silk backdrop.
+// Light palette — the section has no background and sits on the dusty-blue Silk backdrop.
+// White titles, butter-yellow times (readable on blue), soft navy halos.
 const IVORY = "var(--color-motif-soft)"
 const CREAM = "var(--color-motif-cream)"
 const PALE = "var(--color-motif-silver)"
 const LINE = "color-mix(in srgb, var(--color-motif-soft) 70%, transparent)"
 const entryEase = [0.22, 1, 0.36, 1] as const
 
-// Forest-green halo keeps light text readable over the moving backdrop
+// Navy halo keeps light text readable over the moving backdrop
 const titleShadow =
-  "0 1px 0 rgb(48 74 52 / 40%), 0 2px 10px rgb(48 74 52 / 35%), 0 8px 28px rgb(48 74 52 / 22%)"
-const textShadow = "0 1px 1px rgb(48 74 52 / 42%), 0 2px 10px rgb(48 74 52 / 28%)"
+  "0 1px 0 color-mix(in srgb, var(--color-welcome-navy) 45%, transparent), 0 2px 10px color-mix(in srgb, var(--color-welcome-navy) 40%, transparent), 0 8px 28px color-mix(in srgb, var(--color-welcome-navy) 28%, transparent)"
+const textShadow =
+  "0 1px 1px color-mix(in srgb, var(--color-welcome-navy) 50%, transparent), 0 2px 10px color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)"
 
 const lineRight = { background: `linear-gradient(to right, transparent, ${LINE})` } as const
 const lineLeft = { background: `linear-gradient(to left, transparent, ${LINE})` } as const
@@ -82,7 +84,7 @@ function OutsideDivider() {
   return (
     <div className="flex items-center justify-center gap-2">
       <span className="h-px w-10 sm:w-16" style={lineRight} />
-      <span className="h-1.5 w-1.5 rotate-45" style={{ background: IVORY }} aria-hidden />
+      <span className="h-1.5 w-1.5 rotate-45" style={{ background: "var(--color-motif-accent)" }} aria-hidden />
       <span className="h-px w-10 sm:w-16" style={lineLeft} />
     </div>
   )
@@ -302,7 +304,7 @@ function TimelineItem({ event, index }: { event: TimelineEvent; index: number })
           />
           <div
             className="relative h-2 w-2 rounded-full"
-            style={{ background: IVORY, boxShadow: "0 0 8px rgb(48 74 52 / 35%)" }}
+            style={{ background: "var(--color-motif-accent)", boxShadow: "0 0 0 2px #FFFFFF, 0 0 10px color-mix(in srgb, var(--color-welcome-navy) 45%, transparent)" }}
           />
         </div>
 
@@ -343,7 +345,7 @@ function TimelineItem({ event, index }: { event: TimelineEvent; index: number })
           />
           <div
             className="relative h-2 w-2 rounded-full"
-            style={{ background: IVORY, boxShadow: "0 0 8px rgb(48 74 52 / 35%)" }}
+            style={{ background: "var(--color-motif-accent)", boxShadow: "0 0 0 2px #FFFFFF, 0 0 10px color-mix(in srgb, var(--color-welcome-navy) 45%, transparent)" }}
           />
         </div>
 
@@ -429,8 +431,8 @@ function IconMark({
         className={`${
           mobile ? "h-24 w-24 sm:h-28 sm:w-28" : "h-18 w-18 lg:h-22 lg:w-22"
         } object-contain`}
-        // Black line art → warm ivory, with a soft forest halo
-        style={{ filter: "brightness(0) invert(1) sepia(0.12) drop-shadow(0 2px 6px rgb(48 74 52 / 45%))" }}
+        // Black line art → white, with a soft navy halo
+        style={{ filter: "brightness(0) invert(1) drop-shadow(0 2px 6px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent))" }}
       />
     )
   }
@@ -452,7 +454,7 @@ function IconMark({
   )
 }
 
-const iconStroke = "#FBFCF7" // --color-motif-soft
+const iconStroke = "#FFFFFF"
 
 function ArrivalIcon(props: React.SVGProps<SVGSVGElement>) {
   return (

@@ -60,7 +60,8 @@ const PETALS = Array.from({ length: 18 }, (_, i) => ({
   delay: -((i * 3.3) % 20),
   drift: (i % 2 === 0 ? 1 : -1) * (14 + ((i * 11) % 30)),
   spin: (i % 2 === 0 ? 1 : -1) * (160 + ((i * 47) % 300)),
-  color: i % 3 === 0 ? "var(--invite-accent)" : "var(--invite-script)",
+  // Sky, sage and butter petals
+  color: ["var(--color-motif-medium)", "var(--color-motif-yellow)", "var(--color-motif-silver)"][i % 3],
   petal: i % 2 === 0,
 }))
 
@@ -121,17 +122,21 @@ const dividerLineStyle = {
   background: "linear-gradient(to right, transparent, var(--invite-line), transparent)",
 } as const
 
+// Dusty blue → navy pill with white text (matches the rest of the invitation)
 const primaryBtnStyle: CSSProperties = {
-  background: "var(--invite-button)",
-  borderColor: "var(--invite-button)",
-  color: "var(--invite-button-text)",
-  boxShadow: "0 12px 24px -12px var(--invite-shadow)",
+  background:
+    "linear-gradient(180deg, var(--color-welcome-heading) 0%, color-mix(in srgb, var(--color-welcome-heading) 72%, var(--color-welcome-navy)) 100%)",
+  borderColor: "rgb(255 255 255 / 70%)",
+  color: "#FFFFFF",
+  boxShadow:
+    "0 0 0 3px color-mix(in srgb, var(--color-motif-medium) 22%, transparent), 0 12px 24px -12px var(--invite-shadow)",
 }
 
+// White pill with a sky border and navy text
 const secondaryBtnStyle: CSSProperties = {
   color: INK,
-  backgroundColor: "color-mix(in srgb, var(--invite-paper) 85%, transparent)",
-  borderColor: GOLD_BORDER,
+  backgroundColor: "#FFFFFF",
+  borderColor: "color-mix(in srgb, var(--color-motif-medium) 75%, transparent)",
 }
 
 const primaryBtnClass =
@@ -224,7 +229,7 @@ function OrnamentalDivider({ compact = false }: { compact?: boolean }) {
     >
       <span className="h-px flex-1 bg-gradient-to-r from-transparent to-[var(--invite-line)]" />
       <span className="h-1 w-1 rotate-45 bg-[var(--invite-script)]" />
-      <span className="h-1.5 w-1.5 rotate-45 border border-[var(--invite-accent)]" />
+      <span className="h-1.5 w-1.5 rotate-45 bg-[var(--color-motif-accent)]" />
       <span className="h-1 w-1 rotate-45 bg-[var(--invite-script)]" />
       <span className="h-px flex-1 bg-gradient-to-l from-transparent to-[var(--invite-line)]" />
     </div>
@@ -384,8 +389,8 @@ function ProposalCard({ children }: { children: ReactNode }) {
       <div
         className={`relative overflow-hidden border ${arch}`}
         style={{
-          background: `linear-gradient(175deg, ${IVORY} 0%, ${IVORY} 55%, ${INNER_SURFACE} 100%)`,
-          borderColor: GOLD_BORDER,
+          background: `radial-gradient(90% 30% at 50% 0%, #FFFFFF 0%, transparent 70%), linear-gradient(175deg, #FFFFFF 0%, ${IVORY} 55%, ${INNER_SURFACE} 100%)`,
+          borderColor: "color-mix(in srgb, var(--color-motif-medium) 70%, transparent)",
           boxShadow: "0 30px 70px -36px var(--invite-shadow), inset 0 1px 0 rgb(255 255 255 / 85%)",
         }}
       >
@@ -395,12 +400,12 @@ function ProposalCard({ children }: { children: ReactNode }) {
           style={{ border: `1px solid ${GOLD_BORDER_SOFT}` }}
           aria-hidden
         >
-          <span className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rotate-45" style={{ background: CHAMPAGNE }} />
-          <span className="absolute bottom-0 left-1/2 h-2.5 w-2.5 -translate-x-1/2 translate-y-1/2 rotate-45" style={{ background: CHAMPAGNE }} />
+          <span className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rotate-45" style={{ background: "var(--color-motif-accent)", boxShadow: "0 0 0 2px #FFFFFF" }} />
+          <span className="absolute bottom-0 left-1/2 h-2.5 w-2.5 -translate-x-1/2 translate-y-1/2 rotate-45" style={{ background: "var(--color-motif-accent)", boxShadow: "0 0 0 2px #FFFFFF" }} />
         </div>
         <div
           className={`pointer-events-none absolute inset-[0.95rem] sm:inset-[1.45rem] ${archInnermost}`}
-          style={{ border: "1px solid color-mix(in srgb, var(--invite-accent) 12%, transparent)" }}
+          style={{ border: "1px solid color-mix(in srgb, var(--color-motif-medium) 40%, transparent)" }}
           aria-hidden
         />
 
@@ -885,8 +890,8 @@ function ProposalPageInner({ role }: ProposalPageProps) {
 
   const siteConfig = useSiteConfig()
   const { labels } = siteConfig.proposal
-  // Silk paints on canvas, so resolve the CSS token to a hex color
-  const silkColor = rgbToHex(useCssColor("--color-motif-accent", "#C48C73"))
+  // Silk paints on canvas, so resolve the CSS token to a hex color (dusty blue, like the main invitation)
+  const silkColor = rgbToHex(useCssColor("--color-welcome-heading", "#4E86B7"))
   const copyKey = copyKeyFor(role)
   const copy = siteConfig.proposal.copy[copyKey]
   const confirmedDisplayName = (inviteeFromLink || preferredName).trim()
@@ -1002,7 +1007,7 @@ function ProposalPageInner({ role }: ProposalPageProps) {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative min-h-[100dvh] select-none px-3 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] sm:px-6 sm:py-16 md:py-20 ${pageScrollLocked ? "overflow-hidden" : "overflow-x-hidden"}`}
       style={{ background: sectionBackground, color: CREAM }}
     >
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.22]" aria-hidden>
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.32]" aria-hidden>
         <Suspense fallback={<div className="h-full w-full" style={{ background: sectionBackground }} />}>
           <Silk speed={6} scale={1} color={silkColor} noiseIntensity={0} rotation={0.25} />
         </Suspense>
@@ -1091,7 +1096,7 @@ function ProposalPageInner({ role }: ProposalPageProps) {
                 <div className="mx-auto mt-6 max-w-md text-left">
                   <label htmlFor="preferred-name" className="mb-2 block">
                     <SmallCaps>
-                      <T text={labels.nameForm.label} /> <span style={{ color: CHAMPAGNE }}>*</span>
+                      <T text={labels.nameForm.label} /> <span style={{ color: "var(--color-welcome-heading)" }}>*</span>
                     </SmallCaps>
                   </label>
                   <input
@@ -1102,7 +1107,7 @@ function ProposalPageInner({ role }: ProposalPageProps) {
                     value={preferredName}
                     onChange={(e) => setPreferredName(e.target.value)}
                     // 16px text on phones so iOS doesn't zoom in while typing
-                    className="font-goudy-italic w-full select-text rounded-xl px-4 py-3 text-base transition-all focus:outline-none focus:ring-2 focus:ring-[var(--invite-glow)] placeholder:text-[color-mix(in_srgb,var(--invite-accent)_80%,transparent)]"
+                    className="font-goudy-italic w-full select-text rounded-xl px-4 py-3 text-base transition-all focus:outline-none focus:ring-2 focus:ring-[color-mix(in_srgb,var(--color-motif-medium)_45%,transparent)] placeholder:text-[color-mix(in_srgb,var(--color-welcome-text)_55%,white)] focus:border-[var(--color-welcome-heading)]"
                     style={{
                       color: INK,
                       backgroundColor: IVORY,

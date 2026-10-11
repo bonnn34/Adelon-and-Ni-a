@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { motion } from "motion/react"
-import { Play } from "lucide-react"
+import { Play, Pause, Volume2, VolumeX, Maximize } from "lucide-react"
 import { useAudio } from "@/contexts/audio-context"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { siteConfig as defaultSiteConfig } from "@/content/site"
@@ -11,7 +11,7 @@ import localFont from "next/font/local"
 import Image from "next/image"
 import React from "react"
 import "@/components/loader/loading-screen.css"
-import { TintedDeco } from "@/components/tinted-deco"
+import { SkyBackdrop } from "@/components/sky-backdrop"
 
 const theSeasons = localFont({
   src: "../../Font/Fontspring-DEMO-theseasons-reg.otf",
@@ -26,11 +26,10 @@ const aboveTheBeyond = localFont({
 })
 
 const videoFrameStyle = {
-  borderColor: "color-mix(in srgb, var(--color-motif-accent) 22%, transparent)",
-  background:
-    "color-mix(in srgb, var(--color-welcome-bg-soft) 72%, var(--color-motif-blush))",
+  borderColor: "color-mix(in srgb, var(--color-motif-medium) 60%, transparent)",
+  background: "#FFFFFF",
   boxShadow:
-    "0 8px 24px color-mix(in srgb, var(--color-motif-deep) 8%, transparent), inset 0 1px 0 color-mix(in srgb, var(--color-motif-soft) 80%, transparent)",
+    "0 0 0 6px rgb(255 255 255 / 55%), 0 18px 40px -18px color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)",
 } as const
 
 declare global {
@@ -44,25 +43,25 @@ function OrnamentalDivider() {
   return (
     <div className="flex items-center justify-center gap-1.5">
       <span
-        className="h-px w-6 sm:w-10"
+        className="h-px w-10 sm:w-16"
         style={{
           background:
-            "linear-gradient(to right, transparent, color-mix(in srgb, var(--color-motif-deep) 38%, transparent))",
+            "linear-gradient(to right, transparent, var(--color-motif-yellow))",
         }}
       />
-      <span className="h-0.5 w-0.5 rounded-full bg-motif-deep/45 sm:h-1 sm:w-1" aria-hidden />
+      <span className="h-1 w-1 rounded-full sm:h-1.5 sm:w-1.5" style={{ background: "var(--color-motif-accent)" }} aria-hidden />
       <span
-        className="h-px w-6 sm:w-10"
+        className="h-px w-10 sm:w-16"
         style={{
           background:
-            "linear-gradient(to left, transparent, color-mix(in srgb, var(--color-motif-deep) 38%, transparent))",
+            "linear-gradient(to left, transparent, var(--color-motif-yellow))",
         }}
       />
     </div>
   )
 }
 
-function CoupleVideoTitle() {
+function CoupleVideoTitle({ title, script }: { title: string; script: string }) {
   return (
     <h2
       className="welcome-title-lockup relative mx-auto w-full max-w-full text-center"
@@ -80,327 +79,447 @@ function CoupleVideoTitle() {
           color: "var(--color-welcome-navy)",
         }}
       >
-        A Glimpse of Our Love
+        {title}
       </span>
       <span
         aria-hidden
         className={`${aboveTheBeyond.className} relative z-10 mx-auto mt-1.5 block w-fit max-w-full px-1 leading-[0.88] sm:mt-2 sm:leading-[0.9] md:mt-2.5`}
         style={{
           fontSize: "var(--script-size)",
-          color: "var(--color-welcome-script)",
+          color: "var(--color-welcome-heading)",
+          textShadow: "0 1px 0 rgb(255 255 255 / 80%)",
         }}
       >
-        Our Journey Together
+        {script}
       </span>
-      <span className="sr-only">Our Journey Together</span>
+      <span className="sr-only">{script}</span>
     </h2>
   )
 }
 
-function SectionCornerDecos({
-  cornerDecos,
-}: {
-  cornerDecos: (typeof defaultSiteConfig.loadingScreen)["cornerDecos"]
-}) {
-  const corners = [
-    { src: cornerDecos.topLeft, className: "left-0 top-0" },
-    { src: cornerDecos.topRight, className: "right-0 top-0" },
-    { src: cornerDecos.bottomLeft, className: "left-0 bottom-0" },
-    { src: cornerDecos.bottomRight, className: "right-0 bottom-0" },
-  ] as const
+// YouTube player states (IFrame API)
+const YT_PLAYING = 1
+const YT_PAUSED = 2
+const YT_ENDED = 0
+// YouTube flashes the video title for a few seconds when playback starts;
+// the cover stays up until it has gone.
+const TITLE_HIDE_MS = 3000
 
-  return (
-    <div className="invite-section-corners" aria-hidden="true">
-      {corners.map(({ src, className }) => (
-        <TintedDeco key={src} src={src} className={`invite-section-corner-img absolute ${className}`} />
-      ))}
-    </div>
-  )
+function formatTime(sec: number) {
+  if (!Number.isFinite(sec) || sec < 0) return "0:00"
+  const m = Math.floor(sec / 60)
+  const s = Math.floor(sec % 60)
+  return `${m}:${String(s).padStart(2, "0")}`
 }
 
-export function CoupleVideo() {
-  const siteConfig = useSiteConfig()
-  const loading = siteConfig.loadingScreen ?? defaultSiteConfig.loadingScreen
-  const cornerDecos =
-    loading.cornerDecos ?? defaultSiteConfig.loadingScreen.cornerDecos
-
-  const [hasClicked, setHasClicked] = useState(false)
-  const playerRef = useRef<any>(null)
-  const iframeRef = useRef<HTMLIFrameElement>(null)
-  const { pauseMusic, resumeMusic } = useAudio()
-  const videoId = "nhzVs-HhId4"
-
-  useEffect(() => {
-    if (!window.YT) {
+function loadYouTubeApi(): Promise<void> {
+  return new Promise((resolve) => {
+    if (window.YT && window.YT.Player) return resolve()
+    const prev = window.onYouTubeIframeAPIReady
+    window.onYouTubeIframeAPIReady = () => {
+      prev?.()
+      resolve()
+    }
+    if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
       const tag = document.createElement("script")
       tag.src = "https://www.youtube.com/iframe_api"
-      const firstScriptTag = document.getElementsByTagName("script")[0]
-      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
+      document.head.appendChild(tag)
     }
-  }, [])
+  })
+}
 
-  useEffect(() => {
-    if (!hasClicked || !iframeRef.current) return
+/**
+ * One player surface for both sources. A self-hosted file uses a plain <video>;
+ * a YouTube ID uses the IFrame API with its UI switched off, a click shield over
+ * the frame and our own controls, so no YouTube branding is shown.
+ */
+function useVideoPlayer(videoSrc: string, youtubeId: string, started: boolean) {
+  const { pauseMusic, resumeMusic } = useAudio()
+  const nativeRef = useRef<HTMLVideoElement>(null)
+  const ytHostRef = useRef<HTMLDivElement>(null)
+  const ytRef = useRef<any>(null)
+  const [playing, setPlaying] = useState(false)
+  const [ended, setEnded] = useState(false)
+  const [revealed, setRevealed] = useState(false) // frame visible (title flash has passed)
+  const [muted, setMuted] = useState(false)
+  const [time, setTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const useNative = Boolean(videoSrc)
 
-    const initPlayer = () => {
-      if (window.YT && window.YT.Player && iframeRef.current) {
-        playerRef.current = new window.YT.Player(iframeRef.current, {
-          events: {
-            onReady: (_event: any) => {
-              pauseMusic()
-            },
-            onStateChange: (event: any) => {
-              if (event.data === 1) {
-                pauseMusic()
-              } else if (event.data === 2 || event.data === 0) {
-                resumeMusic()
-              }
-            },
-          },
-        })
-      }
-    }
-
-    const timer = setTimeout(() => {
-      if (window.YT && window.YT.Player) {
-        initPlayer()
-      } else {
-        window.onYouTubeIframeAPIReady = initPlayer
-      }
-    }, 100)
-
-    return () => {
-      clearTimeout(timer)
-      if (playerRef.current && playerRef.current.destroy) {
-        try {
-          playerRef.current.destroy()
-        } catch {
-          // Ignore errors during cleanup
-        }
-      }
-    }
-  }, [hasClicked, pauseMusic, resumeMusic, videoId])
-
-  const handleThumbnailClick = () => {
-    setHasClicked(true)
+  const onPlay = useCallback(() => {
+    setPlaying(true)
+    setEnded(false)
     pauseMusic()
+  }, [pauseMusic])
+  const onPause = useCallback(() => {
+    setPlaying(false)
+    resumeMusic()
+  }, [resumeMusic])
+  const onEnd = useCallback(() => {
+    setPlaying(false)
+    setEnded(true)
+    setRevealed(false)
+    resumeMusic()
+  }, [resumeMusic])
+
+  // YouTube: build the player once the visitor presses play
+  useEffect(() => {
+    if (useNative || !started || !ytHostRef.current) return
+    let cancelled = false
+    let revealTimer: ReturnType<typeof setTimeout> | undefined
+    const host = ytHostRef.current
+    loadYouTubeApi().then(() => {
+      if (cancelled) return
+      // YouTube replaces the element it is given, so hand it a child React doesn't manage
+      const mount = document.createElement("div")
+      host.appendChild(mount)
+      ytRef.current = new window.YT.Player(mount, {
+        videoId: youtubeId,
+        width: "100%",
+        height: "100%",
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          disablekb: 1,
+          fs: 0,
+          rel: 0,
+          modestbranding: 1,
+          iv_load_policy: 3,
+          cc_load_policy: 0,
+          playsinline: 1,
+          origin: window.location.origin,
+        },
+        events: {
+          onReady: (e: any) => {
+            setDuration(e.target.getDuration() || 0)
+            e.target.playVideo()
+          },
+          onStateChange: (e: any) => {
+            if (e.data === YT_PLAYING) {
+              onPlay()
+              setDuration(e.target.getDuration() || 0)
+              clearTimeout(revealTimer)
+              revealTimer = setTimeout(() => setRevealed(true), TITLE_HIDE_MS)
+            } else if (e.data === YT_PAUSED) {
+              clearTimeout(revealTimer)
+              onPause()
+            } else if (e.data === YT_ENDED) {
+              clearTimeout(revealTimer)
+              onEnd()
+            }
+          },
+        },
+      })
+    })
+    return () => {
+      cancelled = true
+      clearTimeout(revealTimer)
+      try {
+        ytRef.current?.destroy?.()
+      } catch {
+        // ignore
+      }
+      ytRef.current = null
+      host.replaceChildren()
+    }
+  }, [useNative, started, youtubeId, onPlay, onPause, onEnd])
+
+  // Native: start as soon as the visitor presses play
+  useEffect(() => {
+    if (!useNative || !started) return
+    const v = nativeRef.current
+    if (!v) return
+    v.play().catch(() => setPlaying(false))
+  }, [useNative, started])
+
+  // Progress
+  useEffect(() => {
+    if (!playing) return
+    const id = window.setInterval(() => {
+      if (useNative) {
+        const v = nativeRef.current
+        if (v) setTime(v.currentTime)
+      } else if (ytRef.current?.getCurrentTime) {
+        setTime(ytRef.current.getCurrentTime())
+      }
+    }, 250)
+    return () => window.clearInterval(id)
+  }, [playing, useNative])
+
+  const play = () => {
+    if (useNative) nativeRef.current?.play().catch(() => {})
+    else ytRef.current?.playVideo?.()
+  }
+  const pause = () => {
+    if (useNative) nativeRef.current?.pause()
+    else ytRef.current?.pauseVideo?.()
+  }
+  const toggle = () => (playing ? pause() : play())
+  const seek = (fraction: number) => {
+    const t = Math.max(0, Math.min(1, fraction)) * duration
+    if (useNative) {
+      if (nativeRef.current) nativeRef.current.currentTime = t
+    } else ytRef.current?.seekTo?.(t, true)
+    setTime(t)
+  }
+  const toggleMute = () => {
+    const next = !muted
+    if (useNative) {
+      if (nativeRef.current) nativeRef.current.muted = next
+    } else if (next) ytRef.current?.mute?.()
+    else ytRef.current?.unMute?.()
+    setMuted(next)
+  }
+
+  return {
+    useNative, nativeRef, ytHostRef, playing, ended, revealed: useNative ? playing || time > 0 : revealed,
+    muted, time, duration, setDuration, setTime, onPlay, onPause, onEnd,
+    toggle, play, seek, toggleMute,
+  }
+}
+
+// skyBackdrop: false when a parent already paints one sky behind this and the next section
+export function CoupleVideo({ skyBackdrop = true }: { skyBackdrop?: boolean } = {}) {
+  const siteConfig = useSiteConfig()
+  // Fall back to the bundled config if a remote override is missing this block.
+  const content = siteConfig.coupleVideo ?? defaultSiteConfig.coupleVideo
+  const videoSrc = content.videoSrc ?? ""
+
+  const [started, setStarted] = useState(false)
+  const frameRef = useRef<HTMLDivElement>(null)
+  const player = useVideoPlayer(videoSrc, content.youtubeId, started)
+
+  // The cover hides YouTube's own start / pause / end screens
+  const showCover = !started || !player.revealed || !player.playing
+  const progress = player.duration ? player.time / player.duration : 0
+
+  const handleStart = () => {
+    if (!started) setStarted(true)
+    else if (player.ended) {
+      player.seek(0)
+      player.play()
+    } else player.toggle()
+  }
+
+  const goFullscreen = () => {
+    const el = frameRef.current
+    if (!el) return
+    if (document.fullscreenElement) document.exitFullscreen?.()
+    else el.requestFullscreen?.()
   }
 
   return (
-    <>
-      <style jsx global>{`
-        .youtube-embed-wrapper iframe {
-          pointer-events: auto;
-        }
-
-        .youtube-mask-container {
-          position: relative;
-        }
-
-        .youtube-mask-container::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 60px;
-          background: transparent;
-          z-index: 1;
-          pointer-events: none;
-        }
-
-        .youtube-mask-container::after {
-          content: "";
-          position: absolute;
-          top: 8px;
-          right: 8px;
-          width: 100px;
-          height: 50px;
-          background: transparent;
-          z-index: 1;
-          pointer-events: none;
-        }
-      `}</style>
-
-      <section
-        id="couple-video"
-        className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden px-4 pb-10 pt-8 sm:px-6 sm:pb-12 sm:pt-10 md:pb-16 md:pt-12`}
-        style={{ background: "var(--color-welcome-bg)" }}
+    <section
+      id="couple-video"
+      className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden px-4 pb-10 pt-8 sm:px-6 sm:pb-12 sm:pt-10 md:pb-16 md:pt-12`}
+    >
+      {skyBackdrop && <SkyBackdrop sun />}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.65, ease: [0.22, 0.61, 0.36, 1] }}
+        className="relative z-20 mx-auto w-full max-w-5xl @container/couple-video"
       >
-        <SectionCornerDecos cornerDecos={cornerDecos} />
+        <header className="text-center">
+          <OrnamentalDivider />
+          <div className="mx-auto mt-4 sm:mt-5 md:mt-6">
+            <CoupleVideoTitle title={content.title} script={content.script} />
+          </div>
+          <p
+            className={`font-goudy-italic mx-auto mt-4 max-w-xl sm:mt-5 md:mt-6 ${sectionType.textSnug}`}
+            style={{ color: "var(--color-welcome-text)" }}
+          >
+            {content.subtitle}
+          </p>
+        </header>
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.65, ease: [0.22, 0.61, 0.36, 1] }}
-          className="relative z-20 mx-auto w-full max-w-5xl @container/couple-video"
-        >
-          <header className="text-center">
-            <OrnamentalDivider />
-            <div className="mx-auto mt-4 sm:mt-5 md:mt-6">
-              <CoupleVideoTitle />
-            </div>
-            <p
-              className={`font-goudy-italic mx-auto mt-4 max-w-xl sm:mt-5 md:mt-6 ${sectionType.textSnug}`}
-              style={{ color: "var(--color-welcome-text-soft)" }}
+        <div className="mt-6 sm:mt-8 md:mt-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="relative group"
+          >
+            <div
+              ref={frameRef}
+              className="relative overflow-hidden rounded-lg border bg-black sm:rounded-xl md:rounded-2xl"
+              style={videoFrameStyle}
             >
-              Watch the journey that brought our hearts together
-            </p>
-          </header>
-
-          <div className="mt-6 sm:mt-8 md:mt-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="relative group"
-            >
-              <div
-                className="relative overflow-hidden rounded-lg border transition-shadow duration-500 sm:rounded-xl md:rounded-2xl group-hover:shadow-[0_12px_36px_color-mix(in_srgb,var(--color-motif-deep)_12%,transparent)]"
-                style={videoFrameStyle}
-              >
-                <div className="wedding-frame-inner hidden min-[400px]:block" aria-hidden />
-
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-5 top-0 z-10 h-px sm:inset-x-8"
-                  style={{
-                    background:
-                      "linear-gradient(to right, transparent, var(--color-motif-yellow), transparent)",
-                  }}
-                />
-
-                <div
-                  className="pointer-events-none absolute inset-0 rounded-[inherit] bg-gradient-to-br from-[color-mix(in_srgb,var(--color-motif-soft)_40%,transparent)] via-transparent to-[color-mix(in_srgb,var(--color-motif-silver)_25%,transparent)]"
-                  aria-hidden
-                />
-
-                <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-                    {!hasClicked && (
-                      <motion.div
-                        initial={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="absolute inset-0 z-20 cursor-pointer overflow-hidden rounded-[inherit]"
-                        onClick={handleThumbnailClick}
-                      >
-                        <Image
-                          src="/desktop-background/couples (32).webp"
-                          alt="Video thumbnail"
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                          priority
-                        />
-
-                        <div
-                          className="absolute inset-0 transition-opacity duration-300 group-hover:opacity-85"
-                          style={{
-                            background:
-                              "linear-gradient(to top, color-mix(in srgb, var(--color-welcome-navy) 42%, transparent), color-mix(in srgb, var(--color-motif-deep) 8%, transparent) 55%, transparent)",
-                          }}
-                        />
-
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <motion.div
-                            whileHover={{ scale: 1.08 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="relative"
-                          >
-                            <div
-                              className="absolute inset-0 scale-150 rounded-full blur-2xl transition-all duration-300 group-hover:scale-[1.7]"
-                              style={{
-                                backgroundColor:
-                                  "color-mix(in srgb, var(--color-welcome-gold) 40%, transparent)",
-                              }}
-                            />
-
-                            <div
-                              className="relative flex h-16 w-16 items-center justify-center rounded-full transition-all duration-300 sm:h-20 sm:w-20 md:h-24 md:w-24"
-                              style={{
-                                backgroundColor: "var(--color-welcome-green)",
-                                border:
-                                  "1px solid color-mix(in srgb, var(--color-welcome-botanical) 50%, transparent)",
-                                boxShadow:
-                                  "0 8px 24px color-mix(in srgb, var(--color-motif-deep) 18%, transparent), inset 0 1px 0 color-mix(in srgb, var(--color-motif-soft) 55%, transparent)",
-                              }}
-                            >
-                              <Play
-                                className="ml-1 h-8 w-8 fill-current sm:h-10 sm:w-10 md:h-12 md:w-12"
-                                style={{ color: "var(--color-motif-soft)" }}
-                              />
-                            </div>
-                          </motion.div>
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {hasClicked && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                        className="youtube-embed-wrapper absolute inset-0"
-                      >
-                        <div className="youtube-mask-container relative h-full w-full overflow-hidden">
-                          <iframe
-                            ref={iframeRef}
-                            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&cc_load_policy=0&fs=1&playsinline=1&enablejsapi=1&origin=${typeof window !== "undefined" ? window.location.origin : ""}`}
-                            className="absolute inset-0 h-full w-full"
-                            style={{ border: 0 }}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            title="Wedding Video"
-                          />
-
-                          <div
-                            className="pointer-events-none absolute left-0 right-0 top-0 z-10 h-16"
-                            style={{
-                              background:
-                                "linear-gradient(to bottom, color-mix(in srgb, var(--color-welcome-navy) 35%, transparent) 0%, transparent 100%)",
-                            }}
-                          />
-
-                          <div
-                            className="pointer-events-none absolute right-2 top-2 z-10 h-12 w-24 blur-xl"
-                            style={{
-                              backgroundColor:
-                                "color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
-                              mixBlendMode: "multiply",
-                            }}
-                          />
-
-                          <div
-                            className="pointer-events-none absolute inset-0 z-[5]"
-                            style={{
-                              background:
-                                "radial-gradient(circle at center, transparent 30%, color-mix(in srgb, var(--color-welcome-navy) 4%, transparent) 100%)",
-                            }}
-                          />
-                        </div>
-                      </motion.div>
+              <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                {/* Video layer */}
+                {started && (
+                  <div className="absolute inset-0 overflow-hidden bg-black">
+                    {player.useNative ? (
+                      <video
+                        ref={player.nativeRef}
+                        src={encodeURI(videoSrc)}
+                        className="absolute inset-0 h-full w-full object-cover"
+                        playsInline
+                        preload="auto"
+                        onPlay={player.onPlay}
+                        onPause={player.onPause}
+                        onEnded={player.onEnd}
+                        onLoadedMetadata={(e) => player.setDuration(e.currentTarget.duration)}
+                        onTimeUpdate={(e) => player.setTime(e.currentTarget.currentTime)}
+                      />
+                    ) : (
+                      // Slightly enlarged so the edges (where YouTube puts its logo) fall outside the frame
+                      <div className="absolute left-1/2 top-1/2 h-[118%] w-[118%] -translate-x-1/2 -translate-y-1/2">
+                        <div ref={player.ytHostRef} className="h-full w-full [&_iframe]:h-full [&_iframe]:w-full" />
+                      </div>
                     )}
                   </div>
-                </div>
-            </motion.div>
-          </div>
+                )}
 
-          <footer
-            className="mt-8 space-y-4 border-t pt-6 text-center sm:mt-10 sm:space-y-5 sm:pt-8 md:mt-12"
-            style={{
-              borderColor: "color-mix(in srgb, var(--color-motif-deep) 12%, transparent)",
-            }}
+                {/* Click shield: taps toggle play/pause and never reach YouTube's UI */}
+                {started && (
+                  <button
+                    type="button"
+                    className="absolute inset-0 z-10 cursor-pointer"
+                    aria-label={player.playing ? "Pause video" : "Play video"}
+                    onClick={handleStart}
+                  />
+                )}
+
+                {/* Cover: before playing, while paused or finished, and during YouTube's title flash */}
+                <div
+                  className={`absolute inset-0 z-20 overflow-hidden transition-opacity duration-700 ${
+                    showCover ? "opacity-100" : "pointer-events-none opacity-0"
+                  }`}
+                >
+                  <button
+                    type="button"
+                    className="absolute inset-0 h-full w-full cursor-pointer"
+                    onClick={handleStart}
+                    aria-label={content.playLabel}
+                  >
+                    <Image
+                      src={encodeURI(content.thumbnail)}
+                      alt={content.thumbnailAlt}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                      priority
+                    />
+                    <span
+                      className="absolute inset-0"
+                      style={{
+                        background:
+                          "linear-gradient(to top, color-mix(in srgb, var(--color-welcome-navy) 45%, transparent), transparent 60%)",
+                      }}
+                    />
+                    <span className="absolute inset-0 flex items-center justify-center">
+                      <span
+                        className="relative flex h-16 w-16 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-105 sm:h-20 sm:w-20 md:h-24 md:w-24"
+                        style={{
+                          backgroundColor: "color-mix(in srgb, var(--color-welcome-heading) 92%, transparent)",
+                          border: "2px solid rgb(255 255 255 / 85%)",
+                          boxShadow:
+                            "0 0 0 6px rgb(255 255 255 / 25%), 0 10px 26px color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)",
+                        }}
+                      >
+                        {started && player.playing ? (
+                          // Playing but YouTube's title is still on screen: gentle loading pulse
+                          <span className="h-3 w-3 animate-ping rounded-full bg-white" aria-hidden />
+                        ) : (
+                          <Play className="ml-1 h-8 w-8 fill-current text-white sm:h-10 sm:w-10 md:h-12 md:w-12" />
+                        )}
+                      </span>
+                    </span>
+                  </button>
+                </div>
+
+                {/* Our own controls */}
+                {started && (
+                  <div
+                    className={`absolute inset-x-0 bottom-0 z-30 flex items-center gap-3 px-3 pb-2.5 pt-8 transition-opacity duration-300 sm:px-4 sm:pb-3 ${
+                      player.playing && player.revealed ? "opacity-0 group-hover:opacity-100 focus-within:opacity-100" : "opacity-100"
+                    }`}
+                    style={{
+                      background:
+                        "linear-gradient(to top, color-mix(in srgb, var(--color-welcome-navy) 70%, transparent), transparent)",
+                    }}
+                  >
+                    <button
+                      type="button"
+                      onClick={handleStart}
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white hover:bg-white/15"
+                      aria-label={player.playing ? "Pause" : "Play"}
+                    >
+                      {player.playing ? <Pause className="h-4 w-4 fill-current" /> : <Play className="ml-0.5 h-4 w-4 fill-current" />}
+                    </button>
+                    <div
+                      className="relative h-1 flex-1 cursor-pointer rounded-full bg-white/30"
+                      role="slider"
+                      aria-label="Seek"
+                      aria-valuemin={0}
+                      aria-valuemax={Math.round(player.duration)}
+                      aria-valuenow={Math.round(player.time)}
+                      tabIndex={0}
+                      onClick={(e) => {
+                        const r = e.currentTarget.getBoundingClientRect()
+                        player.seek((e.clientX - r.left) / r.width)
+                      }}
+                      onKeyDown={(e) => {
+                        if (!player.duration) return
+                        if (e.key === "ArrowRight") player.seek((player.time + 5) / player.duration)
+                        if (e.key === "ArrowLeft") player.seek((player.time - 5) / player.duration)
+                      }}
+                    >
+                      <span
+                        className="absolute inset-y-0 left-0 rounded-full"
+                        style={{ width: `${progress * 100}%`, background: "var(--color-motif-medium)" }}
+                      />
+                      <span
+                        className="absolute top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full"
+                        style={{ left: `${progress * 100}%`, background: "var(--color-motif-accent)" }}
+                      />
+                    </div>
+                    <span
+                      className="shrink-0 text-[0.62rem] tracking-[0.12em] text-white/90 tabular-nums"
+                      style={{ fontFamily: "var(--font-cinzel), serif" }}
+                    >
+                      {formatTime(player.time)} / {formatTime(player.duration)}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={player.toggleMute}
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white hover:bg-white/15"
+                      aria-label={player.muted ? "Unmute" : "Mute"}
+                    >
+                      {player.muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={goFullscreen}
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white hover:bg-white/15"
+                      aria-label="Full screen"
+                    >
+                      <Maximize className="h-4 w-4" />
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        <footer
+          className="mt-8 space-y-4 border-t pt-6 text-center sm:mt-10 sm:space-y-5 sm:pt-8 md:mt-12"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-motif-medium) 45%, transparent)",
+          }}
+        >
+          <OrnamentalDivider />
+          <p
+            className={`font-goudy-italic mx-auto max-w-lg ${sectionType.textSnug}`}
+            style={{ color: "var(--color-welcome-navy)" }}
           >
-            <OrnamentalDivider />
-            <p
-              className={`font-goudy-italic mx-auto max-w-lg ${sectionType.textSnug}`}
-              style={{ color: "var(--color-welcome-text)" }}
-            >
-              A glimpse into the moments that made our hearts one
-            </p>
-          </footer>
-        </motion.div>
-      </section>
-    </>
+            {content.closingNote}
+          </p>
+        </footer>
+      </motion.div>
+    </section>
   )
 }

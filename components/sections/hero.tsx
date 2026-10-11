@@ -7,8 +7,7 @@ import localFont from "next/font/local"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { parseWeddingDate } from "@/lib/wedding-date"
 import { InvitePhotoBackdrop } from "@/components/loader/invite-photo-backdrop"
-import { PlainAtmosphere } from "@/components/loader/PlainAtmosphere"
-import { PlainBubbles } from "@/components/loader/PlainBubbles"
+import { BackgroundVideo } from "@/components/background-video"
 import { siteConfig as defaultSiteConfig } from "@/content/site"
 import "@/components/loader/loading-screen.css"
 import { TintedDeco } from "@/components/tinted-deco"
@@ -215,8 +214,6 @@ export function Hero() {
   const siteConfig = useSiteConfig()
   const loading = siteConfig.loadingScreen ?? defaultSiteConfig.loadingScreen
   const isPlain = loading.display === "plain"
-  const plainTheme =
-    loading.plainTheme ?? defaultSiteConfig.loadingScreen.plainTheme
   const cornerDecos =
     loading.cornerDecos ?? defaultSiteConfig.loadingScreen.cornerDecos
   const backgroundPhotos = loading.backgroundPhotos ?? []
@@ -232,11 +229,6 @@ export function Hero() {
     () => parseWeddingDate(siteConfig.ceremony.date ?? siteConfig.wedding.date),
     [siteConfig.ceremony.date, siteConfig.wedding.date],
   )
-
-  const weddingDate = new Date(`${parsedDate.month} ${parsedDate.day}, ${parsedDate.year}`)
-  const numericDate = Number.isNaN(weddingDate.getTime())
-    ? `${parsedDate.month} ${parsedDate.day}, ${parsedDate.year}`
-    : `${pad2(weddingDate.getMonth() + 1)}.${pad2(weddingDate.getDate())}.${parsedDate.year}`
 
   const ceremonyTimePhrase = formatCeremonyTimePhrase(
     siteConfig.ceremony.time ?? siteConfig.wedding.time,
@@ -262,15 +254,12 @@ export function Hero() {
     >
       {isPlain ? (
         <>
-          <PlainAtmosphere baseColor={plainTheme.background} />
-          <PlainBubbles />
+          <BackgroundVideo veil={0.45} />
           <div className="home-hero-plain-corners" aria-hidden="true">
             {(
               [
                 { src: cornerDecos.topLeft, className: "left-0 top-0" },
                 { src: cornerDecos.topRight, className: "right-0 top-0" },
-                { src: cornerDecos.bottomLeft, className: "left-0 bottom-0" },
-                { src: cornerDecos.bottomRight, className: "right-0 bottom-0" },
               ] as const
             ).map(({ src, className }) => (
               <TintedDeco key={src} src={src} className={`home-hero-plain-corner-img absolute ${className}`} />
@@ -292,7 +281,9 @@ export function Hero() {
         </>
       )}
 
-      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-5 pb-6 pt-[clamp(4.25rem,12vw,7rem)] text-center sm:px-8">
+      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-5 pb-[clamp(1rem,4vh,2rem)] pt-[clamp(6rem,24vw,7.5rem)] sm:pb-[clamp(2.5rem,9vh,5rem)] sm:pt-[clamp(3.75rem,10vw,6rem)] text-center sm:px-8">
+        {/* Soft frosted mist behind the whole text block — no edges, fades into the video */}
+        <span aria-hidden className="home-hero-mist pointer-events-none" />
         <motion.h1
           className="relative mx-auto w-full max-w-full @container text-center"
           style={
@@ -340,25 +331,47 @@ export function Hero() {
         </motion.h1>
 
         <motion.p
-          className={`${cinzel.className} home-hero-eyebrow mt-4 max-w-[22rem] text-[clamp(0.68rem,2.8vw,0.86rem)] font-medium uppercase leading-[1.7] tracking-[0.18em] sm:mt-5 sm:max-w-none sm:tracking-[0.22em]`}
+          className="home-hero-eyebrow mt-5 text-[clamp(1.05rem,4.6vw,1.4rem)] italic leading-snug sm:mt-6"
           {...fadeUp(0.2)}
         >
-          Save the date — we are getting married
+          We are getting married
         </motion.p>
 
-        <motion.p
-          className={`${theSeasons.className} home-hero-date mt-4 text-[clamp(1.85rem,8.5vw,3.65rem)] font-normal leading-none tracking-[0.08em] sm:mt-5`}
-          {...fadeUp(0.28)}
-        >
-          {numericDate}
-        </motion.p>
+        <motion.div className="home-hero-date-block mt-5 flex flex-col items-center sm:mt-6" {...fadeUp(0.28)}>
+          <span
+            className={`${cinzel.className} home-hero-date-weekday text-[clamp(0.66rem,2.8vw,0.8rem)] font-semibold uppercase tracking-[0.42em]`}
+          >
+            {parsedDate.dayOfWeek}
+          </span>
+          <div className="home-hero-date-row mt-2 flex items-center justify-center gap-[clamp(0.75rem,4vw,1.5rem)]">
+            <span
+              className={`${cinzel.className} home-hero-date-side text-[clamp(0.72rem,3vw,0.9rem)] font-semibold uppercase tracking-[0.24em]`}
+            >
+              {parsedDate.month}
+            </span>
+            <span
+              className={`${theSeasons.className} home-hero-date-day text-[clamp(3rem,14vw,4.75rem)] leading-none`}
+            >
+              {pad2(Number(parsedDate.day))}
+            </span>
+            <span
+              className={`${cinzel.className} home-hero-date-side text-[clamp(0.72rem,3vw,0.9rem)] font-semibold uppercase tracking-[0.24em]`}
+            >
+              {parsedDate.year}
+            </span>
+          </div>
+        </motion.div>
 
-        <motion.p
-          className={`${cinzel.className} home-hero-meta mt-4 text-[0.62rem] font-medium uppercase tracking-[0.18em] sm:text-[0.7rem] sm:tracking-[0.2em]`}
-          {...fadeUp(0.36)}
-        >
-          {ceremonyName} · {ceremonyTimePhrase}
-        </motion.p>
+        <motion.div className="home-hero-meta mt-5 flex flex-col items-center gap-1 sm:mt-6" {...fadeUp(0.36)}>
+          <span
+            className={`${cinzel.className} home-hero-meta-time text-[clamp(0.68rem,2.9vw,0.82rem)] font-semibold uppercase tracking-[0.22em]`}
+          >
+            {ceremonyTimePhrase}
+          </span>
+          <span className="home-hero-meta-venue text-[clamp(1.05rem,4.6vw,1.4rem)] italic leading-tight">
+            {ceremonyName}
+          </span>
+        </motion.div>
       </div>
 
       <motion.div className="home-hero-countdown-bar relative z-10 mt-auto w-full" {...fadeUp(0.42)}>

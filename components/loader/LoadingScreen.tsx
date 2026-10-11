@@ -7,8 +7,7 @@ import { useReducedMotion } from 'motion/react';
 import { useSiteConfig } from '@/hooks/use-site-config';
 import { siteConfig as defaultSiteConfig } from '@/content/site';
 import { PhotoMarquee } from '@/components/loader/invite-photo-backdrop';
-import { PlainAtmosphere } from '@/components/loader/PlainAtmosphere';
-import { PlainBubbles } from '@/components/loader/PlainBubbles';
+import { BackgroundVideo } from '@/components/background-video';
 import { TintedDeco } from '@/components/tinted-deco';
 import './loading-screen.css';
 
@@ -250,8 +249,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
 
       {isPlain && (
         <>
-          <PlainAtmosphere baseColor={plainTheme.background} />
-          <PlainBubbles />
+          <BackgroundVideo veil={0.45} />
           <div className="loading-screen__plain-corners" aria-hidden="true">
             {(
               [

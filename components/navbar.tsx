@@ -5,12 +5,12 @@ import Link from "next/link"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import Image from "next/image"
 import StaggeredMenu from "./StaggeredMenu"
-import { Cormorant_Garamond } from "next/font/google"
+import { Cinzel } from "next/font/google"
 import { siteConfig } from "@/content/site"
 
-const cormorant = Cormorant_Garamond({
+const cinzel = Cinzel({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["500", "600"],
 })
 
 // Palette lives in globals.css → @theme inline → --color-motif-*
@@ -25,7 +25,7 @@ const NAV_MONOGRAM = siteConfig.couple.monogram
 const navLinks: { href: string; label: string; wideOnly?: boolean }[] = [
   { href: "#home", label: "Home" },
   { href: "#welcome", label: "Welcome", wideOnly: true },
-  { href: "#love-story", label: "Our Message" },
+  { href: "#love-story", label: "Our Story" },
   { href: "#countdown", label: "Countdown", wideOnly: true },
   { href: "#gallery", label: "Gallery" },
   { href: "#messages", label: "Messages" },
@@ -132,15 +132,19 @@ export function Navbar() {
       }`}
       style={{
         background:
-          "linear-gradient(180deg, color-mix(in srgb, var(--color-motif-accent) 88%, white) 0%, var(--color-motif-accent) 42%, var(--color-motif-deep) 100%)",
+          "linear-gradient(180deg, color-mix(in srgb, var(--color-welcome-heading) 88%, white) 0%, var(--color-welcome-heading) 45%, var(--color-motif-deep) 100%)",
         borderBottom:
-          "1px solid color-mix(in srgb, var(--color-welcome-navy) 28%, transparent)",
+          "1px solid color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)",
       }}
     >
-      {isScrolled && (
-        <div className="absolute inset-0 bg-gradient-to-r from-white/12 via-transparent to-[color-mix(in_srgb,var(--color-welcome-navy)_10%,transparent)] pointer-events-none" />
-      )}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/14 via-transparent to-[color-mix(in_srgb,var(--color-welcome-navy)_14%,transparent)] pointer-events-none" />
+      {/* Garden hairline along the bottom edge: sky → sage → sky */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-[2px] pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, var(--color-motif-medium) 20%, var(--color-motif-yellow) 50%, var(--color-motif-medium) 80%, transparent)",
+        }}
+      />
       
       <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-8 relative">
         <div className="flex justify-between items-center h-12 sm:h-14 md:h-16 gap-3">
@@ -170,24 +174,19 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`${link.wideOnly ? "hidden 2xl:inline-block" : ""} whitespace-nowrap px-2 py-2 text-xs lg:px-2.5 lg:text-sm ${cormorant.className} font-medium rounded-lg transition-all duration-500 relative group ${
-                    isActive
-                      ? "text-[var(--color-motif-deep)] bg-[var(--color-motif-soft)] backdrop-blur-md shadow-[0_6px_16px_color-mix(in_srgb,var(--color-welcome-navy)_14%,transparent)] border border-[color-mix(in_srgb,var(--color-motif-soft)_85%,white)]"
-                      : "text-[var(--color-motif-soft)] hover:text-[var(--color-motif-soft)] hover:bg-white/14 hover:border hover:border-[color-mix(in_srgb,var(--color-motif-soft)_40%,transparent)] hover:shadow-[0_6px_14px_color-mix(in_srgb,var(--color-welcome-navy)_12%,transparent)] hover:scale-105 active:scale-95 bg-transparent border border-transparent"
+                  aria-current={isActive ? "location" : undefined}
+                  className={`${link.wideOnly ? "hidden 2xl:inline-block" : ""} ${cinzel.className} group relative whitespace-nowrap px-2.5 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em] transition-colors duration-300 lg:px-3 lg:text-[0.72rem] ${
+                    isActive ? "text-white" : "text-white/75 hover:text-white"
                   }`}
                 >
                   {link.label}
+                  {/* Butter underline that grows from the centre */}
                   <span
-                    className={`absolute bottom-0 left-0 h-0.5 bg-[var(--color-motif-silver)] transition-all duration-500 rounded-full ${
-                      isActive
-                        ? "w-full shadow-[0_0_8px_color-mix(in_srgb,var(--color-motif-soft)_65%,transparent)]"
-                        : "w-0 group-hover:w-full group-hover:shadow-[0_0_6px_color-mix(in_srgb,var(--color-motif-soft)_50%,transparent)]"
+                    aria-hidden
+                    className={`absolute bottom-1 left-1/2 h-px -translate-x-1/2 bg-[var(--color-motif-silver)] transition-all duration-300 ${
+                      isActive ? "w-[60%]" : "w-0 group-hover:w-[60%]"
                     }`}
                   />
-                  {isActive && (
-                    <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-[var(--color-welcome-gold)] animate-pulse shadow-[0_0_6px_color-mix(in_srgb,var(--color-welcome-gold)_55%,transparent)]" />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
                 </Link>
               )
             })}
@@ -200,15 +199,11 @@ export function Navbar() {
               socialItems={[]}
               displaySocials={false}
               menuButtonColor="var(--color-motif-soft)"
-              openMenuButtonColor="var(--color-motif-deep)"
+              openMenuButtonColor="#FFFFFF"
               changeMenuColorOnOpen={true}
-              colors={[
-                "var(--color-motif-silver)",
-                "var(--color-motif-blush)",
-                "var(--color-motif-medium)",
-                "var(--color-motif-soft)",
-              ]}
-              accentColor="var(--color-motif-accent)"
+              // One soft sky layer slides in just ahead of the panel
+              colors={["var(--color-motif-medium)"]}
+              accentColor="var(--color-welcome-heading)"
               isFixed={true}
               activeLink={activeSection}
               onMenuOpen={() => {}}
