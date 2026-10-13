@@ -75,6 +75,13 @@ function DecoImg({ src, className }: { src: string; className: string }) {
   return <TintedDeco src={src} className={className} />
 }
 
+// Corners keep their original artwork colors (no tint)
+function CornerImg({ src }: { src: string }) {
+  if (!src) return null
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} />
+}
+
 function OutsideDivider() {
   return (
     <div className="flex items-center justify-center gap-2">
@@ -758,16 +765,16 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
       >
         {/* Corner decorations (from site.ts) */}
         <div className="pointer-events-none absolute left-0 top-0 z-10">
-          <DecoImg src={decos.topLeft} className={CORNER_DECO_CLASS} />
+          <CornerImg src={decos.topLeft} />
         </div>
         <div className="pointer-events-none absolute right-0 top-0 z-10">
-          <DecoImg src={decos.topRight} className={CORNER_DECO_CLASS} />
+          <CornerImg src={decos.topRight} />
         </div>
         <div className="pointer-events-none absolute bottom-0 left-0 z-10">
-          <DecoImg src={decos.bottomLeft} className={CORNER_DECO_CLASS} />
+          <CornerImg src={decos.bottomLeft} />
         </div>
         <div className="pointer-events-none absolute bottom-0 right-0 z-10">
-          <DecoImg src={decos.bottomRight} className={CORNER_DECO_CLASS} />
+          <CornerImg src={decos.bottomRight} />
         </div>
 
       <div className={`relative z-20 mx-auto mb-5 max-w-5xl px-3 text-center @container/entourage sm:mb-10 sm:px-4 md:mb-12 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"}`}>

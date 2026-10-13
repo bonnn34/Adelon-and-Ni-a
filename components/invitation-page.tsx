@@ -87,7 +87,7 @@ const sectionsRevealVariants = {
 }
 
 /** WebGL Silk needs a hex color. */
-const SILK_COLOR = "#4E86B7"
+const SILK_COLOR = "#984641"
 
 type InvitationPageProps = {
   /** Which principal-sponsor sheet the entourage shows (googleAPI.sponsorsInviteOne / Two) */
@@ -263,7 +263,7 @@ export function InvitationPage({ sponsorsList, showEntourage = true }: Invitatio
               {/* One continuous circle pattern behind the video and love story (same as Details) — no seam between them */}
               <div className="relative">
                 <PlainBubbles />
-                <CoupleVideo skyBackdrop={false} />
+                {/* <CoupleVideo skyBackdrop={false} /> */}
                 <LoveStory skyBackdrop={false} />
               </div>
               <Countdown />
@@ -274,14 +274,22 @@ export function InvitationPage({ sponsorsList, showEntourage = true }: Invitatio
               <WeddingTimeline />
               {showEntourage && <Entourage sponsorsList={sponsorsList} />}
               <GuestList />
-              <BookOfGuests />
-     
-              <FAQ />
+              {/* One continuous circle pattern behind Book of Guests and FAQ — no seam between them */}
+              <div className="relative isolate" style={{ background: "var(--color-bg-pattern-base)" }}>
+                {/* Pattern repeated down the height so circles stay dense across both sections */}
+                <PlainBubbles bands={3} />
+                <BookOfGuests background={false} />
+                <FAQ background={false} />
+              </div>
               <Registry />
               <WeddingPlaylist /> 
               <SnapShare />
-              <SeeYouThere />
-              <Footer />
+              {/* One continuous circle pattern behind See You There and the footer — no seam between them */}
+              <div className="relative isolate" style={{ background: "var(--color-bg-pattern-base)" }}>
+                <PlainBubbles bands={3} />
+                <SeeYouThere background={false} />
+                <Footer background={false} />
+              </div>
               </motion.div>
             </div>
           </motion.div>

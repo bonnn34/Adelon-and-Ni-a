@@ -69,25 +69,25 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  /* Primary: dusty blue #4E86B7 */
-  --primary: #4E86B7;
+  /* Primary: terracotta #984641 */
+  --primary: #984641;
   --primary-foreground: oklch(0.145 0 0);
-  /* Secondary: sky blue #8CBBE5 */
-  --secondary: #8CBBE5;
+  /* Secondary: dusty rose #D4948A */
+  --secondary: #D4948A;
   --secondary-foreground: oklch(0.145 0 0);
   /* Sage mapped to secondary */
-  --sage: #8CBBE5;
-  /* Muted/light surfaces: pale sky #EAF3FB */
-  --muted: #EAF3FB;
+  --sage: #D4948A;
+  /* Muted/light surfaces: pale peach #F8EBE3 */
+  --muted: #F8EBE3;
   --muted-foreground: oklch(0.145 0 0);
-  /* Accent: sky blue #8CBBE5 */
-  --accent: #8CBBE5;
+  /* Accent: dusty rose #D4948A */
+  --accent: #D4948A;
   --accent-foreground: oklch(0.145 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: #4E86B7;
+  --ring: #984641;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -96,15 +96,15 @@
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #4E86B7;
+  --sidebar-primary: #984641;
   --sidebar-primary-foreground: oklch(0.145 0 0);
-  --sidebar-accent: #8CBBE5;
+  --sidebar-accent: #D4948A;
   --sidebar-accent-foreground: oklch(0.145 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: #4E86B7;
+  --sidebar-ring: #984641;
 
 /*\* Decoration tint: the botanical PNGs in /public/deco are painted in sage*
-*   (hue ≈ 92°). Kept green to match the sage #959D6C motif (light touch only).*
+*   (hue ≈ 92°). Kept green to match the sage #D4948A motif (light touch only).*
 *   Set to "none" to show the original artwork. \*/
 --deco-filter: saturate(0.9) brightness(1.02);
 
@@ -121,21 +121,21 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.145 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: #4E86B7;
+  --primary: #984641;
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: #8CBBE5;
+  --secondary: #D4948A;
   --secondary-foreground: oklch(0.985 0 0);
   /* Sage for dark mode */
-  --sage: #8CBBE5;
-  --muted: #EAF3FB;
+  --sage: #D4948A;
+  --muted: #F8EBE3;
   --muted-foreground: oklch(0.145 0 0);
-  --accent: #8CBBE5;
+  --accent: #D4948A;
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
   --border: oklch(0.269 0 0);
   --input: oklch(0.269 0 0);
-  --ring: #4E86B7;
+  --ring: #984641;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -143,12 +143,12 @@
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: #4E86B7;
+  --sidebar-primary: #984641;
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: #8CBBE5;
+  --sidebar-accent: #D4948A;
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: #4E86B7;
+  --sidebar-ring: #984641;
 }
 
 @theme inline {
@@ -159,106 +159,106 @@
 /* ==========================================
    MOTIF COLORS
    Theme: Romantic Minimalist + Fresh Spring
-   Sky Blue #8CBBE5 + Dusty Blue #4E86B7 + Sunshine #FDCC4B + Butter #FAE292 + Sage Leaves #959D6C
+   Peach Beige #EBC8B5 + Dusty Rose #D4948A + Terracotta #984641 + Burgundy #541C1B
    ========================================== */
 
 /* ------------------------------------------
    Background / Linen
    ------------------------------------------ */
 
-   --color-motif-cream: #EAF3FB /* Pale sky */; /* Warm ivory */
-   --color-motif-yellow: #959D6C /* Sage green */; /* Sage green */
-   --color-motif-soft: #F7FBFF /* Cloud white paper */; /* Soft ivory paper */
+   --color-motif-cream: #F8EBE3 /* pale peach */; /* Warm ivory */
+   --color-motif-yellow: #D4948A /* Dusty rose */; /* Dusty rose */
+   --color-motif-soft: #FDF6F2 /* Warm blush paper */; /* Soft ivory paper */
    
    /* ------------------------------------------
       Fresh Spring Accents
       ------------------------------------------ */
    
-   --color-motif-accent: #FDCC4B; /* Warm yellow */
-   --color-motif-deep: #2F6496; /* Deep dusty blue */
-   --color-motif-medium: #8CBBE5 /* Sky blue */; /* Pale butter yellow */
+   --color-motif-accent: #984641; /* Terracotta */
+   --color-motif-deep: #541C1B; /* Burgundy */
+   --color-motif-medium: #D4948A /* Dusty rose */; /* Peach beige */
    
    /* ------------------------------------------
       Dusty Blue Accents
       ------------------------------------------ */
    
-   --color-motif-teal: #2F6496; /* Deep dusty blue */
-   --color-motif-teal-medium: #959D6C; /* Sage green */
-   --color-motif-teal-light: #8CBBE5 /* Sky blue */; /* Pale butter yellow */
+   --color-motif-teal: #541C1B; /* Burgundy */
+   --color-motif-teal-medium: #D4948A; /* Dusty rose */
+   --color-motif-teal-light: #D4948A /* Dusty rose */; /* Peach beige */
    
    /* ------------------------------------------
       Botanical / Spring Accent
       ------------------------------------------ */
    
-   --color-motif-blush: #FAE292; /* Pale butter yellow */
+   --color-motif-blush: #EBC8B5; /* Peach beige */
    
    /* ------------------------------------------
       Neutral / Paper
       ------------------------------------------ */
    
-   --color-motif-silver: #FAE292 /* Butter yellow */; /* Pale butter yellow */
+   --color-motif-silver: #EBC8B5 /* Peach beige */; /* Peach beige */
    
    /* ==========================================
       WELCOME SECTION
       ========================================== */
    
    /* Main background */
-   --color-welcome-bg: color-mix(in srgb, #8CBBE5 14%, white);
+   --color-welcome-bg: color-mix(in srgb, #D4948A 14%, white);
    
    /* Soft background */
-   --color-welcome-bg-soft: color-mix(in srgb, #8CBBE5 8%, white);
+   --color-welcome-bg-soft: color-mix(in srgb, #D4948A 8%, white);
    
    /* ==========================================
       TYPOGRAPHY
       ========================================== */
    
    /* Main body text */
-   --color-welcome-text: #2F6496;
+   --color-welcome-text: #541C1B;
    
    /* Secondary / softer text */
-   --color-welcome-text-soft: color-mix(in srgb, #2F6496 65%, white);
+   --color-welcome-text-soft: color-mix(in srgb, #541C1B 65%, white);
    
    /* Small headings */
-   --color-welcome-heading: #4E86B7;
+   --color-welcome-heading: #984641;
    
    /* Script / romantic accent */
-   --color-welcome-script: #4E86B7;
+   --color-welcome-script: #984641;
    
    /* Main hero heading */
-   --color-welcome-navy: #1F4468;
+   --color-welcome-navy: #3B1312;
    
    /* ==========================================
       BUTTONS / DECORATION
       ========================================== */
    
    /* Buttons */
-   --color-welcome-green: #4E86B7;
+   --color-welcome-green: #984641;
    
    /* Decorative coastal / floral lines */
-   --color-welcome-botanical: #959D6C;
+   --color-welcome-botanical: #D4948A;
    
    /* Gold decorative details */
-   --color-welcome-gold: #FDCC4B;
+   --color-welcome-gold: #984641;
    
    /* Floral accents */
-   --color-welcome-blush: #FAE292;
+   --color-welcome-blush: #EBC8B5;
    
    /* ==========================================
       ADDITIONAL FRESH SPRING COLORS
       ========================================== */
    
-   --color-coastal-deep: #2F6496; /* Deep dusty blue */
-   --color-coastal-teal: #4E86B7 /* Dusty blue */; /* Deep blue */
-   --color-coastal-soft: #959D6C; /* Sage green */
-   --color-coastal-light: #8CBBE5 /* Sky blue */; /* Pale butter yellow */
+   --color-coastal-deep: #541C1B; /* Burgundy */
+   --color-coastal-teal: #984641 /* terracotta */; /* Deep blue */
+   --color-coastal-soft: #D4948A; /* Dusty rose */
+   --color-coastal-light: #D4948A /* Dusty rose */; /* Peach beige */
    
-   --color-romantic-coral: #FDCC4B; /* Warm yellow */
-   --color-romantic-deep: #2F6496; /* Deep dusty blue */
-   --color-romantic-peach: #FAE292; /* Pale butter yellow */
-   --color-romantic-blush: #FAE292; /* Pale butter yellow */
+   --color-romantic-coral: #984641; /* Terracotta */
+   --color-romantic-deep: #541C1B; /* Burgundy */
+   --color-romantic-peach: #EBC8B5; /* Peach beige */
+   --color-romantic-blush: #EBC8B5; /* Peach beige */
    
-   --color-coastal-sand: #959D6C; /* Sage green */
-   --color-coastal-ivory: #F7FBFF; /* Warm ivory */
+   --color-coastal-sand: #D4948A; /* Dusty rose */
+   --color-coastal-ivory: #FDF6F2; /* Warm ivory */
    
    /* ==========================================
       COUPLE NAME MASK / LOCKUP
@@ -277,26 +277,26 @@
       ========================================== */
    
    /* Flat base behind the circles */
-   --color-bg-pattern-base: color-mix(in srgb, #8CBBE5 26%, white);
+   --color-bg-pattern-base: color-mix(in srgb, #D4948A 26%, white);
    
    /* Main circles — butter yellow family */
-   --color-bg-circle-deep: color-mix(in srgb, #8CBBE5 45%, transparent);
+   --color-bg-circle-deep: color-mix(in srgb, #D4948A 45%, transparent);
    
-   --color-bg-circle-mid: color-mix(in srgb, #8CBBE5 28%, transparent);
+   --color-bg-circle-mid: color-mix(in srgb, #D4948A 28%, transparent);
    
    --color-bg-circle-light: color-mix(in srgb, white 70%, transparent);
    
    /* Accent circles */
-   --color-bg-circle-accent-1: color-mix(in srgb, #4E86B7 18%, transparent);
+   --color-bg-circle-accent-1: color-mix(in srgb, #984641 18%, transparent);
    
    --color-bg-circle-accent-2: color-mix(in srgb, white 55%, transparent);
    
-   --color-bg-circle-accent-3: color-mix(in srgb, #959D6C 22%, transparent);
+   --color-bg-circle-accent-3: color-mix(in srgb, #D4948A 22%, transparent);
    
-   /* Warm yellow circles */
-   --color-bg-circle-rose: color-mix(in srgb, #FAE292 45%, transparent);
+   /* Terracotta circles */
+   --color-bg-circle-rose: color-mix(in srgb, #EBC8B5 45%, transparent);
    
-   --color-bg-circle-peach: color-mix(in srgb, #FDCC4B 30%, transparent);
+   --color-bg-circle-peach: color-mix(in srgb, #984641 30%, transparent);
    
    /* Text and divider lines */
    --color-on-pattern: var(--color-welcome-navy);
@@ -305,67 +305,67 @@
    --color-on-pattern-glow:
        color-mix(in srgb, white 70%, transparent);
    
-   --color-on-pattern-line: #959D6C;
+   --color-on-pattern-line: #D4948A;
    
    /* ==========================================
       HERO COUNTDOWN
       ========================================== */
    
    /* Bottom fade */
-   --color-countdown-fade: #1F4468;
+   --color-countdown-fade: #3B1312;
    
    /* Numbers + heading */
    --color-countdown-text: var(--color-motif-soft);
    
    /* Unit labels */
-   --color-countdown-label: #FAE292;
+   --color-countdown-label: #EBC8B5;
    
    /* ==========================================
-      ENVELOPE — SKY BLUE FAMILY (light sky paper, dusty-blue folds)
+      ENVELOPE — TERRACOTTA FAMILY (terracotta paper, burgundy folds)
       ========================================== */
    
    /* Main paper */
-   --color-envelope-paper: color-mix(in srgb, #8CBBE5 70%, white);
+   --color-envelope-paper: #984641;
    
    /* Back panel / inside */
-   --color-envelope-base: #8CBBE5;
+   --color-envelope-base: #984641;
    
-   /* Lit edges */
-   --color-envelope-highlight: color-mix(in srgb, #8CBBE5 45%, white);
+   /* Lit edges — terracotta warmed toward dusty rose */
+   --color-envelope-highlight: color-mix(in srgb, #984641 72%, #D4948A);
    
    /* Flap folds */
-   --color-envelope-fold: color-mix(in srgb, #8CBBE5 55%, #4E86B7);
+   --color-envelope-fold: color-mix(in srgb, #984641 78%, #541C1B);
    
    /* Shadows */
-   --color-envelope-shadow: #4E86B7;
+   --color-envelope-shadow: #541C1B;
    
    /* Crease hairlines */
-   --color-envelope-crease: rgb(255 255 255 / 55%);
+   --color-envelope-crease: rgb(235 200 181 / 45%);
    
    /* ==========================================
       OPTIONAL SEMANTIC COLORS
       ========================================== */
    
    /* Primary CTA */
-   --color-primary: #2F6496;
+   --color-primary: #541C1B;
    
    /* Primary CTA hover */
-   --color-primary-hover: #1F4468;
+   --color-primary-hover: #3B1312;
    
    /* Romantic CTA */
-   --color-romantic: #FDCC4B;
+   --color-romantic: #984641;
    
    /* Romantic hover */
-   --color-romantic-hover: #E0AE2C;
+   --color-romantic-hover: #7A3632;
    
    /* Soft highlight */
-   --color-highlight: #FAE292;
+   --color-highlight: #EBC8B5;
    
    /* Highlight — Save the Date, couple names, day number */
-   --color-highlight-deep: #4E86B7;
+   --color-highlight-deep: #984641;
    
    /* Decorations — corner leaves, ornaments */
-   --color-deco: #959D6C;
+   --color-deco: #D4948A;
    
    /* ==========================================
       INVITATION DESIGN SYSTEM
@@ -381,7 +381,7 @@
    --invite-script: var(--color-highlight-deep);
    
    /* Small accents */
-   --invite-accent: var(--color-welcome-heading); /* dusty blue — readable labels (proposal page) */
+   --invite-accent: var(--color-welcome-heading); /* terracotta — readable labels (proposal page) */
    
    /* Paragraph text */
    --invite-body: var(--color-welcome-text);
@@ -389,12 +389,12 @@
    /* Paper surfaces */
    --invite-paper: var(--color-motif-soft);
    
-   --invite-paper-tint: color-mix(in srgb, #8CBBE5 12%, var(--color-motif-soft));
+   --invite-paper-tint: color-mix(in srgb, #D4948A 12%, var(--color-motif-soft));
    
    /* Hairlines and frames */
-   --invite-line: color-mix(in srgb, #959D6C 50%, transparent);
+   --invite-line: color-mix(in srgb, #D4948A 50%, transparent);
    
-   --invite-line-soft: color-mix(in srgb, #959D6C 25%, transparent);
+   --invite-line-soft: color-mix(in srgb, #D4948A 25%, transparent);
    
    /* Buttons */
    --invite-button: var(--color-ink-accent);
@@ -413,28 +413,28 @@
    --invite-page-bg: var(--color-welcome-bg);
    
    /* Section accent */
-   --color-section-accent: #959D6C;
+   --color-section-accent: #D4948A;
    
    /* Light section */
-   --color-section-light: #D6E7F6;
+   --color-section-light: #F1DACD;
    
    /* Card background */
-   --color-card: #F7FBFF;
+   --color-card: #FDF6F2;
    
    /* Border */
-   --color-border: #959D6C;
+   --color-border: #D4948A;
    
    /* Dark text */
-   --color-text-dark: #2F6496;
+   --color-text-dark: #541C1B;
    
    /* Deepest ink */
-   --color-ink-deep: #1F4468;
+   --color-ink-deep: #3B1312;
    
    /* Deep accent ink */
-   --color-ink-accent: #2F6496;
+   --color-ink-accent: #541C1B;
    
    /* Muted text */
-   --color-text-muted: color-mix(in srgb, #2F6496 65%, white);
+   --color-text-muted: color-mix(in srgb, #541C1B 65%, white);
    
    /* ==========================================
       DASHBOARD
@@ -491,10 +491,10 @@
    
    /* Delete / danger */
    --color-dash-danger:
-       color-mix(in srgb, var(--color-romantic-deep) 45%, #2F6496);
+       color-mix(in srgb, var(--color-romantic-deep) 45%, #541C1B);
    
    --color-dash-danger-text:
-       color-mix(in srgb, var(--color-romantic-deep) 35%, #2F6496);
+       color-mix(in srgb, var(--color-romantic-deep) 35%, #541C1B);
    
    --color-dash-danger-soft:
        color-mix(in srgb, var(--color-romantic-blush) 35%, white);
@@ -661,17 +661,17 @@ img[src*="%2Flovestorydeco%2F"] {
 }
 
 ::-webkit-scrollbar-track {
-  background: #EAF3FB;
+  background: #F8EBE3;
 }
 
 /* Updated scrollbar color to primary */
 ::-webkit-scrollbar-thumb {
-  background: #4E86B7;
+  background: #984641;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #959D6C;
+  background: #D4948A;
 }
 
 /* Shimmer animation for countdown cards */
@@ -756,7 +756,7 @@ img[src*="%2Flovestorydeco%2F"] {
 
 /* Countdown gradient text — butter to sunshine */
 .countdown-gradient-text * {
-  background: linear-gradient(180deg, #FAE292 0%, #FDCC4B 100%);
+  background: linear-gradient(180deg, #EBC8B5 0%, #984641 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -769,7 +769,7 @@ img[src*="%2Flovestorydeco%2F"] {
 }
 
 .bg-wedding-paper {
-  background-color: #F7FBFF;
+  background-color: #FDF6F2;
 }
 
 .text-wedding-brown {
@@ -777,7 +777,7 @@ img[src*="%2Flovestorydeco%2F"] {
 }
 
 .text-wedding-paper {
-  color: #F7FBFF;
+  color: #FDF6F2;
 }
 
 /* Font utilities for Love Story section */
@@ -1300,7 +1300,7 @@ img[src*="%2Flovestorydeco%2F"] {
 
 /* ==========================================================================
    Sky garden backdrop (components/sky-backdrop.tsx)
-   Pale sky at the edges, cloud-white through the middle; clouds tile every
+   pale peach at the edges, cloud-white through the middle; clouds tile every
    900px so long sections stay covered, and drift very slowly sideways.
    ========================================================================== */
 .sky-backdrop {

@@ -66,15 +66,15 @@ export type AttireColor = string | { name: string; hex: string }
 
 // ── The couple ──────────────────────────────────────────────────────────────
 const COUPLE = {
-  bride: "Judith Hannah Malana",
-  brideNickname: "Hana",
-  groom: "Raphael Dela Cruz",
-  groomNickname: "Raph",
+  bride: "Laica Jaen",
+  brideNickname: "Laica",
+  groom: "Pat Lagrama",
+  groomNickname: "Pat",
 }
 
 // ── Date & times ────────────────────────────────────────────────────────────
-const WEDDING_DATE = "February 8, 2027" // e.g. "June 5, 2027"
-const WEDDING_DAY = "Monday"
+const WEDDING_DATE = "December 23,2026" // e.g. "June 5, 2027"
+const WEDDING_DAY = "Saturday"
 const TIMES = {
   entourageCall: "2:30 PM", // entourage assembly
   guestArrival: "2:30 PM", // guests arrival / assembly (shown in Event Details + reminders)
@@ -85,16 +85,16 @@ const TIMES = {
 // ── Venues ──────────────────────────────────────────────────────────────────
 
 const CEREMONY_VENUE = {
-  name: "Kingfisher Way",
-  address: "Sumulong Hwy, Antipolo, 1870 Rizal, Philippines",
-  map: "https://maps.app.goo.gl/vmXYtcLymvdfLxTJA",
-  photos: ["/Details/ceremony.jpg", "/Details/ceremony2.jpg", "/Details/ceremony3.png"],
+  name: "The Ranch",
+  address: "Barangay San Jose (Tarlac- Sta. Rosa Road), Tarlac, Philippines, 2300",
+  map: "https://maps.app.goo.gl/atAiK6xcjfuhgRJB7",
+  photos: ["/Details/ceremony.jpg", "/Details/ceremony1.jpg", "/Details/ceremony2.jpg","/Details/ceremony3.png"],
 }
 const RECEPTION_VENUE = {
-  name: "Kingfisher Way",
-  address: "Sumulong Hwy, Antipolo, 1870 Rizal, Philippines",
-  map: "https://maps.app.goo.gl/vmXYtcLymvdfLxTJA",
-  photos: ["/Details/ceremony.jpg", "/Details/ceremony2.jpg", "/Details/ceremony3.png"],
+  name: "The Ranch",
+  address: "Barangay San Jose (Tarlac- Sta. Rosa Road), Tarlac, Philippines, 2300",
+  map: "https://maps.app.goo.gl/atAiK6xcjfuhgRJB7",
+  photos: ["/Details/ceremony.jpg", "/Details/ceremony1.jpg", "/Details/ceremony2.jpg","/Details/ceremony3.png"],
 }
 
 // ── Venue cards (Event Details section) ─────────────────────────────────────
@@ -143,7 +143,7 @@ const RSVP = {
   coordinator: "{groom} / {bride}", // {groom} / {bride} → couple nicknames
   phone: "to be announced",
 }
-const HASHTAGS = ["#hahaRAPHnasadambHANA","#RAPHnaHANAmbuhay"] // ⚠ check — looks like it's from a previous couple
+const HASHTAGS = ["#PatandLaica","#PatandLaicaWedding"] // ⚠ check — looks like it's from a previous couple
 
 // ── Attire guide (Event Details → Attire Guidelines) ────────────────────────
 // SHOW = which cards to display AND their order, top to bottom. Examples:
@@ -163,10 +163,10 @@ const HASHTAGS = ["#hahaRAPHnasadambHANA","#RAPHnaHANAmbuhay"] // ⚠ check — 
 //     highlight: phrase inside details shown bold + underlined ("" for none)
 // Guest dress code colors — also shown in the "Dress Code" gentle reminder
 const DRESS_CODE_PALETTE: AttireColor[] = [
-  { name: "Light Blue", hex: "#BCD8F1" },
-  { name: "Light Yellow", hex: "#FBE7A1" },
-  { name: "Light Green", hex: "#C8D5A4" },
-  { name: "Black", hex: "#1E1E1E" },
+  { name: "Peach Beige", hex: "#EBC8B5" },
+  { name: "Dusty Rose", hex: "#D4948A" },
+  { name: "Terracotta", hex: "#984641" },
+  { name: "Burgundy", hex: "#541C1B" },
 ];
 
 // Attire groups shown in the Details section (components/sections/details.tsx).
@@ -175,38 +175,24 @@ const DRESS_CODE_PALETTE: AttireColor[] = [
 //   Each side (ladies / gentlemen) has a label, an optional intro (details, with an
 //   optional highlighted phrase) and an optional list of roles with what they wear.
 const ATTIRE = {
-  show: ["entourage", "family", "sponsors", "guests"] as AttireGroupId[],
+  show: ["entourage", "guests"] as AttireGroupId[],
 
   entourage: {
     title: "Entourage",
-    image: "/Details/entourage.png",
+    image: "/Details/Entourage.png",
     dressCode: "Formal Attire",
-    palette: [
-      { name: "Pastel Yellow", hex: "#F8DE7E" },
-      { name: "Dark Yellow", hex: "#E5A92B" },
-      { name: "Light Blue", hex: "#8CBBE5" },
-      { name: "Navy Blue", hex: "#1F3A5F" },
-      { name: "Black", hex: "#1E1E1E" },
-    ] as AttireColor[],
+    palette: [] as AttireColor[], // no palette on the entourage card
     ladies: {
       label: "Ladies",
-      details: "",
-      highlight: "",
-      roles: [
-        { role: "Bride", attire: "White gown and veil with a yellow and blue bouquet." },
-        { role: "Maid of Honor", attire: "Dark yellow long gown with a small yellow and light blue bouquet." },
-        { role: "Bridesmaids", attire: "Pastel yellow gowns with small yellow and light blue bouquets." },
-      ],
+      details: "Floor-length gowns in peach beige, dusty rose, terracotta or burgundy. Soft, flowy fabrics like chiffon or tulle are perfect, and each of you may wear a different shade from the palette.",
+      highlight: "Floor-length gowns",
+      roles: [] as { role: string; attire: string }[],
     },
     gentlemen: {
       label: "Gentlemen",
-      details: "",
-      highlight: "",
-      roles: [
-        { role: "Groom", attire: "White suit, black slacks and a black bow tie." },
-        { role: "Best Man", attire: "All-black suit with a navy blue necktie." },
-        { role: "Groomsmen", attire: "Black suit, white shirt, navy blue necktie and a yellow corsage." },
-      ],
+      details: "An ivory Barong Tagalog with dark brown slacks and brown leather shoes.",
+      highlight: "ivory Barong Tagalog",
+      roles: [] as { role: string; attire: string }[],
     },
   },
 
@@ -268,14 +254,14 @@ const ATTIRE = {
     palette: DRESS_CODE_PALETTE,
     ladies: {
       label: "Ladies",
-      details: "Floral long dress, or a long dress in light blue, yellow or green.",
-      highlight: "long dress",
+      details: "A flowy long or midi dress in any of our palette colors: peach beige, dusty rose, terracotta or burgundy. Nude or neutral heels complete the look beautifully.",
+      highlight: "long or midi dress",
       roles: [] as { role: string; attire: string }[],
     },
     gentlemen: {
       label: "Gentlemen",
-      details: "Long-sleeve polo in light blue, yellow or green with black slacks.",
-      highlight: "long-sleeve polo",
+      details: "A long-sleeve collared shirt in burgundy, terracotta or dusty rose, paired with beige or khaki slacks and brown shoes.",
+      highlight: "long-sleeve collared shirt",
       roles: [] as { role: string; attire: string }[],
     },
   },
@@ -297,29 +283,40 @@ const DISPLAY_MODE = "plain" as "photos" | "plain"
 
 // ── Shared images ───────────────────────────────────────────────────────────
 const BRAND = {
-  monogram: "/monogram/monogramnew.png",
+  monogram: "/monogram/monogram.png",
   coupleNameImage: "/Details/newcoupelNames.png", // couple-name lettering (loader, envelope)
-  seal: "/monogram/newSeal.png", // envelope wax seal
+  seal: "/monogram/newSeal2.png", // envelope wax seal
   backgroundMusic: "/background_music/Libu-Libong Buwan (Uuwian) - Kyle Raphael (Lyric Video).mp3",
 }
 
 // Couple photos reused across the site (gallery, loader, reminders, snap & share, closing)
 const COUPLE_PHOTOS = [
-  "/mobile-background/Cozy Café Selfie with Friends.png",
-  "/mobile-background/Joyful Car Selfie with Young Couple.png",
-  "/mobile-background/Welcome to Mt. Pinatubo Crater Lake.png",
-  "/mobile-background/Alpine Lake Proposal Under Open Skies.png",
-  "/mobile-background/Dreamy Forest Engagement Portrait.png",
+  "/mobile-background/couples (9).webp",
+  "/mobile-background/couples (11).webp",
+  "/mobile-background/couples (13).webp",
+  "/mobile-background/couples (17).webp",
+  "/mobile-background/couples (18).webp",
+  "/mobile-background/couples (57).webp",
+  "/mobile-background/couples (81).webp",
+  "/mobile-background/couples (83).webp",
+  "/mobile-background/couples (5).webp",
 ]
+
+// Sliding photo marquee behind the loader and envelope — files in /public/mobile-background
+const MARQUEE_PHOTO_COUNT = 88
+const MARQUEE_PHOTOS = Array.from(
+  { length: MARQUEE_PHOTO_COUNT },
+  (_, i) => `/mobile-background/couples (${i + 1}).webp`,
+)
 
 // ── Decorations ─────────────────────────────────────────────────────────────
 // Change a path here to swap it on every section at once.
 // To change ONE section only, override it there, e.g. decos: { ...SECTION_DECOS, footerVine: "" }
 const DECOR = {
-  cornerTopLeft: "/deco/top-left-deco.png",
-  cornerTopRight: "/deco/top-right-deco.png",
-  cornerBottomLeft: "/deco/bottom-left-deco.png",
-  cornerBottomRight: "/deco/bottom-right-deco.png",
+  cornerTopLeft: "/deco/topleftcorner.png",
+  cornerTopRight: "/deco/toprightcorner.png",
+  cornerBottomLeft: "/deco/bottomleftcorner.png",
+  cornerBottomRight: "/deco/bottomrightcorner.png",
   headerOrnament: "/deco/lovestorydeco/Elegant-Eucalyptus-centerdot.png", // small sprig above titles
   footerVine: "/deco/lovestorydeco/Elegant-Eucalyptus-bottom.png", // long vine at section ends
   sideLeft: "/deco/lovestorydeco/Elegant-Eucalyptus-Left.png", // love story side sprigs
@@ -349,7 +346,7 @@ const COUPLE_LABEL = `${COUPLE.groomNickname} & ${COUPLE.brideNickname}`
    ============================================================================ */
 
 // Principal sponsors Google Apps Script — used by the main page and /inviteone
-const SPONSORS_API = "https://script.google.com/macros/s/AKfycbw-RZJ0Tv_rA9XitBWXLjCMXqWEUUp71uVD7hxmJe-dxdgaARb-V3HiH6abv0wk0UZZ/exec"
+const SPONSORS_API = "https://script.google.com/macros/s/AKfycbzFw1p7V90y2pH1p_69JuYtU1c_gQKbCjL5VE8_cVePe6otUp8tJVjQMt4HQV7OHNzI/exec"
 
 export const siteConfig = {
   siteUrl: SITE_URL,
@@ -360,17 +357,17 @@ export const siteConfig = {
     backgroundMusic: BRAND.backgroundMusic,
   },
   googleAPI:{
-    messageForm: "https://docs.google.com/forms/d/e/1FAIpQLSdihP1g_XmEItehhMjLd2jXFYGWHminOvddY8yS5UsNwEwyZQ/formResponse",   //done
-    message: "https://script.google.com/macros/s/AKfycbx1CPW_j70C4TSI--fWC7HnTqa1H5I83KrkourqDT2M3-sxggBK8YEEPqKJ6JcHpoY/exec",  //done
-    guestList: "https://script.google.com/macros/s/AKfycbx_yVFDUloW8ApJRxdS3hdJSxs3iexAybuKwqqYS0ZuvZ540jmki_7r9xypw9KD9Po7/exec",  //done
-    guestRequest: "https://script.google.com/macros/s/AKfycbx88ES8E0Hj4oGjSbCMSbg1WO5XMgxV5hvXs3BFKPHOOVHACGfJyYPxM1eaiDqjWkwI/exec",   //done
-    entourage: "https://script.google.com/macros/s/AKfycbx6GJsQVVXwPh70HYeJDS2TH4AH7VlGhjBwMCDoXpp9yNfJONIYdgwf13aYeErntOVU/exec",  //done
+    messageForm: "https://docs.google.com/forms/d/e/1FAIpQLSd6xU-2yIy1NqlDo1FCVKD094Ay00LtKJEDwi3-Q53_2gZEyQ/formResponse",   //done
+    message: "https://script.google.com/macros/s/AKfycbwIPJzCLc8JWTdspGwGK1U--8lpoFbSX4RekoWfVEdxV5TZi-9tet2W4fhAuPUj1N4o/exec",  //done
+    guestList: "https://script.google.com/macros/s/AKfycbwsNT-ysI-taavtWmmS76ac1ym8IVqbs_4QJsNqaxtMokqAY7HMnfAnnqnggLSw0QMg/exec",  //done
+    guestRequest: "https://script.google.com/macros/s/AKfycbxjHMMZqSpaxVrfrUi6ZNmjyX2CfDHz07mL8MFHHOdcsYBhktanmo0RWjbrh2xEDevX/exec",   //done
+    entourage: "https://script.google.com/macros/s/AKfycby2kEmQ3V40LGIVrqUugN7C-jiivs3XRIhr1RnSjSldfCb6MfyorQQm53jrVtkrmhBr/exec",  //done
     sponsors: SPONSORS_API,  //done 
     // Principal sponsors shown on /inviteone and /invitetwo (entourage section)
     sponsorsInviteOne: SPONSORS_API, // same sheet as sponsors above
-    sponsorsInviteTwo: "https://script.google.com/macros/s/AKfycbw-RZJ0Tv_rA9XitBWXLjCMXqWEUUp71uVD7hxmJe-dxdgaARb-V3HiH6abv0wk0UZZ/exec",
+    sponsorsInviteTwo: "https://script.google.com/macros/s/AKfycbzFw1p7V90y2pH1p_69JuYtU1c_gQKbCjL5VE8_cVePe6otUp8tJVjQMt4HQV7OHNzI/exec",
 ////google share 
-    googleShare: "https://docs.google.com/spreadsheets/d/1vts33ruuGmS0jQKo4h-ASy-sOPt61XW6ui6vdbJlib4/edit?usp=sharing",
+    googleShare: "https://docs.google.com/spreadsheets/d/18q3VFEsfZUw1UP0iD8yOEGRrDeKoQGI0hy9KyuttP3s/edit?usp=sharing",
     videoMessageForm:
       "https://docs.google.com/forms/d/e/1FAIpQLSfeGlEl4CMXWefdvCw6AOPHFS1ROku_rs-Gbofa2LkVJ0sLGQ/viewform", 
   },
@@ -394,8 +391,8 @@ export const siteConfig = {
       text: "var(--color-welcome-text)",
       accent: "var(--color-welcome-gold)",
     },
-    // Sliding background photos (display: "photos"); files live in /public
-    backgroundPhotos: COUPLE_PHOTOS,
+    // Sliding photo marquee behind the loader and envelope (both display modes); files live in /public
+    backgroundPhotos: MARQUEE_PHOTOS,
     headline: "Save the Date",
     // {days} is replaced with the number of days left before wedding.date
     countdownText: "{days} more days to go",
@@ -451,7 +448,7 @@ export const siteConfig = {
   // Love story timeline (components/sections/love-story.tsx + StorySection)
   loveStory: {
     title: "Our Love Story",
-    subtitle: "from a swipe to forever",
+    subtitle: "a love that bloomed",
     // Shown above a chapter's title when it has no date, e.g. "Chapter 03"
     chapterLabel: "Chapter",
     closingQuote: "When the time is right, I, the Lord, will make it happen.",
@@ -462,62 +459,77 @@ export const siteConfig = {
       timelineTop: DECOR.headerOrnament,
       sectionBottom: DECOR.footerVine,
     },
-    // One card per milestone. date → small caps line above the title ("" shows "Chapter 0X").
-    // image → photo at the top of the card ("" for none). {groom} / {bride} → nicknames.
+    // The story, one chapter at a time. date → small caps line above the title ("" shows "Chapter 0X").
+    // image → photo beside the text ("" for none). {groom} / {bride} → nicknames.
     chapters: [
       {
-        date: "October 2019",
-        title: "It Started with a Swipe",
+        date: "August 2025",
+        title: "Where It All Began",
         theme: "light" as const,
         layout: "image-left" as const,
-        image: "/mobile-background/Cozy Café Selfie with Friends.png",
-        imageAlt: "Our first date",
-        paragraphs: [
-          "It all started with a little swipe on Bumble. Two strangers crossed paths, exchanged a few messages, and then life got busy. Just when our story seemed to pause, November came, and he reached out once again—this time through SMS. And from that simple message, a beautiful connection began to grow.",
-        ],
-      },
-      {
-        date: "February 2020",
-        title: "Officially Together",
-        theme: "dark" as const,
-        layout: "image-right" as const,
-        image: "/mobile-background/Joyful Car Selfie with Young Couple.png",
-        imageAlt: "Officially together",
-        paragraphs: [
-          "As two souls who shared a love for adventure and discovering new places, we dreamed of all the memories we would make together. Then came the pandemic, putting many of our plans on hold.",
-        ],
-      },
-      {
-        date: "",
-        title: "Worth the Wait",
-        theme: "light" as const,
-        layout: "image-left" as const,
-        image: "/mobile-background/Welcome to Mt. Pinatubo Crater Lake.png",
-        imageAlt: "Our adventures together at Mt. Pinatubo Crater Lake",
-        paragraphs: [
-          "But some stories are worth the wait. When the world finally opened up again, so did a new chapter for us—filled with adventures, laughter, and countless memories that brought us closer.",
-        ],
-      },
-      {
-        date: "May 2024",
-        title: "The Proposal",
-        theme: "dark" as const,
-        layout: "image-right" as const,
-        image: "/mobile-background/Alpine Lake Proposal Under Open Skies.png",
-        imageAlt: "The proposal",
-        paragraphs: [
-          "Who would have thought that a match on a dating app would lead to something so beautiful? From complete strangers to lovers, and now, to soon-to-be husband and wife, our story is a reminder that sometimes, love finds its way back to you at just the right time.",
-        ],
-      },
-      {
-        date: "February 2027",
-        title: "Forever, Together",
-        theme: "light" as const,
-        layout: "image-left" as const,
-        image: "/mobile-background/Dreamy Forest Engagement Portrait.png",
+        image: "/mobile-background/couples (31).webp",
         imageAlt: "{groom} and {bride}",
         paragraphs: [
-          "And now, we're ready to begin our greatest adventure yet: forever, together. ♡",
+          "Every love story has a first page, and ours was written at Golden Faith Academy. Two people in the same place at the same time, neither of us knowing that a simple meeting would quietly become the start of everything.",
+        ],
+      },
+      {
+        date: "March 2016",
+        title: "The First Hello",
+        theme: "dark" as const,
+        layout: "image-right" as const,
+        image: "/mobile-background/couples (42).webp",
+        imageAlt: "{groom} and {bride} smiling together",
+        paragraphs: [
+          "Then came our first real conversation. It started small, the way the best things often do: a few words, a little laughter, and a feeling that this was easy.",
+          "Before we knew it, one conversation turned into many, and talking to each other became the best part of our days.",
+        ],
+      },
+      {
+        date: "January 7, 2018",
+        title: "Made It Official",
+        theme: "light" as const,
+        layout: "image-left" as const,
+        image: "/mobile-background/couples (80).webp",
+        imageAlt: "{groom} and {bride} together",
+        paragraphs: [
+          "On January 7, 2018, we stopped wondering and started choosing each other. What began as a friendship became a promise to show up, to grow together, and to make room for each other in every plan, big or small.",
+        ],
+      },
+      {
+        date: "July 25, 2026",
+        title: "She Said Yes!",
+        theme: "dark" as const,
+        layout: "image-right" as const,
+        image: "/mobile-background/couples (4).webp",
+        imageAlt: "{groom} and {bride} after the proposal",
+        paragraphs: [
+          "And then, on July 25, 2026, {groom} asked the question, and {bride} said YES! Every conversation, every adventure, and every quiet, ordinary day of loving each other had been leading us here.",
+        ],
+      },
+      {
+        date: "Him & Her",
+        title: "Perfectly Different",
+        theme: "light" as const,
+        layout: "image-left" as const,
+        image: "/mobile-background/couples (1).webp",
+        imageAlt: "{groom} and {bride}",
+        paragraphs: [
+          "Along the way, we learned just how different we are, and how perfectly matched.",
+          "{groom} is happiest with coffee in hand, a good nap on standby, the latest political news, and an action-packed movie. He has also truly mastered the art of doing absolutely nothing.",
+          "{bride} creates little masterpieces, bakes sweet treats, cooks with love, gets lost in K-drama worlds, and always says yes to the next adventure.",
+        ],
+      },
+      {
+        date: "Us",
+        title: "Our Little World",
+        theme: "dark" as const,
+        layout: "image-right" as const,
+        image: "/mobile-background/couples (88).webp",
+        imageAlt: "{groom} and {bride}",
+        paragraphs: [
+          "Together, we've built a world that's entirely ours. We spoil our fur baby Naira like royalty, never say no to another hotpot date, and keep collecting the little moments that become big memories.",
+          "Above everything else, we choose quality time, because being together is our favorite place to be. Now we're counting down to forever, and we can't wait to celebrate its beginning with you. ♡",
         ],
       },
     ],
@@ -537,13 +549,26 @@ export const siteConfig = {
     // Uses COUPLE_PHOTOS; replace with your own list if the gallery should differ.
     // text → caption used as the photo's description
     images: [
-      { image: "/mobile-background/Alpine Lake Proposal Under Open Skies.png", text: "Our first date" },
-      { image: "/mobile-background/Cozy Café Selfie with Friends.png", text: "Officially together" },
-      { image: "/mobile-background/Dreamy Forest Engagement Portrait.png", text: "Mt. Pinatubo Crater Lake" },
-      { image: "/mobile-background/Joyful Car Selfie with Young Couple.png", text: "The proposal" },
-      { image: "/mobile-background/Welcome to Mt. Pinatubo Crater Lake.png", text: "Prenup" },
+      { image: "/mobile-background/couples (5).webp", text: "image 1" },
+      { image: "/mobile-background/couples (11).webp", text: "image 2" },
+      { image: "/mobile-background/couples (13).webp", text: "image 3" },
+      { image: "/mobile-background/couples (17).webp", text: "image 4" },
+      { image: "/mobile-background/couples (18).webp", text: "image 5" },
+      { image: "/mobile-background/couples (57).webp", text: "image 6" },
+      { image: "/mobile-background/couples (81).webp", text: "image 7" },
+      { image: "/mobile-background/couples (83).webp", text: "image 8" },
     ],
   },
+
+  // "/mobile-background/couples (9).webp",
+  // "/mobile-background/couples (11).webp",
+  // "/mobile-background/couples (13).webp",
+  // "/mobile-background/couples (17).webp",
+  // "/mobile-background/couples (18).webp",
+  // "/mobile-background/couples (57).webp",
+  // "/mobile-background/couples (81).webp",
+  // "/mobile-background/couples (83).webp",
+  // "/mobile-background/couples (5).webp",
   // Event details section (components/sections/details.tsx)
   // Venue names, addresses, dates, times, maps and venue photos come from ceremony / reception below.
   // In reminder text, {guestsTime} and {ceremonyTime} are replaced from ceremony below.
@@ -571,12 +596,12 @@ export const siteConfig = {
     // Cards, colors, images and which groups show → QUICK SETUP → ATTIRE
     attire: {
       title: "Attire Guidelines",
-      description: "We'd love for everyone to dress in the colors of our day — please follow the guide for your role below.",
+      description: "Our day is dressed in warm, romantic tones, and we would love for you to wear them with us. Please follow the guide for your role below.",
       // Shown above a card's palette
       paletteTitle: "Dress Code Palette",
       paletteSubtitle: "", // script line under the palette title — "" hides it
       colorGuideTitle: "Color Guide",
-      colorGuideNote: "Please refer to the colors below for your role's dress code.",
+      colorGuideNote: "Choose any shade from the palette below. Solid colors and soft, flowy fabrics are all welcome.",
       // Order and visibility come from ATTIRE.show (skips blanks, typos and repeats)
       groups: ATTIRE.show
         .filter((id, i, list) => ["entourage", "family", "sponsors", "guests"].includes(id) && list.indexOf(id) === i)
@@ -587,7 +612,13 @@ export const siteConfig = {
     reminders: {
       title: "Gentle Reminders",
       description: "A few thoughtful notes to help everyone enjoy our celebration.",
-      images: COUPLE_PHOTOS.slice(0, 4),
+      // Small photos that take turns above the "Gentle Reminders" title (files in /public/box)
+      images: [
+        "/box/box (1).jpg",
+        "/box/box (2).jpg",
+        "/box/box (3).jpg",
+        "/box/box (4).jpg",
+      ],
       // showPalette: shows the dress code palette after the first paragraph
       items: [
         {
@@ -619,7 +650,7 @@ export const siteConfig = {
           variant: "accent" as "accent" | "soft",
           showPalette: true,
           paragraphs: [
-            "Guests, kindly come in semi-formal attire in our light blue, light yellow or light green palette (florals are welcome!).",
+            "Guests, kindly come in semi-formal attire in any of our palette colors: peach beige, dusty rose, terracotta or burgundy.",
             "Please avoid casual clothes and all-white outfits.",
           ],
         },
@@ -1019,7 +1050,7 @@ export const siteConfig = {
       {
         question: "What is the dress code?",
         answer:
-          "Please follow the [attire guide](#details) in Event Details. Ladies may wear a floral long dress, or a long dress in light blue, light yellow or light green. Gentlemen may wear a long-sleeve polo in light blue, light yellow or light green with black slacks. Kindly avoid casual clothes and all-white outfits.",
+          "Please follow the [attire guide](#details) in Event Details. Our guest dress code is semi-formal in peach beige, dusty rose, terracotta or burgundy. Ladies may wear a flowy long or midi dress in any of these colors. Gentlemen may wear a long-sleeve collared shirt in burgundy, terracotta or dusty rose with beige or khaki slacks. Kindly avoid casual clothes and all-white outfits.",
       },
       {
         question: "Will the ceremony be unplugged?",
@@ -1473,8 +1504,8 @@ Now, as they prepare to say yes before God and the people they love most, Cather
     decos: { ...CORNER_DECOS, headerOrnament: DECOR.headerOrnament },
     embedUrl:
     //https://open.spotify.com/embed/playlist/5sT43YjdM8pJ3xtEkrxyEY?utm_source=generator&si=e5e64aa63fd04356
-      "https://open.spotify.com/embed/playlist/5yMeltRdXDkfwMKNwQG4j9?utm_source=generator&si=93239e8390f8410a",
-    spotifyUrl: "https://open.spotify.com/playlist/5yMeltRdXDkfwMKNwQG4j9",
+      "https://open.spotify.com/embed/playlist/7DhxGDwXwtgx4ibPQdOMYU?utm_source=generator&si=1c9a67323e524e04",
+    spotifyUrl: "https://open.spotify.com/playlist/7DhxGDwXwtgx4ibPQdOMYU",
   },
   // Closing "See you there!" section (components/sections/see-you-there.tsx).
   //   photos mode (loadingScreen.display "photos") → full-screen couple photo

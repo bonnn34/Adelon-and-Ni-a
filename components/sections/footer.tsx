@@ -150,6 +150,13 @@ function DecoImg({ src, className }: { src: string; className: string }) {
   return <TintedDeco src={src} className={className} />
 }
 
+// Corners keep their original artwork colors (no tint)
+function CornerImg({ src }: { src: string }) {
+  if (!src) return null
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} />
+}
+
 // The Seasons has no clean glyphs for "&" and digits — show those in Cinzel
 function SpecialCharFont({ text }: { text: string }) {
   return (
@@ -183,7 +190,9 @@ function Label({ children }: { children: ReactNode }) {
   )
 }
 
-export function Footer() {
+// background: false when a parent already paints one continuous circle pattern
+// behind See You There and this footer (see components/invitation-page.tsx)
+export function Footer({ background = true }: { background?: boolean } = {}) {
   const siteConfig = useSiteConfig()
   const content = siteConfig.footer
   const { decos } = content
@@ -298,23 +307,17 @@ export function Footer() {
   return (
     <div
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden`}
-      style={{ background: sectionBg }}
+      style={background ? { background: sectionBg } : undefined}
     >
       {/* Same circle pattern as the hero */}
-      <PlainBubbles />
+      {background && <PlainBubbles />}
 
-      {/* Corner decorations (from site.ts) */}
-      <div className="pointer-events-none absolute left-0 top-0 z-10">
-        <DecoImg src={decos.topLeft} className={CORNER_DECO_CLASS} />
-      </div>
-      <div className="pointer-events-none absolute right-0 top-0 z-10">
-        <DecoImg src={decos.topRight} className={CORNER_DECO_CLASS} />
-      </div>
+      {/* Corner decorations (from site.ts) — bottom only; See You There sits above on the same background */}
       <div className="pointer-events-none absolute bottom-0 left-0 z-10">
-        <DecoImg src={decos.bottomLeft} className={CORNER_DECO_CLASS} />
+        <CornerImg src={decos.bottomLeft} />
       </div>
       <div className="pointer-events-none absolute bottom-0 right-0 z-10">
-        <DecoImg src={decos.bottomRight} className={CORNER_DECO_CLASS} />
+        <CornerImg src={decos.bottomRight} />
       </div>
 
       <footer className="relative z-20 pt-14 pb-10 sm:pt-16 sm:pb-12 md:pt-20 md:pb-14">

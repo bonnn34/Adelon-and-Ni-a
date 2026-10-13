@@ -20,11 +20,24 @@ const BUBBLES: [number, number, number, 'd' | 'm' | 'l' | 'c' | 'p' | 'b' | 'r' 
 type PlainBubblesProps = {
   /** Use fixed positioning (envelope hero covers the viewport). */
   fixed?: boolean;
+  /** Repeat the pattern this many times down the height (tall wrappers spanning
+   *  several sections); every other band is mirrored so it doesn't look tiled. */
+  bands?: number;
 };
 
 /** Crisp translucent circles on a flat motif-aqua base; each pops in as it
  *  scrolls into view, then wanders and breathes. */
-export function PlainBubbles({ fixed = false }: PlainBubblesProps) {
+export function PlainBubbles({ fixed = false, bands = 1 }: PlainBubblesProps) {
+  const count = Math.max(1, Math.round(bands));
+  const circles = Array.from({ length: count }, (_, band) =>
+    BUBBLES.map(([x, y, size, tone]) => [
+      band % 2 ? 100 - x : x,
+      (y + band * 100) / count,
+      size,
+      tone,
+    ] as const),
+  ).flat();
+
   const ref = useRef<HTMLDivElement>(null);
 
   // Reveal circles one by one as they enter the viewport (tall sections pop in
@@ -55,7 +68,7 @@ export function PlainBubbles({ fixed = false }: PlainBubblesProps) {
       className={`plain-bubbles${fixed ? ' plain-bubbles--fixed' : ''}`}
       aria-hidden="true"
     >
-      {BUBBLES.map(([x, y, size, tone], i) => (
+      {circles.map(([x, y, size, tone], i) => (
         <span
           key={i}
           className={`plain-bubble plain-bubble--${tone}`}

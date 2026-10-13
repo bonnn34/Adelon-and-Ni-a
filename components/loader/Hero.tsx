@@ -19,8 +19,7 @@ import { useSiteConfig } from '@/hooks/use-site-config';
 import { siteConfig as defaultSiteConfig } from '@/content/site';
 import { parseWeddingDate } from '@/lib/wedding-date';
 import { InviteParticles } from '@/components/loader/InviteParticles';
-import { InvitePhotoBackdrop } from '@/components/loader/invite-photo-backdrop';
-import { BackgroundVideo } from '@/components/background-video';
+import { InvitePhotoBackdrop, PhotoBackground } from '@/components/loader/invite-photo-backdrop';
 import { TintedDeco } from '@/components/tinted-deco';
 import './envelope-invite.css';
 
@@ -120,16 +119,17 @@ export const Hero: React.FC<HeroProps> = ({
   const letterDateNumeric = useMemo(() => {
     const parsed = parseWeddingDate(siteConfig.ceremony.date ?? siteConfig.wedding.date);
     const wedding = new Date(`${parsed.month} ${parsed.day}, ${parsed.year}`);
+    // Month as its short name ("Dec"), day and year as numbers
     if (Number.isNaN(wedding.getTime())) {
       const monthDate = new Date(`${parsed.month} 1, ${parsed.year}`);
       const month = Number.isNaN(monthDate.getTime())
-        ? '00'
-        : String(monthDate.getMonth() + 1).padStart(2, '0');
+        ? String(parsed.month).slice(0, 3)
+        : monthDate.toLocaleString('en-US', { month: 'short' });
       const day = String(parsed.day).padStart(2, '0');
       const year = String(parsed.year).slice(-2);
       return `${month} | ${day} | ${year}`;
     }
-    const month = String(wedding.getMonth() + 1).padStart(2, '0');
+    const month = wedding.toLocaleString('en-US', { month: 'short' });
     const day = String(wedding.getDate()).padStart(2, '0');
     const year = String(wedding.getFullYear()).slice(-2);
     return `${month} | ${day} | ${year}`;
@@ -536,7 +536,7 @@ export const Hero: React.FC<HeroProps> = ({
 
       {isPlain && (
         <>
-          <BackgroundVideo veil={0.5} />
+          <PhotoBackground photos={backgroundPhotos} veil={0.5} />
           <div className="env-invite-plain-corners" aria-hidden="true">
             {(
               [
@@ -547,7 +547,9 @@ export const Hero: React.FC<HeroProps> = ({
               ] as const
             ).map(({ src, className }) => (
               <div key={src} className={`pointer-events-none absolute ${className}`}>
-                <TintedDeco src={src} className="env-invite-plain-corner-img" />
+                {/* Corners keep their original artwork colors (no tint) */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt="" className="env-invite-plain-corner-img" />
               </div>
             ))}
           </div>

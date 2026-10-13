@@ -115,6 +115,13 @@ function DecoImg({ src, className }: { src: string; className: string }) {
   return <TintedDeco src={src} className={className} />
 }
 
+// Corners keep their original artwork colors (no tint)
+function CornerImg({ src }: { src: string }) {
+  if (!src) return null
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} />
+}
+
 // Sage hairlines either side of a sunshine diamond
 function DiamondDivider() {
   const line = "var(--color-motif-yellow)"
@@ -188,7 +195,9 @@ interface Guest {
   updatedAt?: string
 }
 
-export function BookOfGuests() {
+// background: false when a parent already paints one continuous circle pattern
+// behind this and the next section (see components/invitation-page.tsx)
+export function BookOfGuests({ background = true }: { background?: boolean } = {}) {
   const siteConfig = useSiteConfig()
   const copy = siteConfig.bookOfGuests
   const { decos } = copy
@@ -331,23 +340,17 @@ export function BookOfGuests() {
     <div
       id="guests"
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative isolate z-10 overflow-hidden pt-12 pb-10 sm:pt-14 sm:pb-12 md:pt-16 md:pb-14 lg:pt-20 lg:pb-16`}
-      style={{ background: sectionBg }}
+      style={background ? { background: sectionBg } : undefined}
     >
       {/* Same circle pattern as the hero */}
-      <PlainBubbles />
+      {background && <PlainBubbles />}
 
-      {/* Corner decorations (from site.ts) */}
+      {/* Corner decorations (from site.ts) — top only; FAQ continues below on the same background */}
       <div className="pointer-events-none absolute left-0 top-0 z-10">
-        <DecoImg src={decos.topLeft} className={CORNER_DECO_CLASS} />
+        <CornerImg src={decos.topLeft} />
       </div>
       <div className="pointer-events-none absolute right-0 top-0 z-10">
-        <DecoImg src={decos.topRight} className={CORNER_DECO_CLASS} />
-      </div>
-      <div className="pointer-events-none absolute bottom-0 left-0 z-10">
-        <DecoImg src={decos.bottomLeft} className={CORNER_DECO_CLASS} />
-      </div>
-      <div className="pointer-events-none absolute bottom-0 right-0 z-10">
-        <DecoImg src={decos.bottomRight} className={CORNER_DECO_CLASS} />
+        <CornerImg src={decos.topRight} />
       </div>
 
       {/* Section Header */}

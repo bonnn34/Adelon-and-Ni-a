@@ -6,8 +6,7 @@ import localFont from 'next/font/local';
 import { useReducedMotion } from 'motion/react';
 import { useSiteConfig } from '@/hooks/use-site-config';
 import { siteConfig as defaultSiteConfig } from '@/content/site';
-import { PhotoMarquee } from '@/components/loader/invite-photo-backdrop';
-import { BackgroundVideo } from '@/components/background-video';
+import { PhotoBackground, PhotoMarquee } from '@/components/loader/invite-photo-backdrop';
 import { TintedDeco } from '@/components/tinted-deco';
 import './loading-screen.css';
 
@@ -127,11 +126,11 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
       ]
     : [];
 
-  // Plain display: full month + weekday for the engraved-style date line
+  // Plain display: short month ("Dec") + full weekday for the engraved-style date line
   const silkDate = hasValidDate
     ? {
         weekday: weddingDate.toLocaleString('en-US', { weekday: 'long' }),
-        month: weddingDate.toLocaleString('en-US', { month: 'long' }),
+        month: weddingDate.toLocaleString('en-US', { month: 'short' }),
         day: String(weddingDate.getDate()).padStart(2, '0'),
         year: String(weddingDate.getFullYear()),
         label: weddingDate.toLocaleDateString('en-US', {
@@ -249,7 +248,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
 
       {isPlain && (
         <>
-          <BackgroundVideo veil={0.45} />
+          <PhotoBackground photos={backgroundPhotos} veil={0.45} />
           <div className="loading-screen__plain-corners" aria-hidden="true">
             {(
               [
@@ -263,7 +262,9 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
                 key={src}
                 className={`loading-screen__plain-corner-slot pointer-events-none absolute ${className}`}
               >
-                <TintedDeco src={src} className="loading-screen__plain-corner-img" />
+                {/* Corners keep their original artwork colors (no tint) */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt="" className="loading-screen__plain-corner-img" />
               </div>
             ))}
           </div>

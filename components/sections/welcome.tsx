@@ -147,9 +147,13 @@ export function Welcome() {
               </blockquote>
             </figure>
 
+            {/* Body: Crimson Text (upright book serif), same reading style as the love story */}
             <div
-              className={`font-goudy-italic mx-auto max-w-[36rem] space-y-3 text-center sm:space-y-3.5 md:space-y-4 ${sectionType.textRelaxed}`}
-              style={{ color: "var(--color-welcome-navy)" }}
+              className="mx-auto max-w-[36rem] space-y-3 text-center text-[clamp(0.875rem,1vw+0.6rem,0.96875rem)] leading-[1.7] sm:space-y-3.5 md:space-y-4"
+              style={{
+                color: "var(--color-welcome-navy)",
+                fontFamily: '"Crimson Text", "Cormorant Garamond", Georgia, serif',
+              }}
             >
               <p>
                 Dear family and friends, we are overjoyed to begin this new chapter together and

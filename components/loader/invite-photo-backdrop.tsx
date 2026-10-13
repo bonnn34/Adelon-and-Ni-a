@@ -112,6 +112,30 @@ export function PhotoMarquee({
   );
 }
 
+/**
+ * Sliding photo marquee with a soft white wash — drop-in for BackgroundVideo
+ * behind the plain loader and envelope (fills its positioned parent).
+ */
+export function PhotoBackground({
+  photos,
+  veil = 0.55,
+}: {
+  photos: readonly string[];
+  /** Strength of the white wash over the photos (0–1). */
+  veil?: number;
+}) {
+  const reduceMotion = useReducedMotion();
+  const resolved = photos.length > 0 ? photos : MOBILE_BG_PHOTOS;
+  if (resolved.length === 0) return null;
+
+  return (
+    <div className="background-video" aria-hidden="true">
+      <PhotoMarquee photos={resolved} copies={reduceMotion ? 1 : 2} variant="loader" />
+      <div className="background-video__veil" style={{ opacity: veil, zIndex: 2 }} />
+    </div>
+  );
+}
+
 /** Fixed photo marquee + veil — continuity from loading screen (photos display only). */
 export function InvitePhotoBackdrop({
   className = '',

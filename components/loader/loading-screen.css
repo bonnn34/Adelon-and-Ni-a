@@ -3384,13 +3384,13 @@
    Sunshine yellow is used once — the glowing dot on the progress bar.
    ========================================================================== */
 .loading-screen--plain {
-  --ls-sky: var(--color-motif-medium);          /* #8CBBE5 */
-  --ls-blue: var(--color-welcome-heading);      /* #4E86B7 */
-  --ls-navy: var(--color-welcome-navy);         /* #1F4468 */
-  --ls-ink: var(--color-welcome-text);          /* #2F6496 */
-  --ls-leaf: var(--color-motif-yellow);         /* #959D6C sage */
+  --ls-sky: var(--color-motif-medium);          /* #D4948A */
+  --ls-blue: var(--color-welcome-heading);      /* #984641 */
+  --ls-navy: var(--color-welcome-navy);         /* #3B1312 */
+  --ls-ink: var(--color-welcome-text);          /* #541C1B */
+  --ls-leaf: var(--color-motif-yellow);         /* #D4948A sage */
   --ls-leaf-ink: color-mix(in srgb, var(--color-motif-yellow) 78%, #3C4424);
-  --ls-sun: var(--color-motif-accent);          /* #FDCC4B */
+  --ls-sun: var(--color-motif-accent);          /* #984641 */
 
   --ls-text-dark: var(--ls-ink);
   --ls-text-accent-dark: var(--ls-blue);
@@ -3498,12 +3498,12 @@
    holds up over bright frames. Sage + sunshine appear only as accents.
    ========================================================================== */
 .home-hero--plain {
-  --hh-navy: var(--color-welcome-navy);       /* #1F4468 */
-  --hh-blue: var(--color-welcome-heading);    /* #4E86B7 */
-  --hh-ink: var(--color-welcome-text);        /* #2F6496 */
-  --hh-sky: var(--color-motif-medium);        /* #8CBBE5 */
-  --hh-leaf: var(--color-motif-yellow);       /* #959D6C */
-  --hh-butter: var(--color-motif-silver);     /* #FAE292 */
+  --hh-navy: var(--color-welcome-navy);       /* #3B1312 */
+  --hh-blue: var(--color-welcome-heading);    /* #984641 */
+  --hh-ink: var(--color-welcome-text);        /* #541C1B */
+  --hh-sky: var(--color-motif-medium);        /* #D4948A */
+  --hh-leaf: var(--color-motif-yellow);       /* #D4948A */
+  --hh-butter: var(--color-motif-silver);     /* #EBC8B5 */
   /* Tight white edge: keeps thin strokes crisp instead of washing them out */
   --hh-edge:
     0 0 1px rgb(255 255 255 / 100%),
@@ -3683,10 +3683,20 @@
   text-shadow: var(--hh-edge);
 }
 
+/* Day number: same Playfair Display numerals + terracotta as the loading screen date */
+.home-hero-date-day,
 .home-hero--plain .home-hero-date-day {
-  color: var(--hh-navy);
-  -webkit-text-stroke: 0.8px var(--hh-navy);
-  text-shadow: var(--hh-edge);
+  font-family: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(3.4rem, 17vw, 5.4rem);
+  font-weight: 500;
+  font-variant-numeric: lining-nums proportional-nums;
+}
+
+.home-hero--plain .home-hero-date-day {
+  color: var(--hh-blue);
+  -webkit-text-fill-color: var(--hh-blue);
+  -webkit-text-stroke: 0;
+  filter: drop-shadow(0 1px 0 rgb(255 255 255 / 80%));
 }
 
 /* Time in spaced small caps, venue in italic serif */
@@ -3816,7 +3826,13 @@
   background: var(--color-motif-yellow);
 }
 
+/* Story body: Crimson Text (upright book serif) at a comfortable reading size */
 .story-open-text {
+  font-family: "Crimson Text", "Cormorant Garamond", Georgia, serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(0.875rem, 1vw + 0.6rem, 0.96875rem);
+  line-height: 1.7;
   color: var(--color-welcome-text);
   text-shadow: 0 0 8px rgb(255 255 255 / 70%);
 }
@@ -3825,10 +3841,36 @@
   margin-top: 0.75rem;
 }
 
-/* Phones: slightly smaller body so long paragraphs sit comfortably beside the photo */
-@media (max-width: 639px) {
-  .story-open-text {
-    font-size: 0.78rem;
-    line-height: 1.55;
-  }
+/* Large faint chapter numeral behind each chapter's text — Playfair Display italic,
+   a different voice from the The Seasons titles */
+.story-open-number {
+  position: absolute;
+  top: -0.3em;
+  z-index: -1;
+  font-family: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-variant-numeric: lining-nums;
+  font-size: clamp(3.6rem, 16vw, 8rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: color-mix(in srgb, var(--color-motif-medium) 34%, transparent);
+  pointer-events: none;
+  user-select: none;
 }
+
+/* Special characters in love story text (&, _, dashes, ♡) — components lib/story-glyph-text.tsx */
+.story-glyph {
+  font-family: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.story-open-divider svg {
+  filter: drop-shadow(0 1px 0 rgb(255 255 255 / 80%));
+}
+
+/* Phones: slightly smaller body so long paragraphs sit comfortably beside the photo */
+

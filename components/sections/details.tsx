@@ -83,6 +83,13 @@ function DecoImg({ src, className }: { src: string; className: string }) {
   return <TintedDeco src={src} className={className} />
 }
 
+// Corners keep their original artwork colors (no tint)
+function CornerImg({ src }: { src: string }) {
+  if (!src) return null
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} />
+}
+
 function SectionIconDivider({ icon }: { icon: ReactNode }) {
   return (
     <div className="flex items-center justify-center gap-2 pt-1 sm:pt-2">
@@ -168,6 +175,7 @@ function DressCodePaletteHeader({
   guideNote: string
 }) {
   return (
+    <div className="px-3 py-4 sm:px-4 sm:py-5 md:px-5 md:py-6">
     <div className="mx-auto max-w-3xl text-center">
       <h5
         className={`${cinzel.className} text-sm font-semibold uppercase tracking-[0.14em] sm:text-base md:text-lg lg:text-xl`}
@@ -200,18 +208,16 @@ function DressCodePaletteHeader({
         {guideNote}
       </p>
     </div>
+    </div>
   )
 }
 
-// Every swatch is the same width, so each strip is only as wide as its colors
-// (scales down on very small phones so paired strips always fit side by side)
-const SWATCH = "w-[clamp(2.2rem,11vw,3.4rem)] sm:w-16 md:w-[4.5rem]"
-
+// Full-width color strip: every color gets an equal share of the card width
 function DressCodePaletteSwatches({ palette }: { palette: readonly PaletteColor[] }) {
   const named = palette.filter((c) => c.name)
   return (
     <div
-      className="flex w-fit overflow-hidden rounded-xl border-2"
+      className="flex w-full overflow-hidden rounded-xl border-2"
       style={{
         borderColor: "#FFFFFF",
         boxShadow:
@@ -223,15 +229,15 @@ function DressCodePaletteSwatches({ palette }: { palette: readonly PaletteColor[
       {palette.map((color, index) => (
         <div
           key={`${color.hex}-${index}`}
-          className={`relative flex h-24 shrink-0 items-center justify-center sm:h-28 md:h-32 ${SWATCH} ${
-            index === palette.length - 1 ? "" : "border-r border-white/90"
+          className={`relative flex min-h-[88px] min-w-0 flex-1 items-center justify-center sm:min-h-[108px] md:min-h-[128px] lg:min-h-[148px] ${
+            index === palette.length - 1 ? "" : "border-r border-white/80"
           }`}
           style={{ backgroundColor: color.hex }}
           title={color.name || color.hex}
         >
           {color.name ? (
             <span
-              className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white sm:text-[8px] md:text-[9px]"
+              className="text-[6px] font-semibold uppercase tracking-[0.08em] text-white sm:text-[7px] md:text-[8px] lg:text-[9px]"
               style={{
                 writingMode: "vertical-rl",
                 textOrientation: "mixed",
@@ -243,74 +249,6 @@ function DressCodePaletteSwatches({ palette }: { palette: readonly PaletteColor[
           ) : null}
         </div>
       ))}
-    </div>
-  )
-}
-
-/**
- * The dress code palette for every attire group in one card: the original header
- * (title, script line, heart divider, color guide) followed by a labelled color
- * strip per group. Shown after all the attire images, above Gentle Reminders.
- */
-function AttirePaletteOverview({
-  title,
-  subtitle,
-  guideTitle,
-  note,
-  groups,
-}: {
-  title: string
-  subtitle: string
-  guideTitle: string
-  note: string
-  groups: readonly { id: string; title: string; palette: readonly PaletteColor[] }[]
-}) {
-  const withColors = groups.filter((g) => g.palette.length > 0)
-  if (withColors.length === 0) return null
-
-  // Short palettes (3 colors or fewer) that sit next to each other share a line,
-  // e.g. Family + Principal Sponsors; longer ones get a line of their own.
-  const lines: (typeof withColors)[] = []
-  for (let i = 0; i < withColors.length; i++) {
-    const current = withColors[i]
-    const next = withColors[i + 1]
-    if (next && current.palette.length <= 3 && next.palette.length <= 3) {
-      lines.push([current, next])
-      i++
-    } else lines.push([current])
-  }
-
-  return (
-    <div
-      className="relative mx-auto w-full max-w-3xl overflow-hidden rounded-[1.5rem] px-4 py-6 sm:rounded-[2rem] sm:px-8 sm:py-8"
-      style={{ background: cardStyle.background, boxShadow: cardStyle.boxShadow }}
-    >
-      <DressCodePaletteHeader title={title} subtitle={subtitle} guideTitle={guideTitle} guideNote={note} />
-      <div className="mt-6 space-y-5 sm:mt-7 sm:space-y-6">
-        {lines.map((line) => (
-          <div
-            key={line.map((g) => g.id).join("-")}
-            className={
-              line.length > 1
-                ? // Paired (e.g. Family + Principal Sponsors): two columns on one line, never wraps
-                  "mx-auto grid w-fit grid-cols-2 items-end gap-x-3 sm:gap-x-10"
-                : "flex justify-center"
-            }
-          >
-            {line.map((group) => (
-              <div key={group.id} className="flex flex-col items-center gap-2 justify-self-center">
-                <p
-                  className={`${cinzel.className} max-w-[6.5rem] text-center text-[0.6rem] font-semibold uppercase leading-snug tracking-[0.2em] sm:max-w-none sm:text-[0.7rem]`}
-                  style={{ color: C.heading }}
-                >
-                  {group.title}
-                </p>
-                <DressCodePaletteSwatches palette={group.palette} />
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
     </div>
   )
 }
@@ -342,7 +280,8 @@ function CoupleImagesCarousel({
   rotationOffset: number
 }) {
   return (
-    <div className="mb-4 flex justify-center gap-2 sm:mb-5 sm:gap-2.5">
+    // Phones: photos overlap like a small stack; tablet/desktop: spaced row
+    <div className="mb-4 flex justify-center sm:mb-5 sm:gap-2.5">
       {coupleImages.map((image, index) => {
         const isActive = index === currentImageIndex
         const baseRotation = index % 2 === 0 ? -5 + index : 5 - index
@@ -354,12 +293,12 @@ function CoupleImagesCarousel({
         return (
           <div
             key={image}
-            className={`relative h-14 w-14 overflow-hidden rounded-lg border-[3px] shadow-md transition-all duration-700 ease-in-out sm:h-16 sm:w-16 ${
-              isActive ? "z-10" : "opacity-75"
-            }`}
+            className={`relative h-16 w-16 overflow-hidden rounded-lg border-[3px] shadow-md transition-all duration-700 ease-in-out ${
+              index > 0 ? "-ml-2 sm:ml-0" : ""
+            } ${isActive ? "z-10" : "opacity-90 sm:opacity-75"}`}
             style={{ transform: `rotate(${currentRotation}deg) ${scale}`, borderColor: C.light }}
           >
-            <Image src={image} alt={`Wedding couple ${index + 1}`} fill className="object-cover" sizes="64px" />
+            <Image src={encodeURI(image)} alt={`Wedding couple ${index + 1}`} fill className="object-cover" sizes="64px" />
           </div>
         )
       })}
@@ -475,12 +414,14 @@ function AttireCard({
   alt,
   children,
   dressCode,
+  belowImage,
 }: {
   title: string
   image?: string
   alt: string
   children: ReactNode
   dressCode?: string
+  belowImage?: ReactNode
 }) {
   return (
     <div className="relative group h-full">
@@ -535,6 +476,8 @@ function AttireCard({
             />
           </div>
         ) : null}
+
+        {belowImage}
 
         <div className="flex flex-1 flex-col px-3 pt-3 pb-4 sm:px-6 sm:pt-4 sm:pb-6">
           {children}
@@ -830,9 +773,8 @@ export function Details() {
   const isCombined = venues.layout === "combined"
   const ceremonyImages = ceremony.image
   const receptionImages = isCombined ? [] : reception.image
-  // "plain" display mode (loadingScreen.display) shows no photos above the reminders
-  const isPlain = siteConfig.loadingScreen?.display === "plain"
-  const reminderImages = isPlain ? [] : reminders.images
+  // Photos above the reminders (shown in every display mode)
+  const reminderImages = reminders.images
   const paletteHexes = toPaletteColors(attire.palette).map((c) => c.hex)
   // Guard against null entries (e.g. a stray comma in ATTIRE.show)
   const attireGroups = attire.groups.filter(Boolean)
@@ -899,16 +841,16 @@ export function Details() {
       >
         {/* Corner decorations */}
         <div className="pointer-events-none absolute left-0 top-0 z-10">
-          <DecoImg src={decos.topLeft} className={CORNER_DECO_CLASS} />
+          <CornerImg src={decos.topLeft} />
         </div>
         <div className="pointer-events-none absolute right-0 top-0 z-10">
-          <DecoImg src={decos.topRight} className={CORNER_DECO_CLASS} />
+          <CornerImg src={decos.topRight} />
         </div>
         <div className="pointer-events-none absolute bottom-0 left-0 z-10">
-          <DecoImg src={decos.bottomLeft} className={CORNER_DECO_CLASS} />
+          <CornerImg src={decos.bottomLeft} />
         </div>
         <div className="pointer-events-none absolute bottom-0 right-0 z-10">
-          <DecoImg src={decos.bottomRight} className={CORNER_DECO_CLASS} />
+          <CornerImg src={decos.bottomRight} />
         </div>
 
         {/* Header */}
@@ -1036,6 +978,8 @@ export function Details() {
 
           <div className="mx-auto mb-6 w-full max-w-3xl space-y-5 sm:mb-8 sm:space-y-6 md:mb-10">
             {attireGroups.map((group) => {
+              const palette = toPaletteColors(group.palette)
+              const hasPalette = palette.length > 0
               const halves = [group.ladies, group.gentlemen].filter(
                 (half) => half.details.trim() || half.roles.length > 0,
               )
@@ -1056,26 +1000,23 @@ export function Details() {
                         roles={half.roles}
                       />
                     ))}
+                    {/* Palette at the bottom of the card (only cards that have colors) */}
+                    {hasPalette ? (
+                      <div>
+                        <DressCodePaletteHeader
+                          title={attire.paletteTitle}
+                          subtitle={attire.paletteSubtitle}
+                          guideTitle={attire.colorGuideTitle}
+                          guideNote={attire.colorGuideNote}
+                        />
+                        <DressCodePaletteSwatches palette={palette} />
+                      </div>
+                    ) : null}
                   </div>
                 </AttireCard>
               )
             })}
           </div>
-
-          {/* One dress code palette for all groups — after the attire images, above the reminders */}
-          {attireGroups.length > 0 && (
-            <AttirePaletteOverview
-              title={attire.paletteTitle}
-              subtitle={attire.paletteSubtitle}
-              guideTitle={attire.colorGuideTitle}
-              note={attire.colorGuideNote}
-              groups={attireGroups.map((g) => ({
-                id: g.id,
-                title: g.title,
-                palette: toPaletteColors(g.palette),
-              }))}
-            />
-          )}
 
           {/* Gentle Reminders */}
           <motion.div

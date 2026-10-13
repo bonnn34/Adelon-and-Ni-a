@@ -7,6 +7,7 @@ import { sectionType, storyChapterTitleSize } from "@/lib/section-typography"
 import Image from "next/image"
 import { TornPaperEdge } from "./TornPaperEdge"
 import { TintedDeco } from "@/components/tinted-deco"
+import { StoryGlyphText } from "@/lib/story-glyph-text"
 
 const theSeasons = localFont({
   src: "../Font/Fontspring-DEMO-theseasons-reg.otf",
@@ -121,7 +122,8 @@ function PlainOpenChapter({
             transition={{ duration: 0.95, ease: revealEase }}
           >
             <div className="story-open-photo">
-              <div className="relative aspect-[4/5] w-full overflow-hidden">
+              {/* Tall portrait frame (2:3) */}
+              <div className="relative aspect-[2/3] w-full overflow-hidden">
                 <Image
                   src={encodeURI(imageSrc)}
                   alt={imageAlt || "Story moment"}
@@ -137,29 +139,42 @@ function PlainOpenChapter({
         ) : null}
 
         <motion.div
-          className={`min-w-0 flex-1 ${photoLeft ? "text-left" : "text-right"}`}
+          className={`relative min-w-0 flex-1 ${photoLeft ? "text-left" : "text-right"}`}
           initial={textFrom}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 0.85, delay: 0.15, ease: revealEase }}
         >
-          <p className={`${theSeasons.className} story-open-date`}>{date || fallbackLabel}</p>
+          {/* Faint chapter numeral behind the text */}
+          <span
+            className={`story-open-number ${photoLeft ? "right-0" : "left-0"}`}
+            aria-hidden
+          >
+            {String(chapterIndex + 1).padStart(2, "0")}
+          </span>
+          <p className={`${theSeasons.className} story-open-date`}>
+            <StoryGlyphText text={date || fallbackLabel} />
+          </p>
           {title ? (
-            <h2 className={`${theSeasons.className} story-open-title`}>{title}</h2>
+            <h2 className={`${theSeasons.className} story-open-title`}>
+              <StoryGlyphText text={title} />
+            </h2>
           ) : null}
           <span
             className={`story-open-rule ${photoLeft ? "" : "ml-auto"}`}
             aria-hidden
           />
-          <div className={`font-goudy-italic story-open-text ${sectionType.textRelaxed}`}>{text}</div>
+          <div className="story-open-text">{text}</div>
         </motion.div>
       </div>
 
       {!isLast && (
-        <div className="flex items-center justify-center gap-1.5" aria-hidden>
-          <span className="h-px w-10 sm:w-16" style={{ background: "linear-gradient(to right, transparent, var(--color-motif-yellow))" }} />
-          <span className="h-1 w-1 rounded-full sm:h-1.5 sm:w-1.5" style={{ background: "var(--color-motif-accent)" }} />
-          <span className="h-px w-10 sm:w-16" style={{ background: "linear-gradient(to left, transparent, var(--color-motif-yellow))" }} />
+        <div className="story-open-divider flex items-center justify-center gap-2" aria-hidden>
+          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, var(--color-motif-yellow))" }} />
+          <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="var(--color-motif-accent)">
+            <path d="M12 21s-7.5-4.6-9.6-9.2C1 8.6 3 5 6.5 5c2 0 3.5 1.1 4.3 2.6h2.4C14 6.1 15.5 5 17.5 5 21 5 23 8.6 21.6 11.8 19.5 16.4 12 21 12 21z" />
+          </svg>
+          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, var(--color-motif-yellow))" }} />
         </div>
       )}
     </div>
@@ -350,7 +365,7 @@ export const StorySection: React.FC<StorySectionProps> = ({
               <p
                 className={`${theSeasons.className} story-plain-chapter-label mb-2 text-[0.6rem] font-medium uppercase sm:text-[0.66rem]`}
               >
-                {date || `${chapterLabelText} ${chapterLabel}`}
+                <StoryGlyphText text={date || `${chapterLabelText} ${chapterLabel}`} />
               </p>
               {title ? (
                 <h2
@@ -360,7 +375,7 @@ export const StorySection: React.FC<StorySectionProps> = ({
                     color: isDark ? ON_TEAL : TEAL,
                   }}
                 >
-                  {title}
+                  <StoryGlyphText text={title} />
                 </h2>
               ) : null}
               <PlainChapterDivider dark={isDark} />
@@ -402,7 +417,7 @@ export const StorySection: React.FC<StorySectionProps> = ({
                     color: isDark ? lightBg : "var(--color-welcome-navy)",
                   }}
                 >
-                  {title}
+                  <StoryGlyphText text={title} />
                 </h2>
               )}
               <div

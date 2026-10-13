@@ -89,6 +89,13 @@ function DecoImg({ src, className }: { src: string; className: string }) {
   return <TintedDeco src={src} className={className} />
 }
 
+// Corners keep their original artwork colors (no tint)
+function CornerImg({ src }: { src: string }) {
+  if (!src) return null
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} />
+}
+
 // Sage hairlines either side of a sunshine diamond
 function DiamondDivider() {
   return (
@@ -196,7 +203,9 @@ function FaqAnswer({ answer }: { answer: string }) {
   )
 }
 
-export function FAQ() {
+// background: false when a parent already paints one continuous circle pattern
+// behind this and the previous section (see components/invitation-page.tsx)
+export function FAQ({ background = true }: { background?: boolean } = {}) {
   const siteConfig = useSiteConfig()
   const content = siteConfig.faq
   const { decos } = content
@@ -220,26 +229,20 @@ export function FAQ() {
   return (
     <div
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden`}
-      style={{ background: sectionBg }}
+      style={background ? { background: sectionBg } : undefined}
     >
       {/* Same circle pattern as the other invitation sections */}
-      <PlainBubbles />
+      {background && <PlainBubbles />}
       <section
         id="faq"
         className="relative z-10 overflow-hidden pt-14 pb-12 sm:pt-16 sm:pb-14 md:pt-20 md:pb-16 lg:pt-24 lg:pb-20"
       >
-        {/* Corner decorations (from site.ts) */}
-        <div className="pointer-events-none absolute left-0 top-0 z-10">
-          <DecoImg src={decos.topLeft} className={CORNER_DECO_CLASS} />
-        </div>
-        <div className="pointer-events-none absolute right-0 top-0 z-10">
-          <DecoImg src={decos.topRight} className={CORNER_DECO_CLASS} />
-        </div>
+        {/* Corner decorations (from site.ts) — bottom only; Book of Guests sits above on the same background */}
         <div className="pointer-events-none absolute bottom-0 left-0 z-10">
-          <DecoImg src={decos.bottomLeft} className={CORNER_DECO_CLASS} />
+          <CornerImg src={decos.bottomLeft} />
         </div>
         <div className="pointer-events-none absolute bottom-0 right-0 z-10">
-          <DecoImg src={decos.bottomRight} className={CORNER_DECO_CLASS} />
+          <CornerImg src={decos.bottomRight} />
         </div>
 
         {/* Header */}

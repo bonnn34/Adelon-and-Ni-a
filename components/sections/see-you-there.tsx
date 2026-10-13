@@ -58,6 +58,13 @@ function DecoImg({ src, className }: { src: string; className: string }) {
   return <TintedDeco src={src} className={className} />
 }
 
+// Corners keep their original artwork colors (no tint)
+function CornerImg({ src }: { src: string }) {
+  if (!src) return null
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} />
+}
+
 // "!" and other symbols in Cinzel, letters in The Seasons
 function SpecialCharFont({ text }: { text: string }) {
   return (
@@ -75,7 +82,7 @@ function SpecialCharFont({ text }: { text: string }) {
   )
 }
 
-function PlainSeeYouThere() {
+function PlainSeeYouThere({ background = true }: { background?: boolean }) {
   const siteConfig = useSiteConfig()
   const content = siteConfig.seeYouThere
   const plain = content.plain
@@ -87,24 +94,18 @@ function PlainSeeYouThere() {
   return (
     <section
       id="see-you-there"
-      className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative isolate w-full overflow-hidden`}
-      style={{ background: plainBg }}
+      className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative isolate z-10 w-full overflow-hidden`}
+      style={background ? { background: plainBg } : undefined}
     >
       {/* Same circle pattern as the hero */}
-      <PlainBubbles />
+      {background && <PlainBubbles />}
 
-      {/* Corner decorations (from site.ts) */}
+      {/* Corner decorations (from site.ts) — top only; the footer continues below on the same background */}
       <div className="pointer-events-none absolute left-0 top-0 z-10">
-        <DecoImg src={plain.decos.topLeft} className={CORNER_DECO_CLASS} />
+        <CornerImg src={plain.decos.topLeft} />
       </div>
       <div className="pointer-events-none absolute right-0 top-0 z-10">
-        <DecoImg src={plain.decos.topRight} className={CORNER_DECO_CLASS} />
-      </div>
-      <div className="pointer-events-none absolute bottom-0 left-0 z-10">
-        <DecoImg src={plain.decos.bottomLeft} className={CORNER_DECO_CLASS} />
-      </div>
-      <div className="pointer-events-none absolute bottom-0 right-0 z-10">
-        <DecoImg src={plain.decos.bottomRight} className={CORNER_DECO_CLASS} />
+        <CornerImg src={plain.decos.topRight} />
       </div>
 
       <motion.div
@@ -223,8 +224,10 @@ function PhotoSeeYouThere() {
   )
 }
 
-export function SeeYouThere() {
+// background: false when a parent already paints one continuous circle pattern
+// behind this and the footer (see components/invitation-page.tsx)
+export function SeeYouThere({ background = true }: { background?: boolean } = {}) {
   const siteConfig = useSiteConfig()
   const isPlain = siteConfig.loadingScreen?.display === "plain"
-  return isPlain ? <PlainSeeYouThere /> : <PhotoSeeYouThere />
+  return isPlain ? <PlainSeeYouThere background={background} /> : <PhotoSeeYouThere />
 }

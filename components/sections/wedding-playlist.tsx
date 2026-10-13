@@ -153,6 +153,13 @@ function DecoImg({ src, className }: { src: string; className: string }) {
   return <TintedDeco src={src} className={className} />
 }
 
+// Corners keep their original artwork colors (no tint)
+function CornerImg({ src }: { src: string }) {
+  if (!src) return null
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} />
+}
+
 // Sits directly on the circle pattern, so drawn in ivory
 function DiamondDivider() {
   return (
@@ -309,16 +316,16 @@ export function WeddingPlaylist() {
       >
         {/* Corner decorations (from site.ts) */}
         <div className="pointer-events-none absolute left-0 top-0 z-10">
-          <DecoImg src={decos.topLeft} className={CORNER_DECO_CLASS} />
+          <CornerImg src={decos.topLeft} />
         </div>
         <div className="pointer-events-none absolute right-0 top-0 z-10">
-          <DecoImg src={decos.topRight} className={CORNER_DECO_CLASS} />
+          <CornerImg src={decos.topRight} />
         </div>
         <div className="pointer-events-none absolute bottom-0 left-0 z-10">
-          <DecoImg src={decos.bottomLeft} className={CORNER_DECO_CLASS} />
+          <CornerImg src={decos.bottomLeft} />
         </div>
         <div className="pointer-events-none absolute bottom-0 right-0 z-10">
-          <DecoImg src={decos.bottomRight} className={CORNER_DECO_CLASS} />
+          <CornerImg src={decos.bottomRight} />
         </div>
 
         <div className="relative z-20 mx-auto max-w-5xl px-4 sm:px-6 md:px-8">

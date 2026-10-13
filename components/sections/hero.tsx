@@ -6,8 +6,7 @@ import { Cinzel } from "next/font/google"
 import localFont from "next/font/local"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { parseWeddingDate } from "@/lib/wedding-date"
-import { InvitePhotoBackdrop } from "@/components/loader/invite-photo-backdrop"
-import { BackgroundVideo } from "@/components/background-video"
+import { InvitePhotoBackdrop, PhotoBackground } from "@/components/loader/invite-photo-backdrop"
 import { siteConfig as defaultSiteConfig } from "@/content/site"
 import "@/components/loader/loading-screen.css"
 import { TintedDeco } from "@/components/tinted-deco"
@@ -217,6 +216,8 @@ export function Hero() {
   const cornerDecos =
     loading.cornerDecos ?? defaultSiteConfig.loadingScreen.cornerDecos
   const backgroundPhotos = loading.backgroundPhotos ?? []
+  // Same sliding photo marquee as the loader and envelope (plain mode)
+  const plainPhotos = useMemo(() => backgroundPhotos.map((src) => encodeURI(src)), [backgroundPhotos])
   const reduceMotion = useReducedMotion()
   const [visible, setVisible] = useState(false)
 
@@ -254,7 +255,7 @@ export function Hero() {
     >
       {isPlain ? (
         <>
-          <BackgroundVideo veil={0.45} />
+          <PhotoBackground photos={plainPhotos} veil={0.45} />
           <div className="home-hero-plain-corners" aria-hidden="true">
             {(
               [
@@ -282,7 +283,7 @@ export function Hero() {
       )}
 
       <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-5 pb-[clamp(1rem,4vh,2rem)] pt-[clamp(6rem,24vw,7.5rem)] sm:pb-[clamp(2.5rem,9vh,5rem)] sm:pt-[clamp(3.75rem,10vw,6rem)] text-center sm:px-8">
-        {/* Soft frosted mist behind the whole text block — no edges, fades into the video */}
+        {/* Soft frosted mist behind the whole text block — no edges, fades into the photos */}
         <span aria-hidden className="home-hero-mist pointer-events-none" />
         <motion.h1
           className="relative mx-auto w-full max-w-full @container text-center"
@@ -347,10 +348,11 @@ export function Hero() {
             <span
               className={`${cinzel.className} home-hero-date-side text-[clamp(0.72rem,3vw,0.9rem)] font-semibold uppercase tracking-[0.24em]`}
             >
-              {parsedDate.month}
+              {/* Short month name ("Dec") */}
+              {parsedDate.month.slice(0, 3)}
             </span>
             <span
-              className={`${theSeasons.className} home-hero-date-day text-[clamp(3rem,14vw,4.75rem)] leading-none`}
+              className="home-hero-date-day leading-none"
             >
               {pad2(Number(parsedDate.day))}
             </span>
