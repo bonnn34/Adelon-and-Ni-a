@@ -875,6 +875,25 @@ export function Details() {
             {content.description}
           </p>
 
+          {content.verse ? (
+            <figure className="mx-auto mt-4 max-w-xl px-2 sm:mt-5">
+              <blockquote
+                className="font-goudy-italic text-[0.8rem] leading-[1.62] sm:text-[0.875rem] md:text-[0.9375rem]"
+                style={onBg}
+              >
+                &ldquo;{content.verse}&rdquo;
+              </blockquote>
+              {content.verseCitation ? (
+                <figcaption
+                  className={`${cinzel.className} mt-1.5 text-[0.6rem] font-semibold uppercase tracking-[0.24em] sm:text-[0.65rem]`}
+                  style={{ ...onBg, color: C.blue }}
+                >
+                  {content.verseCitation}
+                </figcaption>
+              ) : null}
+            </figure>
+          ) : null}
+
           <div className="mt-4 sm:mt-5">
             <SectionIconDivider icon={<MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: C.blue }} aria-hidden />} />
           </div>

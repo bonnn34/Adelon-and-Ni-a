@@ -335,7 +335,7 @@ const PAIRED_COLUMN_SECTIONS: { key: string; left: string; right: string }[] = [
 ]
 
 // Secondary sponsor groups whose names are split into two columns
-const TWO_COLUMN_SECONDARY_GROUPS = new Set(["Little Love Bearer", "Candle Bearer", "Cord Sponsors"])
+const TWO_COLUMN_SECONDARY_GROUPS = new Set(["Little Love Bearer", "Candle Bearer", "Veil Sponsors", "Cord Sponsors"])
 
 const SINGLE_COLUMN_SECTIONS = new Set([
   "Best Man",
@@ -350,9 +350,9 @@ const SINGLE_COLUMN_SECTIONS = new Set([
 const ROLE_CATEGORY_DISPLAY_TITLES: Record<string, string> = {
   "Candle Sponsors": "To light our path",
   "Candle Sponsor": "To light our path",
-  "Veil Sponsors": "To Cloth us as one",
-  "Veil Sponsor": "To Cloth us as one",
-  Veil: "To Cloth us as one",
+  "Veil Sponsors": "To clothe us as one",
+  "Veil Sponsor": "To clothe us as one",
+  Veil: "To clothe us as one",
   "Cord Sponsors": "To bind us together",
   "Cord Sponsor": "To bind us together",
   "Chord Sponsors": "To bind us together",
@@ -388,6 +388,8 @@ function normalizeRoleCategory(category: string): string {
   if (/^little love bearers?$/i.test(normalized)) return "Little Love Bearer"
   if (/^candle bearers?$/i.test(normalized)) return "Candle Bearer"
   if (/^ch?ord sponsors?$/i.test(normalized)) return "Cord Sponsors"
+  // Sheet may say "Cloth Sponsors" — same group as the veil sponsors
+  if (/^(cloth|veil) sponsors?$/i.test(normalized)) return "Veil Sponsors"
   if (normalized.toLowerCase() === "peer sponsors") {
     return "Peer Sponsors"
   }

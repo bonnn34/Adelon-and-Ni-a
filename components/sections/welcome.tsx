@@ -134,7 +134,9 @@ export function Welcome() {
                   className={`font-goudy-italic ${sectionType.textSnug}`}
                   style={{ color: "var(--color-welcome-navy)" }}
                 >
-                  &ldquo;He has made everything beautiful in His time.&rdquo;
+                  &ldquo;He hath made every thing beautiful in his time: also he hath set the world in
+                  their heart, so that no man can find out the work that God maketh from the beginning to
+                  the end.&rdquo;
                 </p>
                 <figcaption className="mt-2 sm:mt-2.5">
                   <cite

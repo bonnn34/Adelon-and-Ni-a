@@ -209,7 +209,15 @@ export function LoveStory({ skyBackdrop = true }: { skyBackdrop?: boolean } = {}
           transition={{ duration: 0.75, delay: 0.08, ease: revealEase }}
         >
           <OrnamentalDivider />
-          <blockquote className="mt-5 sm:mt-6">
+          {loveStory.closingEyebrow ? (
+            <p
+              className={`${theSeasons.className} mt-5 text-lg uppercase tracking-[0.3em] sm:mt-6 sm:text-xl`}
+              style={{ color: "var(--color-welcome-heading)", textShadow: onBgGlow }}
+            >
+              {loveStory.closingEyebrow}
+            </p>
+          ) : null}
+          <blockquote className={loveStory.closingEyebrow ? "mt-3 sm:mt-4" : "mt-5 sm:mt-6"}>
             <p
               className={`font-goudy-italic ${sectionType.textRelaxed} italic leading-relaxed`}
               style={{ color: "var(--color-welcome-navy)", textShadow: onBgGlow }}

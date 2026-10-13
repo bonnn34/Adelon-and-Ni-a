@@ -451,7 +451,10 @@ export const siteConfig = {
     subtitle: "a love that bloomed",
     // Shown above a chapter's title when it has no date, e.g. "Chapter 03"
     chapterLabel: "Chapter",
-    closingQuote: "When the time is right, I, the Lord, will make it happen.",
+    // Closing verse — each Bible verse appears in one section only
+    // (Welcome: Ecclesiastes 3:11 · Love Story: Isaiah 60:22 · Event Details: 1 Corinthians 13:13)
+    closingEyebrow: "Puhon", // small heading above the verse — "" hides it
+    closingQuote: "A little one shall become a thousand, and a small one a strong nation: I the Lord will hasten it in his time.",
     closingCitation: "Isaiah 60:22",
     eucalyptusDecos: {
       topLeft: DECOR.sideLeft,
@@ -577,6 +580,9 @@ export const siteConfig = {
     title: "Event Details",
     subtitle: "our special day",
     description: "Everything you need to know about our special day.",
+    // Verse under the description — "" hides it
+    verse: "And now abideth faith, hope, charity, these three; but the greatest of these is charity.",
+    verseCitation: "1 Corinthians 13:13",
     decos: { ...SECTION_DECOS },
     // Venue cards layout:
     //   "separate" = one card each for ceremony and reception (uses ceremony / reception below)
@@ -626,7 +632,23 @@ export const siteConfig = {
           variant: "accent" as "accent" | "soft",
           showPalette: false,
           paragraphs: [
-            "As much as we love your little ones, we kindly request that our wedding celebration be for adults only. We hope you understand and enjoy this special day with us. Thank you for your understanding!",
+            "We love your kids, but consider this your night off! Please note that our celebration is adults-only.",
+          ],
+        },
+        {
+          title: "No Surprise Announcements",
+          variant: "soft" as "accent" | "soft",
+          showPalette: false,
+          paragraphs: [
+            "To keep the focus on the celebration, we kindly ask that there be no surprise announcements or proposals during our wedding.",
+          ],
+        },
+        {
+          title: "Keep Our Invitation Private",
+          variant: "soft" as "accent" | "soft",
+          showPalette: false,
+          paragraphs: [
+            "Please keep this just between us! Kindly refrain from posting our invitation online.",
           ],
         },
         {
@@ -680,8 +702,9 @@ export const siteConfig = {
     subtitle: "our wedding day",
     description:
       "From the first arrival to the last farewell, here is how we will spend this day together.",
-    quote: "At the right time, I, the Lord, will make it happen.",
-    quoteCitation: "Isaiah 60:22",
+    // "" hides the verse — Isaiah 60:22 is already shown in the Love Story
+    quote: "",
+    quoteCitation: "",
     // Optional corner decorations — leave "" to hide
     decos: {
       topLeft: "",
@@ -1029,7 +1052,17 @@ export const siteConfig = {
       {
         question: "Can I bring my child to the event?",
         answer:
-          "As much as we love your little ones, we kindly request that our wedding celebration be for adults only. We hope you understand and enjoy this special day with us. Thank you for your understanding!",
+          "We love your kids, but consider this your night off! Please note that our celebration is adults-only.",
+      },
+      {
+        question: "May I make an announcement or a proposal during the wedding?",
+        answer:
+          "To keep the focus on the celebration, we kindly ask that there be no surprise announcements or proposals during our wedding.",
+      },
+      {
+        question: "Can I share the invitation online?",
+        answer:
+          "Please keep this just between us! Kindly refrain from posting our invitation online.",
       },
       {
         question:
