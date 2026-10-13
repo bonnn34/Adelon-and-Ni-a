@@ -1218,9 +1218,13 @@ img[src*="%2Flovestorydeco%2F"] {
     invite-corner-sway 9s ease-in-out calc(var(--invite-corner-delay, 0.2s) + 1.6s) infinite alternate;
 }
 
-.invite-corner .tinted-deco {
+.invite-corner .tinted-deco,
+.invite-corner__img {
+  display: block;
   width: var(--invite-corner-size);
   max-width: none;
+  height: auto;
+  user-select: none;
 }
 
 .invite-corner--tl { left: 0; top: 0; transform-origin: top left; --invite-corner-from: translate(-12%, -12%); }

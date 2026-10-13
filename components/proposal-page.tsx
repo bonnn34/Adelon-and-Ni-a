@@ -191,7 +191,9 @@ function ProposalPageFrame() {
         {corners.map(({ src, pos }) =>
           src ? (
             <div key={pos} className={`invite-corner invite-corner--${pos}`}>
-              <TintedDeco src={src} />
+              {/* Corners keep their original artwork colors (no tint) */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={src} alt="" className="invite-corner__img" />
             </div>
           ) : null,
         )}
