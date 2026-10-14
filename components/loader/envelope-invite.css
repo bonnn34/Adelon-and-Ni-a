@@ -2430,6 +2430,7 @@
   .env-invite-screen--plain .env-invite-emerge-stack .env-invite-letter,
   .env-invite-screen--plain[data-phase="rising"] .env-invite-emerge-stack .env-invite-letter,
   .env-invite-screen--plain[data-phase="revealed"] .env-invite-emerge-stack .env-invite-letter,
+  .env-invite-screen--plain[data-phase="photos"] .env-invite-emerge-stack .env-invite-letter,
   .env-invite-screen--plain[data-phase="cta"] .env-invite-emerge-stack .env-invite-letter {
     top: -28%;
   }
@@ -2464,12 +2465,14 @@
   .env-invite-screen--plain .env-invite-emerge-stack .env-invite-letter,
   .env-invite-screen--plain[data-phase="rising"] .env-invite-emerge-stack .env-invite-letter,
   .env-invite-screen--plain[data-phase="revealed"] .env-invite-emerge-stack .env-invite-letter,
+  .env-invite-screen--plain[data-phase="photos"] .env-invite-emerge-stack .env-invite-letter,
   .env-invite-screen--plain[data-phase="cta"] .env-invite-emerge-stack .env-invite-letter {
     top: -52%;
   }
 
   .env-invite-screen--plain[data-phase="rising"] .env-invite-emerge-stack,
   .env-invite-screen--plain[data-phase="revealed"] .env-invite-emerge-stack,
+  .env-invite-screen--plain[data-phase="photos"] .env-invite-emerge-stack,
   .env-invite-screen--plain[data-phase="cta"] .env-invite-emerge-stack {
     bottom: 14%;
   }
@@ -2908,3 +2911,665 @@
   color: var(--env-navy);
 }
 
+
+
+/* ==========================================================================
+   Blush romance — envelope (plain). Kept last so it wins.
+   Blush paper envelope on pastel pink, ivory letter, burgundy only for the
+   headline, names and the button. When it opens, a portrait of the groom
+   and one of the bride rise out on either side of the letter.
+   ========================================================================== */
+.env-invite-screen--plain {
+  --env-sky: #D4948A;
+  --env-blue: #8E524D;
+  --env-navy: #541C1B;
+  --env-ink: #5E3A39;
+  --env-leaf: #A3A58B;
+  --env-leaf-ink: #D4948A;
+  --env-sun: #D4948A;
+  --env-shadow-tint: #541C1B;
+  --env-plain-bg: #F8E9E9;
+  --env-plain-accent: #D4948A;
+  --env-paper: #FFFAF7;
+  --env-base: color-mix(in srgb, #F4DDE0 88%, #D4948A);
+  --env-highlight: #F8E9E9;
+  --env-fold: color-mix(in srgb, #F4DDE0 70%, #D4948A);
+  --env-envelope: #F4DDE0;
+  --env-border: color-mix(in srgb, #D4948A 45%, transparent);
+}
+
+.env-invite-screen--plain::before {
+  display: none;
+}
+
+.env-invite-screen--plain .env-invite-envelope {
+  filter:
+    drop-shadow(0 26px 40px color-mix(in srgb, #541C1B 14%, transparent))
+    drop-shadow(0 8px 14px color-mix(in srgb, #D4948A 22%, transparent));
+}
+
+.env-invite-screen--plain .env-invite-front-closed::after {
+  border-color: color-mix(in srgb, #FFFAF7 75%, transparent);
+}
+
+.env-invite-screen--plain .env-invite-flap {
+  background:
+    linear-gradient(145deg, rgb(255 250 247 / 55%) 0%, transparent 42%),
+    linear-gradient(160deg, var(--env-highlight) 0%, var(--env-base) 55%, var(--env-fold) 100%);
+  box-shadow:
+    inset 0 -10px 18px color-mix(in srgb, #D4948A 18%, transparent),
+    inset 0 2px 0 rgb(255 255 255 / 45%);
+}
+
+.env-invite-screen--plain .env-invite-seal-btn {
+  filter:
+    drop-shadow(0 8px 14px color-mix(in srgb, #541C1B 22%, transparent))
+    drop-shadow(0 2px 4px color-mix(in srgb, #541C1B 14%, transparent));
+}
+
+.env-invite-screen--plain .env-invite-hint {
+  font-weight: 600;
+  color: var(--env-blue);
+  text-shadow: none;
+}
+
+.env-invite-screen--plain .env-invite-letter {
+  background:
+    radial-gradient(85% 35% at 50% 0%, rgb(255 255 255 / 95%) 0%, transparent 72%),
+    linear-gradient(180deg, #FFFAF7 0%, #FFFAF7 60%, color-mix(in srgb, #F4DDE0 55%, #FFFAF7) 100%);
+  border: 1px solid color-mix(in srgb, #D4948A 45%, transparent);
+  box-shadow:
+    0 18px 40px color-mix(in srgb, #541C1B 12%, transparent),
+    0 6px 14px color-mix(in srgb, #D4948A 16%, transparent),
+    inset 0 1px 0 rgb(255 255 255 / 90%);
+}
+
+.env-invite-screen--plain .env-invite-letter-frame {
+  border-color: color-mix(in srgb, #D4948A 45%, transparent);
+}
+
+.env-invite-screen--plain .env-invite-letter-frame::after {
+  border-color: color-mix(in srgb, #A3A58B 40%, transparent);
+}
+
+.env-invite-screen--plain .env-invite-days-to-go,
+.env-invite-screen--plain .env-invite-reveal-copy h2,
+.env-invite-screen--plain .env-invite-reveal-copy p {
+  text-shadow: 0 0 12px rgb(255 250 247 / 90%);
+}
+
+.env-invite-screen--plain .env-invite-reveal-copy h2 {
+  color: var(--env-ink);
+}
+
+/* "View the invitation": burgundy pill, the one strong accent on screen */
+.env-invite-screen--plain .env-invite-enter-btn {
+  color: #FFFAF7;
+  background: #541C1B;
+  border: 1px solid color-mix(in srgb, #D4948A 55%, transparent);
+  box-shadow:
+    0 0 0 4px rgb(255 250 247 / 60%),
+    0 12px 26px color-mix(in srgb, #541C1B 22%, transparent);
+}
+
+.env-invite-screen--plain .env-invite-enter-btn:hover {
+  background: color-mix(in srgb, #541C1B 88%, #D4948A);
+}
+
+.env-invite-screen--plain .env-invite-ghost-date {
+  color: #D4948A;
+}
+
+/* Top corner florals: short, height-sized sprays (same as the loader); bottom corners keep their original size */
+.env-invite-screen--plain .env-invite-plain-corners .top-0 .env-invite-plain-corner-img {
+  width: auto;
+  max-width: none;
+  height: min(38vh, 320px);
+}
+
+@media (min-width: 1024px) {
+  .env-invite-screen--plain .env-invite-plain-corners .top-0 .env-invite-plain-corner-img { height: min(46vh, 440px); }
+}
+
+/* ── Groom & bride portraits ── */
+.env-invite-screen--plain .env-invite-photos-emerge--portraits {
+  display: block;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  min-height: 0;
+  width: calc(var(--env-letter-w) * 1.55);
+  clip-path: none;
+  -webkit-clip-path: none;
+  overflow: visible;
+  z-index: 26;
+}
+
+.env-invite-screen--plain .env-invite-photos-emerge--portraits .env-invite-polaroid--envelope-pair {
+  top: auto;
+  bottom: var(--env-portrait-bottom, 34%);
+  width: var(--env-portrait-w, clamp(92px, calc(var(--env-width) * 0.3), 170px));
+  padding: 5px 5px 7px;
+  border-radius: 999px 999px 6px 6px;
+  border: 1px solid color-mix(in srgb, #D4948A 50%, transparent);
+  background: #FFFAF7;
+  box-shadow:
+    0 18px 32px -14px color-mix(in srgb, #541C1B 30%, transparent),
+    0 4px 10px color-mix(in srgb, #D4948A 18%, transparent);
+}
+
+.env-invite-screen--plain .env-invite-photos-emerge--portraits .env-invite-polaroid--envelope-pair::before,
+.env-invite-screen--plain .env-invite-photos-emerge--portraits .env-invite-polaroid--envelope-pair::after {
+  display: none;
+}
+
+.env-invite-screen--plain .env-invite-photos-emerge--portraits .env-invite-polaroid-photo {
+  height: auto;
+  aspect-ratio: 3 / 4.2;
+  border: 0;
+  border-radius: 999px 999px 3px 3px;
+  background: #F4DDE0;
+}
+
+.env-invite-screen--plain .env-invite-photos-emerge--portraits .env-invite-polaroid-photo::after {
+  display: none;
+}
+
+/* Natural colour — no sepia or vignette */
+.env-invite-screen--plain .env-invite-photos-emerge--portraits .env-invite-polaroid-img {
+  filter: none;
+  object-position: center 22%;
+}
+
+.env-invite-screen--plain .env-invite-photos-emerge--portraits .env-invite-polaroid--left {
+  left: 0;
+}
+
+.env-invite-screen--plain .env-invite-photos-emerge--portraits .env-invite-polaroid--right {
+  right: 0;
+}
+
+@media (min-width: 768px) {
+  .env-invite-screen--plain {
+    --env-portrait-w: clamp(150px, 15vw, 220px);
+    --env-portrait-bottom: 40%;
+  }
+
+  .env-invite-screen--plain .env-invite-photos-emerge--portraits {
+    width: calc(var(--env-letter-w) * 1.95);
+  }
+}
+
+/* Headline ("A Celebration of Love") wraps to two lines inside the letter */
+.env-invite-screen--plain .env-invite-letter-label {
+  flex-wrap: wrap;
+  row-gap: 0.1em;
+  white-space: normal;
+  max-width: calc(100% - 2.5rem);
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.1em;
+}
+
+@media (min-width: 768px) {
+  .env-invite-screen--plain .env-invite-letter-label {
+    font-size: 1.3em;
+  }
+}
+
+.env-invite-screen--plain .env-invite-letter-label__word {
+  background: none;
+  color: #541C1B;
+  -webkit-text-fill-color: #541C1B;
+}
+
+/* Mobile: keep both portraits inside the screen, a little higher above the pocket */
+@media (max-width: 767px) {
+  .env-invite-screen--plain {
+    --env-portrait-w: clamp(84px, calc(var(--env-width) * 0.27), 120px);
+    --env-portrait-bottom: 40%;
+  }
+
+  .env-invite-screen--plain .env-invite-photos-emerge--portraits {
+    width: min(calc(var(--env-width) + 8px), calc(var(--env-letter-w) * 1.5));
+  }
+}
+
+.env-invite-letter-label__break {
+  flex-basis: 100%;
+  height: 0;
+}
+
+/* Clean blush front — no brown shading pools */
+.env-invite-screen--plain .env-invite-front-closed {
+  background:
+    radial-gradient(ellipse 70% 55% at 18% 22%, color-mix(in srgb, var(--env-highlight) 60%, transparent) 0%, transparent 58%),
+    radial-gradient(ellipse 85% 60% at 50% 0%, rgb(255 255 255 / 35%) 0%, transparent 52%),
+    linear-gradient(175deg, var(--env-highlight) 0%, var(--env-base) 40%, var(--env-fold) 78%, var(--env-shadow) 100%);
+}
+
+
+/* ==========================================================================
+   Envelope contents (plain) — groom & bride photo boxes plus a blush bouquet
+   on each side. Everything rises out of the pocket; the pocket front stays
+   on top so the lower edges look tucked inside the envelope.
+     Desktop: photos → flowers → letter (photos peek out behind the letter)
+     Mobile:  letter → photos → flowers (photos in front, fitted to the
+              envelope; blooms just below each photo's inner corner)
+   Left and right are mirror images: same size, height, angle and timing.
+   ========================================================================== */
+
+/* ── Photo boxes ── */
+.env-invite-screen--plain .env-invite-photos-emerge--portraits {
+  z-index: 10;
+  width: calc(var(--env-letter-w) * 1.55);
+}
+
+/* Rectangular photo box: ivory mat, hairline dusty-rose edge, soft shadow */
+.env-invite-screen--plain .env-invite-photos-emerge--portraits .env-invite-polaroid--envelope-pair {
+  width: var(--env-portrait-w, calc(var(--env-letter-w) * 0.46));
+  padding: 6px;
+  border-radius: 3px;
+  border: 1px solid color-mix(in srgb, #D4948A 40%, transparent);
+  background: #FFFAF7;
+  box-shadow:
+    0 14px 26px -12px color-mix(in srgb, #541C1B 28%, transparent),
+    0 3px 8px color-mix(in srgb, #D4948A 16%, transparent);
+}
+
+.env-invite-screen--plain .env-invite-photos-emerge--portraits .env-invite-polaroid-photo {
+  aspect-ratio: 4 / 5;
+  border-radius: 1px;
+}
+
+/* ── Bouquets ──
+   The artwork's main bloom sits ≈ 30% across / 55% down the image; the left
+   copy is mirrored, putting its bloom ≈ 70% across. Offsets below place the
+   bloom centres symmetrically. */
+.env-invite-inner-flowers {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.env-invite-inner-flowers__img {
+  --env-flowers-w: calc(var(--env-letter-w) * 0.6);
+  --env-flowers-inset: 0px; /* bloom distance in from the letter's side edge */
+  position: absolute;
+  bottom: var(--env-flowers-bottom, -28%);
+  width: var(--env-flowers-w);
+  max-width: none;
+  height: auto;
+  filter: drop-shadow(0 6px 10px color-mix(in srgb, #541C1B 14%, transparent));
+  /* Entrance: hidden inside the pocket until the photos come out */
+  opacity: 0;
+  transform: translateY(70%);
+  transition:
+    opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 2.35s cubic-bezier(0.22, 1, 0.18, 1);
+}
+
+.env-invite-inner-flowers__img--left {
+  left: calc(var(--env-flowers-inset) - var(--env-flowers-w) * 0.7);
+  scale: -1 1;
+}
+
+.env-invite-inner-flowers__img--right {
+  right: calc(var(--env-flowers-inset) - var(--env-flowers-w) * 0.7);
+}
+
+/* Rise out of the envelope right after the photos (same easing as the photos) */
+.env-invite-screen--plain[data-phase="photos"] .env-invite-inner-flowers__img,
+.env-invite-screen--plain[data-phase="revealed"] .env-invite-inner-flowers__img,
+.env-invite-screen--plain[data-phase="cta"] .env-invite-inner-flowers__img {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.9s;
+}
+
+@media (min-width: 768px) {
+  .env-invite-screen--plain {
+    --env-portrait-w: calc(var(--env-letter-w) * 0.46);
+    --env-portrait-bottom: 16%;
+    --env-flowers-bottom: -28%;
+  }
+}
+
+@media (max-width: 767px) {
+  .env-invite-screen--plain {
+    --env-portrait-w: calc(var(--env-width) * 0.28);
+    --env-portrait-bottom: 27%;
+    --env-flowers-bottom: 20%;
+  }
+
+  .env-invite-screen--plain .env-invite-photos-emerge--portraits {
+    width: calc(var(--env-width) - 28px);
+    z-index: 30;
+  }
+
+  /* In front of the photos, still under the pocket front */
+  .env-invite-inner-flowers {
+    z-index: 31;
+  }
+
+  .env-invite-inner-flowers__img {
+    --env-flowers-w: calc(var(--env-letter-w) * 0.3);
+    --env-flowers-inset: calc(var(--env-letter-w) * 0.17);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .env-invite-inner-flowers__img {
+    transition: none;
+  }
+}
+
+/* Floral corners layered on top of the top corner vines (same size as the loader's for a seamless handoff) */
+.env-invite-screen--plain .env-invite-plain-corner-overlay {
+  display: block;
+  width: min(44vw, 190px);
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .env-invite-screen--plain .env-invite-plain-corner-overlay { width: 240px; }
+}
+
+@media (min-width: 1024px) {
+  .env-invite-screen--plain .env-invite-plain-corner-overlay { width: 320px; }
+}
+
+
+/* ==========================================================================
+   Blush pink textured envelope (plain). Kept last so it wins.
+   Paper built around #D4948A: lighter blush where light hits, deeper rose in
+   the folds, with a fine paper grain and soft cotton mottling on every panel.
+   ========================================================================== */
+.env-invite-screen--plain {
+  --env-paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.33 0 0 0 0 0.11 0 0 0 0 0.1 0 0 0 0.14 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --env-paper-mottle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.03' numOctaves='4' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 0.96 0 0 0 0 0.95 0 0 0 0.5 -0.12'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+  --env-highlight: color-mix(in srgb, #D4948A 38%, #FBEDEB);
+  --env-base: color-mix(in srgb, #D4948A 72%, #F4DDE0);
+  --env-fold: #D4948A;
+  --env-shadow: color-mix(in srgb, #D4948A 72%, #8E524D);
+  --env-envelope: #D4948A;
+  --env-border: color-mix(in srgb, #8E524D 35%, transparent);
+}
+
+.env-invite-screen--plain .env-invite-envelope {
+  --env-highlight: color-mix(in srgb, #D4948A 38%, #FBEDEB);
+  --env-base: color-mix(in srgb, #D4948A 72%, #F4DDE0);
+  --env-fold: #D4948A;
+  --env-shadow: color-mix(in srgb, #D4948A 72%, #8E524D);
+  --env-envelope: #D4948A;
+  filter:
+    drop-shadow(0 26px 40px color-mix(in srgb, #541C1B 22%, transparent))
+    drop-shadow(0 8px 14px color-mix(in srgb, #8E524D 22%, transparent));
+}
+
+/* One paper surface for every panel (front, inside, flap, pocket) so the
+   color and texture look the same before and after the envelope opens.
+   Every panel spans the full envelope box, so the gradient and grain line up. */
+.env-invite-screen--plain .env-invite-envelope {
+  --env-paper-surface:
+    var(--env-paper-grain),
+    var(--env-paper-mottle),
+    radial-gradient(ellipse 70% 55% at 18% 18%, rgb(255 255 255 / 22%) 0%, transparent 60%),
+    linear-gradient(170deg, var(--env-highlight) 0%, var(--env-base) 45%, var(--env-fold) 100%);
+}
+
+.env-invite-screen--plain .env-invite-front-closed,
+.env-invite-screen--plain .env-invite-back,
+.env-invite-screen--plain[data-phase] .env-invite-back,
+.env-invite-screen--plain .env-invite-flap,
+.env-invite-screen--plain .env-invite-pocket-front,
+.env-invite-screen--plain .env-invite-pocket-left,
+.env-invite-screen--plain .env-invite-pocket-right {
+  background: var(--env-paper-surface);
+}
+
+/* Fine linen weave on top of the grain */
+.env-invite-screen--plain .env-invite-back::before,
+.env-invite-screen--plain .env-invite-front-closed::before {
+  opacity: 0.7;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 2px, rgb(255 255 255 / 7%) 2px 3px),
+    repeating-linear-gradient(0deg, transparent 0 3px, rgb(84 28 27 / 4%) 3px 4px);
+}
+
+/* Ivory stitched border */
+.env-invite-screen--plain .env-invite-front-closed::after {
+  border: 1px dashed color-mix(in srgb, #FFFAF7 70%, transparent);
+  box-shadow: none;
+}
+
+.env-invite-screen--plain .env-invite-back {
+  border-color: var(--env-border);
+}
+
+/* Depth comes from soft shadows only, never a different paper color */
+.env-invite-screen--plain .env-invite-flap {
+  box-shadow:
+    inset 0 -10px 18px color-mix(in srgb, #8E524D 18%, transparent),
+    inset 0 2px 0 rgb(255 255 255 / 40%);
+}
+
+.env-invite-screen--plain .env-invite-pocket-front {
+  box-shadow: inset 0 10px 16px color-mix(in srgb, #8E524D 14%, transparent);
+}
+
+.env-invite-screen--plain .env-invite-pocket-left {
+  box-shadow: inset -4px 0 10px color-mix(in srgb, #8E524D 10%, transparent);
+}
+
+.env-invite-screen--plain .env-invite-pocket-right {
+  box-shadow: inset 4px 0 10px color-mix(in srgb, #8E524D 10%, transparent);
+}
+
+/* Crease lines: deeper rose so they read on the pink paper */
+.env-invite-screen--plain .env-invite-creases line {
+  stroke: color-mix(in srgb, #8E524D 38%, transparent);
+}
+
+.env-invite-screen--plain .env-invite-creases line:nth-child(1),
+.env-invite-screen--plain .env-invite-creases line:nth-child(2) {
+  stroke: rgb(255 255 255 / 45%);
+}
+
+/* Wax seal stays after opening: it glides from the flap tip down onto the
+   pocket lip and sits above the pocket */
+.env-invite-seal-wrap {
+  transition: top 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.env-invite-seal-wrap.is-opened {
+  top: var(--pocket-v, 64%);
+  z-index: 41;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .env-invite-seal-wrap {
+    transition: none;
+  }
+}
+
+/* Readable text over the photos — no box behind it: deep burgundy type with
+   a tight ivory outline plus a soft wide glow that lifts it off busy images */
+.env-invite-screen--plain .env-invite-hint,
+.env-invite-screen--plain .env-invite-days-to-go,
+.env-invite-screen--plain .env-invite-reveal-copy h2,
+.env-invite-screen--plain .env-invite-reveal-copy p {
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: #541C1B;
+  -webkit-text-fill-color: #541C1B;
+  font-weight: 700;
+  text-shadow:
+    0 0 1px #FFFAF7,
+    0 0 2px #FFFAF7,
+    0 0 4px rgb(255 250 247 / 95%),
+    0 0 10px rgb(255 250 247 / 90%),
+    0 0 22px rgb(255 250 247 / 80%),
+    0 0 36px rgb(248 233 233 / 70%);
+}
+
+.env-invite-screen--plain .env-invite-days-to-go {
+  color: #8E524D;
+  -webkit-text-fill-color: #8E524D;
+}
+
+/* Portraits + bouquets spread slightly further apart so they clear the couple's names.
+   Kept last so it wins over the portrait/bouquet rules above. */
+.env-invite-screen--plain .env-invite-photos-emerge--portraits {
+  width: calc(var(--env-letter-w) * 1.8);
+}
+
+.env-invite-inner-flowers__img {
+  --env-flowers-inset: calc(var(--env-letter-w) * -0.12);
+}
+
+@media (max-width: 767px) {
+  .env-invite-screen--plain .env-invite-photos-emerge--portraits {
+    width: calc(var(--env-width) + 20px);
+  }
+
+  .env-invite-inner-flowers__img {
+    --env-flowers-inset: calc(var(--env-letter-w) * 0.02);
+  }
+}
+
+/* Phones: portraits + bouquets tucked INSIDE the envelope — within its side edges,
+   sunk deeper into the pocket, in front of the letter (still under the pocket front).
+   Kept last so it wins. */
+@media (max-width: 767px) {
+  .env-invite-screen--plain {
+    --env-portrait-w: calc(var(--env-width) * 0.3);
+    --env-portrait-bottom: 22%;
+    --env-flowers-bottom: 16%;
+  }
+
+  .env-invite-screen--plain .env-invite-photos-emerge--portraits {
+    width: calc(var(--env-width) - 28px);
+    z-index: 30;
+  }
+
+  .env-invite-inner-flowers {
+    z-index: 31;
+  }
+
+  .env-invite-inner-flowers__img {
+    /* Blooms sit inside the envelope, at each photo's inner lower corner */
+    --env-flowers-w: calc(var(--env-letter-w) * 0.3);
+    --env-flowers-inset: calc(var(--env-letter-w) * 0.15);
+  }
+
+  /* Slightly smaller, tighter names so "Jhellaica" clears the pocket lip */
+  .env-invite-screen--plain .env-invite-names__nick {
+    font-size: clamp(1.45rem, calc(var(--env-letter-w) * 0.118), 2.1rem);
+    letter-spacing: 0.035em;
+  }
+
+  .env-invite-screen--plain .env-invite-names__and {
+    font-size: clamp(0.95rem, calc(var(--env-letter-w) * 0.07), 1.3rem);
+    margin: -0.2em 0 -0.1em;
+  }
+}
+
+/* "View the invitation" — photo card slides out of the pocket, then opens to full screen */
+.env-invite-exit-card {
+  padding: 6px;
+  background: #FFFAF7;
+  border: 1px solid color-mix(in srgb, #D4948A 45%, transparent);
+  box-shadow:
+    0 18px 36px -14px rgb(84 28 27 / 40%),
+    0 4px 10px rgb(212 148 138 / 25%);
+}
+
+/* Out of flow so the letter, portraits and flowers never shift; above them, under the pocket front (z 40) */
+.env-invite-screen .env-invite-emerge-stack .env-invite-exit-card {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--env-letter-h);
+  z-index: 32;
+  transform-origin: bottom center;
+}
+
+.env-invite-exit-card__photo,
+.env-invite-exit-photo__frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.env-invite-exit-card__photo img,
+.env-invite-exit-photo__img img {
+  object-position: center 30%;
+}
+
+.env-invite-exit-photo {
+  position: fixed;
+  z-index: 70;
+  overflow: hidden;
+  pointer-events: none;
+  background: #FFFAF7;
+  box-shadow: 0 40px 90px -30px rgb(84 28 27 / 55%);
+  will-change: top, left, width, height;
+}
+
+.env-invite-exit-photo__img {
+  position: absolute;
+  inset: 0;
+}
+
+/* Soft burgundy vignette once the photo fills the screen */
+.env-invite-exit-photo__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 45%, transparent 55%, rgb(84 28 27 / 24%) 100%),
+    linear-gradient(180deg, rgb(251 241 240 / 12%) 0%, transparent 30%, transparent 70%, rgb(251 241 240 / 18%) 100%);
+}
+
+/* Blush light that blooms behind the card as it lifts off */
+.env-invite-exit-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 69;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 45%, rgb(255 250 247 / 95%) 0%, rgb(244 221 224 / 70%) 30%, transparent 65%);
+}
+
+.env-invite-exit-preload {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.env-invite-exit-card__shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgb(255 250 247 / 55%) 50%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Blush veil over the envelope while the photo card rests mid-screen */
+.env-invite-exit-dim {
+  position: fixed;
+  inset: 0;
+  z-index: 68;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgb(251 237 235 / 55%) 0%, rgb(84 28 27 / 35%) 100%);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}

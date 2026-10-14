@@ -42,7 +42,7 @@ interface HeroProps {
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
-// Short joining words in the headline ("Save the Date") are set in script — matches the loading screen
+// Short joining words in the headline ("A Celebration of Love") are set in script — matches the loading screen
 const SCRIPT_WORDS = new Set(['the', 'of', 'and', '&', 'a']);
 
 function startOfDay(date: Date) {
@@ -89,6 +89,28 @@ const inviteEnterEase: Transition = { duration: 1.2, ease: [0.22, 1, 0.36, 1] };
 const letterExitEase: Transition = { duration: 1.55, ease: [0.16, 1, 0.3, 1] };
 const inviteRevealLeadMs = 460;
 const INVITE_EXIT_MS = 2500;
+// "View the invitation" photo reveal — the envelope, letter and portraits never move:
+//   pull   — right on click, a photo card slides up out of the pocket
+//   center — it lifts off and glides to the middle of the screen (envelope softly dims behind)
+//   expand — it opens to full screen
+//   fade   — the screen fades into the home hero (same photo)
+const PHOTO_PULL_MS = 3000;
+const PHOTO_CENTER_MS = 950;
+const PHOTO_CENTER_HOLD_MS = 450;
+const PHOTO_EXPAND_MS = 1100;
+const PHOTO_HOLD_MS = 800;
+const PHOTO_FADE_MS = 1000;
+// Slow pull in three beats: the top edge peeks over the pocket lip, pauses, then glides all the way out
+const PHOTO_RISE_S = 2.8;
+const photoCardRiseEase: Transition = {
+  duration: PHOTO_RISE_S,
+  times: [0, 0.32, 0.46, 1],
+  ease: [[0.33, 0, 0.2, 1], 'easeInOut', [0.45, 0, 0.15, 1]],
+};
+const photoCenterEase: Transition = { duration: PHOTO_CENTER_MS / 1000, ease: [0.22, 1, 0.36, 1] };
+const photoExpandEase: Transition = { duration: PHOTO_EXPAND_MS / 1000, ease: [0.76, 0, 0.24, 1] };
+
+type FlyRect = { top: number; left: number; width: number; height: number };
 
 export const Hero: React.FC<HeroProps> = ({
   onOpen,
@@ -101,6 +123,7 @@ export const Hero: React.FC<HeroProps> = ({
   const isPlain = content.display === 'plain';
   const plainTheme = content.plainTheme ?? defaultSiteConfig.loadingScreen.plainTheme;
   const cornerDecos = content.cornerDecos ?? defaultSiteConfig.loadingScreen.cornerDecos;
+  const cornerOverlays = content.cornerOverlays ?? defaultSiteConfig.loadingScreen.cornerOverlays;
   const plainInvite = content.plainInvite ?? defaultSiteConfig.loadingScreen.plainInvite;
   const reduceMotion = useReducedMotion();
   const openedRef = useRef(false);
@@ -110,6 +133,11 @@ export const Hero: React.FC<HeroProps> = ({
   const [liveMessage, setLiveMessage] = useState('');
   const [liftedPhoto, setLiftedPhoto] = useState<PhotoSide | null>(null);
   const [isExiting, setIsExiting] = useState(false);
+  const [exitStage, setExitStage] = useState<'none' | 'pull' | 'center' | 'expand' | 'fade'>('none');
+  // Where the photo card sat in the envelope when it lifted off, and where it rests mid-screen
+  const [flyRect, setFlyRect] = useState<FlyRect | null>(null);
+  const [centerRect, setCenterRect] = useState<FlyRect | null>(null);
+  const photoCardRef = useRef<HTMLDivElement>(null);
   const [isMobileViewport, setIsMobileViewport] = useState(false);
 
   const groomName = siteConfig.couple.groomNickname;
@@ -145,6 +173,22 @@ export const Hero: React.FC<HeroProps> = ({
     [content.backgroundPhotos],
   );
   const showPhotoBackdrop = !isPlain && backgroundPhotos.length > 0;
+
+  // One portrait of the groom (left) and one of the bride (right), revealed as the envelope opens
+  const portraitPair = useMemo(() => {
+    const portraits = content.portraits ?? defaultSiteConfig.loadingScreen.portraits;
+    if (!portraits?.groom || !portraits?.bride) return [];
+    return [
+      { src: encodeURI(portraits.groom), side: 'left' as const, alt: `${groomName} portrait` },
+      { src: encodeURI(portraits.bride), side: 'right' as const, alt: `${brideName} portrait` },
+    ];
+  }, [content.portraits, groomName, brideName]);
+
+  const envelopeFlowers = content.envelopeFlowers ?? defaultSiteConfig.loadingScreen.envelopeFlowers;
+  // Same photo as the home hero cover, so the reveal flows straight into it
+  const exitPhotoSrc = content.coverPhoto ?? defaultSiteConfig.loadingScreen.coverPhoto;
+  const exitPhoto = exitPhotoSrc ? encodeURI(exitPhotoSrc) : '';
+  const usePhotoExit = Boolean(exitPhoto) && !reduceMotion;
 
   const envelopePolaroids = useMemo(() => {
     const photos = (content.photos ?? []).map((src) => encodeURI(src));
@@ -215,11 +259,15 @@ export const Hero: React.FC<HeroProps> = ({
       setLiveMessage('');
       setLiftedPhoto(null);
       setIsExiting(false);
+      setExitStage('none');
+      setFlyRect(null);
+      setCenterRect(null);
     }
   }, [visible]);
 
   useEffect(() => {
-    if (!visible || isExiting) return;
+    // The photo reveal keeps the page locked so nothing behind the envelope shifts
+    if (!visible || (isExiting && !usePhotoExit)) return;
 
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
@@ -228,7 +276,7 @@ export const Hero: React.FC<HeroProps> = ({
       document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
     };
-  }, [visible, isExiting]);
+  }, [visible, isExiting, usePhotoExit]);
 
   useEffect(() => {
     if (phase === 'cta') {
@@ -264,11 +312,38 @@ export const Hero: React.FC<HeroProps> = ({
       return;
     }
 
+    if (usePhotoExit) {
+      setExitStage('pull');
+      await wait(PHOTO_PULL_MS);
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const rect = photoCardRef.current?.getBoundingClientRect();
+      const from =
+        rect && rect.width > 0
+          ? { top: rect.top, left: rect.left, width: rect.width, height: rect.height }
+          : { top: vh * 0.45, left: vw * 0.3, width: vw * 0.4, height: vw * 0.5 };
+      // Portrait card in the middle of the screen
+      const w = Math.min(vw * 0.78, 360, vh * 0.56);
+      const h = w * 1.28;
+      setFlyRect(from);
+      setCenterRect({ top: (vh - h) / 2, left: (vw - w) / 2, width: w, height: h });
+      setExitStage('center');
+      await wait(PHOTO_CENTER_MS + PHOTO_CENTER_HOLD_MS);
+      setExitStage('expand');
+      await wait(PHOTO_EXPAND_MS + PHOTO_HOLD_MS);
+      // Hero mounts underneath while the photo screen fades away
+      onTransitionStart?.();
+      setExitStage('fade');
+      await wait(PHOTO_FADE_MS);
+      onOpen();
+      return;
+    }
+
     await wait(inviteRevealLeadMs);
     onTransitionStart?.();
     await wait(INVITE_EXIT_MS - inviteRevealLeadMs);
     onOpen();
-  }, [isExiting, onOpen, onTransitionStart, phase, reduceMotion]);
+  }, [isExiting, onOpen, onTransitionStart, phase, reduceMotion, usePhotoExit]);
 
   const runOpenSequence = useCallback(async () => {
     if (reduceMotion) {
@@ -293,11 +368,9 @@ export const Hero: React.FC<HeroProps> = ({
     setPhase('rising');
     await wait(isPlain ? 2400 : 3200);
 
-    if (!isPlain) {
-      setLiveMessage('Photos revealing.');
-      setPhase('photos');
-      await wait(3600);
-    }
+    setLiveMessage('Photos revealing.');
+    setPhase('photos');
+    await wait(isPlain ? 2600 : 3600);
 
     setPhase('revealed');
     await wait(650);
@@ -325,7 +398,8 @@ export const Hero: React.FC<HeroProps> = ({
   const sealVariants: Variants = {
     idle: { scale: 1, opacity: 1, rotate: 0, y: 0 },
     press: { scale: 0.94, opacity: 1, rotate: 0, y: 2 },
-    break: { scale: 0.2, opacity: 0, rotate: 12, y: -4 },
+    // Seal stays on the envelope: it lifts off the flap and settles on the pocket lip
+    break: { scale: 1, opacity: 1, rotate: 0, y: 0 },
   };
 
   /*
@@ -468,9 +542,21 @@ export const Hero: React.FC<HeroProps> = ({
       opacity: 0,
       transition: { duration: 1.15, delay: 0.52, ease: [0.4, 0, 0.2, 1] },
     },
+    // Photo reveal: letter and portraits stay exactly where they are and simply fade
+    fadeAway: {
+      y: 0,
+      scale: 1,
+      opacity: 0,
+      transition: { duration: 0.8, delay: 0.25, ease: [0.4, 0, 0.2, 1] },
+    },
   };
 
   if (!mounted) return null;
+
+  // With the photo reveal, the envelope stays put while the card is pulled out, then fades
+  const envelopeLeaving = usePhotoExit
+    ? exitStage === 'expand' || exitStage === 'fade'
+    : isExiting;
 
   const letterState =
     phase === 'idle' ||
@@ -499,12 +585,13 @@ export const Hero: React.FC<HeroProps> = ({
   return (
     <motion.div
       className={`env-invite-screen${isPlain ? ' env-invite-screen--plain' : ''}${isPlain && enterFromLoading && visible && !reduceMotion ? ' is-arriving' : ''} ${visible ? '' : 'is-hidden'}`}
-      data-phase={isExiting ? 'exiting' : phase}
+      // Photo reveal keeps the open-envelope look the whole time (letter stays under the pocket lip)
+      data-phase={isExiting && !usePhotoExit ? 'exiting' : phase}
       aria-hidden={!visible}
       initial={false}
       animate={
         isExiting
-          ? { opacity: 0, y: 0, scale: 1 }
+          ? { opacity: usePhotoExit && exitStage !== 'fade' ? 1 : 0, y: 0, scale: 1 }
           : visible
             ? { opacity: 1, y: 0, scale: 1 }
             : isPlain
@@ -514,7 +601,9 @@ export const Hero: React.FC<HeroProps> = ({
       }
       transition={
         isExiting
-          ? inviteExitEase
+          ? usePhotoExit
+            ? { duration: PHOTO_FADE_MS / 1000, ease: [0.4, 0, 0.2, 1] }
+            : inviteExitEase
           : visible && enterFromLoading && !reduceMotion
             ? inviteEnterEase
             : { duration: reduceMotion ? 0.2 : 0.01 }
@@ -545,11 +634,23 @@ export const Hero: React.FC<HeroProps> = ({
                 { src: cornerDecos.bottomLeft, className: 'left-0 bottom-0' },
                 { src: cornerDecos.bottomRight, className: 'right-0 bottom-0' },
               ] as const
-            ).map(({ src, className }) => (
-              <div key={src} className={`pointer-events-none absolute ${className}`}>
+            ).filter(({ src }) => src).map(({ src, className }) => (
+              <div key={className} className={`pointer-events-none absolute ${className}`}>
                 {/* Corners keep their original artwork colors (no tint) */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={src} alt="" className="env-invite-plain-corner-img" />
+              </div>
+            ))}
+            {(
+              [
+                { src: cornerOverlays.topLeft, className: 'left-0 top-0' },
+                { src: cornerOverlays.topRight, className: 'right-0 top-0' },
+              ] as const
+            ).filter(({ src }) => src).map(({ src, className }) => (
+              <div key={`overlay-${className}`} className={`pointer-events-none absolute ${className}`}>
+                {/* Floral corner layered over the top vines */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt="" className="env-invite-plain-corner-overlay" />
               </div>
             ))}
           </div>
@@ -574,7 +675,75 @@ export const Hero: React.FC<HeroProps> = ({
         <span className="env-invite-ghost-date-part">{weddingDateGhost.year}</span>
       </div>
 
-      {isExiting && !reduceMotion && (
+      {usePhotoExit && phase === 'cta' && !isExiting && (
+        // Loads the reveal photo ahead of the click so the card is ready instantly
+        <div className="env-invite-exit-preload" aria-hidden="true">
+          <Image src={exitPhoto} alt="" fill priority sizes="100vw" />
+        </div>
+      )}
+
+      {/* The photo card lifts off the envelope, rests in the middle, then opens to full screen */}
+      {usePhotoExit && flyRect && centerRect && exitStage !== 'none' && exitStage !== 'pull' && (
+        <>
+          {/* Soft blush veil over the (unmoved) envelope so the card stands out */}
+          <motion.div
+            className="env-invite-exit-dim"
+            aria-hidden="true"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+          />
+          <motion.div
+            className="env-invite-exit-glow"
+            aria-hidden="true"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={
+              exitStage === 'center'
+                ? { opacity: 0.85, scale: 1 }
+                : { opacity: 0, scale: 1.8 }
+            }
+            transition={{ duration: exitStage === 'center' ? 0.9 : 1.1, ease: 'easeOut' }}
+          />
+          <motion.div
+            className="env-invite-exit-photo"
+            aria-hidden="true"
+            initial={{ ...flyRect, padding: 6, borderRadius: 4, rotate: 0 }}
+            animate={
+              exitStage === 'center'
+                ? { ...centerRect, padding: 8, borderRadius: 6, rotate: [0, -5, -2] }
+                : {
+                    top: 0,
+                    left: 0,
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    padding: 0,
+                    borderRadius: 0,
+                    rotate: 0,
+                  }
+            }
+            transition={exitStage === 'center' ? photoCenterEase : photoExpandEase}
+          >
+            <div className="env-invite-exit-photo__frame">
+              <motion.div
+                className="env-invite-exit-photo__img"
+                initial={{ scale: 1 }}
+                animate={{ scale: exitStage === 'center' ? 1 : 1.07 }}
+                transition={{ duration: (PHOTO_EXPAND_MS + PHOTO_HOLD_MS + PHOTO_FADE_MS) / 1000, ease: 'easeOut' }}
+              >
+                <Image src={exitPhoto} alt="" fill priority sizes="100vw" className="object-cover" />
+              </motion.div>
+              <motion.span
+                className="env-invite-exit-photo__veil"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: exitStage === 'center' ? 0 : 1 }}
+                transition={{ duration: 0.8, delay: exitStage === 'center' ? 0 : PHOTO_EXPAND_MS / 1000 - 0.3 }}
+              />
+            </div>
+          </motion.div>
+        </>
+      )}
+
+      {isExiting && !reduceMotion && !usePhotoExit && (
         <>
           <motion.div
             className="env-invite-exit-ring"
@@ -629,12 +798,12 @@ export const Hero: React.FC<HeroProps> = ({
             className="env-invite-focus"
             variants={focusLiftVariants}
             initial="idle"
-            animate={isExiting ? 'exit' : getFocusLiftPhase(phase)}
+            animate={envelopeLeaving ? (usePhotoExit ? 'fadeAway' : 'exit') : getFocusLiftPhase(phase)}
             transition={
               reduceMotion
                 ? { duration: 0.01 }
-                : isExiting
-                  ? { duration: 1.15, delay: 0.52, ease: [0.4, 0, 0.2, 1] }
+                : envelopeLeaving
+                  ? { duration: usePhotoExit ? 0.7 : 1.15, delay: usePhotoExit ? 0.15 : 0.52, ease: [0.4, 0, 0.2, 1] }
                   : focusLiftEase
             }
           >
@@ -642,8 +811,8 @@ export const Hero: React.FC<HeroProps> = ({
             className="env-invite-scene"
             initial={false}
             animate={
-              isExiting
-                ? { opacity: 0, scale: 0.98, y: 0 }
+              envelopeLeaving
+                ? { opacity: 0, scale: usePhotoExit ? 1 : 0.98, y: 0 }
                 : { opacity: 1, scale: 1, y: 0 }
             }
             transition={
@@ -683,9 +852,9 @@ export const Hero: React.FC<HeroProps> = ({
                     className="env-invite-letter"
                     variants={letterVariants}
                     initial="hidden"
-                    animate={isExiting ? 'exitPortal' : letterState}
+                    animate={isExiting && !usePhotoExit ? 'exitPortal' : letterState}
                     transition={
-                      isExiting
+                      isExiting && !usePhotoExit
                         ? { ...letterExitEase, delay: 0.14 }
                         : letterState === 'rising'
                           ? {
@@ -701,19 +870,22 @@ export const Hero: React.FC<HeroProps> = ({
                         <TintedDeco src={plainInvite.ornament} className="env-invite-letter-ornament" />
                       )}
                       <span className="env-invite-letter-label" aria-label={content.headline}>
-                        {content.headline.split(/\s+/).filter(Boolean).map((word, i) => (
-                          <span
-                            key={i}
-                            aria-hidden="true"
-                            className={
-                              SCRIPT_WORDS.has(word.toLowerCase())
-                                ? 'env-invite-letter-label__script'
-                                : 'env-invite-letter-label__word'
-                            }
-                          >
-                            {word}
-                          </span>
-                        ))}
+                        {content.headline.split(/\s+/).filter(Boolean).map((word, i, words) => {
+                          const script = SCRIPT_WORDS.has(word.toLowerCase());
+                          // Longer titles break before a mid-title joining word ("A Celebration / of Love")
+                          const breakBefore = words.length >= 4 && script && i > 0 && i < words.length - 1;
+                          return (
+                            <React.Fragment key={i}>
+                              {breakBefore && <span className="env-invite-letter-label__break" aria-hidden="true" />}
+                              <span
+                                aria-hidden="true"
+                                className={script ? 'env-invite-letter-label__script' : 'env-invite-letter-label__word'}
+                              >
+                                {word}
+                              </span>
+                            </React.Fragment>
+                          );
+                        })}
                       </span>
                       <span className="env-invite-letter-date">{letterDateNumeric}</span>
                       <span className="env-invite-letter-invited">{content.eyebrow}</span>
@@ -731,7 +903,74 @@ export const Hero: React.FC<HeroProps> = ({
                     </div>
                   </motion.div>
 
-                  {!isPlain && (
+                  {usePhotoExit && isExiting && (
+                    // Photo card tucked in the pocket — slides up out of the envelope on "View the invitation"
+                    <motion.div
+                      ref={photoCardRef}
+                      className="env-invite-exit-card"
+                      aria-hidden="true"
+                      // Overlays the letter's box (absolutely — it never pushes the letter), starts deep
+                      // in the pocket and rises out in front of it
+                      initial={{ y: '100%', rotate: 0, scale: 0.96 }}
+                      animate={{
+                        // Peek values put the card's top edge just above the pocket lip (the letter sits higher on phones)
+                        y: ['100%', isMobileViewport ? '-4%' : '18%', isMobileViewport ? '-9%' : '13%', isMobileViewport ? '-82%' : '-40%'],
+                        rotate: [0, -1.5, 1, 0],
+                        scale: [0.96, 0.97, 0.97, 1],
+                      }}
+                      transition={photoCardRiseEase}
+                      style={{ zIndex: 32, opacity: exitStage === 'pull' ? 1 : 0 }}
+                    >
+                      <div className="env-invite-exit-card__photo">
+                        <Image src={exitPhoto} alt="" fill sizes="100vw" className="object-cover" />
+                        {/* Light sweep across the photo as it comes out */}
+                        <motion.span
+                          className="env-invite-exit-card__shine"
+                          initial={{ x: '-120%' }}
+                          animate={{ x: '120%' }}
+                          transition={{ duration: 1.1, delay: PHOTO_RISE_S * 0.55, ease: 'easeInOut' }}
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {isPlain && envelopeFlowers && (
+                    // Bouquet tucked inside the envelope — peeks out above the pocket once it opens
+                    <div className="env-invite-inner-flowers" aria-hidden="true">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={envelopeFlowers} alt="" className="env-invite-inner-flowers__img env-invite-inner-flowers__img--left" />
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={envelopeFlowers} alt="" className="env-invite-inner-flowers__img env-invite-inner-flowers__img--right" />
+                    </div>
+                  )}
+
+                  {isPlain ? (
+                    portraitPair.length > 0 && (
+                      <div className="env-invite-photos-emerge env-invite-photos-emerge--portraits">
+                        {portraitPair.map((photo, index) => (
+                          <PolaroidPhoto
+                            key={`portrait-${photo.side}-${photo.src}`}
+                            side={photo.side}
+                            src={photo.src}
+                            alt={photo.alt}
+                            variants={
+                              photo.side === 'left'
+                                ? mobileEnvelopePhotoLeftVariants
+                                : mobileEnvelopePhotoRightVariants
+                            }
+                            photoState={photoState}
+                            liftedPhoto={liftedPhoto}
+                            onToggle={toggleLiftedPhoto}
+                            interactive={photosInteractive}
+                            emergenceDelay={index === 0 ? 0.25 : 0.6}
+                            reduceMotion={reduceMotion}
+                            isExiting={isExiting && !usePhotoExit}
+                            envelopePair
+                          />
+                        ))}
+                      </div>
+                    )
+                  ) : (
                   <div className="env-invite-photos-emerge">
                     {isMobileViewport
                       ? envelopePolaroids.mobile.map((photo, index) => (
@@ -815,12 +1054,7 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
 
             {/* Wax seal — centered on flap junction */}
-            <div
-              className="env-invite-seal-wrap"
-              style={{
-                display: sealGone && phase !== 'seal-break' ? 'none' : undefined,
-              }}
-            >
+            <div className={`env-invite-seal-wrap${sealGone ? ' is-opened' : ''}`}>
               <motion.button
                 type="button"
                 className="env-invite-seal-btn"
@@ -829,7 +1063,7 @@ export const Hero: React.FC<HeroProps> = ({
                 animate={sealState}
                 transition={
                   sealState === 'break'
-                    ? { duration: 0.28, ease: 'easeIn' }
+                    ? { duration: 0.4, ease: 'easeOut' }
                     : { duration: 0.16, ease: 'easeOut' }
                 }
                 onClick={handleSealClick}
@@ -847,31 +1081,6 @@ export const Hero: React.FC<HeroProps> = ({
               </motion.button>
             </div>
 
-            {phase === 'seal-break' && !reduceMotion && (
-              <>
-                <motion.span
-                  className="env-invite-seal-shard"
-                  initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
-                  animate={{ x: -28, y: -30, opacity: 0, scale: 0.35 }}
-                  transition={{ duration: 0.35, ease: 'easeOut' }}
-                  aria-hidden="true"
-                />
-                <motion.span
-                  className="env-invite-seal-shard"
-                  initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
-                  animate={{ x: 30, y: 18, opacity: 0, scale: 0.3 }}
-                  transition={{ duration: 0.38, ease: 'easeOut' }}
-                  aria-hidden="true"
-                />
-                <motion.span
-                  className="env-invite-seal-shard"
-                  initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
-                  animate={{ x: 14, y: -24, opacity: 0, scale: 0.4 }}
-                  transition={{ duration: 0.32, ease: 'easeOut' }}
-                  aria-hidden="true"
-                />
-              </>
-            )}
           </div>
         </motion.div>
 
@@ -1015,7 +1224,7 @@ function PolaroidPhoto({
         if (interactive) onToggle(side);
       }}
       disabled={!interactive}
-      aria-label={`View photo ${side}`}
+      aria-label={`View photo: ${alt}`}
       aria-pressed={liftedPhoto === side}
     >
       <div className="env-invite-polaroid-photo">

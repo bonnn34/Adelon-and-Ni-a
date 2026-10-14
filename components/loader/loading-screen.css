@@ -3874,3 +3874,376 @@
 
 /* Phones: slightly smaller body so long paragraphs sit comfortably beside the photo */
 
+
+
+/* ==========================================================================
+   Blush romance — loader (plain). Kept last so it wins.
+   Ivory card on pastel pink; burgundy only for the headline and names,
+   dusty rose script, rose-ink small caps, sage hairlines.
+   ========================================================================== */
+.loading-screen--plain {
+  --ls-blush: #F4DDE0;
+  --ls-pastel: #F8E9E9;
+  --ls-ivory: #FFFAF7;
+  --ls-burgundy: #541C1B;
+  --ls-rose: #D4948A;
+  --ls-rose-ink: #8E524D;
+  --ls-sage: #A3A58B;
+
+  --ls-sky: var(--ls-rose);
+  --ls-blue: var(--ls-rose-ink);
+  --ls-navy: var(--ls-burgundy);
+  --ls-ink: #5E3A39;
+  --ls-leaf: var(--ls-sage);
+  --ls-leaf-ink: var(--ls-rose);
+  --ls-sun: var(--ls-rose);
+  --ls-text-highlight: var(--ls-rose);
+  --ls-date-line: color-mix(in srgb, var(--ls-sage) 60%, transparent);
+  background: var(--ls-pastel);
+}
+
+.loading-screen--plain .loading-screen__save-date {
+  background:
+    radial-gradient(85% 38% at 50% 0%, rgb(255 255 255 / 90%) 0%, transparent 72%) padding-box,
+    linear-gradient(180deg, var(--ls-ivory) 0%, var(--ls-ivory) 55%, color-mix(in srgb, var(--ls-blush) 55%, var(--ls-ivory)) 100%) padding-box,
+    linear-gradient(180deg, rgb(255 255 255 / 95%) 0%, color-mix(in srgb, var(--ls-rose) 45%, white) 100%) border-box;
+  box-shadow:
+    0 0 0 6px rgb(255 255 255 / 45%),
+    0 30px 60px -30px color-mix(in srgb, var(--ls-burgundy) 22%, transparent),
+    0 10px 24px -16px color-mix(in srgb, var(--ls-rose) 40%, transparent);
+}
+
+.loading-screen--plain .loading-screen__save-date::before {
+  border-color: color-mix(in srgb, var(--ls-rose) 45%, transparent);
+}
+
+.loading-screen--plain .loading-screen__save-date::after {
+  border-color: color-mix(in srgb, var(--ls-sage) 40%, transparent);
+}
+
+.loading-screen--plain .ls-headline__script,
+.loading-screen--plain .ls-names__and {
+  color: var(--ls-rose);
+  -webkit-text-fill-color: var(--ls-rose);
+}
+
+.loading-screen--plain .loading-screen__plain-line,
+.loading-screen--plain .loading-screen__std-copy {
+  color: var(--ls-ink);
+}
+
+.loading-screen--plain .loading-screen__std-rule {
+  background: linear-gradient(90deg, transparent, var(--ls-blush), var(--ls-sage), var(--ls-blush), transparent);
+}
+
+.loading-screen--plain .loading-screen__std-track {
+  background: color-mix(in srgb, var(--ls-blush) 80%, transparent);
+}
+
+.loading-screen--plain .loading-screen__std-bar {
+  background: linear-gradient(90deg, var(--ls-blush), var(--ls-rose));
+}
+
+.loading-screen--plain .ls-plain-glow {
+  background: radial-gradient(55% 45% at 50% 50%, rgb(255 255 255 / 55%) 0%, transparent 70%);
+}
+
+/* Petals: fewer, softer */
+.loading-screen--plain .ls-plain-mote {
+  opacity: 0.55;
+}
+
+/* Top corner florals (tall garland artwork): sized by height and kept short
+   so they stay small sprays at the top. Bottom corners keep their original size. */
+.loading-screen--plain .loading-screen__plain-corner-slot.top-0 .loading-screen__plain-corner-img {
+  width: auto;
+  max-width: none;
+  height: min(38vh, 320px);
+}
+
+@media (min-width: 1024px) {
+  .loading-screen--plain .loading-screen__plain-corner-slot.top-0 .loading-screen__plain-corner-img { height: min(46vh, 440px); }
+}
+
+
+/* ==========================================================================
+   Blush romance — home hero (plain) with a single cover photograph.
+   Mobile: arched photo on top, invitation wording below.
+   Desktop: photo left, wording right.
+   ========================================================================== */
+.home-hero--plain {
+  --hh-navy: #541C1B;
+  --hh-blue: #8E524D;
+  --hh-ink: #5E3A39;
+  --hh-sky: #D4948A;
+  --hh-leaf: #A3A58B;
+  --hh-butter: #F4DDE0;
+  --hh-edge: none;
+  background: #F8E9E9;
+}
+
+.home-hero--plain .home-hero-title-main,
+.home-hero--plain .home-hero-date-day {
+  color: var(--hh-navy);
+  -webkit-text-fill-color: var(--hh-navy);
+  text-shadow: none;
+}
+
+.home-hero--plain .home-hero-title-script {
+  color: #D4948A;
+  -webkit-text-fill-color: #D4948A;
+  text-shadow: none;
+}
+
+.home-hero--plain .home-hero-eyebrow,
+.home-hero--plain .home-hero-meta-venue {
+  color: var(--hh-ink);
+  text-shadow: none;
+}
+
+.home-hero--plain .home-hero-date-weekday,
+.home-hero--plain .home-hero-date-side,
+.home-hero--plain .home-hero-meta-time {
+  color: var(--hh-blue);
+  text-shadow: none;
+}
+
+.home-hero--plain .home-hero-plain-corner-img {
+  max-width: min(34vw, 130px);
+}
+
+@media (min-width: 640px) {
+  .home-hero--plain .home-hero-plain-corner-img { max-width: 200px; }
+}
+
+@media (min-width: 1024px) {
+  .home-hero--plain .home-hero-plain-corner-img { max-width: 260px; }
+}
+
+.home-hero-content--cover {
+  padding-top: clamp(5.5rem, 20vw, 7rem);
+  gap: clamp(1.5rem, 5vw, 2.25rem);
+}
+
+.home-hero-cover {
+  position: relative;
+  margin: 0;
+  width: min(74vw, 320px);
+}
+
+/* Fine outer arch drawn a few pixels outside the frame */
+.home-hero-cover::before {
+  content: "";
+  position: absolute;
+  inset: -9px -9px auto;
+  aspect-ratio: 3 / 4;
+  width: calc(100% + 18px);
+  border-radius: 999px 999px 22px 22px;
+  border: 1px solid color-mix(in srgb, #D4948A 55%, transparent);
+  pointer-events: none;
+}
+
+/* Soft arched frame: ivory mat, hairline dusty-rose border, gentle shadow */
+.home-hero-cover__frame {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 999px 999px 16px 16px;
+  background: #F4DDE0;
+  border: 5px solid #FFFAF7;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, #D4948A 35%, transparent),
+    0 30px 55px -30px color-mix(in srgb, #541C1B 40%, transparent),
+    0 10px 24px -14px color-mix(in srgb, #D4948A 45%, transparent);
+}
+
+/* Soft blush vignette at the base so the photo melts into the frame */
+.home-hero-cover__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 72%, color-mix(in srgb, #F8E9E9 35%, transparent) 100%);
+}
+
+/* Natural colour, only the faintest warm lift — no heavy filter */
+.home-hero-cover__img {
+  object-fit: cover;
+  object-position: center 12%; /* room above their heads under the arch */
+  filter: saturate(0.96) brightness(1.02);
+}
+
+/* Small floral sprig resting on the frame's base */
+.home-hero-cover::after {
+  content: "";
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 58%;
+  aspect-ratio: 2170 / 725;
+  margin: -1.6rem auto 0;
+  background: url("/deco/new-deco/small-center.png") center / contain no-repeat;
+  filter: drop-shadow(0 4px 6px color-mix(in srgb, #541C1B 15%, transparent));
+}
+
+@media (min-width: 768px) {
+  .home-hero-content--cover {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+    max-width: 64rem;
+    text-align: center;
+  }
+
+  .home-hero-content--cover .home-hero-cover {
+    flex: 0 0 auto;
+    width: clamp(280px, 34vw, 380px);
+  }
+
+  .home-hero-content--cover .home-hero-copy {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+/* Countdown keeps its original linear fade (burgundy at the bottom edge →
+   transparent), white numbers and blush labels — see the rules above */
+
+/* Longer title ("A Celebration of Love") wraps to two balanced lines in the card */
+.loading-screen--plain .ls-headline {
+  flex-wrap: wrap;
+  row-gap: 0.05em;
+  max-width: 100%;
+  padding-inline: 0.75rem;
+  font-size: clamp(1.55rem, 7vw, 2.5rem);
+}
+
+.loading-screen--plain .ls-headline__letter {
+  color: #541C1B;
+  -webkit-text-fill-color: #541C1B;
+}
+
+.ls-headline__break {
+  flex-basis: 100%;
+  height: 0;
+}
+
+.loading-screen--plain .ls-headline {
+  font-size: clamp(1.45rem, 6.3vw, 2.5rem);
+}
+
+.loading-screen--plain .ls-headline {
+  column-gap: 0.42em;
+}
+
+/* Floral corners layered on top of the top corner vines */
+.loading-screen__plain-corner-overlay {
+  display: block;
+  width: min(44vw, 190px);
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .loading-screen__plain-corner-overlay { width: 240px; }
+}
+
+@media (min-width: 1024px) {
+  .loading-screen__plain-corner-overlay { width: 320px; }
+}
+
+
+/* ==========================================================================
+   Love story backdrop (plain) — blush & pastel pink, burgundy only as accent.
+   components/sections/love-story.tsx → .love-story-bg
+   components/StorySection.tsx → .story-open-wash
+   ========================================================================== */
+.love-story-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    /* blush glows drifting down the section */
+    radial-gradient(55% 22% at 0% 18%, color-mix(in srgb, #D4948A 22%, transparent) 0%, transparent 70%),
+    radial-gradient(50% 20% at 100% 45%, color-mix(in srgb, #F4DDE0 85%, transparent) 0%, transparent 70%),
+    radial-gradient(55% 22% at 0% 75%, color-mix(in srgb, #D4948A 18%, transparent) 0%, transparent 70%),
+    /* pastel pink base: lighter at the top, blush toward the bottom */
+    linear-gradient(180deg, #FBF1F0 0%, #F8E9E9 30%, #F4DDE0 70%, #F8E9E9 100%);
+}
+
+/* Fine paper grain so the pinks read as stationery rather than flat fill */
+.love-story-bg__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.33 0 0 0 0 0.11 0 0 0 0 0.1 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* Thin burgundy hairline frame inset from the section edges — the accent */
+.love-story-bg::after {
+  content: "";
+  position: absolute;
+  inset: clamp(0.6rem, 2vw, 1.1rem);
+  border: 1px solid color-mix(in srgb, #541C1B 14%, transparent);
+  box-shadow: inset 0 0 0 4px color-mix(in srgb, #FFFAF7 45%, transparent);
+  pointer-events: none;
+}
+
+/* Blush wash behind each chapter on the photo's side */
+.story-open-wash {
+  position: absolute;
+  top: 8%;
+  bottom: 8%;
+  width: 78%;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 999px;
+  filter: blur(18px);
+  opacity: 0.9;
+}
+
+.story-open-wash--left {
+  left: -18%;
+  background: radial-gradient(closest-side, color-mix(in srgb, #D4948A 30%, transparent) 0%, color-mix(in srgb, #F4DDE0 50%, transparent) 55%, transparent 100%);
+}
+
+.story-open-wash--right {
+  right: -18%;
+  background: radial-gradient(closest-side, color-mix(in srgb, #D4948A 30%, transparent) 0%, color-mix(in srgb, #F4DDE0 50%, transparent) 55%, transparent 100%);
+}
+
+/* Text colors on the pink: burgundy title, rose-ink details, blush rule */
+.story-open-date {
+  color: #8E524D;
+}
+
+.story-open-title {
+  color: #541C1B;
+  text-shadow: 0 1px 0 rgb(255 250 247 / 85%);
+}
+
+.story-open-rule {
+  background: #D4948A;
+}
+
+.story-open-text {
+  color: #5E3A39;
+  text-shadow: 0 0 8px rgb(255 250 247 / 75%);
+}
+
+.story-open-number {
+  color: color-mix(in srgb, #D4948A 30%, transparent);
+}
+
+/* Photo frame: ivory mat with a blush edge */
+.story-open-photo {
+  background: #FFFAF7;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, #D4948A 35%, transparent),
+    0 18px 34px -16px color-mix(in srgb, #541C1B 32%, transparent);
+}

@@ -84,10 +84,11 @@ function DecoImg({ src, className }: { src: string; className: string }) {
 }
 
 // Corners keep their original artwork colors (no tint)
-function CornerImg({ src }: { src: string }) {
+// Top corners are the tall garland — sized by height (.deco-corner-top in globals.css)
+function CornerImg({ src, top = false }: { src: string; top?: boolean }) {
   if (!src) return null
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} />
+  return <img src={src} alt="" aria-hidden="true" className={top ? "deco-corner-top" : CORNER_DECO_CLASS} />
 }
 
 function SectionIconDivider({ icon }: { icon: ReactNode }) {
@@ -841,10 +842,10 @@ export function Details() {
       >
         {/* Corner decorations */}
         <div className="pointer-events-none absolute left-0 top-0 z-10">
-          <CornerImg src={decos.topLeft} />
+          <CornerImg src={decos.topLeft} top />
         </div>
         <div className="pointer-events-none absolute right-0 top-0 z-10">
-          <CornerImg src={decos.topRight} />
+          <CornerImg src={decos.topRight} top />
         </div>
         <div className="pointer-events-none absolute bottom-0 left-0 z-10">
           <CornerImg src={decos.bottomLeft} />
@@ -1026,10 +1027,14 @@ export function Details() {
                           title={attire.paletteTitle}
                           subtitle={attire.paletteSubtitle}
                           guideTitle={attire.colorGuideTitle}
-                          guideNote={attire.colorGuideNote}
+                          guideNote={group.note?.trim() || attire.colorGuideNote}
                         />
                         <DressCodePaletteSwatches palette={palette} />
                       </div>
+                    ) : group.note?.trim() ? (
+                      <p className="font-goudy-italic text-center text-[0.78rem] leading-snug sm:text-sm" style={{ color: C.body }}>
+                        {group.note}
+                      </p>
                     ) : null}
                   </div>
                 </AttireCard>

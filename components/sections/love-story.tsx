@@ -4,13 +4,14 @@ import React, { useMemo } from "react"
 import localFont from "next/font/local"
 import { motion, useReducedMotion } from "motion/react"
 import { StorySection } from "@/components/StorySection"
-import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
+import { layeredSectionTitleSize } from "@/lib/section-typography"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { siteConfig as defaultSiteConfig } from "@/content/site"
 import { SkyBackdrop } from "@/components/sky-backdrop"
 import "@/components/loader/loading-screen.css"
 import { TintedDeco } from "@/components/tinted-deco"
 import { StoryGlyphText } from "@/lib/story-glyph-text"
+import { PuhonText } from "@/components/puhon-closing"
 
 const theSeasons = localFont({
   src: "../../Font/Fontspring-DEMO-theseasons-reg.otf",
@@ -26,13 +27,6 @@ const aboveTheBeyond = localFont({
 
 const revealEase = [0.22, 1, 0.36, 1] as const
 
-// Floral corners framing the section (shown in their original artwork colors)
-const LOVE_STORY_CORNERS = [
-  { src: "/deco/topleftcorner.png", className: "left-0 top-0" },
-  { src: "/deco/toprightcorner.png", className: "right-0 top-0" },
-  { src: "/deco/bottomleftcorner.png", className: "left-0 bottom-0" },
-  { src: "/deco/bottomrightcorner.png", className: "right-0 bottom-0" },
-] as const
 
 // Soft white edge so text stays crisp over the sky backdrop
 const onBgGlow = "0 1px 0 rgb(255 255 255 / 85%), 0 0 12px rgb(255 255 255 / 70%)"
@@ -132,6 +126,9 @@ export function LoveStory({ skyBackdrop = true }: { skyBackdrop?: boolean } = {}
   const siteConfig = useSiteConfig()
   const loading = siteConfig.loadingScreen ?? defaultSiteConfig.loadingScreen
   const loveStory = siteConfig.loveStory ?? defaultSiteConfig.loveStory
+  // Same four corner florals as the loader / envelope (site.ts → CORNER_DECOS)
+  const corners = loading.cornerDecos ?? defaultSiteConfig.loadingScreen.cornerDecos
+  const cornerOverlays = loading.cornerOverlays ?? defaultSiteConfig.loadingScreen.cornerOverlays
   const isPlain = loading.display === "plain"
   const reduceMotion = useReducedMotion()
 
@@ -153,29 +150,68 @@ export function LoveStory({ skyBackdrop = true }: { skyBackdrop?: boolean } = {}
       className={`love-story-root ${theSeasons.variable} ${aboveTheBeyond.variable} relative min-h-screen w-full overflow-x-hidden`}
     >
       {skyBackdrop && <SkyBackdrop haze />}
+      {/* Blush & pastel pink backdrop for the love story (loading-screen.css → .love-story-bg) */}
+      {isPlain && (
+        <div className="love-story-bg" aria-hidden="true">
+          <span className="love-story-bg__grain" />
+        </div>
+      )}
 
-      {LOVE_STORY_CORNERS.map(({ src, className }) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          key={src}
-          src={src}
-          alt=""
-          aria-hidden="true"
-          className={`pointer-events-none absolute z-[1] h-auto w-[clamp(120px,34vw,300px)] select-none ${className}`}
-        />
-      ))}
+      {/* Floral corners framing the section (site-wide corner set, original artwork colors).
+          Top corners are the tall garland — sized by height (.deco-corner-top). */}
+      {(
+        [
+          { src: corners.topLeft, className: "left-0 top-0", top: true },
+          { src: corners.topRight, className: "right-0 top-0", top: true },
+          { src: corners.bottomLeft, className: "left-0 bottom-0", top: false },
+          { src: corners.bottomRight, className: "right-0 bottom-0", top: false },
+        ] as const
+      )
+        .filter(({ src }) => src)
+        .map(({ src, className, top }) => (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={className}
+            src={src}
+            alt=""
+            aria-hidden="true"
+            className={`pointer-events-none absolute z-[1] select-none ${top ? "deco-corner-top deco-corner-top--long love-story-garland" : "h-auto w-[clamp(120px,34vw,300px)]"} ${className}`}
+          />
+        ))}
+
+      {/* Floral corners layered over the top garland (same as the loader) */}
+      {(
+        [
+          { src: cornerOverlays.topLeft, className: "left-0 top-0" },
+          { src: cornerOverlays.topRight, className: "right-0 top-0" },
+        ] as const
+      )
+        .filter(({ src }) => src)
+        .map(({ src, className }) => (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={`overlay-${className}`}
+            src={src}
+            alt=""
+            aria-hidden="true"
+            className={`deco-corner-overlay pointer-events-none absolute z-[1] ${className}`}
+          />
+        ))}
 
       <header
-        className="relative z-20 px-4 pb-2 pt-16 text-center sm:px-6 sm:pt-20 md:px-8 md:pt-24"
+        className="love-story-header relative z-20 pb-6 pt-24 text-center sm:pb-12 sm:pt-36 md:pb-14 md:pt-44"
       >
         <motion.div
-          className="relative mx-auto max-w-5xl @container/love-story"
+          className="relative mx-auto max-w-3xl @container/love-story"
           initial={reduceMotion ? false : { opacity: 0, y: 22 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.75, ease: revealEase }}
         >
           <LoveStoryTitle title={loveStory.title} subtitle={loveStory.subtitle} />
+          <div className="mt-4 sm:mt-5">
+            <OrnamentalDivider />
+          </div>
         </motion.div>
       </header>
 
@@ -209,28 +245,7 @@ export function LoveStory({ skyBackdrop = true }: { skyBackdrop?: boolean } = {}
           transition={{ duration: 0.75, delay: 0.08, ease: revealEase }}
         >
           <OrnamentalDivider />
-          {loveStory.closingEyebrow ? (
-            <p
-              className={`${theSeasons.className} mt-5 text-lg uppercase tracking-[0.3em] sm:mt-6 sm:text-xl`}
-              style={{ color: "var(--color-welcome-heading)", textShadow: onBgGlow }}
-            >
-              {loveStory.closingEyebrow}
-            </p>
-          ) : null}
-          <blockquote className={loveStory.closingEyebrow ? "mt-3 sm:mt-4" : "mt-5 sm:mt-6"}>
-            <p
-              className={`font-goudy-italic ${sectionType.textRelaxed} italic leading-relaxed`}
-              style={{ color: "var(--color-welcome-navy)", textShadow: onBgGlow }}
-            >
-              &ldquo;<StoryGlyphText text={loveStory.closingQuote} />&rdquo;
-            </p>
-            <footer
-              className={`font-goudy-italic mt-2 sm:mt-3 ${sectionType.label} not-italic tracking-wide`}
-              style={{ color: "var(--color-welcome-heading)", textShadow: onBgGlow }}
-            >
-              <StoryGlyphText text={loveStory.closingCitation} />
-            </footer>
-          </blockquote>
+          <PuhonText className="mt-6 sm:mt-8" />
           {isPlain && eucalyptusDecos.sectionBottom ? (
             <TintedDeco src={eucalyptusDecos.sectionBottom} className="love-story-footer-euc mx-auto mt-8 sm:mt-10" />
           ) : null}

@@ -66,10 +66,10 @@ export type AttireColor = string | { name: string; hex: string }
 
 // ── The couple ──────────────────────────────────────────────────────────────
 const COUPLE = {
-  bride: "Laica Jaen",
-  brideNickname: "Laica",
-  groom: "Pat Lagrama",
-  groomNickname: "Pat",
+  bride: "Jhellaica Marie C. Jaen",
+  brideNickname: "Jhellaica",
+  groom: "John Patrick O. Lagrama",
+  groomNickname: "Patrick",
 }
 
 // ── Date & times ────────────────────────────────────────────────────────────
@@ -143,7 +143,7 @@ const RSVP = {
   coordinator: "{groom} / {bride}", // {groom} / {bride} → couple nicknames
   phone: "to be announced",
 }
-const HASHTAGS = ["#PatandLaica","#PatandLaicaWedding"] // ⚠ check — looks like it's from a previous couple
+const HASHTAGS = ["#LAICAfoundtherightPAT"] // ⚠ check — looks like it's from a previous couple
 
 // ── Attire guide (Event Details → Attire Guidelines) ────────────────────────
 // SHOW = which cards to display AND their order, top to bottom. Examples:
@@ -164,6 +164,7 @@ const HASHTAGS = ["#PatandLaica","#PatandLaicaWedding"] // ⚠ check — looks l
 // Guest dress code colors — also shown in the "Dress Code" gentle reminder
 const DRESS_CODE_PALETTE: AttireColor[] = [
   { name: "Peach Beige", hex: "#EBC8B5" },
+  { name: "Blush Pink", hex: "#E8B7B4" },
   { name: "Dusty Rose", hex: "#D4948A" },
   { name: "Terracotta", hex: "#984641" },
   { name: "Burgundy", hex: "#541C1B" },
@@ -172,16 +173,18 @@ const DRESS_CODE_PALETTE: AttireColor[] = [
 // Attire groups shown in the Details section (components/sections/details.tsx).
 //   show      → which groups appear, in order
 //   dressCode → small line under the palette title, e.g. "Formal Attire"
+//   note      → closing line shown above the card's palette ("" = default color guide note)
 //   Each side (ladies / gentlemen) has a label, an optional intro (details, with an
 //   optional highlighted phrase) and an optional list of roles with what they wear.
 const ATTIRE = {
-  show: ["entourage", "guests"] as AttireGroupId[],
+  show: ["sponsors", "guests"] as AttireGroupId[],
 
   entourage: {
     title: "Entourage",
     image: "/Details/Entourage.png",
     dressCode: "Formal Attire",
     palette: [] as AttireColor[], // no palette on the entourage card
+    note: "",
     ladies: {
       label: "Ladies",
       details: "Floor-length gowns in peach beige, dusty rose, terracotta or burgundy. Soft, flowy fabrics like chiffon or tulle are perfect, and each of you may wear a different shade from the palette.",
@@ -205,6 +208,7 @@ const ATTIRE = {
       { name: "Yellow", hex: "#F6D35B" },
       { name: "Black", hex: "#1E1E1E" },
     ] as AttireColor[],
+    note: "",
     ladies: {
       label: "Ladies",
       details: "",
@@ -227,41 +231,40 @@ const ATTIRE = {
 
   sponsors: {
     title: "Principal Sponsors",
-    image: "/Details/sponsors.png",
+    image: "/Details/entourage-new.png",
     dressCode: "Formal Attire",
-    palette: [
-      { name: "Gold", hex: "#D4B25C" },
-      { name: "Black", hex: "#1E1E1E" },
-    ] as AttireColor[],
+    palette: [] as AttireColor[], // no palette on the sponsors card
+    note: "We invite our principal sponsors to dress elegantly in these designated colors to complement our wedding motif.",
     ladies: {
       label: "Ninang",
-      details: "Gold long gown.",
-      highlight: "Gold long gown",
+      details: "Floor-length formal gowns in Old Rose.",
+      highlight: "Floor-length formal gowns",
       roles: [] as { role: string; attire: string }[],
     },
     gentlemen: {
       label: "Ninong",
-      details: "All-black suit and necktie.",
-      highlight: "All-black suit",
+      details: "Classic black suits with black ties and formal shoes.",
+      highlight: "Classic black suits",
       roles: [] as { role: string; attire: string }[],
     },
   },
 
   guests: {
-    title: "Guests",
-    image: "/Details/Guest.png",
-    dressCode: "Semi-Formal Attire",
+    title: "Wedding Guests",
+    image: "/Details/guest-new.png",
+    dressCode: "Formal / Semi-Formal Attire",
     palette: DRESS_CODE_PALETTE,
+    note: "We encourage everyone to follow our color palette to create a beautiful and harmonious look for our special day.",
     ladies: {
       label: "Ladies",
-      details: "A flowy long or midi dress in any of our palette colors: peach beige, dusty rose, terracotta or burgundy. Nude or neutral heels complete the look beautifully.",
-      highlight: "long or midi dress",
+      details: "Flowy long or midi dresses in any of our wedding palette colors: Peach Beige, Blush Pink, Dusty Rose, Terracotta, or Burgundy.",
+      highlight: "Flowy long or midi dresses",
       roles: [] as { role: string; attire: string }[],
     },
     gentlemen: {
       label: "Gentlemen",
-      details: "A long-sleeve collared shirt in burgundy, terracotta or dusty rose, paired with beige or khaki slacks and brown shoes.",
-      highlight: "long-sleeve collared shirt",
+      details: "Long-sleeved collared shirts in Beige, Blush Pink, Dusty Rose, Terracotta, or Burgundy, paired with Khaki, Brown, or Black slacks.",
+      highlight: "Long-sleeved collared shirts",
       roles: [] as { role: string; attire: string }[],
     },
   },
@@ -283,9 +286,9 @@ const DISPLAY_MODE = "plain" as "photos" | "plain"
 
 // ── Shared images ───────────────────────────────────────────────────────────
 const BRAND = {
-  monogram: "/monogram/monogram.png",
+  monogram: "/monogram/monogram-new.png",
   coupleNameImage: "/Details/newcoupelNames.png", // couple-name lettering (loader, envelope)
-  seal: "/monogram/newSeal2.png", // envelope wax seal
+  seal: "/monogram/seal-mongoram.png", // envelope wax seal
   backgroundMusic: "/background_music/Libu-Libong Buwan (Uuwian) - Kyle Raphael (Lyric Video).mp3",
 }
 
@@ -302,6 +305,13 @@ const COUPLE_PHOTOS = [
   "/mobile-background/couples (5).webp",
 ]
 
+// Portraits for the envelope reveal + the main cover photo (soft natural light, no heavy filters)
+const COUPLE_PORTRAITS = {
+  groom: "/mobile-background/couples (61).webp",
+  bride: "/mobile-background/couples (52).webp",
+  cover: "/Details/CoupleImage.png", // home hero cover photo
+}
+
 // Sliding photo marquee behind the loader and envelope — files in /public/mobile-background
 const MARQUEE_PHOTO_COUNT = 88
 const MARQUEE_PHOTOS = Array.from(
@@ -313,12 +323,14 @@ const MARQUEE_PHOTOS = Array.from(
 // Change a path here to swap it on every section at once.
 // To change ONE section only, override it there, e.g. decos: { ...SECTION_DECOS, footerVine: "" }
 const DECOR = {
-  cornerTopLeft: "/deco/topleftcorner.png",
-  cornerTopRight: "/deco/toprightcorner.png",
-  cornerBottomLeft: "/deco/bottomleftcorner.png",
-  cornerBottomRight: "/deco/bottomrightcorner.png",
-  headerOrnament: "/deco/lovestorydeco/Elegant-Eucalyptus-centerdot.png", // small sprig above titles
-  footerVine: "/deco/lovestorydeco/Elegant-Eucalyptus-bottom.png", // long vine at section ends
+  cornerTopLeft: "/deco/new-deco/left-top-corner-new.png",
+  cornerTopRight: "/deco/new-deco/right-top-corner-new.png",
+  cornerBottomLeft: "/deco/new-deco/left-bottom-corner.png",
+  cornerBottomRight: "/deco/new-deco/right-bottom-corner.png",
+  cornerOverlayTopLeft: "/deco/new-deco/left-top-corner.png", // floral corner layered over the top vines (loader + envelope)
+  cornerOverlayTopRight: "/deco/new-deco/right-top-corner.png",
+  headerOrnament: "/deco/new-deco/small-center.png", // small sprig above titles
+  footerVine: "/deco/new-deco/long-center.png", // long vine at section ends
   sideLeft: "/deco/lovestorydeco/Elegant-Eucalyptus-Left.png", // love story side sprigs
   sideRight: "/deco/lovestorydeco/Elegant-Eucalyptus-Right.png",
 }
@@ -393,7 +405,8 @@ export const siteConfig = {
     },
     // Sliding photo marquee behind the loader and envelope (both display modes); files live in /public
     backgroundPhotos: MARQUEE_PHOTOS,
-    headline: "Save the Date",
+    // Opening title on the loader and the envelope letter — short joining words ("of", "the") are set in script
+    headline: "Mark Your Calendar",
     // {days} is replaced with the number of days left before wedding.date
     countdownText: "{days} more days to go",
     countdownOneDayText: "1 more day to go",
@@ -427,7 +440,23 @@ export const siteConfig = {
     hintText: "Tap the Seal to Open",
     enterButtonText: "View the Invitation",
     sealImage: BRAND.seal,
+    // Revealed when the envelope opens: one portrait of each, side by side (groom left, bride right)
+    portraits: {
+      groom: COUPLE_PORTRAITS.groom,
+      bride: COUPLE_PORTRAITS.bride,
+    },
+    // Bouquet tucked inside the open envelope, peeking out on both sides ("" to hide)
+    envelopeFlowers: "/deco/new-deco/Blush Garden Rose Corner Bouquet.png",
+    // Main page cover photo (home hero, plain display) — one natural, candid couple photo
+    coverPhoto: COUPLE_PORTRAITS.cover,
+    coverPhotoAlt: COUPLE_LABEL,
+    // All four corner florals (top two are drawn smaller in CSS; "" hides a corner)
     cornerDecos: { ...CORNER_DECOS },
+    // Floral corners drawn on top of the top corner vines ("" hides one)
+    cornerOverlays: {
+      topLeft: DECOR.cornerOverlayTopLeft,
+      topRight: DECOR.cornerOverlayTopRight,
+    },
   },
   // Couple video (components/sections/couple-video.tsx)
   coupleVideo: {
@@ -451,11 +480,12 @@ export const siteConfig = {
     subtitle: "a love that bloomed",
     // Shown above a chapter's title when it has no date, e.g. "Chapter 03"
     chapterLabel: "Chapter",
-    // Closing verse — each Bible verse appears in one section only
-    // (Welcome: Ecclesiastes 3:11 · Love Story: Isaiah 60:22 · Event Details: 1 Corinthians 13:13)
-    closingEyebrow: "Puhon", // small heading above the verse — "" hides it
-    closingQuote: "A little one shall become a thousand, and a small one a strong nation: I the Lord will hasten it in his time.",
-    closingCitation: "Isaiah 60:22",
+    // Closing block: big word, hashtag, then the verse (also shown in Snap & Share)
+    closingEyebrow: "Puhon", // large word on top — "" hides it
+    closingHashtag: HASHTAGS[0] ?? "", // "" hides it
+    closingQuoteLead: "He hath made every thing beautiful in his time", // bold first line ("" for none)
+    closingQuote: "also he hath set the world in their heart, so that no man can find out the work that God maketh from the beginning to the end.",
+    closingCitation: "Ecclesiastes 3:11 KJV",
     eucalyptusDecos: {
       topLeft: DECOR.sideLeft,
       bottomRight: DECOR.sideRight,
@@ -481,7 +511,7 @@ export const siteConfig = {
         title: "The First Hello",
         theme: "dark" as const,
         layout: "image-right" as const,
-        image: "/mobile-background/couples (42).webp",
+        image: "/mobile-background/couples (70).webp",
         imageAlt: "{groom} and {bride} smiling together",
         paragraphs: [
           "Then came our first real conversation. It started small, the way the best things often do: a few words, a little laughter, and a feeling that this was easy.",
@@ -515,7 +545,7 @@ export const siteConfig = {
         title: "Perfectly Different",
         theme: "light" as const,
         layout: "image-left" as const,
-        image: "/mobile-background/couples (1).webp",
+        image: "/mobile-background/couples (42).webp",
         imageAlt: "{groom} and {bride}",
         paragraphs: [
           "Along the way, we learned just how different we are, and how perfectly matched.",
@@ -528,7 +558,7 @@ export const siteConfig = {
         title: "Our Little World",
         theme: "dark" as const,
         layout: "image-right" as const,
-        image: "/mobile-background/couples (88).webp",
+        image: "/mobile-background/couples (56).webp",
         imageAlt: "{groom} and {bride}",
         paragraphs: [
           "Together, we've built a world that's entirely ours. We spoil our fur baby Naira like royalty, never say no to another hotpot date, and keep collecting the little moments that become big memories.",
@@ -724,8 +754,8 @@ export const siteConfig = {
     events: [
       {
         show: true,
-        time: TIMES.entourageCall,
-        title: "Assembly",
+        time: TIMES.guestArrival,
+        title: "Guests Arrive",
         description: "",
         location: "{ceremony}",
         image: "/weddingtimeline/assemble.png",
@@ -734,7 +764,7 @@ export const siteConfig = {
       {
         show: true,
         time: TIMES.ceremony,
-        title: "Wedding Ceremony",
+        title: "Ceremony",
         description: "",
         location: "{ceremony}",
         image: "/weddingtimeline/WeddingCeremony.png",
@@ -743,14 +773,33 @@ export const siteConfig = {
       {
         show: true,
         time: "4:00 PM",
-        title: "Photo Op",
+        title: "Photo, Coffee & Light Bites",
         description: "",
-        location: "{ceremony}",
+        location: "{reception}",
         image: "/weddingtimeline/PhotoSession.png",
-        icon: "rings" as TimelineIconName,
+        icon: "cocktail" as TimelineIconName,
       },
       {
         show: true,
+        time: "5:00 PM",
+        title: "Dinner & Celebration",
+        description: "",
+        location: "{reception}",
+        image: "/weddingtimeline/DinnerService.png",
+        icon: "cocktail" as TimelineIconName,
+      },
+      {
+        show: true,
+        time: "7:30 PM",
+        title: "Closing Toast",
+        description: "Please stay until the end of the program at 8:00 PM.",
+        location: "{reception}",
+        image: "/weddingtimeline/SendOff.png",
+        icon: "departure" as TimelineIconName,
+      },
+      // Unused events — set show: true to bring one back
+      {
+        show: false,
         time: "4:30 PM",
         title: "Cocktails",
         description: "",
@@ -759,31 +808,13 @@ export const siteConfig = {
         icon: "cocktail" as TimelineIconName,
       },
       {
-        show: true,
+        show: false,
         time: TIMES.reception,
         title: "Start of Program",
         description: "",
         location: "{reception}",
         image: "/weddingtimeline/reception welcom.png",
         icon: "fireworks" as TimelineIconName,
-      },
-      {
-        show: true,
-        time: "7:00 PM",
-        title: "Dinner",
-        description: "",
-        location: "{reception}",
-        image: "/weddingtimeline/DinnerService.png",
-        icon: "cocktail" as TimelineIconName,
-      },
-      {
-        show: true,
-        time: "9:00 PM",
-        title: "End of Program",
-        description: "",
-        location: "{reception}",
-        image: "/weddingtimeline/SendOff.png",
-        icon: "departure" as TimelineIconName,
       },
       // Spare illustrations — set show: true and a time to use them
       {
@@ -1681,6 +1712,16 @@ Now, as they prepare to say yes before God and the people they love most, Cather
     closing:
       "Thank you for helping make {couple}'s wedding celebration memorable. Your photos and messages create beautiful memories we will treasure for a lifetime.",
     closingTag: "Thank you for sharing the joy",
+    // "Puhon" banner — text comes from loveStory.closing*; photos crossfade behind it
+    puhon: {
+      show: true,
+      images: [
+        "/desktop-background/couples (18).webp",
+        "/desktop-background/couples (20).webp",
+        "/desktop-background/couples (3).webp",
+      ],
+      intervalMs: 5000, // time each photo stays before fading to the next
+    },
   },
   accommodation: {
     coordinator: {

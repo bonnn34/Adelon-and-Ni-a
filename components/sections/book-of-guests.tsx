@@ -116,10 +116,11 @@ function DecoImg({ src, className }: { src: string; className: string }) {
 }
 
 // Corners keep their original artwork colors (no tint)
-function CornerImg({ src }: { src: string }) {
+// Top corners are the tall garland — sized by height (.deco-corner-top in globals.css)
+function CornerImg({ src, top = false }: { src: string; top?: boolean }) {
   if (!src) return null
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} />
+  return <img src={src} alt="" aria-hidden="true" className={top ? "deco-corner-top" : CORNER_DECO_CLASS} />
 }
 
 // Sage hairlines either side of a sunshine diamond
@@ -347,10 +348,10 @@ export function BookOfGuests({ background = true }: { background?: boolean } = {
 
       {/* Corner decorations (from site.ts) — top only; FAQ continues below on the same background */}
       <div className="pointer-events-none absolute left-0 top-0 z-10">
-        <CornerImg src={decos.topLeft} />
+        <CornerImg src={decos.topLeft} top />
       </div>
       <div className="pointer-events-none absolute right-0 top-0 z-10">
-        <CornerImg src={decos.topRight} />
+        <CornerImg src={decos.topRight} top />
       </div>
 
       {/* Section Header */}

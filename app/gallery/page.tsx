@@ -44,8 +44,9 @@ const sageDividerStyleLeft = {
   background: "linear-gradient(to left, transparent, var(--color-motif-yellow))",
 } as const
 
+// Bottom corners — same scale as the invitation sections (details, entourage, …)
 const CORNER_DECO_CLASS =
-  "block h-auto w-auto max-w-[120px] sm:max-w-[180px] md:max-w-[260px] lg:max-w-[320px] xl:max-w-[380px] select-none"
+  "block h-auto w-auto max-w-[130px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[320px] select-none opacity-90"
 
 export const dynamic = "force-static"
 
@@ -132,7 +133,8 @@ export default async function GalleryPage() {
         .filter(({ src }) => src)
         .map(({ src, pos }) => (
           <div key={pos} className={`pointer-events-none absolute z-10 ${pos}`}>
-            <TintedDeco src={src} className={CORNER_DECO_CLASS} />
+            {/* Top corners are the tall garland — sized by height (.deco-corner-top) */}
+            <TintedDeco src={src} className={pos.includes("top-0") ? "deco-corner-top" : CORNER_DECO_CLASS} />
           </div>
         ))}
 
@@ -170,7 +172,7 @@ export default async function GalleryPage() {
             <span className="h-px w-8 sm:w-12 md:w-16" style={sageDividerStyle} />
             <span
               className="flex h-7 w-7 items-center justify-center rounded-full sm:h-8 sm:w-8"
-              style={{ background: "#FFFFFF", boxShadow: "inset 0 0 0 1px color-mix(in srgb, var(--color-motif-yellow) 70%, transparent)" }}
+              style={{ background: "var(--color-motif-soft)", boxShadow: "inset 0 0 0 1px color-mix(in srgb, var(--color-motif-medium) 55%, transparent)" }}
               aria-hidden
             >
               <Camera className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: BLUE }} />
@@ -189,6 +191,13 @@ export default async function GalleryPage() {
             No images to display.
           </p>
         )}
+
+        {decos.footerVine ? (
+          <TintedDeco
+            src={decos.footerVine}
+            className="relative z-20 mx-auto mt-10 block h-auto w-56 select-none opacity-90 sm:mt-12 sm:w-72 md:w-96"
+          />
+        ) : null}
       </section>
     </main>
   )

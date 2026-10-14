@@ -3,7 +3,6 @@
 import { useState, useEffect, useMemo, useRef } from "react"
 import Link from "next/link"
 import { useSiteConfig } from "@/hooks/use-site-config"
-import Image from "next/image"
 import StaggeredMenu from "./StaggeredMenu"
 import { Cinzel } from "next/font/google"
 import { siteConfig } from "@/content/site"
@@ -127,17 +126,20 @@ export function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out ${
         isScrolled
-          ? "shadow-[0_12px_28px_color-mix(in_srgb,var(--color-welcome-navy)_22%,transparent)]"
-          : "shadow-[0_6px_16px_color-mix(in_srgb,var(--color-welcome-navy)_12%,transparent)]"
+          ? "shadow-[0_10px_24px_color-mix(in_srgb,var(--color-motif-medium)_22%,transparent)]"
+          : "shadow-[0_4px_12px_color-mix(in_srgb,var(--color-motif-medium)_12%,transparent)]"
       }`}
       style={{
+        // Soft ivory → blush bar; burgundy is kept for the lettering only
         background:
-          "linear-gradient(180deg, color-mix(in srgb, var(--color-welcome-heading) 88%, white) 0%, var(--color-welcome-heading) 45%, var(--color-motif-deep) 100%)",
+          "linear-gradient(180deg, color-mix(in srgb, var(--color-motif-soft) 94%, transparent) 0%, color-mix(in srgb, var(--color-motif-blush) 90%, transparent) 100%)",
+        WebkitBackdropFilter: "blur(10px)",
+        backdropFilter: "blur(10px)",
         borderBottom:
-          "1px solid color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)",
+          "1px solid color-mix(in srgb, var(--color-motif-medium) 35%, transparent)",
       }}
     >
-      {/* Garden hairline along the bottom edge: sky → sage → sky */}
+      {/* Hairline along the bottom edge: dusty rose → sage → dusty rose */}
       <div
         className="absolute inset-x-0 bottom-0 h-[2px] pointer-events-none"
         style={{
@@ -153,17 +155,16 @@ export function Navbar() {
             className="flex-shrink-0 group relative z-10 flex items-center justify-center py-0 pl-1 pr-2.5 sm:pl-1.5 sm:pr-3 md:pl-2 md:pr-3.5 -ml-0.5 sm:ml-0 self-stretch"
             aria-label={`${siteConfig.couple.groomNickname} & ${siteConfig.couple.brideNickname} — Home`}
           >
-            <div className="relative h-[2.5rem] w-[3.2rem] sm:h-[2.85rem] sm:w-[3.65rem] md:h-[3.35rem] md:w-[4.15rem] shrink-0 my-0">
-              <Image
-                src={monogramSrc}
-                alt=""
-                fill
-                sizes="(max-width: 768px) 51px, 67px"
-                priority
-                className="object-contain object-center p-0 group-hover:scale-105 group-active:scale-100 transition-transform duration-500 drop-shadow-[0_2px_6px_color-mix(in_srgb,var(--color-welcome-navy)_35%,transparent)]"
-                style={{ filter: "brightness(0) invert(1)" }}
-              />
-            </div>
+            {/* Monogram painted in burgundy through its alpha mask */}
+            <span
+              aria-hidden
+              className="relative block h-[2.5rem] w-[3.2rem] sm:h-[2.85rem] sm:w-[3.65rem] md:h-[3.35rem] md:w-[4.15rem] shrink-0 my-0 group-hover:scale-105 group-active:scale-100 transition-transform duration-500"
+              style={{
+                backgroundColor: "var(--color-motif-deep)",
+                WebkitMask: `url("${monogramSrc}") center / contain no-repeat`,
+                mask: `url("${monogramSrc}") center / contain no-repeat`,
+              }}
+            />
             <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[color-mix(in_srgb,var(--color-motif-soft)_18%,transparent)] blur-md -z-10" />
           </Link>
 
@@ -176,14 +177,16 @@ export function Navbar() {
                   href={link.href}
                   aria-current={isActive ? "location" : undefined}
                   className={`${link.wideOnly ? "hidden 2xl:inline-block" : ""} ${cinzel.className} group relative whitespace-nowrap px-2.5 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em] transition-colors duration-300 lg:px-3 lg:text-[0.72rem] ${
-                    isActive ? "text-white" : "text-white/75 hover:text-white"
+                    isActive
+                      ? "text-[var(--color-motif-deep)]"
+                      : "text-[var(--color-welcome-heading)] hover:text-[var(--color-motif-deep)]"
                   }`}
                 >
                   {link.label}
                   {/* Butter underline that grows from the centre */}
                   <span
                     aria-hidden
-                    className={`absolute bottom-1 left-1/2 h-px -translate-x-1/2 bg-[var(--color-motif-silver)] transition-all duration-300 ${
+                    className={`absolute bottom-1 left-1/2 h-px -translate-x-1/2 bg-[var(--color-motif-medium)] transition-all duration-300 ${
                       isActive ? "w-[60%]" : "w-0 group-hover:w-[60%]"
                     }`}
                   />
@@ -198,7 +201,7 @@ export function Navbar() {
               items={menuItems}
               socialItems={[]}
               displaySocials={false}
-              menuButtonColor="var(--color-motif-soft)"
+              menuButtonColor="var(--color-motif-deep)"
               openMenuButtonColor="#FFFFFF"
               changeMenuColorOnOpen={true}
               // One soft sky layer slides in just ahead of the panel

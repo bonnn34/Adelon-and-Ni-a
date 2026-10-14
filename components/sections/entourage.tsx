@@ -76,10 +76,11 @@ function DecoImg({ src, className }: { src: string; className: string }) {
 }
 
 // Corners keep their original artwork colors (no tint)
-function CornerImg({ src }: { src: string }) {
+// Top corners are the tall garland — sized by height (.deco-corner-top in globals.css)
+function CornerImg({ src, top = false }: { src: string; top?: boolean }) {
   if (!src) return null
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} />
+  return <img src={src} alt="" aria-hidden="true" className={top ? "deco-corner-top" : CORNER_DECO_CLASS} />
 }
 
 function OutsideDivider() {
@@ -622,6 +623,16 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
     )
   }
 
+  // Short italic line under a heading (e.g. what the role means)
+  const SectionCaption = ({ children }: { children: React.ReactNode }) => (
+    <p
+      className="font-goudy-italic mx-auto -mt-0.5 mb-2 max-w-md px-4 text-center text-[0.72rem] leading-snug sm:mb-3 sm:text-sm md:text-[0.95rem]"
+      style={{ color: SCRIPT }}
+    >
+      {children}
+    </p>
+  )
+
   const NameItem = ({
     member,
     align = "center",
@@ -709,18 +720,21 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
     leftTitle,
     rightTitle,
     singleTitle,
+    caption,
     centerContent = false,
   }: {
     children: React.ReactNode
     leftTitle?: string
     rightTitle?: string
     singleTitle?: string
+    caption?: string
     centerContent?: boolean
   }) => {
     if (singleTitle) {
       return (
         <div className="mb-1.5 sm:mb-2.5 md:mb-3">
           <SectionTitle>{singleTitle}</SectionTitle>
+          {caption && <SectionCaption>{caption}</SectionCaption>}
           <div
             className={`grid grid-cols-2 gap-x-1.5 sm:gap-x-3 md:gap-x-5 gap-y-1 sm:gap-y-1.5 ${centerContent ? "max-w-3xl mx-auto" : ""}`}
           >
@@ -767,10 +781,10 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
       >
         {/* Corner decorations (from site.ts) */}
         <div className="pointer-events-none absolute left-0 top-0 z-10">
-          <CornerImg src={decos.topLeft} />
+          <CornerImg src={decos.topLeft} top />
         </div>
         <div className="pointer-events-none absolute right-0 top-0 z-10">
-          <CornerImg src={decos.topRight} />
+          <CornerImg src={decos.topRight} top />
         </div>
         <div className="pointer-events-none absolute bottom-0 left-0 z-10">
           <CornerImg src={decos.bottomLeft} />
@@ -934,6 +948,9 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                             <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                           </div>
                         )}
+                        {hasParents && (
+                          <SectionCaption>With the blessings of our Parents</SectionCaption>
+                        )}
                         {hasGroomParents && hasBrideParents && (
                           <TwoColumnLayout leftTitle="Parents of the Groom" rightTitle="Parents of the Bride">
                             {(() => {
@@ -998,7 +1015,11 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                           if (officiating.length === 0) return null
                           return (
                             <div key="OfficiatingMinisterBeforeSponsors" className="mt-3 sm:mt-5 md:mt-6">
-                              <TwoColumnLayout singleTitle="OFFICIATING MINISTER" centerContent={true}>
+                              <TwoColumnLayout
+                                singleTitle="OFFICIATING MINISTER"
+                                caption="To solemnize the marriage and lead the couple in their covenant before God."
+                                centerContent={true}
+                              >
                                 {officiating.map((member, idx) => (
                                   <div
                                     key={`officiating-${idx}-${member.name}`}
@@ -1015,7 +1036,11 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                         {sponsors.length > 0 && (
                           <div key="SponsorsAfterParents">
                             <div className="flex justify-center py-1 sm:py-2 md:py-2.5 mb-1.5 sm:mb-2.5 md:mb-3" />
-                            <TwoColumnLayout singleTitle="Principal Sponsors" centerContent={true}>
+                            <TwoColumnLayout
+                              singleTitle="Principal Sponsors"
+                              caption="To stand as principal witnesses in our exchange of vows"
+                              centerContent={true}
+                            >
                               {sponsors.map((sponsor, idx) => (
                                 <React.Fragment key={`sponsor-row-${idx}`}>
                                   <div className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">

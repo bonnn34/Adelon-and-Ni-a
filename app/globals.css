@@ -63,22 +63,22 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: #FFFAF7;
+  --foreground: #5E3A39;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  /* Primary: terracotta #984641 */
-  --primary: #984641;
+  /* Primary: terracotta #8E524D */
+  --primary: #8E524D;
   --primary-foreground: oklch(0.145 0 0);
   /* Secondary: dusty rose #D4948A */
   --secondary: #D4948A;
   --secondary-foreground: oklch(0.145 0 0);
   /* Sage mapped to secondary */
   --sage: #D4948A;
-  /* Muted/light surfaces: pale peach #F8EBE3 */
-  --muted: #F8EBE3;
+  /* Muted/light surfaces: pale peach #F8E9E9 */
+  --muted: #F8E9E9;
   --muted-foreground: oklch(0.145 0 0);
   /* Accent: dusty rose #D4948A */
   --accent: #D4948A;
@@ -87,7 +87,7 @@
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: #984641;
+  --ring: #8E524D;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -96,12 +96,12 @@
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #984641;
+  --sidebar-primary: #8E524D;
   --sidebar-primary-foreground: oklch(0.145 0 0);
   --sidebar-accent: #D4948A;
   --sidebar-accent-foreground: oklch(0.145 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: #984641;
+  --sidebar-ring: #8E524D;
 
 /*\* Decoration tint: the botanical PNGs in /public/deco are painted in sage*
 *   (hue ≈ 92°). Kept green to match the sage #D4948A motif (light touch only).*
@@ -121,13 +121,13 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.145 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: #984641;
+  --primary: #8E524D;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: #D4948A;
   --secondary-foreground: oklch(0.985 0 0);
   /* Sage for dark mode */
   --sage: #D4948A;
-  --muted: #F8EBE3;
+  --muted: #F8E9E9;
   --muted-foreground: oklch(0.145 0 0);
   --accent: #D4948A;
   --accent-foreground: oklch(0.985 0 0);
@@ -135,7 +135,7 @@
   --destructive-foreground: oklch(0.637 0.237 25.331);
   --border: oklch(0.269 0 0);
   --input: oklch(0.269 0 0);
-  --ring: #984641;
+  --ring: #8E524D;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -143,12 +143,12 @@
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: #984641;
+  --sidebar-primary: #8E524D;
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: #D4948A;
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: #984641;
+  --sidebar-ring: #8E524D;
 }
 
 @theme inline {
@@ -158,25 +158,25 @@
   
 /* ==========================================
    MOTIF COLORS
-   Theme: Romantic Minimalist + Fresh Spring
-   Peach Beige #EBC8B5 + Dusty Rose #D4948A + Terracotta #984641 + Burgundy #541C1B
+   Theme: Soft Blush Romance — natural & timeless
+   Blush #F4DDE0 + Pastel Pink #F8E9E9 + Ivory #FFFAF7 + Dusty Rose #D4948A + Sage #A3A58B + Burgundy #541C1B (sparingly)
    ========================================== */
 
 /* ------------------------------------------
    Background / Linen
    ------------------------------------------ */
 
-   --color-motif-cream: #F8EBE3 /* pale peach */; /* Warm ivory */
-   --color-motif-yellow: #D4948A /* Dusty rose */; /* Dusty rose */
-   --color-motif-soft: #FDF6F2 /* Warm blush paper */; /* Soft ivory paper */
+   --color-motif-cream: #F8E9E9; /* pastel pink */
+   --color-motif-yellow: #A3A58B; /* muted sage — foliage lines */
+   --color-motif-soft: #FFFAF7; /* warm ivory paper */
    
    /* ------------------------------------------
       Fresh Spring Accents
       ------------------------------------------ */
    
-   --color-motif-accent: #984641; /* Terracotta */
+   --color-motif-accent: #8E524D; /* Terracotta */
    --color-motif-deep: #541C1B; /* Burgundy */
-   --color-motif-medium: #D4948A /* Dusty rose */; /* Peach beige */
+   --color-motif-medium: #D4948A; /* dusty rose */
    
    /* ------------------------------------------
       Dusty Blue Accents
@@ -184,81 +184,81 @@
    
    --color-motif-teal: #541C1B; /* Burgundy */
    --color-motif-teal-medium: #D4948A; /* Dusty rose */
-   --color-motif-teal-light: #D4948A /* Dusty rose */; /* Peach beige */
+   --color-motif-teal-light: #A3A58B; /* muted sage */
    
    /* ------------------------------------------
       Botanical / Spring Accent
       ------------------------------------------ */
    
-   --color-motif-blush: #EBC8B5; /* Peach beige */
+   --color-motif-blush: #F4DDE0; /* Peach beige */
    
    /* ------------------------------------------
       Neutral / Paper
       ------------------------------------------ */
    
-   --color-motif-silver: #EBC8B5 /* Peach beige */; /* Peach beige */
+   --color-motif-silver: #F4DDE0 /* Peach beige */; /* Peach beige */
    
    /* ==========================================
       WELCOME SECTION
       ========================================== */
    
    /* Main background */
-   --color-welcome-bg: color-mix(in srgb, #D4948A 14%, white);
+   --color-welcome-bg: #F8E9E9; /* pastel pink */
    
    /* Soft background */
-   --color-welcome-bg-soft: color-mix(in srgb, #D4948A 8%, white);
+   --color-welcome-bg-soft: #FFFAF7; /* warm ivory */
    
    /* ==========================================
       TYPOGRAPHY
       ========================================== */
    
    /* Main body text */
-   --color-welcome-text: #541C1B;
+   --color-welcome-text: #5E3A39; /* soft burgundy-brown body text */
    
    /* Secondary / softer text */
-   --color-welcome-text-soft: color-mix(in srgb, #541C1B 65%, white);
+   --color-welcome-text-soft: color-mix(in srgb, #5E3A39 70%, #FFFAF7);
    
    /* Small headings */
-   --color-welcome-heading: #984641;
+   --color-welcome-heading: #8E524D;
    
    /* Script / romantic accent */
-   --color-welcome-script: #984641;
+   --color-welcome-script: #8E524D;
    
    /* Main hero heading */
-   --color-welcome-navy: #3B1312;
+   --color-welcome-navy: #541C1B; /* burgundy — key headings only */
    
    /* ==========================================
       BUTTONS / DECORATION
       ========================================== */
    
    /* Buttons */
-   --color-welcome-green: #984641;
+   --color-welcome-green: #8E524D;
    
    /* Decorative coastal / floral lines */
-   --color-welcome-botanical: #D4948A;
+   --color-welcome-botanical: #A3A58B; /* muted sage */
    
    /* Gold decorative details */
-   --color-welcome-gold: #984641;
+   --color-welcome-gold: #8E524D;
    
    /* Floral accents */
-   --color-welcome-blush: #EBC8B5;
+   --color-welcome-blush: #F4DDE0;
    
    /* ==========================================
       ADDITIONAL FRESH SPRING COLORS
       ========================================== */
    
    --color-coastal-deep: #541C1B; /* Burgundy */
-   --color-coastal-teal: #984641 /* terracotta */; /* Deep blue */
+   --color-coastal-teal: #8E524D /* terracotta */; /* Deep blue */
    --color-coastal-soft: #D4948A; /* Dusty rose */
    --color-coastal-light: #D4948A /* Dusty rose */; /* Peach beige */
    
-   --color-romantic-coral: #984641; /* Terracotta */
+   --color-romantic-coral: #8E524D; /* Terracotta */
    --color-romantic-deep: #541C1B; /* Burgundy */
-   --color-romantic-peach: #EBC8B5; /* Peach beige */
-   --color-romantic-blush: #EBC8B5; /* Peach beige */
+   --color-romantic-peach: #F4DDE0; /* Peach beige */
+   --color-romantic-blush: #F4DDE0; /* Peach beige */
    
    --color-coastal-sand: #D4948A; /* Dusty rose */
-   --color-coastal-ivory: #FDF6F2; /* Warm ivory */
+   --color-coastal-ivory: #FFFAF7; /* Warm ivory */
    
    /* ==========================================
       COUPLE NAME MASK / LOCKUP
@@ -277,7 +277,7 @@
       ========================================== */
    
    /* Flat base behind the circles */
-   --color-bg-pattern-base: color-mix(in srgb, #D4948A 26%, white);
+   --color-bg-pattern-base: #F8E9E9;
    
    /* Main circles — butter yellow family */
    --color-bg-circle-deep: color-mix(in srgb, #D4948A 45%, transparent);
@@ -287,16 +287,16 @@
    --color-bg-circle-light: color-mix(in srgb, white 70%, transparent);
    
    /* Accent circles */
-   --color-bg-circle-accent-1: color-mix(in srgb, #984641 18%, transparent);
+   --color-bg-circle-accent-1: color-mix(in srgb, #8E524D 18%, transparent);
    
    --color-bg-circle-accent-2: color-mix(in srgb, white 55%, transparent);
    
    --color-bg-circle-accent-3: color-mix(in srgb, #D4948A 22%, transparent);
    
    /* Terracotta circles */
-   --color-bg-circle-rose: color-mix(in srgb, #EBC8B5 45%, transparent);
+   --color-bg-circle-rose: color-mix(in srgb, #F4DDE0 45%, transparent);
    
-   --color-bg-circle-peach: color-mix(in srgb, #984641 30%, transparent);
+   --color-bg-circle-peach: color-mix(in srgb, #8E524D 30%, transparent);
    
    /* Text and divider lines */
    --color-on-pattern: var(--color-welcome-navy);
@@ -318,29 +318,29 @@
    --color-countdown-text: var(--color-motif-soft);
    
    /* Unit labels */
-   --color-countdown-label: #EBC8B5;
+   --color-countdown-label: #F4DDE0;
    
    /* ==========================================
       ENVELOPE — TERRACOTTA FAMILY (terracotta paper, burgundy folds)
       ========================================== */
    
    /* Main paper */
-   --color-envelope-paper: #984641;
+   --color-envelope-paper: #F4DDE0; /* blush */
    
    /* Back panel / inside */
-   --color-envelope-base: #984641;
+   --color-envelope-base: color-mix(in srgb, #F4DDE0 88%, #D4948A);
    
    /* Lit edges — terracotta warmed toward dusty rose */
-   --color-envelope-highlight: color-mix(in srgb, #984641 72%, #D4948A);
+   --color-envelope-highlight: #F8E9E9;
    
    /* Flap folds */
-   --color-envelope-fold: color-mix(in srgb, #984641 78%, #541C1B);
+   --color-envelope-fold: color-mix(in srgb, #F4DDE0 72%, #D4948A);
    
    /* Shadows */
-   --color-envelope-shadow: #541C1B;
+   --color-envelope-shadow: color-mix(in srgb, #D4948A 62%, #F4DDE0);
    
    /* Crease hairlines */
-   --color-envelope-crease: rgb(235 200 181 / 45%);
+   --color-envelope-crease: rgb(212 148 138 / 45%);
    
    /* ==========================================
       OPTIONAL SEMANTIC COLORS
@@ -353,16 +353,16 @@
    --color-primary-hover: #3B1312;
    
    /* Romantic CTA */
-   --color-romantic: #984641;
+   --color-romantic: #8E524D;
    
    /* Romantic hover */
-   --color-romantic-hover: #7A3632;
+   --color-romantic-hover: #6E3532;
    
    /* Soft highlight */
-   --color-highlight: #EBC8B5;
+   --color-highlight: #F4DDE0;
    
    /* Highlight — Save the Date, couple names, day number */
-   --color-highlight-deep: #984641;
+   --color-highlight-deep: #8E524D;
    
    /* Decorations — corner leaves, ornaments */
    --color-deco: #D4948A;
@@ -416,19 +416,19 @@
    --color-section-accent: #D4948A;
    
    /* Light section */
-   --color-section-light: #F1DACD;
+   --color-section-light: #F4DDE0;
    
    /* Card background */
-   --color-card: #FDF6F2;
+   --color-card: #FFFAF7;
    
    /* Border */
    --color-border: #D4948A;
    
    /* Dark text */
-   --color-text-dark: #541C1B;
+   --color-text-dark: #5E3A39;
    
    /* Deepest ink */
-   --color-ink-deep: #3B1312;
+   --color-ink-deep: #541C1B;
    
    /* Deep accent ink */
    --color-ink-accent: #541C1B;
@@ -661,12 +661,12 @@ img[src*="%2Flovestorydeco%2F"] {
 }
 
 ::-webkit-scrollbar-track {
-  background: #F8EBE3;
+  background: #F8E9E9;
 }
 
 /* Updated scrollbar color to primary */
 ::-webkit-scrollbar-thumb {
-  background: #984641;
+  background: #8E524D;
   border-radius: 4px;
 }
 
@@ -756,7 +756,7 @@ img[src*="%2Flovestorydeco%2F"] {
 
 /* Countdown gradient text — butter to sunshine */
 .countdown-gradient-text * {
-  background: linear-gradient(180deg, #EBC8B5 0%, #984641 100%);
+  background: linear-gradient(180deg, #F4DDE0 0%, #8E524D 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -769,7 +769,7 @@ img[src*="%2Flovestorydeco%2F"] {
 }
 
 .bg-wedding-paper {
-  background-color: #FDF6F2;
+  background-color: #FFFAF7;
 }
 
 .text-wedding-brown {
@@ -777,7 +777,7 @@ img[src*="%2Flovestorydeco%2F"] {
 }
 
 .text-wedding-paper {
-  color: #FDF6F2;
+  color: #FFFAF7;
 }
 
 /* Font utilities for Love Story section */
@@ -1127,18 +1127,17 @@ img[src*="%2Flovestorydeco%2F"] {
 /* Flat-tinted decoration image (components/tinted-deco.tsx) — color: --color-deco */
 .tinted-deco {
   display: block;
-  background-color: var(--color-deco);
-  -webkit-mask: var(--deco-src) center / 100% 100% no-repeat;
-  mask: var(--deco-src) center / 100% 100% no-repeat;
   user-select: none;
   pointer-events: none;
 }
 
+/* The blush florals in /public/deco/new-deco are full-color artwork, so they are
+   shown as painted (natural blush, dusty rose, sage and burgundy) rather than as
+   a flat --color-deco silhouette. */
 .tinted-deco__img {
   display: block;
   width: 100%;
   height: auto;
-  visibility: hidden;
 }
 
 
@@ -1299,7 +1298,8 @@ img[src*="%2Flovestorydeco%2F"] {
 .background-video__veil {
   position: absolute;
   inset: 0;
-  background: white;
+  /* Pastel pink → ivory wash so the photos sit softly under the blush palette */
+  background: linear-gradient(180deg, #F8E9E9 0%, #FFFAF7 50%, #F8E9E9 100%);
 }
 
 /* ==========================================================================
@@ -1381,4 +1381,119 @@ img[src*="%2Flovestorydeco%2F"] {
 
 @media (prefers-reduced-motion: reduce) {
   .gallery-swipe-arrow { animation: none; }
+}
+
+
+/* ==========================================================================
+   Soft blush paper backdrop — loader, envelope and home hero (plain display).
+   Pastel pink washing into warm ivory, with a faint blush bloom at the top
+   and a whisper of sage at the foot. No photos, no patterns: calm and airy.
+   ========================================================================== */
+.invite-blush-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 60% at 50% -10%, color-mix(in srgb, #F4DDE0 85%, transparent) 0%, transparent 65%),
+    radial-gradient(80% 40% at 0% 100%, color-mix(in srgb, #A3A58B 10%, transparent) 0%, transparent 70%),
+    radial-gradient(80% 40% at 100% 100%, color-mix(in srgb, #D4948A 10%, transparent) 0%, transparent 70%),
+    linear-gradient(180deg, #F8E9E9 0%, #FFFAF7 55%, #F8E9E9 100%);
+}
+
+.invite-blush-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 2px, rgb(255 255 255 / 18%) 2px 3px),
+    repeating-linear-gradient(0deg, transparent 0 3px, rgb(84 28 27 / 1.5%) 3px 4px);
+}
+
+
+/* ==========================================================================
+   Top corner florals on the invitation sections (hero, love story, details,
+   entourage, guests, playlist, see you there, gallery). The top artwork is a
+   tall garland, so it is sized by height to stay a small spray; bottom
+   corners keep their own width-based sizes.
+   Works on a plain <img> and on <TintedDeco> (sizes its inner image).
+   ========================================================================== */
+.deco-corner-top {
+  --deco-top-h: min(30vh, 240px);
+  display: block;
+  width: auto;
+  max-width: none;
+  height: var(--deco-top-h);
+  user-select: none;
+  pointer-events: none;
+}
+
+.deco-corner-top.tinted-deco {
+  height: auto;
+}
+
+.deco-corner-top .tinted-deco__img {
+  width: auto;
+  max-width: none;
+  height: var(--deco-top-h);
+}
+
+@media (min-width: 640px) {
+  .deco-corner-top { --deco-top-h: 300px; }
+}
+
+@media (min-width: 1024px) {
+  .deco-corner-top { --deco-top-h: 380px; }
+}
+
+/* Where a floral corner sits on top, the garland hangs longer so it still
+   shows below the corner */
+.deco-corner-top.deco-corner-top--long { --deco-top-h: min(44vh, 360px); }
+
+@media (min-width: 640px) {
+  .deco-corner-top.deco-corner-top--long { --deco-top-h: 440px; }
+}
+
+@media (min-width: 1024px) {
+  .deco-corner-top.deco-corner-top--long { --deco-top-h: 560px; }
+}
+
+/* Floral corner layered over the top garland — same size as the loader /
+   envelope corner overlay (loading-screen.css → .loading-screen__plain-corner-overlay) */
+.deco-corner-overlay {
+  display: block;
+  width: min(44vw, 190px);
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .deco-corner-overlay { width: 240px; }
+}
+
+@media (min-width: 1024px) {
+  .deco-corner-overlay { width: 320px; }
+}
+
+
+/* ==========================================================================
+   Love story (components/sections/love-story.tsx) — header spacing + corners
+   ========================================================================== */
+/* Side padding keeps the title clear of the hanging garlands */
+.love-story-header {
+  padding-left: clamp(3.5rem, 16vw, 9rem);
+  padding-right: clamp(3.5rem, 16vw, 9rem);
+}
+
+/* Phones: garland ends just above the first chapter so it never sits on the
+   photo or the story text */
+@media (max-width: 639px) {
+  .deco-corner-top.deco-corner-top--long.love-story-garland { --deco-top-h: min(34vh, 250px); }
+}
+
+/* Floral corners: soft shadow so they sit on the page instead of looking pasted on */
+.deco-corner-overlay {
+  filter: drop-shadow(0 6px 10px rgb(84 28 27 / 14%));
 }

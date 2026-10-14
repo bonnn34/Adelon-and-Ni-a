@@ -44,31 +44,35 @@ const PLAIN_DATE_STAGGER_MS = 800;
 // Short joining words in the headline ("Save the Date") are set in script
 const SCRIPT_WORDS = new Set(['the', 'of', 'and', '&', 'a']);
 
-// Splits the headline into display words with a running letter index for staggering
+// Splits the headline into display words with a running letter index for staggering.
+// Longer titles break onto a second line before a mid-title joining word
+// ("A Celebration / of Love"); short ones like "Save the Date" stay on one line.
 function splitHeadline(headline: string) {
   let letterIndex = 0;
-  return headline
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((word) => {
-      const script = SCRIPT_WORDS.has(word.toLowerCase());
-      const start = letterIndex;
-      letterIndex += script ? 2 : word.length;
-      return { word, script, start };
-    });
+  const words = headline.split(/\s+/).filter(Boolean);
+  return words.map((word, i) => {
+    const script = SCRIPT_WORDS.has(word.toLowerCase());
+    const start = letterIndex;
+    letterIndex += script ? 2 : word.length;
+    const breakBefore = words.length >= 4 && script && i > 0 && i < words.length - 1;
+    return { word, script, start, breakBefore };
+  });
 }
 
-// Motif colors cycled through the floating motes and petals (plain mode)
+// Motif colors cycled through the floating petals (plain mode): mostly blush and
+// dusty rose, a little sage, burgundy only once in a while
 const MOTE_COLORS = [
+  'var(--color-motif-blush)',
+  'var(--color-motif-medium)',
   'var(--color-motif-blush)',
   'var(--color-motif-yellow)',
   'var(--color-motif-medium)',
-  'var(--color-motif-accent)',
-  'var(--color-motif-teal-light)',
+  'var(--color-motif-blush)',
+  'var(--color-motif-deep)',
 ]
 
 // Colorful motes and petals drifting up behind the invitation card (plain mode)
-const PLAIN_MOTES = Array.from({ length: 24 }, (_, i) => ({
+const PLAIN_MOTES = Array.from({ length: 14 }, (_, i) => ({
   x: (i * 37 + 11) % 100,
   size: 4 + ((i * 7) % 6),
   dur: 14 + ((i * 5) % 10),
@@ -97,6 +101,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
   const showBackdrop = !isPlain && backgroundPhotos.length > 0;
   const plainTheme = content.plainTheme ?? defaultSiteConfig.loadingScreen.plainTheme;
   const cornerDecos = content.cornerDecos ?? defaultSiteConfig.loadingScreen.cornerDecos;
+  const cornerOverlays = content.cornerOverlays ?? defaultSiteConfig.loadingScreen.cornerOverlays;
   const plainInvite = content.plainInvite ?? defaultSiteConfig.loadingScreen.plainInvite;
 
   const reduceMotion = useReducedMotion();
@@ -257,14 +262,26 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
                 { src: cornerDecos.bottomLeft, className: 'left-0 bottom-0' },
                 { src: cornerDecos.bottomRight, className: 'right-0 bottom-0' },
               ] as const
-            ).map(({ src, className }) => (
+            ).filter(({ src }) => src).map(({ src, className }) => (
               <div
-                key={src}
+                key={className}
                 className={`loading-screen__plain-corner-slot pointer-events-none absolute ${className}`}
               >
                 {/* Corners keep their original artwork colors (no tint) */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={src} alt="" className="loading-screen__plain-corner-img" />
+              </div>
+            ))}
+            {(
+              [
+                { src: cornerOverlays.topLeft, className: 'left-0 top-0' },
+                { src: cornerOverlays.topRight, className: 'right-0 top-0' },
+              ] as const
+            ).filter(({ src }) => src).map(({ src, className }) => (
+              <div key={`overlay-${className}`} className={`pointer-events-none absolute ${className}`}>
+                {/* Floral corner layered over the top vines */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt="" className="loading-screen__plain-corner-overlay" />
               </div>
             ))}
           </div>
@@ -305,10 +322,11 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
           )}
           {isPlain ? (
             <h1 className="loading-screen__std-headline ls-headline" aria-label={content.headline}>
-              {headlineWords.map(({ word, script, start }, wi) =>
+              {headlineWords.map(({ word, script, start, breakBefore }, wi) =>
                 script ? (
+                  <React.Fragment key={wi}>
+                  {breakBefore && <span className="ls-headline__break" aria-hidden="true" />}
                   <span
-                    key={wi}
                     className="ls-headline__script"
                     aria-hidden="true"
                     style={
@@ -319,6 +337,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
                   >
                     {word}
                   </span>
+                  </React.Fragment>
                 ) : (
                   <span key={wi} className="ls-headline__word" aria-hidden="true">
                     {Array.from(word).map((ch, ci) => (

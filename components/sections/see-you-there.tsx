@@ -59,10 +59,11 @@ function DecoImg({ src, className }: { src: string; className: string }) {
 }
 
 // Corners keep their original artwork colors (no tint)
-function CornerImg({ src }: { src: string }) {
+// Top corners are the tall garland — sized by height (.deco-corner-top in globals.css)
+function CornerImg({ src, top = false }: { src: string; top?: boolean }) {
   if (!src) return null
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} />
+  return <img src={src} alt="" aria-hidden="true" className={top ? "deco-corner-top" : CORNER_DECO_CLASS} />
 }
 
 // "!" and other symbols in Cinzel, letters in The Seasons
@@ -102,10 +103,10 @@ function PlainSeeYouThere({ background = true }: { background?: boolean }) {
 
       {/* Corner decorations (from site.ts) — top only; the footer continues below on the same background */}
       <div className="pointer-events-none absolute left-0 top-0 z-10">
-        <CornerImg src={plain.decos.topLeft} />
+        <CornerImg src={plain.decos.topLeft} top />
       </div>
       <div className="pointer-events-none absolute right-0 top-0 z-10">
-        <CornerImg src={plain.decos.topRight} />
+        <CornerImg src={plain.decos.topRight} top />
       </div>
 
       <motion.div

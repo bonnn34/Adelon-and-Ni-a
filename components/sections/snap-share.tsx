@@ -9,6 +9,7 @@ import { QRCodeCanvas } from "qrcode.react"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
 import Image from "next/image"
+import { PuhonBanner } from "@/components/puhon-closing"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -499,6 +500,10 @@ export function SnapShare() {
             </div>
           </div>
         )}
+
+        <div className="mt-8 sm:mt-10 md:mt-12">
+          <PuhonBanner />
+        </div>
 
         <div className="mt-6 space-y-2 text-center sm:mt-8 md:mt-10">
           <p className={`font-goudy-italic ${ct.bodyLg}`} style={{ color: OUTSIDE_TEXT_MUTED, textShadow: READABLE_SHADOW }}>

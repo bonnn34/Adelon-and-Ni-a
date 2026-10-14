@@ -6,6 +6,7 @@ import { Cinzel } from "next/font/google"
 import localFont from "next/font/local"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { parseWeddingDate } from "@/lib/wedding-date"
+import Image from "next/image"
 import { InvitePhotoBackdrop, PhotoBackground } from "@/components/loader/invite-photo-backdrop"
 import { siteConfig as defaultSiteConfig } from "@/content/site"
 import "@/components/loader/loading-screen.css"
@@ -215,9 +216,14 @@ export function Hero() {
   const isPlain = loading.display === "plain"
   const cornerDecos =
     loading.cornerDecos ?? defaultSiteConfig.loadingScreen.cornerDecos
+  const cornerOverlays =
+    loading.cornerOverlays ?? defaultSiteConfig.loadingScreen.cornerOverlays
   const backgroundPhotos = loading.backgroundPhotos ?? []
   // Same sliding photo marquee as the loader and envelope (plain mode)
   const plainPhotos = useMemo(() => backgroundPhotos.map((src) => encodeURI(src)), [backgroundPhotos])
+  // Plain mode cover: one natural couple photograph beside the invitation wording
+  const coverPhoto = loading.coverPhoto ?? defaultSiteConfig.loadingScreen.coverPhoto
+  const coverPhotoAlt = loading.coverPhotoAlt ?? defaultSiteConfig.loadingScreen.coverPhotoAlt
   const reduceMotion = useReducedMotion()
   const [visible, setVisible] = useState(false)
 
@@ -263,8 +269,20 @@ export function Hero() {
                 { src: cornerDecos.topRight, className: "right-0 top-0" },
               ] as const
             ).map(({ src, className }) => (
-              <TintedDeco key={src} src={src} className={`home-hero-plain-corner-img absolute ${className}`} />
+              <TintedDeco key={className} src={src} className={`deco-corner-top deco-corner-top--long absolute ${className}`} />
             ))}
+            {(
+              [
+                { src: cornerOverlays.topLeft, className: "left-0 top-0" },
+                { src: cornerOverlays.topRight, className: "right-0 top-0" },
+              ] as const
+            )
+              .filter(({ src }) => src)
+              .map(({ src, className }) => (
+                // Floral corner layered over the top garland (same as the loader)
+                // eslint-disable-next-line @next/next/no-img-element
+                <img key={`overlay-${className}`} src={src} alt="" className={`deco-corner-overlay absolute ${className}`} />
+              ))}
           </div>
         </>
       ) : (
@@ -282,7 +300,22 @@ export function Hero() {
         </>
       )}
 
-      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-5 pb-[clamp(1rem,4vh,2rem)] pt-[clamp(6rem,24vw,7.5rem)] sm:pb-[clamp(2.5rem,9vh,5rem)] sm:pt-[clamp(3.75rem,10vw,6rem)] text-center sm:px-8">
+      <div className={`home-hero-content relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-5 pb-[clamp(1rem,4vh,2rem)] pt-[clamp(6rem,24vw,7.5rem)] sm:pb-[clamp(2.5rem,9vh,5rem)] sm:pt-[clamp(3.75rem,10vw,6rem)] text-center sm:px-8${isPlain && coverPhoto ? " home-hero-content--cover" : ""}`}>
+        {isPlain && coverPhoto && (
+          <motion.figure className="home-hero-cover" {...fadeUp(0)}>
+            <div className="home-hero-cover__frame">
+              <Image
+                src={encodeURI(coverPhoto)}
+                alt={coverPhotoAlt}
+                fill
+                priority
+                sizes="(min-width: 768px) 380px, 78vw"
+                className="home-hero-cover__img"
+              />
+            </div>
+          </motion.figure>
+        )}
+        <div className="home-hero-copy relative flex w-full flex-col items-center">
         {/* Soft frosted mist behind the whole text block — no edges, fades into the photos */}
         <span aria-hidden className="home-hero-mist pointer-events-none" />
         <motion.h1
@@ -374,6 +407,7 @@ export function Hero() {
             {ceremonyName}
           </span>
         </motion.div>
+        </div>
       </div>
 
       <motion.div className="home-hero-countdown-bar relative z-10 mt-auto w-full" {...fadeUp(0.42)}>

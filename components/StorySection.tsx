@@ -107,9 +107,11 @@ function PlainOpenChapter({
   const tilt = photoLeft ? -2.5 : 2.5
 
   return (
-    <div className={`${theSeasons.variable} story-open relative z-[2] px-4 sm:px-6 md:px-10`}>
+    <div className={`${theSeasons.variable} story-open relative z-[2] px-5 sm:px-8 md:px-10`}>
+      {/* Soft blush wash behind each chapter, on the photo's side */}
+      <span className={`story-open-wash ${photoLeft ? "story-open-wash--left" : "story-open-wash--right"}`} aria-hidden />
       <div
-        className={`mx-auto flex max-w-5xl items-center gap-4 py-8 sm:gap-8 sm:py-12 md:gap-14 md:py-16 ${
+        className={`mx-auto flex max-w-5xl items-center gap-5 py-10 sm:gap-10 sm:py-14 md:gap-14 md:py-16 ${
           photoLeft ? "flex-row" : "flex-row-reverse"
         }`}
       >
@@ -170,11 +172,12 @@ function PlainOpenChapter({
 
       {!isLast && (
         <div className="story-open-divider flex items-center justify-center gap-2" aria-hidden>
-          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, var(--color-motif-yellow))" }} />
-          <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="var(--color-motif-accent)">
+          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, #D4948A)" }} />
+          {/* Burgundy heart — the one accent between chapters */}
+          <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="#541C1B">
             <path d="M12 21s-7.5-4.6-9.6-9.2C1 8.6 3 5 6.5 5c2 0 3.5 1.1 4.3 2.6h2.4C14 6.1 15.5 5 17.5 5 21 5 23 8.6 21.6 11.8 19.5 16.4 12 21 12 21z" />
           </svg>
-          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, var(--color-motif-yellow))" }} />
+          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, #D4948A)" }} />
         </div>
       )}
     </div>
