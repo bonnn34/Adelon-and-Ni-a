@@ -88,13 +88,13 @@ const CEREMONY_VENUE = {
   name: "The Ranch",
   address: "Barangay San Jose (Tarlac- Sta. Rosa Road), Tarlac, Philippines, 2300",
   map: "https://maps.app.goo.gl/atAiK6xcjfuhgRJB7",
-  photos: ["/Details/ceremony.jpg", "/Details/ceremony1.jpg", "/Details/ceremony2.jpg","/Details/ceremony3.png"],
+  photos: ["/Details/ceremony.jpg", "/Details/ceremony1.jpg", "/Details/ceremony2.jpg","/Details/ceremony3.jpg"],
 }
 const RECEPTION_VENUE = {
   name: "The Ranch",
   address: "Barangay San Jose (Tarlac- Sta. Rosa Road), Tarlac, Philippines, 2300",
   map: "https://maps.app.goo.gl/atAiK6xcjfuhgRJB7",
-  photos: ["/Details/ceremony.jpg", "/Details/ceremony1.jpg", "/Details/ceremony2.jpg","/Details/ceremony3.png"],
+  photos: ["/Details/ceremony.jpg", "/Details/ceremony1.jpg", "/Details/ceremony2.jpg","/Details/ceremony3.jpg"],
 }
 
 // ── Venue cards (Event Details section) ─────────────────────────────────────
