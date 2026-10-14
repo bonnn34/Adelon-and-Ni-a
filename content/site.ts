@@ -1150,8 +1150,8 @@ export const siteConfig = {
     subtitle: "with gratitude",
     description: "Your presence on our wedding day is the greatest gift of all.",
     paragraphs: [
-      "Celebrating with you is already more than we could ask for. Should you wish to bless us further, a monetary gift would be warmly appreciated as we build our new home and begin this next chapter together, trusting in God’s faithfulness.",
-      "Your love, prayers and generosity mean the world to us.",
+      "Your presence and prayers are all that we request; but should you wish to bless us further, a monetary gift is one we humbly suggest.",
+      "Your love and generosity mean the world to us.",
     ],
     thankYou: "Thank you for being part of our story.", // "" hides the line
     signOff: "With joyful hearts,",
@@ -1178,7 +1178,7 @@ export const siteConfig = {
     //          Guests can tap the QR to enlarge it and save it with the "Save QR" button.
     //   accountNumber: shown under the name (display only)
     //   With 2+ visible accounts, guests switch between them with a toggle; each shows its QR and a "Save QR" button
-    showAccounts: true,
+    showAccounts: false,
     accountsTitle: "For e-gifts",
     accountsNote: "Choose an account, then scan its QR — tap the QR to enlarge.",
     saveQrLabel: "Save QR",
