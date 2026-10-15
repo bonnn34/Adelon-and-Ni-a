@@ -33,6 +33,8 @@ export type LoveStoryEucalyptusDecos = {
 interface StorySectionProps {
   imageSrc?: string
   imageAlt?: string
+  // Which part of the photo stays in frame (CSS object-position), e.g. "center 20%"
+  imagePosition?: string
   // Milestone date shown above the title (falls back to "Chapter 0X")
   date?: string
   title?: string
@@ -46,6 +48,9 @@ interface StorySectionProps {
   eucalyptusDecos?: LoveStoryEucalyptusDecos
   // Word before the number on plain cards, e.g. "Chapter" → "Chapter 01"
   chapterLabelText?: string
+  // Plain layout: faint chapter number behind the text / heart divider after the chapter
+  showNumber?: boolean
+  showDivider?: boolean
 }
 
 function PlainEucalyptusDecos({ decos }: { decos: LoveStoryEucalyptusDecos }) {
@@ -78,11 +83,12 @@ function PlainChapterDivider({ dark }: { dark: boolean }) {
 /**
  * Plain mode: open layout, no card. Photo and text sit side by side and swap
  * sides each chapter (layout "image-left" / "image-right"); text aligns toward
- * its photo. A small sage divider separates chapters.
+ * its photo. A small dusty-blue divider with a heart separates chapters.
  */
 function PlainOpenChapter({
   imageSrc,
   imageAlt,
+  imagePosition,
   date,
   title,
   text,
@@ -90,9 +96,12 @@ function PlainOpenChapter({
   isLast,
   chapterIndex,
   fallbackLabel,
+  showNumber,
+  showDivider,
 }: {
   imageSrc?: string
   imageAlt?: string
+  imagePosition?: string
   date?: string
   title?: string
   text: React.ReactNode
@@ -100,6 +109,8 @@ function PlainOpenChapter({
   isLast: boolean
   chapterIndex: number
   fallbackLabel: string
+  showNumber: boolean
+  showDivider: boolean
 }) {
   const reduceMotion = useReducedMotion()
   const photoFrom = reduceMotion ? { opacity: 1, x: 0, rotate: 0 } : { opacity: 0, x: photoLeft ? -40 : 40, rotate: 0 }
@@ -108,7 +119,7 @@ function PlainOpenChapter({
 
   return (
     <div className={`${theSeasons.variable} story-open relative z-[2] px-5 sm:px-8 md:px-10`}>
-      {/* Soft blush wash behind each chapter, on the photo's side */}
+      {/* Soft powder-blue wash behind each chapter, on the photo's side */}
       <span className={`story-open-wash ${photoLeft ? "story-open-wash--left" : "story-open-wash--right"}`} aria-hidden />
       <div
         className={`mx-auto flex max-w-5xl items-center gap-5 py-10 sm:gap-10 sm:py-14 md:gap-14 md:py-16 ${
@@ -128,10 +139,11 @@ function PlainOpenChapter({
               <div className="relative aspect-[2/3] w-full overflow-hidden">
                 <Image
                   src={encodeURI(imageSrc)}
-                  alt={imageAlt || "Story moment"}
+                  alt={imageAlt ?? ""}
                   fill
                   sizes="(max-width: 640px) 44vw, (max-width: 1024px) 40vw, 420px"
                   className="object-cover"
+                  style={{ objectPosition: imagePosition || "center 30%" }}
                   quality={85}
                   priority={chapterIndex < 1}
                 />
@@ -147,14 +159,17 @@ function PlainOpenChapter({
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 0.85, delay: 0.15, ease: revealEase }}
         >
-          {/* Faint chapter numeral behind the text */}
-          <span
-            className={`story-open-number ${photoLeft ? "right-0" : "left-0"}`}
-            aria-hidden
-          >
-            {String(chapterIndex + 1).padStart(2, "0")}
-          </span>
-          <p className={`${theSeasons.className} story-open-date`}>
+          {/* Faint chapter numeral behind the text (loveStory.showChapterNumbers) */}
+          {showNumber && (
+            <span
+              className={`story-open-number ${photoLeft ? "right-0" : "left-0"}`}
+              aria-hidden
+            >
+              {String(chapterIndex + 1).padStart(2, "0")}
+            </span>
+          )}
+          {/* Year / date line — Cinzel (engraved serif with clean numerals), see .story-open-date */}
+          <p className="story-open-date">
             <StoryGlyphText text={date || fallbackLabel} />
           </p>
           {title ? (
@@ -170,14 +185,14 @@ function PlainOpenChapter({
         </motion.div>
       </div>
 
-      {!isLast && (
+      {showDivider && !isLast && (
         <div className="story-open-divider flex items-center justify-center gap-2" aria-hidden>
-          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, #D4948A)" }} />
-          {/* Burgundy heart — the one accent between chapters */}
-          <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="#541C1B">
+          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, #8799A7)" }} />
+          {/* Deep slate heart — the one accent between chapters */}
+          <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="#2C3E4F">
             <path d="M12 21s-7.5-4.6-9.6-9.2C1 8.6 3 5 6.5 5c2 0 3.5 1.1 4.3 2.6h2.4C14 6.1 15.5 5 17.5 5 21 5 23 8.6 21.6 11.8 19.5 16.4 12 21 12 21z" />
           </svg>
-          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, #D4948A)" }} />
+          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, #8799A7)" }} />
         </div>
       )}
     </div>
@@ -187,6 +202,7 @@ function PlainOpenChapter({
 export const StorySection: React.FC<StorySectionProps> = ({
   imageSrc,
   imageAlt,
+  imagePosition,
   date,
   title,
   text,
@@ -198,6 +214,8 @@ export const StorySection: React.FC<StorySectionProps> = ({
   chapterIndex = 0,
   eucalyptusDecos,
   chapterLabelText = "Chapter",
+  showNumber = true,
+  showDivider = true,
 }) => {
   const reduceMotion = useReducedMotion()
 
@@ -206,6 +224,7 @@ export const StorySection: React.FC<StorySectionProps> = ({
       <PlainOpenChapter
         imageSrc={imageSrc}
         imageAlt={imageAlt}
+        imagePosition={imagePosition}
         date={date}
         title={title}
         text={text}
@@ -213,6 +232,8 @@ export const StorySection: React.FC<StorySectionProps> = ({
         isLast={isLast}
         chapterIndex={chapterIndex}
         fallbackLabel={`${chapterLabelText} ${String(chapterIndex + 1).padStart(2, "0")}`}
+        showNumber={showNumber}
+        showDivider={showDivider}
       />
     )
   }
@@ -317,7 +338,7 @@ export const StorySection: React.FC<StorySectionProps> = ({
                   <div className="group relative aspect-[3/4] w-full overflow-hidden">
                     <Image
                       src={imageSrc}
-                      alt={imageAlt || "Story moment"}
+                      alt={imageAlt ?? ""}
                       fill
                       sizes="(max-width: 768px) 45vw, (max-width: 1024px) 40vw, 33vw"
                       className="object-cover transition-transform duration-1000 group-hover:scale-105"
@@ -355,7 +376,7 @@ export const StorySection: React.FC<StorySectionProps> = ({
                   <div className="relative aspect-[4/5] w-full overflow-hidden">
                     <Image
                       src={encodeURI(imageSrc)}
-                      alt={imageAlt || "Story moment"}
+                      alt={imageAlt ?? ""}
                       fill
                       sizes="(max-width: 640px) 70vw, 288px"
                       className="object-cover"

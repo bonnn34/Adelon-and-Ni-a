@@ -50,14 +50,21 @@
   animation-play-state: running;
 }
 
-.plain-bubble--d { background: var(--plain-bubble-deep); }
-.plain-bubble--m { background: var(--plain-bubble-mid); }
-.plain-bubble--l { background: var(--plain-bubble-light); }
-.plain-bubble--c { background: var(--plain-bubble-accent-1); }
-.plain-bubble--p { background: var(--plain-bubble-accent-2); }
-.plain-bubble--b { background: var(--plain-bubble-accent-3); }
-.plain-bubble--r { background: var(--plain-bubble-rose); }
-.plain-bubble--k { background: var(--plain-bubble-peach); }
+/* Soft, dimensional circles: a light catch toward the top left and a fine
+   white rim, so they read like translucent paper discs rather than flat dots */
+.plain-bubble {
+  background-image: radial-gradient(circle at 32% 28%, rgb(255 255 255 / 38%) 0%, rgb(255 255 255 / 0%) 62%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 42%);
+}
+
+.plain-bubble--d { background-color: var(--plain-bubble-deep); }
+.plain-bubble--m { background-color: var(--plain-bubble-mid); }
+.plain-bubble--l { background-color: var(--plain-bubble-light); }
+.plain-bubble--c { background-color: var(--plain-bubble-accent-1); }
+.plain-bubble--p { background-color: var(--plain-bubble-accent-2); }
+.plain-bubble--b { background-color: var(--plain-bubble-accent-3); }
+.plain-bubble--r { background-color: var(--plain-bubble-rose); }
+.plain-bubble--k { background-color: var(--plain-bubble-peach); }
 
 @keyframes plain-bubble-in {
   from { scale: 0; }

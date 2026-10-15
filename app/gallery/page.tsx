@@ -4,6 +4,7 @@ import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
 import { siteConfig } from "@/content/site"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
 import { TintedDeco } from "@/components/tinted-deco"
+import { DecoCorners } from "@/components/deco-corners"
 import localFont from "next/font/local"
 import { Cinzel } from "next/font/google"
 import { Camera } from "lucide-react"
@@ -43,10 +44,6 @@ const sageDividerStyle = {
 const sageDividerStyleLeft = {
   background: "linear-gradient(to left, transparent, var(--color-motif-yellow))",
 } as const
-
-// Bottom corners — same scale as the invitation sections (details, entourage, …)
-const CORNER_DECO_CLASS =
-  "block h-auto w-auto max-w-[130px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[320px] select-none opacity-90"
 
 export const dynamic = "force-static"
 
@@ -120,23 +117,13 @@ export default async function GalleryPage() {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative min-h-screen overflow-x-hidden`}
       style={{ background: "var(--color-bg-pattern-base)" }}
     >
-      {/* Same circle pattern as the invitation sections */}
+      {/* Same circle pattern as the invitation sections, softened by a light
+          white-dusty-blue wash, with the loader's border and corner florals
+          (content/site.ts → gallery.decos / showFrame) */}
       <PlainBubbles />
-      {(
-        [
-          { src: decos.topLeft, pos: "left-0 top-0" },
-          { src: decos.topRight, pos: "right-0 top-0" },
-          { src: decos.bottomLeft, pos: "bottom-0 left-0" },
-          { src: decos.bottomRight, pos: "bottom-0 right-0" },
-        ] as const
-      )
-        .filter(({ src }) => src)
-        .map(({ src, pos }) => (
-          <div key={pos} className={`pointer-events-none absolute z-10 ${pos}`}>
-            {/* Top corners are the tall garland — sized by height (.deco-corner-top) */}
-            <TintedDeco src={src} className={pos.includes("top-0") ? "deco-corner-top" : CORNER_DECO_CLASS} />
-          </div>
-        ))}
+      <div className="section-wash" aria-hidden="true" />
+      {gallery.showFrame && <div className="deco-frame" aria-hidden="true" />}
+      <DecoCorners decos={decos} />
 
       <section className="relative z-20 mx-auto max-w-7xl px-3 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         <div className="relative z-20 mb-8 px-3 text-center sm:mb-10 sm:px-4 md:mb-12">
@@ -188,7 +175,7 @@ export default async function GalleryPage() {
             className={`text-center font-goudy-italic ${sectionType.text}`}
             style={{ color: BODY }}
           >
-            No images to display.
+            {gallery.page.emptyText}
           </p>
         )}
 

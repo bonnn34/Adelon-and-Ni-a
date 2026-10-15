@@ -6,7 +6,13 @@ import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { siteConfig, canonicalSiteUrl } from "@/content/site"
 import { ClientLayout } from "@/components/client-layout"
-import { LOADING_BG_PHOTOS } from "@/lib/loading-bg-photos"
+import { getImageProps } from "next/image"
+import {
+  LOADING_BG_PHOTOS,
+  LOADING_BG_PHOTOS_DESKTOP,
+  MARQUEE_IMAGE_QUALITY,
+  MARQUEE_IMAGE_SIZES,
+} from "@/lib/loading-bg-photos"
 import { anastasiaScript } from "@/lib/fonts"
 
 const canonicalUrl = canonicalSiteUrl
@@ -204,16 +210,30 @@ export default function RootLayout({
           type="font/ttf"
           crossOrigin="anonymous"
         />
-        {LOADING_BG_PHOTOS.slice(0, 3).map((href, index) => (
-          <link
-            key={href}
-            rel="preload"
-            as="image"
-            href={href}
-            type="image/webp"
-            {...(index === 0 ? { fetchPriority: "high" as const } : {})}
-          />
-        ))}
+        {/* First loader photos, preloaded as the exact resized files the marquee requests */}
+        {[
+          ...LOADING_BG_PHOTOS.slice(0, 3).map((src) => ({ src, media: "(max-width: 767px)" })),
+          ...LOADING_BG_PHOTOS_DESKTOP.slice(0, 3).map((src) => ({ src, media: "(min-width: 768px)" })),
+        ].map(({ src, media }, index) => {
+          const { props } = getImageProps({
+            src,
+            alt: "",
+            fill: true,
+            sizes: MARQUEE_IMAGE_SIZES,
+            quality: MARQUEE_IMAGE_QUALITY,
+          })
+          return (
+            <link
+              key={`${media}-${src}`}
+              rel="preload"
+              as="image"
+              imageSrcSet={props.srcSet}
+              imageSizes={props.sizes}
+              media={media}
+              {...(index % 3 === 0 ? { fetchPriority: "high" as const } : {})}
+            />
+          )
+        })}
         <link rel="preload" as="image" href={mobileHero} media="(max-width: 767px)" />
         <link rel="preload" as="image" href={desktopHero} media="(min-width: 768px)" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />

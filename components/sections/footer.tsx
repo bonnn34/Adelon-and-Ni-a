@@ -22,6 +22,7 @@ import { PlainBubbles } from "@/components/loader/PlainBubbles"
 import { sectionType } from "@/lib/section-typography"
 import { Cinzel } from "next/font/google"
 import { TintedDeco } from "@/components/tinted-deco"
+import { DecoCorners } from "@/components/deco-corners"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -58,28 +59,24 @@ const palette = {
   accent: "var(--color-welcome-heading)",
 } as const
 
-// Section background = the hero's circle pattern (PlainBubbles paints its own aqua base)
+// Same circle pattern as the gallery (PlainBubbles paints the base)
 const sectionBg = "var(--color-bg-pattern-base)"
 
-// Text sitting directly on the circle pattern (colors: globals.css → --color-on-pattern*)
-const onBg = {
-  color: "var(--color-on-pattern)",
-  textShadow: "0 1px 0 rgb(255 255 255 / 90%), 0 0 12px rgb(255 255 255 / 75%)",
-} as const
+// Text sitting directly on the background: deep slate with a soft white edge (matches the gallery)
+const onBgGlow = "0 1px 0 rgb(255 255 255 / 85%), 0 0 12px rgb(255 255 255 / 70%)"
+const onBg = { color: "var(--color-welcome-navy)", textShadow: onBgGlow } as const
+const onBgBlue = { color: "var(--color-welcome-heading)", textShadow: onBgGlow } as const
 
 // Same, for the softer lines in the bottom bar
-const onBgSoft = { ...onBg, color: "var(--color-on-pattern-soft)" } as const
+const onBgSoft = { color: "var(--color-welcome-text)", textShadow: onBgGlow } as const
 
 const onBgLineStyle = {
-  background: "var(--color-on-pattern-line)",
+  background: "linear-gradient(to right, transparent, var(--color-motif-medium), transparent)",
 } as const
 
 const dividerLineStyle = {
   background: "linear-gradient(to right, transparent, var(--color-motif-yellow), transparent)",
 } as const
-
-const CORNER_DECO_CLASS =
-  "block h-auto w-auto max-w-[130px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[320px] select-none opacity-90"
 
 const ct = {
   label: sectionType.label,
@@ -147,14 +144,8 @@ const rise: Variants = {
 }
 
 function DecoImg({ src, className }: { src: string; className: string }) {
-  return <TintedDeco src={src} className={className} />
-}
-
-// Corners keep their original artwork colors (no tint)
-function CornerImg({ src }: { src: string }) {
   if (!src) return null
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} />
+  return <TintedDeco src={src} className={className} />
 }
 
 // The Seasons has no clean glyphs for "&" and digits — show those in Cinzel
@@ -309,16 +300,14 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden`}
       style={background ? { background: sectionBg } : undefined}
     >
-      {/* Same circle pattern as the hero */}
+      {/* Same circle pattern as the gallery, with the light wash + double border
+          (on the invitation page the shared wrapper paints these behind See You There and the footer) */}
       {background && <PlainBubbles />}
+      {background && <div className="section-wash" aria-hidden="true" />}
+      {background && content.showFrame && <div className="deco-frame" aria-hidden="true" />}
 
-      {/* Corner decorations (from site.ts) — bottom only; See You There sits above on the same background */}
-      <div className="pointer-events-none absolute bottom-0 left-0 z-10">
-        <CornerImg src={decos.bottomLeft} />
-      </div>
-      <div className="pointer-events-none absolute bottom-0 right-0 z-10">
-        <CornerImg src={decos.bottomRight} />
-      </div>
+      {/* Corner florals (content/site.ts → footer.decos) — bottom only; See You There sits above */}
+      <DecoCorners decos={{ bottomLeft: decos.bottomLeft, bottomRight: decos.bottomRight }} />
 
       <footer className="relative z-20 pt-14 pb-10 sm:pt-16 sm:pb-12 md:pt-20 md:pb-14">
         {/* Header: monogram + couple */}
@@ -336,8 +325,8 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
               aria-label={`${coupleDisplayName} monogram`}
               className="block h-32 w-32 sm:h-40 sm:w-40 md:h-48 md:w-48"
               style={{
-                background: "var(--color-on-pattern)",
-                filter: "drop-shadow(0 2px 10px var(--color-on-pattern-glow))",
+                background: "var(--color-welcome-navy)",
+                filter: "drop-shadow(0 2px 10px rgb(255 255 255 / 70%))",
                 WebkitMaskImage: `url("${siteConfig.couple.monogram}")`,
                 maskImage: `url("${siteConfig.couple.monogram}")`,
                 WebkitMaskSize: "contain",
@@ -375,16 +364,16 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
             <motion.p
               variants={rise}
               className={`${cinzel.className} mt-2 text-[0.7rem] font-semibold uppercase tracking-[0.28em] sm:text-xs`}
-              style={onBg}
+              style={onBgBlue}
             >
               {ceremonyDate}
             </motion.p>
           ) : null}
 
           <motion.div variants={rise} className="mt-4 flex items-center justify-center gap-2" aria-hidden>
-            <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, var(--color-motif-yellow))" }} />
+            <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, var(--color-motif-medium))" }} />
             <span className="h-1.5 w-1.5 rotate-45" style={{ background: "var(--color-motif-accent)" }} />
-            <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, var(--color-motif-yellow))" }} />
+            <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, var(--color-motif-medium))" }} />
           </motion.div>
         </motion.div>
 
@@ -636,8 +625,8 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
                       href={content.credit.developerUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-semibold underline decoration-[var(--color-on-pattern-line)] underline-offset-2 hover:opacity-80"
-                      style={{ color: "var(--color-on-pattern)" }}
+                      className="font-semibold underline decoration-[var(--color-motif-medium)] underline-offset-2 hover:opacity-80"
+                      style={{ color: "var(--color-welcome-heading)" }}
                     >
                       {content.credit.developerName}
                     </a>
@@ -648,8 +637,8 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
                       href={content.credit.promoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-semibold underline decoration-[var(--color-on-pattern-line)] underline-offset-2 hover:opacity-80"
-                      style={{ color: "var(--color-on-pattern)" }}
+                      className="font-semibold underline decoration-[var(--color-motif-medium)] underline-offset-2 hover:opacity-80"
+                      style={{ color: "var(--color-welcome-heading)" }}
                     >
                       {content.credit.promoName}
                     </a>

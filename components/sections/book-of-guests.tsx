@@ -10,6 +10,7 @@ import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
 import { fetchInvitationList } from "@/lib/invitation-data"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
 import { TintedDeco } from "@/components/tinted-deco"
+import { DecoCorners } from "@/components/deco-corners"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -29,7 +30,7 @@ const aboveTheBeyond = localFont({
 })
 
 // Palette lives in globals.css → motif / welcome tokens. No yellow for text (hard to read):
-// navy headings, body-blue text, dusty-blue buttons, deep sage green for guest names.
+// deep slate headings, slate body text, slate-blue buttons and guest names.
 const TEAL = "var(--color-welcome-navy)"
 const IVORY = "#FFFFFF"
 const PAPER = "#FFFFFF"
@@ -38,12 +39,13 @@ const BODY = "var(--color-welcome-text)"
 const ACCENT = "var(--color-welcome-heading)"
 const HAIRLINE = "color-mix(in srgb, var(--color-motif-medium) 60%, transparent)"
 const TEAL_SOFT = "color-mix(in srgb, var(--color-welcome-text) 70%, white)"
-// Deep sage green (motif leaves) — guest names
-const LEAF = "color-mix(in srgb, var(--color-motif-yellow) 70%, #2C3619)"
+// Slate blue — guest names
+const LEAF = "var(--color-motif-accent)"
 const DEEP_GRADIENT =
   "linear-gradient(180deg, var(--color-welcome-heading) 0%, color-mix(in srgb, var(--color-welcome-heading) 72%, var(--color-welcome-navy)) 100%)"
+// Dusty blue → slate blue — monograms
 const SAGE_GRADIENT =
-  "linear-gradient(180deg, var(--color-motif-yellow) 0%, color-mix(in srgb, var(--color-motif-yellow) 70%, #2C3619) 100%)"
+  "linear-gradient(180deg, var(--color-motif-medium) 0%, var(--color-motif-accent) 100%)"
 
 // Section background = the circle pattern used across the invitation (PlainBubbles paints the base)
 const sectionBg = "var(--color-bg-pattern-base)"
@@ -70,9 +72,6 @@ const cardStyle = {
   boxShadow:
     "0 22px 48px -26px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
 } as const
-
-const CORNER_DECO_CLASS =
-  "block h-auto w-auto max-w-[130px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[320px] select-none opacity-90"
 
 const refreshButtonStyle = {
   borderColor: "rgb(255 255 255 / 70%)",
@@ -112,18 +111,11 @@ const cardVariants: Variants = {
 }
 
 function DecoImg({ src, className }: { src: string; className: string }) {
+  if (!src) return null
   return <TintedDeco src={src} className={className} />
 }
 
-// Corners keep their original artwork colors (no tint)
-// Top corners are the tall garland — sized by height (.deco-corner-top in globals.css)
-function CornerImg({ src, top = false }: { src: string; top?: boolean }) {
-  if (!src) return null
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt="" aria-hidden="true" className={top ? "deco-corner-top" : CORNER_DECO_CLASS} />
-}
-
-// Sage hairlines either side of a sunshine diamond
+// Dusty-blue hairlines either side of a slate-blue diamond
 function DiamondDivider() {
   const line = "var(--color-motif-yellow)"
   return (
@@ -343,16 +335,14 @@ export function BookOfGuests({ background = true }: { background?: boolean } = {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative isolate z-10 overflow-hidden pt-12 pb-10 sm:pt-14 sm:pb-12 md:pt-16 md:pb-14 lg:pt-20 lg:pb-16`}
       style={background ? { background: sectionBg } : undefined}
     >
-      {/* Same circle pattern as the hero */}
+      {/* Same circle pattern as the gallery, with the light wash + double border
+          (on the invitation page the shared wrapper paints these behind Book of Guests and FAQ) */}
       {background && <PlainBubbles />}
+      {background && <div className="section-wash" aria-hidden="true" />}
+      {background && copy.showFrame && <div className="deco-frame" aria-hidden="true" />}
 
-      {/* Corner decorations (from site.ts) — top only; FAQ continues below on the same background */}
-      <div className="pointer-events-none absolute left-0 top-0 z-10">
-        <CornerImg src={decos.topLeft} top />
-      </div>
-      <div className="pointer-events-none absolute right-0 top-0 z-10">
-        <CornerImg src={decos.topRight} top />
-      </div>
+      {/* Corner florals (content/site.ts → bookOfGuests.decos) — top only; FAQ continues below */}
+      <DecoCorners decos={{ topLeft: decos.topLeft, topRight: decos.topRight }} />
 
       {/* Section Header */}
       <motion.div

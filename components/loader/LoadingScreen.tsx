@@ -98,10 +98,13 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
     () => (content.backgroundPhotos ?? []).map((src) => encodeURI(src)),
     [content.backgroundPhotos],
   );
+  const backgroundPhotosDesktop = useMemo(
+    () => (content.backgroundPhotosDesktop ?? []).map((src) => encodeURI(src)),
+    [content.backgroundPhotosDesktop],
+  );
   const showBackdrop = !isPlain && backgroundPhotos.length > 0;
   const plainTheme = content.plainTheme ?? defaultSiteConfig.loadingScreen.plainTheme;
   const cornerDecos = content.cornerDecos ?? defaultSiteConfig.loadingScreen.cornerDecos;
-  const cornerOverlays = content.cornerOverlays ?? defaultSiteConfig.loadingScreen.cornerOverlays;
   const plainInvite = content.plainInvite ?? defaultSiteConfig.loadingScreen.plainInvite;
 
   const reduceMotion = useReducedMotion();
@@ -253,35 +256,23 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
 
       {isPlain && (
         <>
-          <PhotoBackground photos={backgroundPhotos} veil={0.45} />
+          <PhotoBackground photos={backgroundPhotos} desktopPhotos={backgroundPhotosDesktop} veil={0.45} />
           <div className="loading-screen__plain-corners" aria-hidden="true">
             {(
               [
-                { src: cornerDecos.topLeft, className: 'left-0 top-0' },
-                { src: cornerDecos.topRight, className: 'right-0 top-0' },
-                { src: cornerDecos.bottomLeft, className: 'left-0 bottom-0' },
-                { src: cornerDecos.bottomRight, className: 'right-0 bottom-0' },
+                { src: cornerDecos.topLeft, pos: 'tl', className: 'left-0 top-0' },
+                { src: cornerDecos.topRight, pos: 'tr', className: 'right-0 top-0' },
+                { src: cornerDecos.bottomLeft, pos: 'bl', className: 'left-0 bottom-0' },
+                { src: cornerDecos.bottomRight, pos: 'br', className: 'right-0 bottom-0' },
               ] as const
-            ).filter(({ src }) => src).map(({ src, className }) => (
+            ).filter(({ src }) => src).map(({ src, pos, className }) => (
               <div
-                key={className}
-                className={`loading-screen__plain-corner-slot pointer-events-none absolute ${className}`}
+                key={pos}
+                className={`loading-screen__plain-corner-slot loading-screen__plain-corner-slot--${pos} pointer-events-none absolute ${className}`}
               >
                 {/* Corners keep their original artwork colors (no tint) */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={src} alt="" className="loading-screen__plain-corner-img" />
-              </div>
-            ))}
-            {(
-              [
-                { src: cornerOverlays.topLeft, className: 'left-0 top-0' },
-                { src: cornerOverlays.topRight, className: 'right-0 top-0' },
-              ] as const
-            ).filter(({ src }) => src).map(({ src, className }) => (
-              <div key={`overlay-${className}`} className={`pointer-events-none absolute ${className}`}>
-                {/* Floral corner layered over the top vines */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={src} alt="" className="loading-screen__plain-corner-overlay" />
               </div>
             ))}
           </div>

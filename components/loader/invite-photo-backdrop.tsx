@@ -1,10 +1,13 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useReducedMotion } from 'motion/react';
 import {
+  BACKGROUND_PHOTO_LIMIT,
   LOADING_BG_PHOTOS,
+  MARQUEE_IMAGE_QUALITY,
+  MARQUEE_IMAGE_SIZES,
   MOBILE_BACKGROUND_PHOTOS,
 } from '@/lib/loading-bg-photos';
 import './loading-screen.css';
@@ -14,6 +17,7 @@ export { LOADING_BG_PHOTOS };
 export const MOBILE_BG_PHOTOS = MOBILE_BACKGROUND_PHOTOS;
 
 const MARQUEE_SAMPLE_SIZE = 24;
+const MARQUEE_EAGER_COUNT = 3;
 
 function pickRandomPhotos(photos: readonly string[], count: number) {
   const next = [...photos];
@@ -57,13 +61,15 @@ function MarqueeRow({
                     src={src}
                     alt=""
                     fill
-                    sizes="(min-width: 768px) 38vw, 82vw"
-                    quality={55}
+                    sizes={MARQUEE_IMAGE_SIZES}
+                    quality={MARQUEE_IMAGE_QUALITY}
                     priority={eager}
                     draggable={false}
                     decoding="async"
                     fetchPriority={copy === 0 && index < 2 ? 'high' : 'low'}
                     className="object-cover"
+                    // Each photo fades in once it has decoded instead of popping in
+                    onLoad={(e) => e.currentTarget.setAttribute('data-loaded', '')}
                   />
                 </div>
               );
@@ -102,7 +108,8 @@ export function PhotoMarquee({
   const [top, bottom] = compact
     ? [selected, [...selected].reverse()]
     : splitMarqueeRows(selected);
-  const eagerCount = compact ? selected.length : 3;
+  // Only the first tiles on screen load eagerly; the rest wait their turn
+  const eagerCount = Math.min(selected.length, MARQUEE_EAGER_COUNT);
 
   return (
     <div className={`loading-screen__marquee loading-screen__marquee--${variant}`}>
@@ -116,21 +123,57 @@ export function PhotoMarquee({
  * Sliding photo marquee with a soft white wash — drop-in for BackgroundVideo
  * behind the plain loader and envelope (fills its positioned parent).
  */
+/** true from 768px up; null until measured so neither photo set loads before we know. */
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+  return isDesktop;
+}
+
 export function PhotoBackground({
   photos,
+  desktopPhotos,
   veil = 0.55,
 }: {
+  /** Portrait photos (public/mobile-background) — phones */
   photos: readonly string[];
+  /** Landscape photos (public/desktop-background) — 768px and up; falls back to `photos` */
+  desktopPhotos?: readonly string[];
   /** Strength of the white wash over the photos (0–1). */
   veil?: number;
 }) {
   const reduceMotion = useReducedMotion();
-  const resolved = photos.length > 0 ? photos : MOBILE_BG_PHOTOS;
+  const isDesktop = useIsDesktop();
+  const mobile = photos.length > 0 ? photos : MOBILE_BG_PHOTOS;
+  const resolved = useMemo(
+    () =>
+      (isDesktop && desktopPhotos && desktopPhotos.length > 0 ? desktopPhotos : mobile).slice(
+        0,
+        BACKGROUND_PHOTO_LIMIT,
+      ),
+    [isDesktop, desktopPhotos, mobile],
+  );
   if (resolved.length === 0) return null;
 
   return (
     <div className="background-video" aria-hidden="true">
-      <PhotoMarquee photos={resolved} copies={reduceMotion ? 1 : 2} variant="loader" />
+      {isDesktop !== null && (
+        <PhotoMarquee
+          key={isDesktop ? 'desktop' : 'mobile'}
+          photos={resolved}
+          copies={reduceMotion ? 1 : 2}
+          variant="loader"
+          // Same order every time: the photos preloaded in app/layout.tsx are the ones shown
+          // first, and the loader → envelope → home hero keep one continuous strip
+          shuffle={false}
+        />
+      )}
       <div className="background-video__veil" style={{ opacity: veil, zIndex: 2 }} />
     </div>
   );

@@ -123,7 +123,6 @@ export const Hero: React.FC<HeroProps> = ({
   const isPlain = content.display === 'plain';
   const plainTheme = content.plainTheme ?? defaultSiteConfig.loadingScreen.plainTheme;
   const cornerDecos = content.cornerDecos ?? defaultSiteConfig.loadingScreen.cornerDecos;
-  const cornerOverlays = content.cornerOverlays ?? defaultSiteConfig.loadingScreen.cornerOverlays;
   const plainInvite = content.plainInvite ?? defaultSiteConfig.loadingScreen.plainInvite;
   const reduceMotion = useReducedMotion();
   const openedRef = useRef(false);
@@ -171,6 +170,10 @@ export const Hero: React.FC<HeroProps> = ({
   const backgroundPhotos = useMemo(
     () => (content.backgroundPhotos ?? []).map((src) => encodeURI(src)),
     [content.backgroundPhotos],
+  );
+  const backgroundPhotosDesktop = useMemo(
+    () => (content.backgroundPhotosDesktop ?? []).map((src) => encodeURI(src)),
+    [content.backgroundPhotosDesktop],
   );
   const showPhotoBackdrop = !isPlain && backgroundPhotos.length > 0;
 
@@ -582,6 +585,12 @@ export const Hero: React.FC<HeroProps> = ({
   const sealState =
     phase === 'idle' ? 'idle' : phase === 'seal-press' ? 'press' : 'break';
 
+  // Envelope fold geometry in % of the envelope box — mirrors the CSS custom properties
+  // (--env-flap-h, and the open-state --pocket-v / --pocket-side) for each breakpoint
+  const foldGeo: FoldGeo = isMobileViewport
+    ? { flap: 58, pocketV: 54, pocketSide: 18, scale: 1 }
+    : { flap: 50, pocketV: 86, pocketSide: 78, scale: 0.4 };
+
   return (
     <motion.div
       className={`env-invite-screen${isPlain ? ' env-invite-screen--plain' : ''}${isPlain && enterFromLoading && visible && !reduceMotion ? ' is-arriving' : ''} ${visible ? '' : 'is-hidden'}`}
@@ -625,35 +634,27 @@ export const Hero: React.FC<HeroProps> = ({
 
       {isPlain && (
         <>
-          <PhotoBackground photos={backgroundPhotos} veil={0.5} />
+          <PhotoBackground photos={backgroundPhotos} desktopPhotos={backgroundPhotosDesktop} veil={0.5} />
           <div className="env-invite-plain-corners" aria-hidden="true">
             {(
               [
-                { src: cornerDecos.topLeft, className: 'left-0 top-0' },
-                { src: cornerDecos.topRight, className: 'right-0 top-0' },
-                { src: cornerDecos.bottomLeft, className: 'left-0 bottom-0' },
-                { src: cornerDecos.bottomRight, className: 'right-0 bottom-0' },
+                { src: cornerDecos.topLeft, pos: 'tl', className: 'left-0 top-0' },
+                { src: cornerDecos.topRight, pos: 'tr', className: 'right-0 top-0' },
+                { src: cornerDecos.bottomLeft, pos: 'bl', className: 'left-0 bottom-0' },
+                { src: cornerDecos.bottomRight, pos: 'br', className: 'right-0 bottom-0' },
               ] as const
-            ).filter(({ src }) => src).map(({ src, className }) => (
-              <div key={className} className={`pointer-events-none absolute ${className}`}>
+            ).filter(({ src }) => src).map(({ src, pos, className }) => (
+              <div
+                key={pos}
+                className={`env-invite-plain-corner-slot--${pos} pointer-events-none absolute ${className}`}
+              >
                 {/* Corners keep their original artwork colors (no tint) */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={src} alt="" className="env-invite-plain-corner-img" />
               </div>
             ))}
-            {(
-              [
-                { src: cornerOverlays.topLeft, className: 'left-0 top-0' },
-                { src: cornerOverlays.topRight, className: 'right-0 top-0' },
-              ] as const
-            ).filter(({ src }) => src).map(({ src, className }) => (
-              <div key={`overlay-${className}`} className={`pointer-events-none absolute ${className}`}>
-                {/* Floral corner layered over the top vines */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={src} alt="" className="env-invite-plain-corner-overlay" />
-              </div>
-            ))}
           </div>
+          <div className="env-invite-plain-frame" aria-hidden="true" />
         </>
       )}
 
@@ -835,7 +836,18 @@ export const Hero: React.FC<HeroProps> = ({
               transition={flapEase}
               style={{ transformOrigin: 'top center' }}
               aria-hidden="true"
-            />
+            >
+              {isPlain && (
+                <>
+                  {/* Light catching the folded paper edge of the flap */}
+                  <svg className="env-invite-flap-edge" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <polyline points="0,0 50,100 100,0" />
+                  </svg>
+                  {/* Inside of the flap — shows once the flap has swung open */}
+                  <span className="env-invite-flap-liner" />
+                </>
+              )}
+            </motion.div>
 
             <div className="env-invite-envelope-body">
               {/* Back panel */}
@@ -1027,20 +1039,26 @@ export const Hero: React.FC<HeroProps> = ({
 
             {/* 3. Closed front skin — solid cover, hides when open */}
             <div className="env-invite-front-closed" aria-hidden="true">
-              <div className="env-invite-fold env-invite-fold--tl" />
-              <div className="env-invite-fold env-invite-fold--bl" />
-              <div className="env-invite-fold env-invite-fold--br" />
-              <div className="env-invite-fold env-invite-fold--b" />
-              <svg
-                className="env-invite-creases"
-                viewBox="0 0 100 100"
-                preserveAspectRatio="none"
-              >
-                <line x1="0" y1="0" x2="50" y2="50" />
-                <line x1="100" y1="0" x2="50" y2="50" />
-                <line x1="0" y1="100" x2="50" y2="50" />
-                <line x1="100" y1="100" x2="50" y2="50" />
-              </svg>
+              {isPlain ? (
+                <EnvelopeClosedFolds geo={foldGeo} />
+              ) : (
+                <>
+                  <div className="env-invite-fold env-invite-fold--tl" />
+                  <div className="env-invite-fold env-invite-fold--bl" />
+                  <div className="env-invite-fold env-invite-fold--br" />
+                  <div className="env-invite-fold env-invite-fold--b" />
+                  <svg
+                    className="env-invite-creases"
+                    viewBox="0 0 100 100"
+                    preserveAspectRatio="none"
+                  >
+                    <line x1="0" y1="0" x2="50" y2="50" />
+                    <line x1="100" y1="0" x2="50" y2="50" />
+                    <line x1="0" y1="100" x2="50" y2="50" />
+                    <line x1="100" y1="100" x2="50" y2="50" />
+                  </svg>
+                </>
+              )}
             </div>
 
             <div className="env-invite-hinge" aria-hidden="true" />
@@ -1051,6 +1069,7 @@ export const Hero: React.FC<HeroProps> = ({
               <div className="env-invite-pocket-front" />
               <div className="env-invite-pocket-left" />
               <div className="env-invite-pocket-right" />
+              {isPlain && <EnvelopePocketFolds geo={foldGeo} />}
             </div>
 
             {/* Wax seal — centered on flap junction */}
@@ -1238,5 +1257,143 @@ function PolaroidPhoto({
         />
       </div>
     </motion.button>
+  );
+}
+type FoldGeo = {
+  /** Top flap tip (--env-flap-h) */
+  flap: number;
+  /** Open pocket: V point (--pocket-v) and where the side flaps meet the edges (--pocket-side) */
+  pocketV: number;
+  pocketSide: number;
+  /** Shadow size multiplier — the desktop envelope fills the screen, so units are much larger */
+  scale: number;
+};
+
+const FOLD_SHADE = '#1F2D3A';
+
+/** A paper fold: a crisp dark crease with light catching the edge just below it */
+function FoldCrease({ d }: { d: string }) {
+  return (
+    <>
+      <path className="env-invite-paper-folds__crease" d={d} />
+      <path className="env-invite-paper-folds__edge" d={d} transform="translate(0,0.6)" />
+    </>
+  );
+}
+
+/** Shared SVG defs: edge shading for side flaps, a lit bottom flap and a soft blur */
+function FoldDefs({ id, scale }: { id: string; scale: number }) {
+  return (
+    <defs>
+      <linearGradient id={`${id}-side-l`} x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stopColor={FOLD_SHADE} stopOpacity="0.14" />
+        <stop offset="1" stopColor={FOLD_SHADE} stopOpacity="0" />
+      </linearGradient>
+      <linearGradient id={`${id}-side-r`} x1="1" y1="0" x2="0" y2="0">
+        <stop offset="0" stopColor={FOLD_SHADE} stopOpacity="0.14" />
+        <stop offset="1" stopColor={FOLD_SHADE} stopOpacity="0" />
+      </linearGradient>
+      <linearGradient id={`${id}-bottom`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#FFFFFF" stopOpacity="0.2" />
+        <stop offset="0.55" stopColor="#FFFFFF" stopOpacity="0.06" />
+        <stop offset="1" stopColor={FOLD_SHADE} stopOpacity="0.06" />
+      </linearGradient>
+      <filter id={`${id}-soft`} x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation={1.1 * scale} />
+      </filter>
+    </defs>
+  );
+}
+
+/**
+ * Closed envelope back: side flaps, the bottom flap lapped over them, and the soft
+ * shadows cast by the bottom flap and the closed top flap.
+ */
+function EnvelopeClosedFolds({ geo }: { geo: FoldGeo }) {
+  const { flap: f, scale: k } = geo;
+  const bottom = `M0,100 L43,${f + 1} Q50,${f - 5} 57,${f + 1} L100,100`;
+  return (
+    <svg className="env-invite-paper-folds" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <FoldDefs id="envc" scale={k} />
+      <defs>
+        <clipPath id="envc-above-bottom">
+          <path d={`M0,0 H100 V100 L57,${f + 1} Q50,${f - 5} 43,${f + 1} L0,100 Z`} />
+        </clipPath>
+        <clipPath id="envc-below-flap">
+          <path d={`M0,0 L50,${f} L100,0 V100 H0 Z`} />
+        </clipPath>
+      </defs>
+      <path d={`M0,0 L50,${f + 2} L0,100 Z`} fill="url(#envc-side-l)" />
+      <path d={`M100,0 L50,${f + 2} L100,100 Z`} fill="url(#envc-side-r)" />
+      <g clipPath="url(#envc-above-bottom)">
+        <path
+          className="env-invite-paper-folds__shadow"
+          d={bottom}
+          strokeWidth={2.4 * k}
+          filter="url(#envc-soft)"
+          transform={`translate(0,${-0.8 * k})`}
+        />
+      </g>
+      <path d={`${bottom} Z`} fill="url(#envc-bottom)" />
+      <FoldCrease d={bottom} />
+      <g clipPath="url(#envc-below-flap)">
+        <path
+          className="env-invite-paper-folds__shadow"
+          d={`M0,0 L50,${f} L100,0`}
+          strokeWidth={3 * k}
+          filter="url(#envc-soft)"
+          transform={`translate(0,${1.6 * k})`}
+        />
+      </g>
+      <path className="env-invite-paper-folds__crease" d={`M0,0 L50,${f} L100,0`} />
+    </svg>
+  );
+}
+
+/**
+ * Open envelope pocket — same paper shading as the closed back, plus the shadow the
+ * pocket lip casts onto the letter and photos tucked inside. Drawn above the pocket
+ * panels (shapes match their clip-paths in envelope-invite.css).
+ */
+function EnvelopePocketFolds({ geo }: { geo: FoldGeo }) {
+  const { pocketV: v, pocketSide: sd, scale: k } = geo;
+  const sides = `M0,${sd} L50,${v} L100,${sd}`;
+  const bottom = `M0,100 L50,${v} L100,100`;
+  return (
+    <svg className="env-invite-paper-folds env-invite-paper-folds--pocket" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <FoldDefs id="envp" scale={k} />
+      <defs>
+        <clipPath id="envp-above-pocket">
+          <path d={`M0,0 H100 V${sd} L50,${v} L0,${sd} Z`} />
+        </clipPath>
+        <clipPath id="envp-above-bottom">
+          <path d={`M0,0 H100 V100 L50,${v} L0,100 Z`} />
+        </clipPath>
+      </defs>
+      {/* Shadow of the pocket lip on the letter + photos */}
+      <g clipPath="url(#envp-above-pocket)">
+        <path
+          className="env-invite-paper-folds__shadow env-invite-paper-folds__shadow--contents"
+          d={sides}
+          strokeWidth={3.2 * k}
+          filter="url(#envp-soft)"
+          transform={`translate(0,${-1.2 * k})`}
+        />
+      </g>
+      <path d={`M0,${sd} L50,${v} L0,100 Z`} fill="url(#envp-side-l)" />
+      <path d={`M100,${sd} L50,${v} L100,100 Z`} fill="url(#envp-side-r)" />
+      <FoldCrease d={sides} />
+      <g clipPath="url(#envp-above-bottom)">
+        <path
+          className="env-invite-paper-folds__shadow"
+          d={bottom}
+          strokeWidth={2.4 * k}
+          filter="url(#envp-soft)"
+          transform={`translate(0,${-0.8 * k})`}
+        />
+      </g>
+      <path d={`${bottom} Z`} fill="url(#envp-bottom)" />
+      <FoldCrease d={bottom} />
+    </svg>
   );
 }

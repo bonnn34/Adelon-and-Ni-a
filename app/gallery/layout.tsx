@@ -17,12 +17,13 @@ const aboveTheBeyond = localFont({
   display: "swap",
 })
 
-// Top bar matches the main navbar: soft ivory → blush, burgundy lettering, dusty-rose/sage hairline
+// Top bar: white → light powder blue, deep slate lettering, dusty-blue hairline
 const BAR_BG =
-  "linear-gradient(180deg, color-mix(in srgb, var(--color-motif-soft) 94%, transparent) 0%, color-mix(in srgb, var(--color-motif-blush) 90%, transparent) 100%)"
+  "linear-gradient(180deg, rgb(255 255 255 / 94%) 0%, color-mix(in srgb, #C4D1E2 55%, white) 100%)"
 
 export default function GalleryLayout({ children }: { children: React.ReactNode }) {
-  const { couple } = useSiteConfig()
+  const { couple, gallery } = useSiteConfig()
+  const page = gallery.page
 
   useEffect(() => {
     const navbar = document.querySelector("nav") as HTMLElement | null
@@ -55,8 +56,8 @@ export default function GalleryLayout({ children }: { children: React.ReactNode 
             }}
           >
             <ChevronLeft className="h-3.5 w-3.5" aria-hidden />
-            <span className="hidden min-[400px]:inline">Back to invitation</span>
-            <span className="min-[400px]:hidden">Back</span>
+            <span className="hidden min-[400px]:inline">{page.backText}</span>
+            <span className="min-[400px]:hidden">{page.backTextShort}</span>
           </Link>
 
           <div className="flex min-w-0 items-baseline gap-2" style={{ color: "var(--color-motif-deep)" }}>
@@ -70,16 +71,16 @@ export default function GalleryLayout({ children }: { children: React.ReactNode 
             <span
               className={`${cinzel.className} text-[0.625rem] font-semibold uppercase tracking-[0.24em] sm:text-[0.6875rem] sm:tracking-[0.28em]`}
             >
-              Gallery
+              {page.label}
             </span>
           </div>
         </div>
-        {/* Hairline along the bottom edge: dusty rose → sage → dusty rose */}
+        {/* Hairline along the bottom edge: dusty blue → powder blue → dusty blue */}
         <div
           className="h-[2px] w-full"
           style={{
             background:
-              "linear-gradient(90deg, transparent, var(--color-motif-medium) 20%, var(--color-motif-yellow) 50%, var(--color-motif-medium) 80%, transparent)",
+              "linear-gradient(90deg, transparent, var(--color-motif-medium) 20%, var(--color-motif-blush) 50%, var(--color-motif-medium) 80%, transparent)",
           }}
           aria-hidden
         />

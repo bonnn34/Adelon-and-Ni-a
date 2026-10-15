@@ -87,7 +87,7 @@ const sectionsRevealVariants = {
 }
 
 /** WebGL Silk needs a hex color. */
-const SILK_COLOR = "#541C1B"
+const SILK_COLOR = "#435B70"
 
 type InvitationPageProps = {
   /** Which principal-sponsor sheet the entourage shows (googleAPI.sponsorsInviteOne / Two) */
@@ -200,7 +200,7 @@ export function InvitationPage({ sponsorsList, showEntourage = true }: Invitatio
           >
             {cinematicEntry && (
               <motion.div
-                className="fixed inset-0 z-[28] pointer-events-none bg-[#FAF4F4]"
+                className="fixed inset-0 z-[28] pointer-events-none bg-[#F7F4EF]"
                 aria-hidden="true"
                 initial={{ clipPath: "circle(0% at 50% 46%)", opacity: 0.98 }}
                 animate={{ clipPath: "circle(145% at 50% 46%)", opacity: 0 }}
@@ -278,6 +278,9 @@ export function InvitationPage({ sponsorsList, showEntourage = true }: Invitatio
               <div className="relative isolate" style={{ background: "var(--color-bg-pattern-base)" }}>
                 {/* Pattern repeated down the height so circles stay dense across both sections */}
                 <PlainBubbles bands={3} />
+                {/* Light white-dusty-blue wash + one double border around both sections */}
+                <div className="section-wash" aria-hidden="true" />
+                {siteConfig.bookOfGuests.showFrame && <div className="deco-frame" aria-hidden="true" />}
                 <BookOfGuests background={false} />
                 <FAQ background={false} />
               </div>
@@ -287,6 +290,9 @@ export function InvitationPage({ sponsorsList, showEntourage = true }: Invitatio
               {/* One continuous circle pattern behind See You There and the footer — no seam between them */}
               <div className="relative isolate" style={{ background: "var(--color-bg-pattern-base)" }}>
                 <PlainBubbles bands={3} />
+                {/* Light white-dusty-blue wash + one double border around both sections */}
+                <div className="section-wash" aria-hidden="true" />
+                {siteConfig.seeYouThere.plain.showFrame && <div className="deco-frame" aria-hidden="true" />}
                 <SeeYouThere background={false} />
                 <Footer background={false} />
               </div>

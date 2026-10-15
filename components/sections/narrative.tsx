@@ -22,15 +22,15 @@ export function Narrative() {
   return (
     <Section
       id="narrative"
-      className="relative py-12 md:py-16 lg:py-20 overflow-hidden bg-gradient-to-br from-[#D2A4A4] via-[#E0B4B1] to-[#F7E6CA]"
+      className="relative py-12 md:py-16 lg:py-20 overflow-hidden bg-gradient-to-br from-[#D2A4A4] via-[#435B70] to-[#F7E6CA]"
     >
       {/* Background elements with blush & sand motif */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Vertical blush gradients to frame the story */}
         <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-[#D3B9A2]/90 via-[#D2A4A4]/78 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-[#D3B9A2]/88 via-[#E0B4B1]/70 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-[#D3B9A2]/88 via-[#435B70]/70 to-transparent" />
         {/* Soft radial light in warm blush */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(250,221,224,0.42),transparent_55%)] opacity-90" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(196,209,226,0.42),transparent_55%)] opacity-90" />
         {/* Subtle diagonal wash of sand & rose */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#E9D5C3]/30 via-transparent to-[#D2A4A4]/24 mix-blend-soft-light" />
       </div>
@@ -52,7 +52,7 @@ export function Narrative() {
               Francis &amp; Monique&apos;s Love Story
             </p>
             <h2
-              className="style-script-regular text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#2F1C1C]"
+              className="style-script-regular text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#22313F]"
               style={{ textShadow: "0 4px 18px rgba(255,255,255,0.6)" }}
             >
               Our Story
@@ -65,7 +65,7 @@ export function Narrative() {
                 animate={{ scale: [1, 1.15, 1], rotate: [0, 8, -8, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               >
-                <svg className="w-5 h-5 md:w-6 md:h-6 text-[#2F1C1C]/80" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 md:w-6 md:h-6 text-[#22313F]/80" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                 </svg>
               </motion.div>
@@ -90,8 +90,8 @@ export function Narrative() {
             <div className="relative">
               {/* Enhanced glow effect with blush & sand motif */}
               <div className="absolute inset-0 bg-gradient-to-br from-[#FADDE0]/35 via-[#E9D5C3]/24 to-[#F7E6CA]/32 rounded-full blur-3xl -z-10 w-full h-full max-w-sm animate-pulse" />
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#D2A4A4]/30 via-transparent to-[#E0B4B1]/26 rounded-full blur-2xl -z-10 w-full h-full max-w-sm" />
-              <div className="absolute inset-0 bg-gradient-to-bl from-[#E0B4B1]/24 via-transparent to-[#D3B9A2]/22 rounded-full blur-xl -z-10 w-full h-full max-w-sm" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#D2A4A4]/30 via-transparent to-[#435B70]/26 rounded-full blur-2xl -z-10 w-full h-full max-w-sm" />
+              <div className="absolute inset-0 bg-gradient-to-bl from-[#435B70]/24 via-transparent to-[#D3B9A2]/22 rounded-full blur-xl -z-10 w-full h-full max-w-sm" />
 
               <Stack
                 randomRotation={true}
@@ -152,14 +152,14 @@ export function Narrative() {
               >
                 {/* First paragraph with drop cap */}
                 {index === 0 ? (
-                  <p className="text-sm md:text-base leading-relaxed text-[#2F1C1C] text-pretty font-sans font-light pl-3 md:pl-6">
-                    <span className="float-left text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-[#2F1C1C] leading-none mr-2 mt-1 drop-shadow-[0_4px_16px_rgba(210,164,164,0.45)]">
+                  <p className="text-sm md:text-base leading-relaxed text-[#22313F] text-pretty font-sans font-light pl-3 md:pl-6">
+                    <span className="float-left text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-[#22313F] leading-none mr-2 mt-1 drop-shadow-[0_4px_16px_rgba(135,153,167,0.45)]">
                       {paragraph.charAt(0)}
                     </span>
                     {paragraph.slice(1)}
                   </p>
                 ) : (
-                  <p className="text-sm md:text-base leading-relaxed text-[#2F1C1C] text-pretty font-sans font-light pl-3 md:pl-6">
+                  <p className="text-sm md:text-base leading-relaxed text-[#22313F] text-pretty font-sans font-light pl-3 md:pl-6">
                     {paragraph}
                   </p>
                 )}
@@ -199,10 +199,10 @@ export function Narrative() {
             <div className="flex justify-center">
               <motion.a
                 href="#guest-list"
-                className="group relative w-full sm:w-auto px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 text-[#2F1C1C] font-sans font-bold text-sm sm:text-base md:text-lg rounded-[2rem] transition-all duration-500 text-center overflow-hidden shadow-xl hover:shadow-2xl border-2 border-[#E9D5C3] hover:border-[#D2A4A4]"
+                className="group relative w-full sm:w-auto px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 text-[#22313F] font-sans font-bold text-sm sm:text-base md:text-lg rounded-[2rem] transition-all duration-500 text-center overflow-hidden shadow-xl hover:shadow-2xl border-2 border-[#E9D5C3] hover:border-[#D2A4A4]"
                 style={{ 
-                  backgroundImage: "linear-gradient(135deg, #FADDE0, #E0B4B1)",
-                  boxShadow: "0 10px 40px rgba(0,0,0,0.35), 0 4px 12px rgba(210,164,164,0.45)"
+                  backgroundImage: "linear-gradient(135deg, #FADDE0, #435B70)",
+                  boxShadow: "0 10px 40px rgba(0,0,0,0.35), 0 4px 12px rgba(135,153,167,0.45)"
                 }}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -210,12 +210,12 @@ export function Narrative() {
                 whileHover={{ scale: 1.05, y: -4 }}
                 whileTap={{ scale: 0.98 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundImage = "linear-gradient(135deg, #E0B4B1, #D2A4A4)";
-                  e.currentTarget.style.boxShadow = "0 16px 55px rgba(0,0,0,0.45), 0 6px 18px rgba(208,152,152,0.6)";
+                  e.currentTarget.style.backgroundImage = "linear-gradient(135deg, #435B70, #D2A4A4)";
+                  e.currentTarget.style.boxShadow = "0 16px 55px rgba(0,0,0,0.45), 0 6px 18px rgba(135,153,167,0.6)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundImage = "linear-gradient(135deg, #FADDE0, #E0B4B1)";
-                  e.currentTarget.style.boxShadow = "0 10px 40px rgba(0,0,0,0.35), 0 4px 12px rgba(210,164,164,0.45)";
+                  e.currentTarget.style.backgroundImage = "linear-gradient(135deg, #FADDE0, #435B70)";
+                  e.currentTarget.style.boxShadow = "0 10px 40px rgba(0,0,0,0.35), 0 4px 12px rgba(135,153,167,0.45)";
                 }}
               >
                 {/* Pulsing glow effect with gold accent */}
@@ -273,14 +273,14 @@ export function Narrative() {
                       ease: "easeInOut",
                     }}
                   >
-                    <svg className="w-3 h-3 text-[#2F1C1C]/70" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3 h-3 text-[#22313F]/70" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
                     </svg>
                   </motion.div>
                 ))}
                 
                 {/* Animated gradient border */}
-                <div className="absolute inset-0 rounded-[2rem] border-2 border-white/10 group-hover:border-[#E0B4B1]/60 transition-all duration-500"></div>
+                <div className="absolute inset-0 rounded-[2rem] border-2 border-white/10 group-hover:border-[#435B70]/60 transition-all duration-500"></div>
                 <motion.div 
                   className="absolute inset-0 rounded-[2rem] border-2 border-white/25"
                   animate={{
@@ -312,10 +312,10 @@ export function Narrative() {
                 </motion.div>
                 
                 {/* Button content */}
-                <span className="relative z-10 tracking-wide uppercase inline-flex items-center gap-3 font-bold text-[#2F1C1C]">
+                <span className="relative z-10 tracking-wide uppercase inline-flex items-center gap-3 font-bold text-[#22313F]">
                   Join Our Celebration
                   <motion.svg 
-                    className="w-5 h-5 md:w-6 md:h-6 text-[#2F1C1C]" 
+                    className="w-5 h-5 md:w-6 md:h-6 text-[#22313F]" 
                     fill="none" 
                     stroke="currentColor" 
                     viewBox="0 0 24 24"

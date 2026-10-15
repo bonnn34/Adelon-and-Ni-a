@@ -9,6 +9,7 @@ import { useSiteConfig } from "@/hooks/use-site-config"
 import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
 import { TintedDeco } from "@/components/tinted-deco"
+import { DecoCorners } from "@/components/deco-corners"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -29,7 +30,7 @@ const aboveTheBeyond = localFont({
 
 // Palette lives in globals.css → motif / welcome tokens.
 // White card, navy questions, body-blue answers; dusty blue marks the open question,
-// sage hairlines and a sunshine diamond for ornaments.
+// dusty-blue hairlines and a slate-blue diamond for ornaments.
 const TEAL = "var(--color-welcome-navy)"
 const BUTTON = "var(--color-welcome-heading)" // dusty blue — open question number
 const IVORY = "#FFFFFF"
@@ -37,7 +38,7 @@ const BODY = "var(--color-welcome-text)"
 const ACCENT = "var(--color-welcome-heading)"
 const SKY_TINT = (pct: number) => `color-mix(in srgb, var(--color-motif-medium) ${pct}%, white)`
 
-// Section background = the hero's circle pattern (PlainBubbles paints its own aqua base)
+// Same circle pattern as the gallery (PlainBubbles paints the base)
 const sectionBg = "var(--color-bg-pattern-base)"
 
 // Text sitting directly on the circle pattern: navy (or dusty blue) with a soft white edge
@@ -59,9 +60,6 @@ const cardStyle = {
 const dividerLineStyle = {
   background: "linear-gradient(to right, transparent, var(--color-motif-yellow), transparent)",
 } as const
-
-const CORNER_DECO_CLASS =
-  "block h-auto w-auto max-w-[130px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[320px] select-none opacity-90"
 
 const ct = {
   body: sectionType.textRelaxed,
@@ -86,17 +84,11 @@ const itemVariants: Variants = {
 }
 
 function DecoImg({ src, className }: { src: string; className: string }) {
+  if (!src) return null
   return <TintedDeco src={src} className={className} />
 }
 
-// Corners keep their original artwork colors (no tint)
-function CornerImg({ src }: { src: string }) {
-  if (!src) return null
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt="" aria-hidden="true" className={CORNER_DECO_CLASS} />
-}
-
-// Sage hairlines either side of a sunshine diamond
+// Dusty-blue hairlines either side of a slate-blue diamond
 function DiamondDivider() {
   return (
     <div className="flex items-center justify-center gap-2" aria-hidden>
@@ -231,19 +223,17 @@ export function FAQ({ background = true }: { background?: boolean } = {}) {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden`}
       style={background ? { background: sectionBg } : undefined}
     >
-      {/* Same circle pattern as the other invitation sections */}
+      {/* Same circle pattern as the gallery, with the light wash + double border
+          (on the invitation page the shared wrapper paints these behind Book of Guests and FAQ) */}
       {background && <PlainBubbles />}
+      {background && <div className="section-wash" aria-hidden="true" />}
+      {background && content.showFrame && <div className="deco-frame" aria-hidden="true" />}
       <section
         id="faq"
         className="relative z-10 overflow-hidden pt-14 pb-12 sm:pt-16 sm:pb-14 md:pt-20 md:pb-16 lg:pt-24 lg:pb-20"
       >
-        {/* Corner decorations (from site.ts) — bottom only; Book of Guests sits above on the same background */}
-        <div className="pointer-events-none absolute bottom-0 left-0 z-10">
-          <CornerImg src={decos.bottomLeft} />
-        </div>
-        <div className="pointer-events-none absolute bottom-0 right-0 z-10">
-          <CornerImg src={decos.bottomRight} />
-        </div>
+        {/* Corner florals (content/site.ts → faq.decos) — bottom only; Book of Guests sits above */}
+        <DecoCorners decos={{ bottomLeft: decos.bottomLeft, bottomRight: decos.bottomRight }} />
 
         {/* Header */}
         <motion.div

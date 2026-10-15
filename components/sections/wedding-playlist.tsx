@@ -9,6 +9,7 @@ import { Music2, Disc3 } from "lucide-react"
 import { motion, useReducedMotion, type Variants } from "motion/react"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
 import { TintedDeco } from "@/components/tinted-deco"
+import { DecoCorners } from "@/components/deco-corners"
 
 interface SpotifyPlaybackUpdate {
   playingURI: string
@@ -114,7 +115,7 @@ const BODY = "var(--color-welcome-text)"
 const ACCENT = "var(--color-welcome-heading)"
 const HAIRLINE = "color-mix(in srgb, var(--color-motif-medium) 60%, transparent)"
 
-// Section background = the circle pattern used across the invitation (PlainBubbles paints the base)
+// Same circle pattern as the gallery (PlainBubbles paints the base)
 const sectionBg = "var(--color-bg-pattern-base)"
 
 // Text sitting directly on the circle pattern: navy (or dusty blue) with a soft white edge
@@ -133,9 +134,6 @@ const cardStyle = {
     "0 0 0 6px rgb(255 255 255 / 40%), 0 28px 60px -32px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
 } as const
 
-const CORNER_DECO_CLASS =
-  "block h-auto w-auto max-w-[130px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[320px] select-none opacity-90"
-
 const ct = {
   body: "text-sm sm:text-[0.95rem] md:text-base",
   bodyLg: "text-sm sm:text-base md:text-lg",
@@ -150,18 +148,11 @@ const revealVariants: Variants = {
 }
 
 function DecoImg({ src, className }: { src: string; className: string }) {
+  if (!src) return null
   return <TintedDeco src={src} className={className} />
 }
 
-// Corners keep their original artwork colors (no tint)
-// Top corners are the tall garland — sized by height (.deco-corner-top in globals.css)
-function CornerImg({ src, top = false }: { src: string; top?: boolean }) {
-  if (!src) return null
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt="" aria-hidden="true" className={top ? "deco-corner-top" : CORNER_DECO_CLASS} />
-}
-
-// Sits directly on the circle pattern, so drawn in ivory
+// Dusty-blue hairlines either side of a slate-blue diamond
 function DiamondDivider() {
   return (
     <div className="flex items-center justify-center gap-2" aria-hidden>
@@ -309,25 +300,17 @@ export function WeddingPlaylist() {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden`}
       style={{ background: sectionBg }}
     >
-      {/* Same circle pattern as the hero */}
+      {/* Same circle pattern as the gallery */}
       <PlainBubbles />
+      {/* Light white-dusty-blue wash over the circles (globals.css → .section-wash) */}
+      <div className="section-wash" aria-hidden="true" />
       <section
         id="playlist"
         className="relative z-10 overflow-hidden pt-10 pb-9 sm:pt-16 sm:pb-14 md:pt-20 md:pb-16 lg:pt-24 lg:pb-20"
       >
-        {/* Corner decorations (from site.ts) */}
-        <div className="pointer-events-none absolute left-0 top-0 z-10">
-          <CornerImg src={decos.topLeft} top />
-        </div>
-        <div className="pointer-events-none absolute right-0 top-0 z-10">
-          <CornerImg src={decos.topRight} top />
-        </div>
-        <div className="pointer-events-none absolute bottom-0 left-0 z-10">
-          <CornerImg src={decos.bottomLeft} />
-        </div>
-        <div className="pointer-events-none absolute bottom-0 right-0 z-10">
-          <CornerImg src={decos.bottomRight} />
-        </div>
+        {/* Corner florals + double border (content/site.ts → playlist.decos / showFrame) */}
+        {content.showFrame && <div className="deco-frame" aria-hidden="true" />}
+        <DecoCorners decos={decos} />
 
         <div className="relative z-20 mx-auto max-w-5xl px-4 sm:px-6 md:px-8">
           {/* Header */}

@@ -10,7 +10,6 @@ import Image from "next/image"
 import { InvitePhotoBackdrop, PhotoBackground } from "@/components/loader/invite-photo-backdrop"
 import { siteConfig as defaultSiteConfig } from "@/content/site"
 import "@/components/loader/loading-screen.css"
-import { TintedDeco } from "@/components/tinted-deco"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -214,13 +213,19 @@ export function Hero() {
   const siteConfig = useSiteConfig()
   const loading = siteConfig.loadingScreen ?? defaultSiteConfig.loadingScreen
   const isPlain = loading.display === "plain"
-  const cornerDecos =
-    loading.cornerDecos ?? defaultSiteConfig.loadingScreen.cornerDecos
-  const cornerOverlays =
-    loading.cornerOverlays ?? defaultSiteConfig.loadingScreen.cornerOverlays
+  // Decorations live in content/site.ts → homeHero
+  const homeHero = siteConfig.homeHero ?? defaultSiteConfig.homeHero
+  const cornerDecos = homeHero.decos ?? defaultSiteConfig.homeHero.decos
+  const showFrame = homeHero.showFrame ?? defaultSiteConfig.homeHero.showFrame
+  const coverVine = homeHero.coverVine ?? defaultSiteConfig.homeHero.coverVine
   const backgroundPhotos = loading.backgroundPhotos ?? []
   // Same sliding photo marquee as the loader and envelope (plain mode)
   const plainPhotos = useMemo(() => backgroundPhotos.map((src) => encodeURI(src)), [backgroundPhotos])
+  const backgroundPhotosDesktop = loading.backgroundPhotosDesktop ?? []
+  const plainPhotosDesktop = useMemo(
+    () => backgroundPhotosDesktop.map((src) => encodeURI(src)),
+    [backgroundPhotosDesktop],
+  )
   // Plain mode cover: one natural couple photograph beside the invitation wording
   const coverPhoto = loading.coverPhoto ?? defaultSiteConfig.loadingScreen.coverPhoto
   const coverPhotoAlt = loading.coverPhotoAlt ?? defaultSiteConfig.loadingScreen.coverPhotoAlt
@@ -261,29 +266,26 @@ export function Hero() {
     >
       {isPlain ? (
         <>
-          <PhotoBackground photos={plainPhotos} veil={0.45} />
+          <PhotoBackground photos={plainPhotos} desktopPhotos={plainPhotosDesktop} veil={0.45} />
           <div className="home-hero-plain-corners" aria-hidden="true">
             {(
               [
-                { src: cornerDecos.topLeft, className: "left-0 top-0" },
-                { src: cornerDecos.topRight, className: "right-0 top-0" },
-              ] as const
-            ).map(({ src, className }) => (
-              <TintedDeco key={className} src={src} className={`deco-corner-top deco-corner-top--long absolute ${className}`} />
-            ))}
-            {(
-              [
-                { src: cornerOverlays.topLeft, className: "left-0 top-0" },
-                { src: cornerOverlays.topRight, className: "right-0 top-0" },
+                { src: cornerDecos.topLeft, pos: "tl", className: "left-0 top-0" },
+                { src: cornerDecos.topRight, pos: "tr", className: "right-0 top-0" },
+                { src: cornerDecos.bottomLeft, pos: "bl", className: "left-0 bottom-0" },
+                { src: cornerDecos.bottomRight, pos: "br", className: "right-0 bottom-0" },
               ] as const
             )
               .filter(({ src }) => src)
-              .map(({ src, className }) => (
-                // Floral corner layered over the top garland (same as the loader)
-                // eslint-disable-next-line @next/next/no-img-element
-                <img key={`overlay-${className}`} src={src} alt="" className={`deco-corner-overlay absolute ${className}`} />
+              .map(({ src, pos, className }) => (
+                <div key={pos} className={`home-hero-corner-slot home-hero-corner-slot--${pos} absolute ${className}`}>
+                  {/* Corners keep their original artwork colors (no tint) — same as the loader */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt="" className="home-hero-corner-img" />
+                </div>
               ))}
           </div>
+          {showFrame && <div className="home-hero-plain-frame" aria-hidden="true" />}
         </>
       ) : (
         <>
@@ -313,6 +315,11 @@ export function Hero() {
                 className="home-hero-cover__img"
               />
             </div>
+            {coverVine && (
+              // Sprig tucked under the photo (content/site.ts → homeHero.coverVine)
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={encodeURI(coverVine)} alt="" aria-hidden="true" className="home-hero-cover__vine" />
+            )}
           </motion.figure>
         )}
         <div className="home-hero-copy relative flex w-full flex-col items-center">

@@ -13,6 +13,7 @@ import { Shirt, Copy, Check, Navigation, Heart, MapPin } from "lucide-react"
 import { motion, useReducedMotion, type Variants } from "motion/react"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
 import { TintedDeco } from "@/components/tinted-deco"
+import { DecoCorners } from "@/components/deco-corners"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -45,14 +46,16 @@ const C = {
   light: "var(--color-motif-soft)",
 } as const
 
-// Section background = the hero's circle pattern (PlainBubbles paints its own aqua base)
+// Same circle pattern as the gallery / love story sections (PlainBubbles paints the base)
 const sectionBg = "var(--color-bg-pattern-base)"
 
-// Text sitting directly on the circle pattern (colors: globals.css → --color-on-pattern*)
-const onBg = {
-  color: "var(--color-on-pattern)",
-  textShadow: "0 1px 0 var(--color-on-pattern-glow), 0 2px 12px var(--color-on-pattern-glow)",
-} as const
+// Soft white edge so text stays crisp over the circles (matches the gallery)
+const onBgGlow = "0 1px 0 rgb(255 255 255 / 85%), 0 0 12px rgb(255 255 255 / 70%)"
+
+// Text sitting directly on the background: deep slate titles, slate-blue labels
+const onBg = { color: C.heading, textShadow: onBgGlow } as const
+const onBgLabel = { color: C.blue, textShadow: onBgGlow } as const
+const onBgBody = { color: C.body, textShadow: onBgGlow } as const
 
 const hairline = "color-mix(in srgb, var(--color-motif-medium) 55%, transparent)"
 
@@ -76,37 +79,28 @@ const primaryButtonBg =
 
 
 
-const CORNER_DECO_CLASS =
-  "block h-auto w-auto max-w-[130px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[320px] select-none opacity-90"
-
 function DecoImg({ src, className }: { src: string; className: string }) {
+  if (!src) return null
   return <TintedDeco src={src} className={className} />
 }
 
-// Corners keep their original artwork colors (no tint)
-// Top corners are the tall garland — sized by height (.deco-corner-top in globals.css)
-function CornerImg({ src, top = false }: { src: string; top?: boolean }) {
-  if (!src) return null
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt="" aria-hidden="true" className={top ? "deco-corner-top" : CORNER_DECO_CLASS} />
-}
-
+// Soft dusty-blue hairlines either side of a round icon
 function SectionIconDivider({ icon }: { icon: ReactNode }) {
   return (
     <div className="flex items-center justify-center gap-2 pt-1 sm:pt-2">
       <span
         className="h-px w-10 sm:w-16 md:w-20"
-        style={{ background: "var(--color-on-pattern-line)" }}
+        style={{ background: "linear-gradient(to right, transparent, var(--color-motif-medium))" }}
       />
       <span
         className="flex h-7 w-7 items-center justify-center rounded-full sm:h-8 sm:w-8"
-        style={{ border: `1px solid ${hairline}`, background: C.paper }}
+        style={{ border: `1px solid ${hairline}`, background: "#FFFFFF" }}
       >
         {icon}
       </span>
       <span
         className="h-px w-10 sm:w-16 md:w-20"
-        style={{ background: "var(--color-on-pattern-line)" }}
+        style={{ background: "linear-gradient(to left, transparent, var(--color-motif-medium))" }}
       />
     </div>
   )
@@ -834,25 +828,17 @@ export function Details() {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden`}
       style={{ background: sectionBg }}
     >
-      {/* Same circle pattern as the hero */}
+      {/* Same circle pattern as the gallery */}
       <PlainBubbles />
+      {/* Light white-dusty-blue wash over the circles (globals.css → .section-wash) */}
+      <div className="section-wash" aria-hidden="true" />
       <Section
         id="details"
         className="relative z-10 pt-14 pb-12 sm:pt-16 sm:pb-14 md:pt-20 md:pb-16 lg:pt-24 lg:pb-20 overflow-hidden"
       >
-        {/* Corner decorations */}
-        <div className="pointer-events-none absolute left-0 top-0 z-10">
-          <CornerImg src={decos.topLeft} top />
-        </div>
-        <div className="pointer-events-none absolute right-0 top-0 z-10">
-          <CornerImg src={decos.topRight} top />
-        </div>
-        <div className="pointer-events-none absolute bottom-0 left-0 z-10">
-          <CornerImg src={decos.bottomLeft} />
-        </div>
-        <div className="pointer-events-none absolute bottom-0 right-0 z-10">
-          <CornerImg src={decos.bottomRight} />
-        </div>
+        {/* Corner florals + double border (content/site.ts → eventDetails.decos / showFrame) */}
+        {content.showFrame && <div className="deco-frame" aria-hidden="true" />}
+        <DecoCorners decos={decos} />
 
         {/* Header */}
         <div className="relative z-20 mb-6 px-6 text-center sm:mb-8 sm:px-10 md:mb-10 md:px-12">
@@ -862,7 +848,7 @@ export function Details() {
           />
           <p
             className={`${cinzel.className} mb-2 text-[0.6rem] font-semibold uppercase tracking-[0.34em] min-[400px]:tracking-[0.38em] sm:text-[0.65rem] sm:tracking-[0.44em]`}
-            style={onBg}
+            style={onBgLabel}
           >
             {content.eyebrow}
           </p>
@@ -871,7 +857,7 @@ export function Details() {
           </div>
           <p
             className="font-goudy-italic mx-auto max-w-2xl px-2 text-[0.8rem] leading-[1.62] sm:text-[0.875rem] sm:leading-[1.65] md:text-[0.9375rem]"
-            style={{ ...onBg, fontWeight: 600 }}
+            style={{ ...onBgBody, fontWeight: 600 }}
           >
             {content.description}
           </p>
@@ -880,14 +866,14 @@ export function Details() {
             <figure className="mx-auto mt-4 max-w-xl px-2 sm:mt-5">
               <blockquote
                 className="font-goudy-italic text-[0.8rem] leading-[1.62] sm:text-[0.875rem] md:text-[0.9375rem]"
-                style={onBg}
+                style={onBgBody}
               >
                 &ldquo;{content.verse}&rdquo;
               </blockquote>
               {content.verseCitation ? (
                 <figcaption
                   className={`${cinzel.className} mt-1.5 text-[0.6rem] font-semibold uppercase tracking-[0.24em] sm:text-[0.65rem]`}
-                  style={{ ...onBg, color: C.blue }}
+                  style={onBgLabel}
                 >
                   {content.verseCitation}
                 </figcaption>
@@ -989,7 +975,7 @@ export function Details() {
             >
               {attire.title}
             </h3>
-            <p className={`font-goudy-italic ${ct.bodyLg} mt-3 leading-relaxed sm:mt-4`} style={{ ...onBg, fontWeight: 600 }}>
+            <p className={`font-goudy-italic ${ct.bodyLg} mt-3 leading-relaxed sm:mt-4`} style={{ ...onBgBody, fontWeight: 600 }}>
               {attire.description}
             </p>
           </div>

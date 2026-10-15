@@ -104,6 +104,19 @@
 .loading-screen__slide-photo > img {
   object-fit: cover;
   object-position: center 28%;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+/* Soft fade-in once the photo has loaded (set by onLoad in invite-photo-backdrop.tsx) */
+.loading-screen__slide-photo > img[data-loaded] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen__slide-photo > img {
+    transition: none;
+  }
 }
 
 .loading-screen__backdrop-veil {
@@ -2167,14 +2180,47 @@
   );
 }
 
-/* The viewport double frame is replaced by the card's own frame */
+/* Viewport double border — sits under the corner florals so they drape over it */
 .loading-screen--plain .loading-screen__plain-frame {
-  display: none;
+  z-index: 1;
+  inset:
+    max(0.75rem, env(safe-area-inset-top, 0px))
+    max(0.75rem, env(safe-area-inset-right, 0px))
+    max(0.75rem, env(safe-area-inset-bottom, 0px))
+    max(0.75rem, env(safe-area-inset-left, 0px));
+  border: 1.5px solid color-mix(in srgb, var(--color-motif-medium) 70%, transparent);
+  border-radius: 6px;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, white 45%, transparent),
+    0 0 0 1px color-mix(in srgb, white 30%, transparent);
 }
 
-.loading-screen--plain .loading-screen__plain-corner-img {
-  opacity: 0.9;
+.loading-screen--plain .loading-screen__plain-frame::after {
+  inset: 5px;
+  border: 1px solid color-mix(in srgb, var(--color-motif-medium) 40%, transparent);
+  border-radius: 3px;
 }
+
+/* Corner florals — each corner sized to its own artwork.
+   Top pieces are square, bottom pieces are wide, so they get separate widths. */
+.loading-screen--plain .loading-screen__plain-corner-img {
+  width: 100%;
+  max-width: none;
+  height: auto;
+  opacity: 1;
+  filter: drop-shadow(0 4px 10px color-mix(in srgb, var(--color-welcome-navy) 18%, transparent));
+}
+
+.loading-screen--plain .loading-screen__plain-corner-slot--tl,
+.loading-screen--plain .loading-screen__plain-corner-slot--tr {
+  width: min(36vw, 26vh, 300px);
+}
+
+.loading-screen--plain .loading-screen__plain-corner-slot--bl,
+.loading-screen--plain .loading-screen__plain-corner-slot--br {
+  width: min(44vw, 30vh, 360px);
+}
+
 
 /* Arched invitation card */
 .loading-screen--plain .loading-screen__save-date {
@@ -3384,13 +3430,13 @@
    Sunshine yellow is used once — the glowing dot on the progress bar.
    ========================================================================== */
 .loading-screen--plain {
-  --ls-sky: var(--color-motif-medium);          /* #D4948A */
-  --ls-blue: var(--color-welcome-heading);      /* #984641 */
-  --ls-navy: var(--color-welcome-navy);         /* #3B1312 */
-  --ls-ink: var(--color-welcome-text);          /* #541C1B */
-  --ls-leaf: var(--color-motif-yellow);         /* #D4948A sage */
+  --ls-sky: var(--color-motif-medium);          /* #8799A7 */
+  --ls-blue: var(--color-welcome-heading);      /* #4F6578 */
+  --ls-navy: var(--color-welcome-navy);         /* #1F2D3A */
+  --ls-ink: var(--color-welcome-text);          /* #2C3E4F */
+  --ls-leaf: var(--color-motif-yellow);         /* #8799A7 sage */
   --ls-leaf-ink: color-mix(in srgb, var(--color-motif-yellow) 78%, #3C4424);
-  --ls-sun: var(--color-motif-accent);          /* #984641 */
+  --ls-sun: var(--color-motif-accent);          /* #4F6578 */
 
   --ls-text-dark: var(--ls-ink);
   --ls-text-accent-dark: var(--ls-blue);
@@ -3498,12 +3544,12 @@
    holds up over bright frames. Sage + sunshine appear only as accents.
    ========================================================================== */
 .home-hero--plain {
-  --hh-navy: var(--color-welcome-navy);       /* #3B1312 */
-  --hh-blue: var(--color-welcome-heading);    /* #984641 */
-  --hh-ink: var(--color-welcome-text);        /* #541C1B */
-  --hh-sky: var(--color-motif-medium);        /* #D4948A */
-  --hh-leaf: var(--color-motif-yellow);       /* #D4948A */
-  --hh-butter: var(--color-motif-silver);     /* #EBC8B5 */
+  --hh-navy: var(--color-welcome-navy);       /* #1F2D3A */
+  --hh-blue: var(--color-welcome-heading);    /* #4F6578 */
+  --hh-ink: var(--color-welcome-text);        /* #2C3E4F */
+  --hh-sky: var(--color-motif-medium);        /* #8799A7 */
+  --hh-leaf: var(--color-motif-yellow);       /* #8799A7 */
+  --hh-butter: var(--color-motif-silver);     /* #C4D1E2 */
   /* Tight white edge: keeps thin strokes crisp instead of washing them out */
   --hh-edge:
     0 0 1px rgb(255 255 255 / 100%),
@@ -3882,18 +3928,18 @@
    dusty rose script, rose-ink small caps, sage hairlines.
    ========================================================================== */
 .loading-screen--plain {
-  --ls-blush: #F4DDE0;
-  --ls-pastel: #F8E9E9;
-  --ls-ivory: #FFFAF7;
-  --ls-burgundy: #541C1B;
-  --ls-rose: #D4948A;
-  --ls-rose-ink: #8E524D;
-  --ls-sage: #A3A58B;
+  --ls-blush: #C4D1E2;
+  --ls-pastel: #ECE5DB;
+  --ls-ivory: #F7F4EF;
+  --ls-burgundy: #2C3E4F;
+  --ls-rose: #8799A7;
+  --ls-rose-ink: #435B70;
+  --ls-sage: #A9B8C6;
 
   --ls-sky: var(--ls-rose);
   --ls-blue: var(--ls-rose-ink);
   --ls-navy: var(--ls-burgundy);
-  --ls-ink: #5E3A39;
+  --ls-ink: #34485A;
   --ls-leaf: var(--ls-sage);
   --ls-leaf-ink: var(--ls-rose);
   --ls-sun: var(--ls-rose);
@@ -3953,17 +3999,6 @@
   opacity: 0.55;
 }
 
-/* Top corner florals (tall garland artwork): sized by height and kept short
-   so they stay small sprays at the top. Bottom corners keep their original size. */
-.loading-screen--plain .loading-screen__plain-corner-slot.top-0 .loading-screen__plain-corner-img {
-  width: auto;
-  max-width: none;
-  height: min(38vh, 320px);
-}
-
-@media (min-width: 1024px) {
-  .loading-screen--plain .loading-screen__plain-corner-slot.top-0 .loading-screen__plain-corner-img { height: min(46vh, 440px); }
-}
 
 
 /* ==========================================================================
@@ -3972,14 +4007,14 @@
    Desktop: photo left, wording right.
    ========================================================================== */
 .home-hero--plain {
-  --hh-navy: #541C1B;
-  --hh-blue: #8E524D;
-  --hh-ink: #5E3A39;
-  --hh-sky: #D4948A;
-  --hh-leaf: #A3A58B;
-  --hh-butter: #F4DDE0;
+  --hh-navy: #2C3E4F;
+  --hh-blue: #435B70;
+  --hh-ink: #34485A;
+  --hh-sky: #8799A7;
+  --hh-leaf: #A9B8C6;
+  --hh-butter: #C4D1E2;
   --hh-edge: none;
-  background: #F8E9E9;
+  background: #ECE5DB;
 }
 
 .home-hero--plain .home-hero-title-main,
@@ -3990,8 +4025,8 @@
 }
 
 .home-hero--plain .home-hero-title-script {
-  color: #D4948A;
-  -webkit-text-fill-color: #D4948A;
+  color: #8799A7;
+  -webkit-text-fill-color: #8799A7;
   text-shadow: none;
 }
 
@@ -4039,7 +4074,7 @@
   aspect-ratio: 3 / 4;
   width: calc(100% + 18px);
   border-radius: 999px 999px 22px 22px;
-  border: 1px solid color-mix(in srgb, #D4948A 55%, transparent);
+  border: 1px solid color-mix(in srgb, #8799A7 55%, transparent);
   pointer-events: none;
 }
 
@@ -4049,12 +4084,12 @@
   aspect-ratio: 3 / 4;
   overflow: hidden;
   border-radius: 999px 999px 16px 16px;
-  background: #F4DDE0;
-  border: 5px solid #FFFAF7;
+  background: #C4D1E2;
+  border: 5px solid #F7F4EF;
   box-shadow:
-    0 0 0 1px color-mix(in srgb, #D4948A 35%, transparent),
-    0 30px 55px -30px color-mix(in srgb, #541C1B 40%, transparent),
-    0 10px 24px -14px color-mix(in srgb, #D4948A 45%, transparent);
+    0 0 0 1px color-mix(in srgb, #8799A7 35%, transparent),
+    0 30px 55px -30px color-mix(in srgb, #2C3E4F 40%, transparent),
+    0 10px 24px -14px color-mix(in srgb, #8799A7 45%, transparent);
 }
 
 /* Soft blush vignette at the base so the photo melts into the frame */
@@ -4064,7 +4099,7 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(180deg, transparent 72%, color-mix(in srgb, #F8E9E9 35%, transparent) 100%);
+  background: linear-gradient(180deg, transparent 72%, color-mix(in srgb, #ECE5DB 35%, transparent) 100%);
 }
 
 /* Natural colour, only the faintest warm lift — no heavy filter */
@@ -4084,7 +4119,7 @@
   aspect-ratio: 2170 / 725;
   margin: -1.6rem auto 0;
   background: url("/deco/new-deco/small-center.png") center / contain no-repeat;
-  filter: drop-shadow(0 4px 6px color-mix(in srgb, #541C1B 15%, transparent));
+  filter: drop-shadow(0 4px 6px color-mix(in srgb, #2C3E4F 15%, transparent));
 }
 
 @media (min-width: 768px) {
@@ -4121,8 +4156,8 @@
 }
 
 .loading-screen--plain .ls-headline__letter {
-  color: #541C1B;
-  -webkit-text-fill-color: #541C1B;
+  color: #2C3E4F;
+  -webkit-text-fill-color: #2C3E4F;
 }
 
 .ls-headline__break {
@@ -4157,8 +4192,10 @@
 
 
 /* ==========================================================================
-   Love story backdrop (plain) — blush & pastel pink, burgundy only as accent.
-   components/sections/love-story.tsx → .love-story-bg
+   Love story backdrop (plain) — the loading screen's palette: light paper
+   washing into beige (like the invitation card), soft powder-blue blooms,
+   deep slate type and dusty-blue accents.
+   components/sections/love-story.tsx → .love-story-bg / .love-story-frame / .love-story-corner
    components/StorySection.tsx → .story-open-wash
    ========================================================================== */
 .love-story-bg {
@@ -4167,34 +4204,81 @@
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
+  /* Translucent light white-dusty-blue wash: the circle pattern (PlainBubbles)
+     behind the section shows through softly */
   background:
-    /* blush glows drifting down the section */
-    radial-gradient(55% 22% at 0% 18%, color-mix(in srgb, #D4948A 22%, transparent) 0%, transparent 70%),
-    radial-gradient(50% 20% at 100% 45%, color-mix(in srgb, #F4DDE0 85%, transparent) 0%, transparent 70%),
-    radial-gradient(55% 22% at 0% 75%, color-mix(in srgb, #D4948A 18%, transparent) 0%, transparent 70%),
-    /* pastel pink base: lighter at the top, blush toward the bottom */
-    linear-gradient(180deg, #FBF1F0 0%, #F8E9E9 30%, #F4DDE0 70%, #F8E9E9 100%);
+    radial-gradient(90% 16% at 50% 0%, rgb(255 255 255 / 65%) 0%, transparent 70%),
+    radial-gradient(60% 14% at 0% 30%, color-mix(in srgb, #C4D1E2 30%, transparent) 0%, transparent 70%),
+    radial-gradient(60% 14% at 100% 62%, color-mix(in srgb, #C4D1E2 26%, transparent) 0%, transparent 70%),
+    linear-gradient(
+      180deg,
+      rgb(255 255 255 / 58%) 0%,
+      color-mix(in srgb, #EDF1F6 52%, transparent) 50%,
+      rgb(255 255 255 / 50%) 100%
+    );
 }
 
-/* Fine paper grain so the pinks read as stationery rather than flat fill */
+/* Fine slate paper grain so the beige reads as stationery rather than flat fill */
 .love-story-bg__grain {
   position: absolute;
   inset: 0;
   opacity: 0.55;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.33 0 0 0 0 0.11 0 0 0 0 0.1 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.17 0 0 0 0 0.24 0 0 0 0 0.31 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
 }
 
-/* Thin burgundy hairline frame inset from the section edges — the accent */
+/* Double border — same as the loading screen frame (replaces the old hairline) */
 .love-story-bg::after {
+  display: none;
+}
+
+.love-story-frame {
+  position: absolute;
+  z-index: 1;
+  inset: clamp(0.6rem, 2vw, 0.9rem);
+  pointer-events: none;
+  border: 1.5px solid color-mix(in srgb, var(--color-motif-medium) 70%, transparent);
+  border-radius: 6px;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, white 45%, transparent),
+    0 0 0 1px color-mix(in srgb, white 30%, transparent);
+}
+
+.love-story-frame::after {
   content: "";
   position: absolute;
-  inset: clamp(0.6rem, 2vw, 1.1rem);
-  border: 1px solid color-mix(in srgb, #541C1B 14%, transparent);
-  box-shadow: inset 0 0 0 4px color-mix(in srgb, #FFFAF7 45%, transparent);
-  pointer-events: none;
+  inset: 5px;
+  border: 1px solid color-mix(in srgb, var(--color-motif-medium) 40%, transparent);
+  border-radius: 3px;
 }
 
-/* Blush wash behind each chapter on the photo's side */
+/* Corner florals — same per-corner sizes as the loader / envelope / home hero */
+.love-story-corner {
+  height: auto;
+  max-width: none;
+  filter: drop-shadow(0 4px 10px color-mix(in srgb, var(--color-welcome-navy) 18%, transparent));
+}
+
+.love-story-corner--tl,
+.love-story-corner--tr {
+  width: min(36vw, 300px);
+}
+
+.love-story-corner--bl,
+.love-story-corner--br {
+  width: min(44vw, 360px);
+}
+
+/* Opening line under the title */
+.love-story-intro {
+  font-family: "Crimson Text", "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(0.95rem, 1vw + 0.7rem, 1.1rem);
+  line-height: 1.7;
+  color: var(--color-welcome-text);
+  text-shadow: 0 0 8px rgb(247 244 239 / 75%);
+}
+
+/* Powder-blue wash behind each chapter on the photo's side */
 .story-open-wash {
   position: absolute;
   top: 8%;
@@ -4209,41 +4293,133 @@
 
 .story-open-wash--left {
   left: -18%;
-  background: radial-gradient(closest-side, color-mix(in srgb, #D4948A 30%, transparent) 0%, color-mix(in srgb, #F4DDE0 50%, transparent) 55%, transparent 100%);
+  background: radial-gradient(closest-side, color-mix(in srgb, #8799A7 30%, transparent) 0%, color-mix(in srgb, #C4D1E2 50%, transparent) 55%, transparent 100%);
 }
 
 .story-open-wash--right {
   right: -18%;
-  background: radial-gradient(closest-side, color-mix(in srgb, #D4948A 30%, transparent) 0%, color-mix(in srgb, #F4DDE0 50%, transparent) 55%, transparent 100%);
+  background: radial-gradient(closest-side, color-mix(in srgb, #8799A7 30%, transparent) 0%, color-mix(in srgb, #C4D1E2 50%, transparent) 55%, transparent 100%);
 }
 
-/* Text colors on the pink: burgundy title, rose-ink details, blush rule */
+/* Text colors (loading screen palette): deep slate title, slate details, dusty-blue rule */
 .story-open-date {
-  color: #8E524D;
+  color: #435B70;
 }
 
 .story-open-title {
-  color: #541C1B;
-  text-shadow: 0 1px 0 rgb(255 250 247 / 85%);
+  color: #2C3E4F;
+  text-shadow: 0 1px 0 rgb(247 244 239 / 85%);
 }
 
 .story-open-rule {
-  background: #D4948A;
+  background: #8799A7;
 }
 
 .story-open-text {
-  color: #5E3A39;
-  text-shadow: 0 0 8px rgb(255 250 247 / 75%);
+  color: #34485A;
+  text-shadow: 0 0 8px rgb(247 244 239 / 75%);
 }
 
 .story-open-number {
-  color: color-mix(in srgb, #D4948A 30%, transparent);
+  color: color-mix(in srgb, #8799A7 30%, transparent);
 }
 
-/* Photo frame: ivory mat with a blush edge */
+/* Photo frame: light paper mat with a dusty-blue edge */
 .story-open-photo {
-  background: #FFFAF7;
+  background: #F7F4EF;
   box-shadow:
-    0 0 0 1px color-mix(in srgb, #D4948A 35%, transparent),
-    0 18px 34px -16px color-mix(in srgb, #541C1B 32%, transparent);
+    0 0 0 1px color-mix(in srgb, #8799A7 35%, transparent),
+    0 18px 34px -16px color-mix(in srgb, #2C3E4F 32%, transparent);
+}
+
+
+/* ==========================================================================
+   Home hero (plain) — four corner florals + double border, matching the
+   loading screen and envelope. Paths come from content/site.ts → homeHero.
+   ========================================================================== */
+.home-hero--plain .home-hero-plain-corners {
+  z-index: 3;
+}
+
+.home-hero-corner-slot {
+  pointer-events: none;
+}
+
+.home-hero-corner-slot--tl,
+.home-hero-corner-slot--tr {
+  width: min(36vw, 26vh, 300px);
+}
+
+.home-hero-corner-slot--bl,
+.home-hero-corner-slot--br {
+  width: min(44vw, 30vh, 360px);
+}
+
+.home-hero-corner-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 10px color-mix(in srgb, var(--color-welcome-navy) 18%, transparent));
+}
+
+.home-hero-plain-frame {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  inset: max(0.75rem, env(safe-area-inset-top, 0px)) 0.75rem 0.75rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-motif-medium) 70%, transparent);
+  border-radius: 6px;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, white 45%, transparent),
+    0 0 0 1px color-mix(in srgb, white 30%, transparent);
+}
+
+.home-hero-plain-frame::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid color-mix(in srgb, var(--color-motif-medium) 40%, transparent);
+  border-radius: 3px;
+}
+
+
+/* Sprig under the cover photo — a real <img> from content/site.ts → homeHero.coverVine
+   (replaces the old ::after sprig) */
+.home-hero-cover::after {
+  display: none;
+}
+
+.home-hero-cover__vine {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 66%;
+  height: auto;
+  margin: -1.9rem auto 0;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 6px color-mix(in srgb, #2C3E4F 15%, transparent));
+}
+
+
+/* Love story: sprig above the title (content/site.ts → loveStory.headerOrnament) */
+.love-story-ornament {
+  width: min(46vw, 180px);
+}
+
+
+/* Love story: year / date line above each chapter title — Cinzel caps with
+   lining numerals so years and dates read as an engraved date stamp */
+.story-open-date {
+  font-family: var(--font-cinzel), "Cinzel", "Times New Roman", serif;
+  font-style: normal;
+  font-weight: 600;
+  font-variant-numeric: lining-nums;
+  font-size: clamp(0.7rem, 2.6vw, 0.86rem);
+  letter-spacing: 0.22em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: #435B70;
 }

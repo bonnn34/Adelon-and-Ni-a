@@ -7,6 +7,7 @@ import { motion, useReducedMotion, type Variants } from "motion/react"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
 import { TintedDeco } from "@/components/tinted-deco"
+import { DecoCorners } from "@/components/deco-corners"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -32,17 +33,15 @@ const titleSize = "clamp(2.85rem, 13.5vw, 6.75rem)"
 const photoTitleShadow =
   "0 1px 0 rgb(255 250 244 / 28%), 0 2px 18px rgb(42 34 28 / 55%), 0 12px 36px rgb(42 34 28 / 40%)"
 
-const CORNER_DECO_CLASS =
-  "block h-auto w-auto max-w-[150px] sm:max-w-[230px] md:max-w-[300px] lg:max-w-[360px] select-none opacity-90"
-
-// Plain background = the hero's circle pattern (PlainBubbles paints its own aqua base)
+// Plain background = same circle pattern as the gallery (PlainBubbles paints the base)
 const plainBg = "var(--color-bg-pattern-base)"
 
-// Text sitting directly on the circle pattern (colors: globals.css → --color-on-pattern*)
-const onBg = {
-  color: "var(--color-on-pattern)",
-  textShadow: "0 1px 0 var(--color-on-pattern-glow), 0 2px 12px var(--color-on-pattern-glow)",
-} as const
+// Text sitting directly on the background: deep slate title, slate-blue eyebrow / script,
+// with a soft white edge (matches the gallery)
+const onBgGlow = "0 1px 0 rgb(255 255 255 / 85%), 0 0 12px rgb(255 255 255 / 70%)"
+const onBg = { color: "var(--color-welcome-navy)", textShadow: onBgGlow } as const
+const onBgBlue = { color: "var(--color-welcome-heading)", textShadow: onBgGlow } as const
+const onBgBody = { color: "var(--color-welcome-text)", textShadow: onBgGlow } as const
 
 const stagger: Variants = {
   hidden: {},
@@ -55,15 +54,8 @@ const rise: Variants = {
 }
 
 function DecoImg({ src, className }: { src: string; className: string }) {
-  return <TintedDeco src={src} className={className} />
-}
-
-// Corners keep their original artwork colors (no tint)
-// Top corners are the tall garland — sized by height (.deco-corner-top in globals.css)
-function CornerImg({ src, top = false }: { src: string; top?: boolean }) {
   if (!src) return null
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt="" aria-hidden="true" className={top ? "deco-corner-top" : CORNER_DECO_CLASS} />
+  return <TintedDeco src={src} className={className} />
 }
 
 // "!" and other symbols in Cinzel, letters in The Seasons
@@ -98,16 +90,14 @@ function PlainSeeYouThere({ background = true }: { background?: boolean }) {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative isolate z-10 w-full overflow-hidden`}
       style={background ? { background: plainBg } : undefined}
     >
-      {/* Same circle pattern as the hero */}
+      {/* Same circle pattern as the gallery, with the light wash + double border
+          (on the invitation page the shared wrapper paints these behind See You There and the footer) */}
       {background && <PlainBubbles />}
+      {background && <div className="section-wash" aria-hidden="true" />}
+      {background && plain.showFrame && <div className="deco-frame" aria-hidden="true" />}
 
-      {/* Corner decorations (from site.ts) — top only; the footer continues below on the same background */}
-      <div className="pointer-events-none absolute left-0 top-0 z-10">
-        <CornerImg src={plain.decos.topLeft} top />
-      </div>
-      <div className="pointer-events-none absolute right-0 top-0 z-10">
-        <CornerImg src={plain.decos.topRight} top />
-      </div>
+      {/* Corner florals (content/site.ts → seeYouThere.plain.decos) — top only; the footer continues below */}
+      <DecoCorners decos={{ topLeft: plain.decos.topLeft, topRight: plain.decos.topRight }} />
 
       <motion.div
         className="relative z-20 mx-auto flex min-h-[78svh] max-w-3xl flex-col items-center justify-center px-6 py-24 text-center sm:min-h-[88svh] sm:py-28"
@@ -120,7 +110,7 @@ function PlainSeeYouThere({ background = true }: { background?: boolean }) {
           <motion.p
             variants={rise}
             className={`${cinzel.className} text-[0.65rem] font-semibold uppercase tracking-[0.3em] sm:text-xs`}
-            style={onBg}
+            style={onBgBlue}
           >
             {plain.eyebrow}
           </motion.p>
@@ -145,23 +135,23 @@ function PlainSeeYouThere({ background = true }: { background?: boolean }) {
           <motion.p
             variants={rise}
             className={`${aboveTheBeyond.className} mt-3 text-[1.5rem] leading-tight sm:mt-4 sm:text-[2rem] md:text-[2.35rem]`}
-            style={onBg}
+            style={onBgBlue}
           >
             {fill(plain.script)}
           </motion.p>
         ) : null}
 
         <motion.div variants={rise} className="my-5 flex items-center justify-center gap-2 sm:my-6" aria-hidden>
-          <span className="h-px w-12 sm:w-20" style={{ background: "var(--color-on-pattern-line)" }} />
-          <span className="h-1.5 w-1.5 rotate-45" style={{ background: "var(--color-on-pattern-line)" }} />
-          <span className="h-px w-12 sm:w-20" style={{ background: "var(--color-on-pattern-line)" }} />
+          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, var(--color-motif-medium))" }} />
+          <span className="h-1.5 w-1.5 rotate-45" style={{ background: "var(--color-motif-accent)" }} />
+          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, var(--color-motif-medium))" }} />
         </motion.div>
 
         {plain.message ? (
           <motion.p
             variants={rise}
             className="font-goudy-italic mx-auto mt-4 max-w-md text-sm leading-relaxed sm:mt-5 sm:text-base"
-            style={{ ...onBg, fontWeight: 600 }}
+            style={{ ...onBgBody, fontWeight: 600 }}
           >
             {fill(plain.message)}
           </motion.p>

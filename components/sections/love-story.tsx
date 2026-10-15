@@ -126,9 +126,14 @@ export function LoveStory({ skyBackdrop = true }: { skyBackdrop?: boolean } = {}
   const siteConfig = useSiteConfig()
   const loading = siteConfig.loadingScreen ?? defaultSiteConfig.loadingScreen
   const loveStory = siteConfig.loveStory ?? defaultSiteConfig.loveStory
-  // Same four corner florals as the loader / envelope (site.ts → CORNER_DECOS)
-  const corners = loading.cornerDecos ?? defaultSiteConfig.loadingScreen.cornerDecos
-  const cornerOverlays = loading.cornerOverlays ?? defaultSiteConfig.loadingScreen.cornerOverlays
+  // Corner florals + border live in content/site.ts → loveStory.decos / showFrame
+  const corners = loveStory.decos ?? defaultSiteConfig.loveStory.decos
+  const showFrame = loveStory.showFrame ?? defaultSiteConfig.loveStory.showFrame
+  const intro = loveStory.intro ?? defaultSiteConfig.loveStory.intro
+  const headerOrnament = loveStory.headerOrnament ?? defaultSiteConfig.loveStory.headerOrnament
+  const photoAlt = loveStory.photoAlt ?? defaultSiteConfig.loveStory.photoAlt
+  const showChapterNumbers = loveStory.showChapterNumbers ?? defaultSiteConfig.loveStory.showChapterNumbers
+  const showChapterDividers = loveStory.showChapterDividers ?? defaultSiteConfig.loveStory.showChapterDividers
   const isPlain = loading.display === "plain"
   const reduceMotion = useReducedMotion()
 
@@ -147,54 +152,39 @@ export function LoveStory({ skyBackdrop = true }: { skyBackdrop?: boolean } = {}
   return (
     <div
       id="love-story"
-      className={`love-story-root ${theSeasons.variable} ${aboveTheBeyond.variable} relative min-h-screen w-full overflow-x-hidden`}
+      // z-[2]: the whole section is one layer ABOVE the circle pattern (PlainBubbles, z-index 1,
+      // painted by the parent wrapper) — its translucent wash then softens the circles behind it.
+      // (A bare `isolate` would put the section at z-index auto, under the circles' opaque base.)
+      className={`love-story-root ${theSeasons.variable} ${aboveTheBeyond.variable} relative z-[2] min-h-screen w-full overflow-x-hidden`}
     >
       {skyBackdrop && <SkyBackdrop haze />}
-      {/* Blush & pastel pink backdrop for the love story (loading-screen.css → .love-story-bg) */}
+      {/* Paper backdrop in the loading screen's colors (loading-screen.css → .love-story-bg) */}
       {isPlain && (
         <div className="love-story-bg" aria-hidden="true">
           <span className="love-story-bg__grain" />
         </div>
       )}
 
-      {/* Floral corners framing the section (site-wide corner set, original artwork colors).
-          Top corners are the tall garland — sized by height (.deco-corner-top). */}
+      {/* Corner florals at the section's four corners, sized per corner like the loader
+          (original artwork colors), over a thin double border */}
+      {isPlain && showFrame && <div className="love-story-frame" aria-hidden="true" />}
       {(
         [
-          { src: corners.topLeft, className: "left-0 top-0", top: true },
-          { src: corners.topRight, className: "right-0 top-0", top: true },
-          { src: corners.bottomLeft, className: "left-0 bottom-0", top: false },
-          { src: corners.bottomRight, className: "right-0 bottom-0", top: false },
+          { src: corners.topLeft, pos: "tl", className: "left-0 top-0" },
+          { src: corners.topRight, pos: "tr", className: "right-0 top-0" },
+          { src: corners.bottomLeft, pos: "bl", className: "left-0 bottom-0" },
+          { src: corners.bottomRight, pos: "br", className: "right-0 bottom-0" },
         ] as const
       )
         .filter(({ src }) => src)
-        .map(({ src, className, top }) => (
+        .map(({ src, pos, className }) => (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            key={className}
+            key={pos}
             src={src}
             alt=""
             aria-hidden="true"
-            className={`pointer-events-none absolute z-[1] select-none ${top ? "deco-corner-top deco-corner-top--long love-story-garland" : "h-auto w-[clamp(120px,34vw,300px)]"} ${className}`}
-          />
-        ))}
-
-      {/* Floral corners layered over the top garland (same as the loader) */}
-      {(
-        [
-          { src: cornerOverlays.topLeft, className: "left-0 top-0" },
-          { src: cornerOverlays.topRight, className: "right-0 top-0" },
-        ] as const
-      )
-        .filter(({ src }) => src)
-        .map(({ src, className }) => (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            key={`overlay-${className}`}
-            src={src}
-            alt=""
-            aria-hidden="true"
-            className={`deco-corner-overlay pointer-events-none absolute z-[1] ${className}`}
+            className={`love-story-corner love-story-corner--${pos} pointer-events-none absolute z-[1] select-none ${className}`}
           />
         ))}
 
@@ -208,10 +198,18 @@ export function LoveStory({ skyBackdrop = true }: { skyBackdrop?: boolean } = {}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.75, ease: revealEase }}
         >
+          {headerOrnament ? (
+            <TintedDeco src={headerOrnament} className="love-story-ornament mx-auto mb-3 sm:mb-4" />
+          ) : null}
           <LoveStoryTitle title={loveStory.title} subtitle={loveStory.subtitle} />
           <div className="mt-4 sm:mt-5">
             <OrnamentalDivider />
           </div>
+          {intro ? (
+            <p className="love-story-intro mx-auto mt-5 max-w-xl sm:mt-6">
+              <StoryGlyphText text={intro} />
+            </p>
+          ) : null}
         </motion.div>
       </header>
 
@@ -219,10 +217,14 @@ export function LoveStory({ skyBackdrop = true }: { skyBackdrop?: boolean } = {}
         <StorySection
           key={`${chapter.image}-${index}`}
           title={chapter.title}
-          theme={chapter.theme}
-          layout={chapter.layout}
+          // Sides (and light/dark cards) alternate automatically; a chapter's layout overrides it
+          theme={index % 2 ? "dark" : "light"}
+          layout={chapter.layout ?? (index % 2 ? "image-right" : "image-left")}
           imageSrc={chapter.image}
-          imageAlt={formatStoryParagraph(chapter.imageAlt ?? "", groom, bride)}
+          imageAlt={formatStoryParagraph(chapter.imageAlt || photoAlt, groom, bride)}
+          imagePosition={chapter.imagePosition}
+          showNumber={showChapterNumbers}
+          showDivider={showChapterDividers}
           date={chapter.date}
           text={chapterTextFromParagraphs(chapter.paragraphs, groom, bride)}
           plain={isPlain}

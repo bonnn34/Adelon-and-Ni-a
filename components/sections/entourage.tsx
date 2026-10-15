@@ -11,6 +11,7 @@ import { fetchUntilReady, isAbortError } from "@/lib/fetch-until-ready"
 import { fetchInvitationList, readCachedInvitationList } from "@/lib/invitation-data"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
 import { TintedDeco } from "@/components/tinted-deco"
+import { DecoCorners } from "@/components/deco-corners"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -37,7 +38,7 @@ const SCRIPT = "var(--color-ink-accent)"
 const BODY = "var(--color-welcome-text)"
 const HAIRLINE = "color-mix(in srgb, var(--color-motif-medium) 60%, transparent)"
 
-// Section background = the hero's circle pattern (PlainBubbles paints its own aqua base)
+// Same circle pattern as the gallery / details sections (PlainBubbles paints the base)
 const sectionBg = "var(--color-bg-pattern-base)"
 
 // Text sitting directly on the circle pattern (colors: globals.css → --color-on-pattern*)
@@ -61,9 +62,6 @@ const cardStyle = {
     "0 26px 56px -30px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent), inset 0 1px 0 rgb(255 255 255 / 80%)",
 } as const
 
-const CORNER_DECO_CLASS =
-  "block h-auto w-auto max-w-[92px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[320px] select-none opacity-90"
-
 const palette = {
   body: BODY,
   heading: NAVY,
@@ -72,15 +70,8 @@ const palette = {
 } as const
 
 function DecoImg({ src, className }: { src: string; className: string }) {
-  return <TintedDeco src={src} className={className} />
-}
-
-// Corners keep their original artwork colors (no tint)
-// Top corners are the tall garland — sized by height (.deco-corner-top in globals.css)
-function CornerImg({ src, top = false }: { src: string; top?: boolean }) {
   if (!src) return null
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt="" aria-hidden="true" className={top ? "deco-corner-top" : CORNER_DECO_CLASS} />
+  return <TintedDeco src={src} className={className} />
 }
 
 function OutsideDivider() {
@@ -773,25 +764,17 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden`}
       style={{ background: sectionBg }}
     >
-      {/* Same circle pattern as the hero */}
+      {/* Same circle pattern as the gallery */}
       <PlainBubbles />
+      {/* Light white-dusty-blue wash over the circles (globals.css → .section-wash) */}
+      <div className="section-wash" aria-hidden="true" />
       <Section
         id="entourage"
         className="relative z-10 overflow-hidden pt-5 pb-5 sm:pt-10 sm:pb-10 md:pt-12 md:pb-12 lg:pt-14 lg:pb-14"
       >
-        {/* Corner decorations (from site.ts) */}
-        <div className="pointer-events-none absolute left-0 top-0 z-10">
-          <CornerImg src={decos.topLeft} top />
-        </div>
-        <div className="pointer-events-none absolute right-0 top-0 z-10">
-          <CornerImg src={decos.topRight} top />
-        </div>
-        <div className="pointer-events-none absolute bottom-0 left-0 z-10">
-          <CornerImg src={decos.bottomLeft} />
-        </div>
-        <div className="pointer-events-none absolute bottom-0 right-0 z-10">
-          <CornerImg src={decos.bottomRight} />
-        </div>
+        {/* Corner florals + double border (content/site.ts → entourage.decos / showFrame) */}
+        {content.showFrame && <div className="deco-frame" aria-hidden="true" />}
+        <DecoCorners decos={decos} />
 
       <div className={`relative z-20 mx-auto mb-5 max-w-5xl px-3 text-center @container/entourage sm:mb-10 sm:px-4 md:mb-12 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"}`}>
         <DecoImg
