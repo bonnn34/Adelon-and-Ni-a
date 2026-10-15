@@ -806,7 +806,7 @@ export const siteConfig = {
     //   image:    line-art illustration from /public/weddingtimeline; "" to use the icon instead
     //   icon:     fallback icon when there is no image —
     //             "arrival" | "rings" | "departure" | "cocktail" | "fireworks" | "dance"
-    //   description: optional extra line ("" to hide)
+    //   description: not shown on the site (kept only as a note)
     events: [
       {
         show: true,

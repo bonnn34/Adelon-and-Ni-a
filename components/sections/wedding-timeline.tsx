@@ -52,7 +52,6 @@ type TimelineIcon = React.ComponentType<React.SVGProps<SVGSVGElement>>
 interface TimelineEvent {
   time: string
   title: string
-  description?: string
   location?: string
   icon: TimelineIcon
   imageSrc?: string
@@ -175,7 +174,6 @@ export function WeddingTimeline() {
     .map((event) => ({
     time: event.time,
     title: event.title,
-    description: event.description || undefined,
     location: event.location ? fillVenue(event.location) : undefined,
     icon: ICONS[event.icon] ?? RingsIcon,
     imageSrc: event.image || undefined,
@@ -390,15 +388,6 @@ function TimelineText({
       >
         <SpecialCharFont text={event.title} />
       </p>
-
-      {event.description && (
-        <p
-          className={`font-goudy-italic ${timelineType.textRelaxed} mt-1.5`}
-          style={{ color: CREAM, textShadow }}
-        >
-          {event.description}
-        </p>
-      )}
 
       {event.location && (
         <p
