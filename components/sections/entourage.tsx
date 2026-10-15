@@ -327,7 +327,14 @@ const PAIRED_COLUMN_SECTIONS: { key: string; left: string; right: string }[] = [
 ]
 
 // Secondary sponsor groups whose names are split into two columns
-const TWO_COLUMN_SECONDARY_GROUPS = new Set(["Little Love Bearer", "Candle Bearer", "Veil Sponsors", "Cord Sponsors"])
+const TWO_COLUMN_SECONDARY_GROUPS = new Set([
+  "Little Love Bearer",
+  "Candle Bearer",
+  "Candle Sponsors",
+  "Veil Sponsors",
+  "Cord Sponsors",
+  "Ribbon Sponsors",
+])
 
 const SINGLE_COLUMN_SECTIONS = new Set([
   "Best Man",
@@ -339,22 +346,11 @@ const SINGLE_COLUMN_SECTIONS = new Set([
   "Presider",
 ])
 
-const ROLE_CATEGORY_DISPLAY_TITLES: Record<string, string> = {
-  "Candle Sponsors": "To light our path",
-  "Candle Sponsor": "To light our path",
-  "Veil Sponsors": "To clothe us as one",
-  "Veil Sponsor": "To clothe us as one",
-  Veil: "To clothe us as one",
-  "Cord Sponsors": "To bind us together",
-  "Cord Sponsor": "To bind us together",
-  "Chord Sponsors": "To bind us together",
-  "Chord Sponsor": "To bind us together",
-  Chord: "To bind us together",
-  Cord: "To bind us together",
-}
-
-function displayRoleCategory(category: string) {
-  return ROLE_CATEGORY_DISPLAY_TITLES[category] ?? category
+// Heading = the category exactly as written in the sheet (e.g. "Candle Sponsors",
+// "Veil Sponsor", "Cord Sponsors", "Ribbon Sponsor"). Spelling variants are still
+// grouped together by normalizeRoleCategory; the first member's text is shown.
+function displayRoleCategory(category: string, members: EntourageMember[] = []) {
+  return members[0]?.roleCategory?.trim() || category
 }
 
 const HONOR_ATTENDANT_BLOCK_CATEGORIES = [
@@ -379,6 +375,8 @@ function normalizeRoleCategory(category: string): string {
   if (alias) return alias
   if (/^little love bearers?$/i.test(normalized)) return "Little Love Bearer"
   if (/^candle bearers?$/i.test(normalized)) return "Candle Bearer"
+  if (/^candle sponsors?$/i.test(normalized)) return "Candle Sponsors"
+  if (/^ribbon sponsors?$/i.test(normalized)) return "Ribbon Sponsors"
   if (/^ch?ord sponsors?$/i.test(normalized)) return "Cord Sponsors"
   // Sheet may say "Cloth Sponsors" — same group as the veil sponsors
   if (/^(cloth|veil) sponsors?$/i.test(normalized)) return "Veil Sponsors"
@@ -1519,7 +1517,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                       const half = Math.ceil(grpMembers.length / 2)
                       return (
                         <div key={groupName} className="mb-1.5 sm:mb-2.5 md:mb-3">
-                          <TwoColumnLayout singleTitle={displayRoleCategory(groupName)} centerContent={true}>
+                          <TwoColumnLayout singleTitle={displayRoleCategory(groupName, grpMembers)} centerContent={true}>
                             {renderPairRows(groupName, grpMembers.slice(0, half), grpMembers.slice(half))}
                           </TwoColumnLayout>
                         </div>
@@ -1527,7 +1525,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                     }
                     return (
                       <div key={groupName} className="mb-1.5 sm:mb-2.5 md:mb-3">
-                        <TwoColumnLayout singleTitle={displayRoleCategory(groupName)} centerContent={true}>
+                        <TwoColumnLayout singleTitle={displayRoleCategory(groupName, grpMembers)} centerContent={true}>
                           {grpMembers.length === 2 ? (
                             <>
                               <div className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
@@ -1575,10 +1573,10 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                             <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                       </div>
                     )}
-                    <TwoColumnLayout singleTitle={displayRoleCategory(category)} centerContent={true}>
+                    <TwoColumnLayout singleTitle={displayRoleCategory(category, members)} centerContent={true}>
                       {(() => {
                         // Special rule: paired sponsor roles with exactly 2 names should meet at center
-                        const PAIRED_SECTIONS = new Set(["Candle Sponsors", "Cord Sponsors", "Veil Sponsors", "Little Love Bearer", "Little Promise Bearer"])
+                        const PAIRED_SECTIONS = new Set(["Candle Sponsors", "Cord Sponsors", "Veil Sponsors", "Ribbon Sponsors", "Little Love Bearer", "Little Promise Bearer"])
                         if (PAIRED_SECTIONS.has(category) && members.length === 2) {
                           const left = members[0]
                           const right = members[1]
@@ -1639,7 +1637,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
                     <div className="flex justify-center py-1 sm:py-2.5 md:py-3 mb-1.5 sm:mb-2.5 md:mb-3">
                       <div className="w-full max-w-md h-px" style={dividerLineStyle} />
                     </div>
-                    <TwoColumnLayout singleTitle={displayRoleCategory(category)} centerContent={true}>
+                    <TwoColumnLayout singleTitle={displayRoleCategory(category, members)} centerContent={true}>
                       {(() => {
                         if (SINGLE_COLUMN_SECTIONS.has(category) || members.length <= 2) {
                           return (

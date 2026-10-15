@@ -668,6 +668,8 @@ export const siteConfig = {
     verse: "And now abideth faith, hope, charity, these three; but the greatest of these is charity.",
     verseCitation: "1 Corinthians 13:13",
     decos: { ...SECTION_DECOS },
+    // Thin double border around the section (false hides it)
+    showFrame: true,
     // Venue cards layout:
     //   "separate" = one card each for ceremony and reception (uses ceremony / reception below)
     //   "combined" = ONE card for both — use when ceremony and reception share a venue.

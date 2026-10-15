@@ -1099,11 +1099,6 @@ export function Details() {
               </motion.div>
             </div>
           </motion.div>
-
-          <DecoImg
-            src={decos.footerVine}
-            className="relative z-20 mx-auto mt-10 block h-auto w-56 select-none opacity-90 sm:mt-12 sm:w-72 md:w-96"
-          />
         </div>
       </Section>
     </div>
