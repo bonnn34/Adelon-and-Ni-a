@@ -66,10 +66,10 @@ export type AttireColor = string | { name: string; hex: string }
 
 // ── The couple ──────────────────────────────────────────────────────────────
 const COUPLE = {
-  bride: "Cidny",
-  brideNickname: "Cidny",
-  groom: "Jasmine",
-  groomNickname: "Jasmine",
+  bride: "Jasmine M. Marcellana",
+  brideNickname: "Jasmine",
+  groom: "Cidny S. Loveres",
+  groomNickname: "Cidny",
 }
 
 // ── Date & times ────────────────────────────────────────────────────────────
@@ -1760,7 +1760,7 @@ Now, as they prepare to say yes before God and the people they love most, Cather
   // Snap & Share (components/sections/snap-share.tsx). {couple} → "Groom & Bride" nicknames.
   snapShare: {
     googleDriveLink:
-      "https://drive.google.com/drive/folders/1qVjxLcmkcWEmoDRYv_cgFgCKiYMmcf6j?usp=sharing",
+      "https://drive.google.com/drive/folders/170EONSnpH-aeyfM-yM5KNEXFw9-aYkM4?usp=sharing",
     albumQR: "/QR/AlbumQR.png",
     hashtag: HASHTAGS,
     instructions: "Please scan this QR Code and upload the photos and videos you have taken during our wedding reception. We are delighted to see your snaps too!",
