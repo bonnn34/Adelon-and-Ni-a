@@ -273,7 +273,7 @@ const ATTIRE = {
 // NEXT_PUBLIC_SITE_URL (env) overrides this when set.
 const SITE_URL = "https://pat-and-laica.weddinginvitationrsvp.com/"
 // Image shown when the link is shared (Facebook, Messenger, Viber, X, …) — 1200×630 JPG in /public
-const LINK_PREVIEW_IMAGE = "/Details/Linlkahgdj.png"
+const LINK_PREVIEW_IMAGE = "/Details/LinkPreview.png"
 
 // Site address with env override applied and no trailing slash — no need to edit
 export const canonicalSiteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? SITE_URL).replace(/\/$/, "")
@@ -369,7 +369,7 @@ const COUPLE_LABEL = `${COUPLE.groomNickname} & ${COUPLE.brideNickname}`
    ============================================================================ */
 
 // Principal sponsors Google Apps Script — used by the main page and /inviteone
-const SPONSORS_API = "https://script.google.com/macros/s/AKfycbzFw1p7V90y2pH1p_69JuYtU1c_gQKbCjL5VE8_cVePe6otUp8tJVjQMt4HQV7OHNzI/exec"
+const SPONSORS_API = "https://script.google.com/macros/s/AKfycbyEEeVGtHFWncNYe-ehsBMdiu5b4PzzyQptAg95z6dBKK6DJ2AJLJNfcpDtb7LWmD3z/exec"
 
 export const siteConfig = {
   siteUrl: SITE_URL,
@@ -380,17 +380,17 @@ export const siteConfig = {
     backgroundMusic: BRAND.backgroundMusic,
   },
   googleAPI:{
-    messageForm: "https://docs.google.com/forms/d/e/1FAIpQLSd6xU-2yIy1NqlDo1FCVKD094Ay00LtKJEDwi3-Q53_2gZEyQ/formResponse",   //done
-    message: "https://script.google.com/macros/s/AKfycbwIPJzCLc8JWTdspGwGK1U--8lpoFbSX4RekoWfVEdxV5TZi-9tet2W4fhAuPUj1N4o/exec",  //done
-    guestList: "https://script.google.com/macros/s/AKfycbwsNT-ysI-taavtWmmS76ac1ym8IVqbs_4QJsNqaxtMokqAY7HMnfAnnqnggLSw0QMg/exec",  //done
-    guestRequest: "https://script.google.com/macros/s/AKfycbxjHMMZqSpaxVrfrUi6ZNmjyX2CfDHz07mL8MFHHOdcsYBhktanmo0RWjbrh2xEDevX/exec",   //done
-    entourage: "https://script.google.com/macros/s/AKfycby2kEmQ3V40LGIVrqUugN7C-jiivs3XRIhr1RnSjSldfCb6MfyorQQm53jrVtkrmhBr/exec",  //done
+    messageForm: "https://docs.google.com/forms/d/e/1FAIpQLScJPSKUKskfqQknaFVMFzid2t1rrh3hqhdiamQcYMB7yLKKAQ/formResponse",   //done
+    message: "https://script.google.com/macros/s/AKfycbzoZ0rUl2-Sypf3WxYmYbNsHshWyoScU7-B7ccm1G1RqISloJicx2vYt7pBK-UYTwbbpg/exec",  //done
+    guestList: "https://script.google.com/macros/s/AKfycbz7EfHzCItq9NiD_KbGc68LlYTLqZl4GcsaCGYcFM-b22rJYgm0qO2gEmySqHDXNLhLCQ/exec",  //done
+    guestRequest: "https://script.google.com/macros/s/AKfycbxwX1_Uo6x_nkpD6k_IUuJaY_AtrrU0NA9hVV7hUjqcNpMWhX7vdltDcUIX11kdoRm3_g/exec",   //done
+    entourage: "https://script.google.com/macros/s/AKfycbyubFG8sx4VW30gFDDkyCivUgELI7IpVxPU6pQRk-TIUTk_ZTwXFbdG68biJ19U4Zf7ZA/exec",  //done
     sponsors: SPONSORS_API,  //done 
     // Principal sponsors shown on /inviteone and /invitetwo (entourage section)
     sponsorsInviteOne: SPONSORS_API, // same sheet as sponsors above
-    sponsorsInviteTwo: "https://script.google.com/macros/s/AKfycbzFw1p7V90y2pH1p_69JuYtU1c_gQKbCjL5VE8_cVePe6otUp8tJVjQMt4HQV7OHNzI/exec",
+    sponsorsInviteTwo: "https://script.google.com/macros/s/AKfycbyEEeVGtHFWncNYe-ehsBMdiu5b4PzzyQptAg95z6dBKK6DJ2AJLJNfcpDtb7LWmD3z/exec",
 ////google share 
-    googleShare: "https://docs.google.com/spreadsheets/d/18q3VFEsfZUw1UP0iD8yOEGRrDeKoQGI0hy9KyuttP3s/edit?usp=sharing",
+    googleShare: "https://docs.google.com/spreadsheets/d/1c8uHpCcAorXpcLSyK2KntroNH43mg3EnEjjVmpoyDII/edit?usp=sharing",
     videoMessageForm:
       "https://docs.google.com/forms/d/e/1FAIpQLSfeGlEl4CMXWefdvCw6AOPHFS1ROku_rs-Gbofa2LkVJ0sLGQ/viewform", 
   },
