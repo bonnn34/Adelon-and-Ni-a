@@ -84,16 +84,20 @@ function OutsideDivider() {
   )
 }
 
-const SECTION_TITLE_CLASS = `${theSeasons.className} text-[0.65rem] sm:text-[0.78rem] md:text-[0.9rem] tracking-[0.08em] sm:tracking-[0.12em] md:tracking-[0.14em] uppercase leading-tight`
+const SECTION_TITLE_CLASS = `${theSeasons.className} text-[0.8rem] sm:text-[0.85rem] md:text-[0.95rem] tracking-[0.08em] sm:tracking-[0.12em] md:tracking-[0.14em] uppercase leading-tight`
+
+// Headings shown in the Above the Beyond script instead of the uppercase serif
+const SCRIPT_TITLE_CATEGORIES = new Set(["Principal Sponsors", "Best Man", "Maid of Honor"])
+const SCRIPT_TITLE_CLASS = `${aboveTheBeyond.className} text-[1.35rem] sm:text-[1.6rem] md:text-[1.85rem] normal-case tracking-normal leading-[1.1]`
 
 const nameStyle: React.CSSProperties = {
-  fontSize: "clamp(0.62rem, min(2vw, 4.8cqi), 0.98rem)",
+  fontSize: "clamp(0.9rem, min(3.8vw, 4.8cqi), 1.02rem)",
   lineHeight: 1.2,
   letterSpacing: "0.02em",
 }
 
 const roleTitleStyle: React.CSSProperties = {
-  fontSize: "clamp(0.5rem, min(1.55vw, 3.5cqi), 0.68rem)",
+  fontSize: "clamp(0.7rem, min(2.9vw, 3.5cqi), 0.78rem)",
   lineHeight: 1.1,
 }
 
@@ -176,13 +180,13 @@ function CouplePromiseMark({ kicker, line }: { kicker: string; line: string }) {
   return (
     <div className="-mt-2 mb-3 text-center sm:-mt-4 sm:mb-5 md:-mt-5 md:mb-6">
       <p
-        className={`${cinzel.className} text-[0.5625rem] font-semibold uppercase tracking-[0.2em] sm:text-[0.625rem] sm:tracking-[0.24em] md:text-[0.6875rem] md:tracking-[0.28em]`}
+        className={`${cinzel.className} text-[0.6875rem] font-semibold uppercase tracking-[0.2em] sm:text-[0.6875rem] sm:tracking-[0.24em] md:text-[0.6875rem] md:tracking-[0.28em]`}
         style={{ color: ACCENT }}
       >
         {kicker}
       </p>
       <p
-        className={`font-goudy-italic mx-auto mt-1.5 max-w-[16rem] text-xs sm:text-sm sm:mt-2`}
+        className={`font-goudy-italic mx-auto mt-1.5 max-w-[16rem] text-sm sm:text-sm sm:mt-2`}
         style={{ color: BODY }}
       >
         {line}
@@ -595,9 +599,13 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
   }) => {
     const textAlign =
       align === "right" ? "text-right" : align === "left" ? "text-left" : "text-center"
+    const titleClass =
+      typeof children === "string" && SCRIPT_TITLE_CATEGORIES.has(children)
+        ? SCRIPT_TITLE_CLASS
+        : SECTION_TITLE_CLASS
     return (
       <h3
-        className={`relative ${SECTION_TITLE_CLASS} mb-1 sm:mb-2 md:mb-2.5 ${textAlign} ${className} transition-all duration-300`}
+        className={`relative ${titleClass} mb-1 sm:mb-2 md:mb-2.5 ${textAlign} ${className} transition-all duration-300`}
         style={{ color: NAVY }}
       >
         {typeof children === "string" ? (
@@ -615,7 +623,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
   // Short italic line under a heading (e.g. what the role means)
   const SectionCaption = ({ children }: { children: React.ReactNode }) => (
     <p
-      className="font-goudy-italic mx-auto -mt-0.5 mb-2 max-w-md px-4 text-center text-[0.72rem] leading-snug sm:mb-3 sm:text-sm md:text-[0.95rem]"
+      className="font-goudy-italic mx-auto -mt-0.5 mb-2 max-w-md px-4 text-center text-[0.85rem] leading-snug sm:mb-3 sm:text-sm md:text-[0.95rem]"
       style={{ color: SCRIPT }}
     >
       {children}
@@ -653,7 +661,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
             ...nameStyle,
             ...(featured
               ? {
-                  fontSize: "clamp(0.68rem, min(2.1vw, 5.2cqi), 1.05rem)",
+                  fontSize: "clamp(1rem, min(4.2vw, 5.2cqi), 1.12rem)",
                 }
               : {}),
             color: NAVY,
@@ -783,7 +791,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
           <OutsideDivider />
         </div>
         <p
-          className={`${cinzel.className} mx-auto max-w-[20rem] px-2 text-[0.625rem] font-semibold leading-snug tracking-[0.12em] min-[400px]:max-w-none min-[400px]:text-[0.6875rem] min-[400px]:tracking-[0.16em] sm:text-[0.8125rem] sm:tracking-[0.2em] md:text-sm md:tracking-[0.22em]`}
+          className={`${cinzel.className} mx-auto max-w-[20rem] px-2 text-[0.6875rem] font-semibold leading-snug tracking-[0.12em] min-[400px]:max-w-none min-[400px]:text-[0.75rem] min-[400px]:tracking-[0.16em] sm:text-[0.8125rem] sm:tracking-[0.2em] md:text-sm md:tracking-[0.22em]`}
           style={onBg}
         >
           {content.eyebrow}
@@ -793,7 +801,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
         </div>
 
         <p
-          className="font-goudy-italic mx-auto mt-2.5 max-w-xl px-2 text-[0.8rem] leading-snug sm:mt-5 sm:text-base sm:leading-relaxed md:mt-6"
+          className="font-goudy-italic mx-auto mt-2.5 max-w-xl px-2 text-[0.9rem] leading-snug sm:mt-5 sm:text-base sm:leading-relaxed md:mt-6"
           style={{ ...onBg, fontWeight: 600 }}
         >
           {content.description}

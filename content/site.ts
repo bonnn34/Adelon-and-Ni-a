@@ -256,8 +256,8 @@ const ATTIRE = {
     note: "We encourage everyone to follow our color palette to create a beautiful and harmonious look for our special day.",
     ladies: {
       label: "Ladies",
-      details: "Flowy long or midi dresses in any of our wedding palette colors: Dusty Blue, Slate Blue, Powder Blue, or Beige.",
-      highlight: "Flowy long or midi dresses",
+      details: "Flowy long or mini dresses in any of our wedding palette colors: Dusty Blue, Slate Blue, Powder Blue, or Beige.",
+      highlight: "Flowy long or mini dresses",
       roles: [] as { role: string; attire: string }[],
     },
     gentlemen: {
@@ -273,7 +273,8 @@ const ATTIRE = {
 // NEXT_PUBLIC_SITE_URL (env) overrides this when set.
 const SITE_URL = "https://cidny-and-jasmine.weddinginvitationrsvp.com/"
 // Image shown when the link is shared (Facebook, Messenger, Viber, X, …) — 1200×630 JPG in /public
-const LINK_PREVIEW_IMAGE = "/Details/LinkPreview.png"
+// Use a NEW filename whenever the image changes — Facebook caches images by URL.
+const LINK_PREVIEW_IMAGE = "/Details/LinkPreview-og.jpg"
 
 // Site address with env override applied and no trailing slash — no need to edit
 export const canonicalSiteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? SITE_URL).replace(/\/$/, "")
