@@ -67,9 +67,9 @@ export type AttireColor = string | { name: string; hex: string }
 
 // ── The couple ──────────────────────────────────────────────────────────────
 const COUPLE = {
-  bride: "Breichelle",
+  bride: "Breichelle Lyn Acordon",
   brideNickname: "Breichelle",
-  groom: "Jeff Ren",
+  groom: "Jeff Ren Liwalas",
   groomNickname: "Jeff",
 }
 
@@ -287,7 +287,7 @@ const ATTIRE = {
 const SITE_URL = "https://jeff-and-breichelle.weddinginvitationrsvp.com/"
 // Image shown when the link is shared (Facebook, Messenger, Viber, X, …) — 1200×630 JPG in /public
 // Use a NEW filename whenever the image changes — Facebook caches images by URL.
-const LINK_PREVIEW_IMAGE = "/Details/LinkPreview-og.jpg" // 1200×630 JPG, made from LinkPreview.png
+const LINK_PREVIEW_IMAGE = "/Details/LinkPreview.png"
 
 // Site address with env override applied and no trailing slash — no need to edit
 export const canonicalSiteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? SITE_URL).replace(/\/$/, "")
@@ -504,9 +504,9 @@ export const siteConfig = {
     // played directly with no YouTube at all; leave "" to use youtubeId instead.
     videoSrc: "",
     // YouTube video ID — the part after "watch?v=" (or after "youtu.be/")
-    youtubeId: "ojZmsQf8_AM",
+    youtubeId: "YPyS5XS-9Ck",
     // Cover image shown before the video plays
-    thumbnail: "/Details/thumbnail.jpg",
+    thumbnail: "/desktop-background/couples (49).webp",
     thumbnailAlt: `${COUPLE_LABEL} — video cover`,
     playLabel: "Play our video",
   },
@@ -1289,15 +1289,17 @@ export const siteConfig = {
     //          Guests can tap the QR to enlarge it and save it with the "Save QR" button.
     //   accountNumber: shown under the name (display only)
     //   With 2+ visible accounts, guests switch between them with a toggle; each shows its QR and a "Save QR" button
-    showAccounts: false,
+    showAccounts: true,
     accountsTitle: "For e-gifts",
     accountsNote: "Choose an account, then scan its QR — tap the QR to enlarge.",
     saveQrLabel: "Save QR",
     zoomNote: "Scan with your banking or e-wallet app, or save it and upload from your gallery.",
+    // ⚠ The QR file names are swapped — checked by decoding each QR:
+    //   /QR/BDO.png → pays the GCash account (G-Xchange, "BR*******E L** A.")
+    //   /QR/BPI.png → pays the BDO account (Banco de Oro, "Brei", account ending 8451)
     accounts: [
-      { show: true, label: "BPI", accountName: "Raph", accountNumber: "********619", qr: "/QR/BPI.png" },
-      { show: true, label: "GCash", accountName: "JU***H H", accountNumber: "0906267****", qr: "/QR/Gcash.png" },
-      { show: false, label: "BDO", accountName: "", accountNumber: "", qr: "" },
+      { show: true, label: "GCash", accountName: "BR***", accountNumber: "0938 662 ****", qr: "/QR/BDO.png" },
+      { show: true, label: "BDO", accountName: "Brei", accountNumber: "********8451", qr: "/QR/BPI.png" },
     ] as { show: boolean; label: string; accountName: string; accountNumber: string; qr: string }[],
     // Leave any path "" to hide that decoration
     decos: { ...SECTION_DECOS },
@@ -1309,7 +1311,7 @@ export const siteConfig = {
     // {couple} → "Groom & Bride" nicknames. "" hides a line or image.
     qrCard: {
       coupleNameImage: BRAND.coupleNameImage, // unused: the card sets the names in type like the loader
-      coupleImage: "/Details/couple.png", // couple illustration beside the text
+      coupleImage: "/Details/specialInvitation.png", // couple illustration beside the text
       eyebrow: "The wedding of",
       title: "Find Your Table",
       script: "please be seated",
@@ -1332,42 +1334,7 @@ export const siteConfig = {
   proposal: {
     decos: { ...CORNER_DECOS },
     coupleNameImage: BRAND.coupleNameImage, // unused: names are set in type like the loader
-    coupleImage: "/Details/specialInvitation.png", // wedding party illustration at the top of the card (no frame)
-    // Personal note under "Will you be our {role}?", one per role id (content/proposal-roles.ts).
-    // {name} invitee, {role} role title, {groom} / {bride} nicknames. Missing ids fall back
-    // to copy.<type>.askNote.
-    roleMessages: {
-      "best-man":
-        "{groom} can't imagine standing at the altar without you beside him. You've been his steady friend through every chapter, and we'd be honored to have you by his side for this one too.",
-      "honor-attendant":
-        "{bride} has shared every big moment of her life with you, and this one wouldn't feel right without you closest to her. We'd love for you to hold her hand, calm her nerves and celebrate every happy tear with us.",
-      bridesmaid:
-        "You've been part of {bride}'s story through the laughter, the long talks and everything in between. We'd love for you to walk with her in dusty pink and share the joy of this day up close.",
-      groomsman:
-        "You've stood with {groom} through so many seasons, and we'd love for you to stand with him on this one too. Suit up in gray with us and help make our day as fun and meaningful as you've made his life.",
-      "flower-girl":
-        "Every walk down the aisle begins with a little magic, and we think you're the sweetest one to bring it. You'd wear a pretty pink dress and scatter petals to lead the way for {bride}!",
-      "ring-bearer":
-        "Our rings hold the promise we'll make to each other, and we'd trust you to carry them. You'd walk down the aisle looking sharp in gray and bring them safely to the altar!",
-      "coin-bearer":
-        "The arrhae is our promise to always care for one another, and we'd love for you to carry it for us. You'd walk down the aisle with a very important job and make our ceremony extra special!",
-      "bible-bearer":
-        "God's Word is at the center of our marriage, and we'd love for you to carry the Bible down the aisle for us. It's a very special job, and we know you'll do it with a big, proud smile!",
-      "herald-bearer":
-        "You'd lead the way down the aisle and let everyone know the bride is on her way. It's a big, happy job, and we think you'd be perfect for it!",
-      "little-bride":
-        "Walking down the aisle as our Little Bride, you'd bring so much sweetness to our ceremony. We'd love to see you in a pretty pink dress, sharing a little bit of {bride}'s special day!",
-      "candle-sponsor":
-        "The candles we light will stand for God's light guiding our new home, and we'd be grateful to have you light them with us. Your presence and prayers would make that moment shine even brighter.",
-      "veil-sponsor":
-        "The veil is a sign of the unity and protection we hope to find in God and in each other. We'd be honored to have you place it over us and bless the very beginning of our marriage.",
-      "cord-sponsor":
-        "The cord binds us together as one for the rest of our lives, and we'd be honored to have you place it around us. Your blessing would tie our hearts even closer as we begin this journey.",
-      "principal-sponsor-ninong":
-        "You've shown us what a faithful, loving life looks like, and we'd be honored to have you guide our marriage as our Ninong. Your wisdom, prayers and steady support would mean the world to us as we build our home.",
-      "principal-sponsor-ninang":
-        "Your warmth, faith and example have touched our lives in so many ways, and we'd be honored to have you guide our marriage as our Ninang. Your love, counsel and prayers would mean the world to us as we begin this new life.",
-    } as Record<string, string>,
+    coupleImage: "/Details/specialInvitation.png", // couple illustration above the question
     ornament: DECOR.headerOrnament, // small sprig at the top of the card; "" to hide
     // Eucalyptus sprigs on either side of the couple name; "" to hide one
     nameDecos: { left: DECOR.sideLeft, right: DECOR.sideRight },
@@ -1380,9 +1347,6 @@ export const siteConfig = {
     // Placeholders: {name} invitee, {role} role title, {groom} / {bride} nicknames.
     labels: {
       headerEyebrow: "A Personal Invitation",
-      headline: "From Our Hearts to Yours", // big title under the eyebrow
-      placeEyebrow: "A Special Place", // small line above placeTitle
-      placeTitle: "In Our Wedding", // second title, under the role illustration
       headerScript: "written just for you",
       saveTheDate: "Save the Date",
       roleOffered: "Your role",

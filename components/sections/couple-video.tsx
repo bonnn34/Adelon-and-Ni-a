@@ -10,8 +10,9 @@ import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
 import localFont from "next/font/local"
 import Image from "next/image"
 import React from "react"
-import "@/components/loader/loading-screen.css"
-import { SkyBackdrop } from "@/components/sky-backdrop"
+import { PlainBubbles } from "@/components/loader/PlainBubbles"
+import { SectionBackdrop } from "@/components/section-backdrop"
+import { HEART_PATH } from "@/components/rising-hearts"
 
 const theSeasons = localFont({
   src: "../../Font/Fontspring-DEMO-theseasons-reg.otf",
@@ -25,12 +26,16 @@ const aboveTheBeyond = localFont({
   variable: "--font-above-beyond",
 })
 
+// Paper frame with a blush edge (same as the gallery / love story photo frames)
 const videoFrameStyle = {
-  borderColor: "color-mix(in srgb, var(--color-motif-medium) 60%, transparent)",
-  background: "#FFFFFF",
+  borderColor: "color-mix(in srgb, var(--color-motif-blush) 90%, transparent)",
+  background: "var(--color-motif-soft)",
   boxShadow:
-    "0 0 0 6px rgb(255 255 255 / 55%), 0 18px 40px -18px color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)",
+    "0 0 0 6px color-mix(in srgb, var(--color-motif-soft) 70%, transparent), 0 18px 40px -18px color-mix(in srgb, var(--color-welcome-navy) 32%, transparent)",
 } as const
+
+// Soft white edge so text stays crisp over the circles and hearts (matches the gallery)
+const onBgGlow = "0 1px 0 rgb(255 255 255 / 85%), 0 0 12px rgb(255 255 255 / 70%)"
 
 declare global {
   interface Window {
@@ -39,23 +44,20 @@ declare global {
   }
 }
 
+// Warm-gray hairlines either side of a dusty-rose heart (same as the other sections)
 function OrnamentalDivider() {
   return (
-    <div className="flex items-center justify-center gap-1.5">
+    <div className="flex items-center justify-center gap-2" aria-hidden>
       <span
         className="h-px w-10 sm:w-16"
-        style={{
-          background:
-            "linear-gradient(to right, transparent, var(--color-motif-yellow))",
-        }}
+        style={{ background: "linear-gradient(to right, transparent, var(--color-motif-medium))" }}
       />
-      <span className="h-1 w-1 rounded-full sm:h-1.5 sm:w-1.5" style={{ background: "var(--color-motif-accent)" }} aria-hidden />
+      <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="var(--color-motif-accent)">
+        <path d={HEART_PATH} />
+      </svg>
       <span
         className="h-px w-10 sm:w-16"
-        style={{
-          background:
-            "linear-gradient(to left, transparent, var(--color-motif-yellow))",
-        }}
+        style={{ background: "linear-gradient(to left, transparent, var(--color-motif-medium))" }}
       />
     </div>
   )
@@ -77,6 +79,7 @@ function CoupleVideoTitle({ title, script }: { title: string; script: string }) 
         style={{
           fontSize: "var(--title-size)",
           color: "var(--color-welcome-navy)",
+          textShadow: onBgGlow,
         }}
       >
         {title}
@@ -87,7 +90,7 @@ function CoupleVideoTitle({ title, script }: { title: string; script: string }) 
         style={{
           fontSize: "var(--script-size)",
           color: "var(--color-welcome-heading)",
-          textShadow: "0 1px 0 rgb(255 255 255 / 80%)",
+          textShadow: onBgGlow,
         }}
       >
         {script}
@@ -278,7 +281,9 @@ function useVideoPlayer(videoSrc: string, youtubeId: string, started: boolean) {
   }
 }
 
-// skyBackdrop: false when a parent already paints one sky behind this and the next section
+// skyBackdrop: false when a parent already paints the circle pattern behind this and the
+// next section (invitation-page.tsx → video + love story). Either way the section gets the
+// shared pink paper wash and rising hearts (section-backdrop.tsx), like the other sections.
 export function CoupleVideo({ skyBackdrop = true }: { skyBackdrop?: boolean } = {}) {
   const siteConfig = useSiteConfig()
   // Fall back to the bundled config if a remote override is missing this block.
@@ -312,8 +317,10 @@ export function CoupleVideo({ skyBackdrop = true }: { skyBackdrop?: boolean } = 
     <section
       id="couple-video"
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden px-4 pb-10 pt-8 sm:px-6 sm:pb-12 sm:pt-10 md:pb-16 md:pt-12`}
+      style={skyBackdrop ? { background: "var(--color-bg-pattern-base)" } : undefined}
     >
-      {skyBackdrop && <SkyBackdrop sun />}
+      {skyBackdrop && <PlainBubbles />}
+      <SectionBackdrop />
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -328,7 +335,7 @@ export function CoupleVideo({ skyBackdrop = true }: { skyBackdrop?: boolean } = 
           </div>
           <p
             className={`font-goudy-italic mx-auto mt-4 max-w-xl sm:mt-5 md:mt-6 ${sectionType.textSnug}`}
-            style={{ color: "var(--color-welcome-text)" }}
+            style={{ color: "var(--color-welcome-text)", textShadow: onBgGlow, fontWeight: 600 }}
           >
             {content.subtitle}
           </p>
@@ -469,7 +476,7 @@ export function CoupleVideo({ skyBackdrop = true }: { skyBackdrop?: boolean } = 
                     >
                       <span
                         className="absolute inset-y-0 left-0 rounded-full"
-                        style={{ width: `${progress * 100}%`, background: "var(--color-motif-medium)" }}
+                        style={{ width: `${progress * 100}%`, background: "var(--color-motif-blush)" }}
                       />
                       <span
                         className="absolute top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full"
@@ -508,13 +515,13 @@ export function CoupleVideo({ skyBackdrop = true }: { skyBackdrop?: boolean } = 
         <footer
           className="mt-8 space-y-4 border-t pt-6 text-center sm:mt-10 sm:space-y-5 sm:pt-8 md:mt-12"
           style={{
-            borderColor: "color-mix(in srgb, var(--color-motif-medium) 45%, transparent)",
+            borderColor: "color-mix(in srgb, var(--color-motif-blush) 80%, transparent)",
           }}
         >
           <OrnamentalDivider />
           <p
             className={`font-goudy-italic mx-auto max-w-lg ${sectionType.textSnug}`}
-            style={{ color: "var(--color-welcome-navy)" }}
+            style={{ color: "var(--color-welcome-navy)", textShadow: onBgGlow }}
           >
             {content.closingNote}
           </p>

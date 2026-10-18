@@ -327,20 +327,19 @@ export function Registry() {
                         <button
                           type="button"
                           onClick={() => setZoomQr({ src: active.qr, label: active.label })}
-                          className="group relative aspect-square w-full max-w-[13rem] rounded-2xl bg-white p-2 transition-transform duration-300 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-motif-accent)]"
+                          className="group relative block w-full max-w-[13rem] rounded-2xl bg-white p-2 transition-transform duration-300 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-motif-accent)]"
                           style={{ boxShadow: `0 0 0 1px ${c.cardEdge}, 0 0 0 6px color-mix(in srgb, var(--color-motif-medium) 14%, transparent), 0 14px 26px -16px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)` }}
                           aria-label={`Enlarge ${active.label} QR code`}
                         >
-                          <span className="relative block h-full w-full">
-                            <Image
-                              src={active.qr}
-                              alt={`${active.label} QR code`}
-                              fill
-                              unoptimized
-                              sizes="208px"
-                              className="object-contain"
-                            />
-                          </span>
+                          {/* Sized by its own width (square) — a % height inside a <button> can collapse to 0 */}
+                          <Image
+                            src={encodeURI(active.qr)}
+                            alt={`${active.label} QR code`}
+                            width={416}
+                            height={416}
+                            unoptimized
+                            className="block aspect-square h-auto w-full object-contain"
+                          />
                           <span
                             className="absolute -bottom-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full text-white shadow-md"
                             style={{ background: buttonBg, boxShadow: "0 0 0 2px #FFFFFF" }}
@@ -465,8 +464,15 @@ export function Registry() {
             <p className={`${theSeasons.className} mb-3 text-lg uppercase tracking-[0.12em]`} style={{ color: c.title }}>
               {zoomQr.label}
             </p>
-            <div className="relative mx-auto aspect-square w-full max-w-[18rem] overflow-hidden rounded-xl bg-white" style={{ boxShadow: `0 0 0 1px ${c.glow}` }}>
-              <Image src={zoomQr.src} alt={`${zoomQr.label} QR code`} fill unoptimized sizes="288px" className="object-contain p-2" />
+            <div className="relative mx-auto w-full max-w-[18rem] overflow-hidden rounded-xl bg-white p-2" style={{ boxShadow: `0 0 0 1px ${c.glow}` }}>
+              <Image
+                src={encodeURI(zoomQr.src)}
+                alt={`${zoomQr.label} QR code`}
+                width={576}
+                height={576}
+                unoptimized
+                className="block aspect-square h-auto w-full object-contain"
+              />
             </div>
             <p className="font-goudy-italic mt-3 text-sm" style={{ color: c.body }}>
               {content.zoomNote}
