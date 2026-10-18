@@ -12,27 +12,25 @@ import {
   type ReactNode,
 } from "react"
 import { useSearchParams } from "next/navigation"
-import dynamic from "next/dynamic"
+import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence, useReducedMotion, type Variants } from "motion/react"
-import { Heart, Check, X, Sparkles, MapPin } from "lucide-react"
+import { Heart, Check, X, Sparkles } from "lucide-react"
 import localFont from "next/font/local"
 import { Cinzel, Playfair_Display } from "next/font/google"
 import { ProposalMixedText, proposalMixedTextInter } from "@/lib/proposal-mixed-text"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { Hero as InvitationHero } from "@/components/loader/Hero"
 import { LoadingScreen } from "@/components/loader/LoadingScreen"
-import { InvitePhotoBackdrop } from "@/components/loader/invite-photo-backdrop"
+import { InvitePhotoBackdrop, PhotoBackground } from "@/components/loader/invite-photo-backdrop"
 import { sectionType, welcomeTitleSize } from "@/lib/section-typography"
 import { sectionBackground } from "@/lib/section-background"
 import { siteConfig as defaultSiteConfig } from "@/content/site"
-import { parseWeddingDate } from "@/lib/wedding-date"
 import type { ProposalRole } from "@/lib/proposal-types"
 import { parseInviteeNameFromSearchParams } from "@/lib/proposal-invite-link"
 import { TintedDeco } from "@/components/tinted-deco"
-import { useCssColor } from "@/hooks/use-css-color"
-
-const Silk = dynamic(() => import("@/components/silk"), { ssr: false })
+import { SectionBackdrop } from "@/components/section-backdrop"
+import { HEART_PATH } from "@/components/rising-hearts"
 
 const proposalEntryEase = [0.22, 1, 0.36, 1] as const
 const CINEMATIC_ENTRY_MS = 3000
@@ -44,26 +42,13 @@ const revealEase = [0.22, 1, 0.36, 1] as const
 
 const headerStagger: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.14, delayChildren: 0.35 } },
+  show: { transition: { staggerChildren: 0.11, delayChildren: 0.3 } },
 }
 
 const headerItem: Variants = {
   hidden: { opacity: 0, y: 14, filter: "blur(4px)" },
   show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.9, ease: revealEase } },
 }
-
-// Petals drifting behind the card, in the invitation's script / accent colors
-const PETALS = Array.from({ length: 18 }, (_, i) => ({
-  x: (i * 41 + 7) % 100,
-  size: 5 + ((i * 7) % 6),
-  dur: 16 + ((i * 5) % 10),
-  delay: -((i * 3.3) % 20),
-  drift: (i % 2 === 0 ? 1 : -1) * (14 + ((i * 11) % 30)),
-  spin: (i % 2 === 0 ? 1 : -1) * (160 + ((i * 47) % 300)),
-  // Sky, sage and butter petals
-  color: ["var(--color-motif-medium)", "var(--color-motif-yellow)", "var(--color-motif-silver)"][i % 3],
-  petal: i % 2 === 0,
-}))
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -175,10 +160,10 @@ function T({ text, className = "" }: { text: string; className?: string }) {
   )
 }
 
-/** Large corner decorations pinned to the screen corners, behind the card, plus drifting petals. */
+/** Large corner decorations pinned to the screen corners, behind the card, plus the
+ *  invitation's rising pink hearts (section-backdrop.tsx). */
 function ProposalPageFrame() {
   const decos = useSiteConfig().proposal.decos
-  const reduceMotion = useReducedMotion()
   const corners = [
     { src: decos.topLeft, pos: "tl" },
     { src: decos.topRight, pos: "tr" },
@@ -198,27 +183,7 @@ function ProposalPageFrame() {
           ) : null,
         )}
       </div>
-      {!reduceMotion && (
-        <div className="invite-motes" aria-hidden>
-          {PETALS.map((m, i) => (
-            <span
-              key={i}
-              className={`invite-mote${m.petal ? " invite-mote--petal" : ""}`}
-              style={
-                {
-                  "--x": `${m.x}%`,
-                  "--size": `${m.size}px`,
-                  "--dur": `${m.dur}s`,
-                  "--delay": `${m.delay}s`,
-                  "--drift": `${m.drift}px`,
-                  "--spin": `${m.spin}deg`,
-                  "--c": m.color,
-                } as CSSProperties
-              }
-            />
-          ))}
-        </div>
-      )}
+      <SectionBackdrop wash={false} overlay />
     </>
   )
 }
@@ -230,9 +195,7 @@ function OrnamentalDivider({ compact = false }: { compact?: boolean }) {
       aria-hidden
     >
       <span className="h-px flex-1 bg-gradient-to-r from-transparent to-[var(--invite-line)]" />
-      <span className="h-1 w-1 rotate-45 bg-[var(--invite-script)]" />
-      <span className="h-1.5 w-1.5 rotate-45 bg-[var(--color-motif-accent)]" />
-      <span className="h-1 w-1 rotate-45 bg-[var(--invite-script)]" />
+      <HeartMark className="h-3 w-3" />
       <span className="h-px flex-1 bg-gradient-to-l from-transparent to-[var(--invite-line)]" />
     </div>
   )
@@ -240,17 +203,6 @@ function OrnamentalDivider({ compact = false }: { compact?: boolean }) {
 
 function DividerLine({ className = "w-16 sm:w-24 md:w-32" }: { className?: string }) {
   return <span className={`block h-px ${className}`} style={dividerLineStyle} aria-hidden />
-}
-
-/** Small-caps line between two short hairlines — the invitation's eyebrow. */
-function Eyebrow({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return (
-    <div className={`flex items-center justify-center gap-3 ${className}`}>
-      <span className="h-px w-8 sm:w-12" style={{ background: "linear-gradient(to right, transparent, var(--invite-line))" }} aria-hidden />
-      <SmallCaps className="tracking-[0.3em] sm:tracking-[0.36em]">{children}</SmallCaps>
-      <span className="h-px w-8 sm:w-12" style={{ background: "linear-gradient(to left, transparent, var(--invite-line))" }} aria-hidden />
-    </div>
-  )
 }
 
 function SmallCaps({
@@ -380,167 +332,77 @@ function Paragraphs({ lines, className = "" }: { lines: readonly string[]; class
 
 /* ── Card shell ───────────────────────────────────────────────────────────── */
 
+/**
+ * Arched corner radii that scale with the card: the dome is 30% of the card's width
+ * (capped at 15rem), so phones and desktops get the same graceful chapel-window curve.
+ * `inset` is how far a frame sits inside the card edge — its radii shrink by the same
+ * amount, so every frame traces the outer arch exactly.
+ */
+function archRadius(inset = "0px"): CSSProperties {
+  const dome = `calc(var(--arch-h) - ${inset})`
+  const foot = `max(0px, calc(var(--arch-foot) - ${inset}))`
+  return {
+    borderRadius: `50% 50% ${foot} ${foot} / ${dome} ${dome} ${foot} ${foot}`,
+  }
+}
+
 function ProposalCard({ children }: { children: ReactNode }) {
-  // Arched top like a chapel window; the frames follow the same curve
-  const arch = "rounded-t-[9rem] rounded-b-[1.5rem] sm:rounded-t-[15rem] sm:rounded-b-[2rem]"
-  const archInner = "rounded-t-[8.4rem] rounded-b-[1.1rem] sm:rounded-t-[14rem] sm:rounded-b-[1.5rem]"
-  const archInnermost = "rounded-t-[8rem] rounded-b-[0.85rem] sm:rounded-t-[13.4rem] sm:rounded-b-[1.2rem]"
   return (
-    <div className="relative mx-auto w-full max-w-2xl">
-      <div className={`pointer-events-none absolute -inset-4 opacity-70 blur-2xl ${arch}`} style={ambientGlowStyle} aria-hidden />
+    // Container query: --arch-h follows this card's width (cqi)
+    <div
+      className="relative mx-auto w-full max-w-2xl [container-type:inline-size] [--arch-foot:1.4rem] [--frame-1:7px] [--frame-2:12px] sm:[--arch-foot:2rem] sm:[--frame-1:16px] sm:[--frame-2:23px]"
+      style={{ "--arch-h": "min(30cqi, 15rem)" } as CSSProperties}
+    >
       <div
-        className={`relative overflow-hidden border ${arch}`}
+        className="pointer-events-none absolute -inset-2 opacity-70 blur-2xl sm:-inset-4"
+        style={{ ...ambientGlowStyle, ...archRadius() }}
+        aria-hidden
+      />
+      <div
+        className="relative overflow-hidden border"
         style={{
-          background: `radial-gradient(90% 30% at 50% 0%, #FFFFFF 0%, transparent 70%), linear-gradient(175deg, #FFFFFF 0%, ${IVORY} 55%, ${INNER_SURFACE} 100%)`,
+          ...archRadius(),
+          // Slightly see-through paper so the photo strip behind reads softly at the edges
+          background: `radial-gradient(90% 30% at 50% 0%, #FFFFFF 0%, transparent 70%), linear-gradient(175deg, rgb(255 255 255 / 96%) 0%, color-mix(in srgb, ${IVORY} 94%, transparent) 55%, color-mix(in srgb, ${INNER_SURFACE} 94%, transparent) 100%)`,
           borderColor: "color-mix(in srgb, var(--color-motif-medium) 70%, transparent)",
           boxShadow: "0 30px 70px -36px var(--invite-shadow), inset 0 1px 0 rgb(255 255 255 / 85%)",
         }}
       >
-        {/* Double hairline frame following the arch, diamond at the top and bottom */}
+        {/* Double hairline frame following the arch, a heart at the top and bottom */}
         <div
-          className={`pointer-events-none absolute inset-2.5 sm:inset-4 ${archInner}`}
-          style={{ border: `1px solid ${GOLD_BORDER_SOFT}` }}
+          className="pointer-events-none absolute inset-[var(--frame-1)]"
+          style={{ ...archRadius("var(--frame-1)"), border: `1px solid ${GOLD_BORDER_SOFT}` }}
           aria-hidden
         >
-          <span className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rotate-45" style={{ background: "var(--color-motif-accent)", boxShadow: "0 0 0 2px #FFFFFF" }} />
-          <span className="absolute bottom-0 left-1/2 h-2.5 w-2.5 -translate-x-1/2 translate-y-1/2 rotate-45" style={{ background: "var(--color-motif-accent)", boxShadow: "0 0 0 2px #FFFFFF" }} />
+          <span className="absolute left-1/2 top-0 flex -translate-x-1/2 -translate-y-1/2 rounded-full bg-white p-0.5">
+            <HeartMark className="h-3 w-3" />
+          </span>
+          <span className="absolute bottom-0 left-1/2 flex -translate-x-1/2 translate-y-1/2 rounded-full bg-white p-0.5">
+            <HeartMark className="h-3 w-3" />
+          </span>
         </div>
         <div
-          className={`pointer-events-none absolute inset-[0.95rem] sm:inset-[1.45rem] ${archInnermost}`}
-          style={{ border: "1px solid color-mix(in srgb, var(--color-motif-medium) 40%, transparent)" }}
+          className="pointer-events-none absolute inset-[var(--frame-2)]"
+          style={{
+            ...archRadius("var(--frame-2)"),
+            border: "1px solid color-mix(in srgb, var(--color-motif-medium) 40%, transparent)",
+          }}
           aria-hidden
         />
 
-        <div className="relative z-20 px-6 pb-12 pt-16 text-center sm:px-14 sm:pb-16 sm:pt-24 md:px-16">{children}</div>
-      </div>
-    </div>
-  )
-}
-
-/** Couple names set in type like the loading screen: nickname · "and" · nickname. */
-function CoupleNamesStack() {
-  const siteConfig = useSiteConfig()
-  const groom = siteConfig.couple.groomNickname || siteConfig.couple.groom
-  const bride = siteConfig.couple.brideNickname || siteConfig.couple.bride
-  return (
-    <h1 className="invite-names" aria-label={`${groom} and ${bride}`}>
-      <span className={`${theSeasons.className} invite-names__nick text-[clamp(2.1rem,10vw,3.4rem)]`} aria-hidden>
-        <T text={groom} />
-      </span>
-      <span className={`${aboveTheBeyond.className} invite-names__and text-[clamp(1.25rem,5.6vw,1.9rem)]`} aria-hidden>
-        and
-      </span>
-      <span className={`${theSeasons.className} invite-names__nick text-[clamp(2.1rem,10vw,3.4rem)]`} aria-hidden>
-        <T text={bride} />
-      </span>
-    </h1>
-  )
-}
-
-/** Classic invitation date: month / weekday — day — time / year. */
-function DateLockup() {
-  const siteConfig = useSiteConfig()
-  const dateStr = siteConfig.ceremony.date ?? siteConfig.wedding.date ?? defaultSiteConfig.ceremony.date
-  const time = siteConfig.ceremony.time ?? siteConfig.wedding.time ?? defaultSiteConfig.ceremony.time
-  const parsed = parseWeddingDate(dateStr)
-  const weekday = siteConfig.ceremony.day || parsed.dayOfWeek
-  const side = `${cinzel.className} w-[5.5rem] text-[0.6rem] font-semibold uppercase tracking-[0.24em] sm:w-28 sm:text-[0.7rem] sm:tracking-[0.3em]`
-
-  return (
-    <div className="mx-auto mt-6 w-full max-w-sm sm:mt-7" aria-label={`${weekday}, ${dateStr} at ${time}`}>
-      <p className={`${theSeasons.className} text-[clamp(1.05rem,4.4vw,1.4rem)] uppercase leading-none tracking-[0.22em]`} style={{ color: TITLE }}>
-        {parsed.month}
-      </p>
-      <div className="mt-2 flex items-center justify-center gap-2 sm:gap-3">
-        <div className="flex flex-col items-center gap-1.5">
-          <DividerLine className="w-full" />
-          <span className={side} style={{ color: palette.label }}>{weekday}</span>
-          <DividerLine className="w-full" />
-        </div>
-        <span className="relative px-1">
-          <span className="absolute inset-0 -z-0 rounded-full opacity-80 blur-xl" style={ambientGlowStyle} aria-hidden />
-          <span
-            className={`${playfair.className} relative block text-[clamp(2.8rem,13vw,4.25rem)] font-semibold italic leading-[0.95] tabular-nums`}
-            style={{ color: SCRIPT_GREEN }}
-          >
-            {parsed.day}
-          </span>
-        </span>
-        <div className="flex flex-col items-center gap-1.5">
-          <DividerLine className="w-full" />
-          <span className={side} style={{ color: palette.label }}>{time}</span>
-          <DividerLine className="w-full" />
-        </div>
-      </div>
-      <p className={`${cinzel.className} mt-2 text-[0.8rem] font-semibold tracking-[0.42em] sm:text-sm`} style={goldGradientText}>
-        {parsed.year}
-      </p>
-    </div>
-  )
-}
-
-/** Top of the invitation card: sprig, eyebrow, couple names with sprigs, script line, date. */
-function CardHeader() {
-  const siteConfig = useSiteConfig()
-  const revealed = useContext(RevealContext)
-  const reduceMotion = useReducedMotion()
-  const { ornament, labels, nameDecos, showDate } = siteConfig.proposal
-  const sprig = "pointer-events-none absolute top-1/2 h-auto w-12 -translate-y-1/2 select-none opacity-90 sm:w-20"
-
-  return (
-    <motion.header
-      className="mb-9 sm:mb-12"
-      variants={headerStagger}
-      initial={reduceMotion ? false : "hidden"}
-      animate={revealed ? "show" : "hidden"}
-    >
-      {ornament ? (
-        <motion.div variants={headerItem}>
-          <TintedDeco src={ornament} className="mx-auto mb-4 block h-auto w-24 select-none sm:mb-5 sm:w-32" />
-        </motion.div>
-      ) : null}
-      {labels.headerEyebrow ? (
-        <motion.div variants={headerItem}>
-          <Eyebrow className="mb-5 sm:mb-6">
-            <T text={labels.headerEyebrow} />
-          </Eyebrow>
-        </motion.div>
-      ) : null}
-
-      {/* Names flanked by eucalyptus sprigs */}
-      <motion.div variants={headerItem} className="relative mx-auto max-w-md px-10 sm:px-16">
-        {nameDecos?.left ? (
-          <TintedDeco src={nameDecos.left} className={`${sprig} left-0`} />
-        ) : null}
-        {nameDecos?.right ? (
-          <TintedDeco src={nameDecos.right} className={`${sprig} right-0`} />
-        ) : null}
-        <CoupleNamesStack />
-      </motion.div>
-
-      {labels.headerScript ? (
-        <motion.p
-          variants={headerItem}
-          className={`${aboveTheBeyond.className} mt-4 text-[clamp(1.1rem,4.8vw,1.6rem)] leading-none`}
-          style={{ color: SCRIPT_GREEN }}
+        {/* Top padding clears the dome: a little more than a third of its height */}
+        <div
+          className="relative z-20 px-4 pb-10 text-center min-[400px]:px-5 sm:px-14 sm:pb-16 md:px-16"
+          style={{ paddingTop: "max(2.75rem, calc(var(--arch-h) * 0.42))" }}
         >
-          <T text={labels.headerScript} />
-        </motion.p>
-      ) : null}
-
-      {showDate ? (
-        <motion.div variants={headerItem}>
-          <DateLockup />
-        </motion.div>
-      ) : null}
-
-      <motion.div variants={headerItem} className="mt-7 sm:mt-8">
-        <OrnamentalDivider />
-      </motion.div>
-    </motion.header>
+          {children}
+        </div>
+      </div>
+    </div>
   )
 }
 
+/** Script-free sign-off for the after-answer cards: small caps line + couple names. */
 function SignOff({ line }: { line: string }) {
   if (!line) return null
   return (
@@ -553,177 +415,46 @@ function SignOff({ line }: { line: string }) {
   )
 }
 
-/** Ceremony start in Philippine time (GMT+8), from the site's date + time strings. */
-function useCeremonyTimestamp() {
-  const siteConfig = useSiteConfig()
-  const dateStr = siteConfig.ceremony.date ?? siteConfig.wedding.date ?? defaultSiteConfig.ceremony.date
-  const timeStr = siteConfig.ceremony.time ?? siteConfig.wedding.time ?? defaultSiteConfig.ceremony.time
-  return useMemo(() => {
-    const parsed = parseWeddingDate(dateStr)
-    const monthIndex = new Date(`${parsed.month} 1, 2000`).getMonth()
-    const t = String(timeStr).match(/(\d+):(\d+)\s*(AM|PM)/i)
-    let hour = 15
-    let minute = 0
-    if (t) {
-      hour = Number(t[1]) % 12 + (t[3].toUpperCase() === "PM" ? 12 : 0)
-      minute = Number(t[2])
-    }
-    const ts = Date.UTC(Number(parsed.year), monthIndex, Number(parsed.day), hour - 8, minute)
-    return Number.isNaN(ts) ? null : ts
-  }, [dateStr, timeStr])
+/** Small dusty-rose heart (dividers, card frame). */
+function HeartMark({ className = "h-3 w-3" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={`shrink-0 ${className}`} fill="var(--color-motif-accent)" aria-hidden>
+      <path d={HEART_PATH} />
+    </svg>
+  )
 }
 
-/** One large day count until the ceremony — quiet, like an engraved line — plus the venue. */
-function CountdownPanel({ venue }: { venue: string }) {
-  const target = useCeremonyTimestamp()
-  const [now, setNow] = useState<number | null>(null)
-
-  useEffect(() => {
-    setNow(Date.now())
-    const id = window.setInterval(() => setNow(Date.now()), 60_000)
-    return () => window.clearInterval(id)
-  }, [])
-
-  const diff = target !== null && now !== null ? target - now : null
-  const days = diff === null ? null : Math.max(0, Math.ceil(diff / 86_400_000))
-  const isDay = diff !== null && days === 0
-
+/** Big Seasons capitals under a small-caps eyebrow ("A Personal Invitation" / "From Our Hearts to Yours"). */
+function DirectTitle({ eyebrow, title, as = "h2" }: { eyebrow: string; title: string; as?: "h1" | "h2" }) {
+  const Tag = as
   return (
-    <div className="relative mx-auto max-w-md px-2 py-2">
-      <p className={`${aboveTheBeyond.className} text-[clamp(1.2rem,5vw,1.55rem)] leading-none`} style={{ color: SCRIPT_GREEN }}>
-        {isDay ? "today is the day" : "only"}
-      </p>
-
-      {!isDay ? (
-        <div className="mt-3 flex items-center justify-center gap-4 sm:gap-6" role="timer" aria-live="off">
-          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, var(--invite-line))" }} aria-hidden />
-          <span className="relative">
-            <span className="absolute inset-0 -z-0 rounded-full opacity-80 blur-xl" style={ambientGlowStyle} aria-hidden />
-            <span
-              className={`${playfair.className} relative block text-[clamp(3.4rem,16vw,5rem)] font-semibold italic leading-[0.9] tabular-nums`}
-              style={{ color: TITLE }}
-            >
-              {days === null ? "\u00a0" : days.toLocaleString()}
-            </span>
-          </span>
-          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, var(--invite-line))" }} aria-hidden />
-        </div>
-      ) : null}
-
-      {!isDay ? (
-        <SmallCaps className="mt-3 tracking-[0.3em]">
-          {days === 1 ? "day until we say “I do”" : "days until we say “I do”"}
+    <div>
+      {eyebrow ? (
+        <SmallCaps className="tracking-[0.32em] sm:tracking-[0.38em]">
+          <T text={eyebrow} />
         </SmallCaps>
       ) : null}
-
-      <div className="mt-5">
-        <OrnamentalDivider compact />
-      </div>
-      <p
-        className="font-goudy-italic mx-auto mt-4 flex max-w-sm items-start justify-center gap-1.5 text-[0.9rem] leading-snug sm:text-[0.95rem]"
-        style={{ color: palette.body }}
-      >
-        <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" style={{ color: palette.label }} aria-hidden />
-        <span>
-          <T text={venue} />
-        </span>
-      </p>
-    </div>
-  )
-}
-
-/* ── The letter ───────────────────────────────────────────────────────────── */
-
-function ProposalLetter({
-  copyKey,
-  inviteeName,
-  roleTitle,
-  fill,
-  bodyClass,
-}: {
-  copyKey: CopyKey
-  inviteeName: string
-  roleTitle: string
-  fill: (text: string) => string
-  bodyClass: string
-}) {
-  const siteConfig = useSiteConfig()
-  const copy = siteConfig.proposal.copy[copyKey]
-  const { labels } = siteConfig.proposal
-  const playful = isPlayful(copyKey)
-
-  const venueName = siteConfig.ceremony.location ?? defaultSiteConfig.ceremony.location
-  const venueDetail = siteConfig.ceremony.venue ?? defaultSiteConfig.ceremony.venue
-  const venue = `${venueName}${venueDetail && venueDetail !== venueName ? `, ${venueDetail}` : ""}`
-  const greetingName = inviteeName.trim() || "Friend"
-
-  return (
-    <div className="mx-auto w-full max-w-lg space-y-7 text-center sm:space-y-8">
-      {/* Greeting */}
-      <Reveal className="space-y-3">
-        <p
-          className={
-            playful
-              ? `${playfair.className} text-[clamp(1.4rem,6vw,1.9rem)] font-semibold leading-tight [overflow-wrap:anywhere]`
-              : `${theSeasons.className} text-[clamp(1.3rem,5.6vw,1.9rem)] leading-tight tracking-[0.05em] [overflow-wrap:anywhere]`
-          }
+      {title ? (
+        <Tag
+          className={`${theSeasons.className} mt-1.5 text-[clamp(1.3rem,6vw,2.05rem)] uppercase leading-[1.08] tracking-[0.06em] [overflow-wrap:anywhere] sm:tracking-[0.1em]`}
           style={{ color: TITLE }}
         >
-          <T text={`${fill(copy.greeting)} ${greetingName},`} />
-        </p>
-        <OrnamentalDivider compact />
-      </Reveal>
-
-      <Paragraphs lines={copy.intro.map(fill)} className={bodyClass} />
-
-      {/* Live countdown to the ceremony + venue (the date itself is already in the header) */}
-      <Reveal>
-        <CountdownPanel venue={venue} />
-      </Reveal>
-
-      <Paragraphs lines={copy.body.map(fill)} className={bodyClass} />
-
-      {/* Role / name summary (wedding party only, when the link carries a name) */}
-      {copyKey === "party" && inviteeName.trim() ? (
-        <Reveal>
-        <div
-          className="mx-auto grid max-w-md grid-cols-2 gap-px overflow-hidden rounded-2xl border"
-          style={{ borderColor: GOLD_BORDER_SOFT, background: GOLD_BORDER_SOFT }}
-        >
-          {[
-            { label: labels.roleOffered, value: roleTitle, color: TITLE },
-            { label: labels.preparedFor, value: inviteeName.trim(), color: SCRIPT_GREEN },
-          ].map((cell) => (
-            <div key={cell.label} className="px-3 py-4 sm:px-4 sm:py-5" style={{ background: IVORY }}>
-              <SmallCaps className="text-[0.58rem] sm:text-[0.62rem]">
-                <T text={cell.label} />
-              </SmallCaps>
-              <p
-                className={`${theSeasons.className} mt-1.5 text-[0.98rem] tracking-wide [overflow-wrap:anywhere] sm:text-lg`}
-                style={{ color: cell.color }}
-              >
-                <T text={cell.value} />
-              </p>
-            </div>
-          ))}
-        </div>
-        </Reveal>
-      ) : null}
-
-      {copy.askLead ? (
-        <Reveal>
-          <SmallCaps className="mx-auto max-w-sm">
-            <T text={fill(copy.askLead)} />
-          </SmallCaps>
-        </Reveal>
+          <T text={title} />
+        </Tag>
       ) : null}
     </div>
   )
 }
 
-function ProposalAsk({
+/**
+ * The invitation, asked directly (no long letter): eyebrow + title → role illustration →
+ * "A Special Place / In Our Wedding" → "Dear {name}," → "Will you be our {role}?" →
+ * one short note → script sign-off → Yes / No.
+ */
+function ProposalDirectAsk({
   copyKey,
-  roleTitle,
+  role,
+  inviteeName,
   submitting,
   onYes,
   onNo,
@@ -731,7 +462,8 @@ function ProposalAsk({
   bodyClass,
 }: {
   copyKey: CopyKey
-  roleTitle: string
+  role: ProposalRole
+  inviteeName: string
   submitting?: boolean
   onYes: () => void
   onNo: () => void
@@ -739,48 +471,118 @@ function ProposalAsk({
   bodyClass: string
 }) {
   const siteConfig = useSiteConfig()
+  const revealed = useContext(RevealContext)
+  const reduceMotion = useReducedMotion()
   const copy = siteConfig.proposal.copy[copyKey]
-  const { labels, coupleImage } = siteConfig.proposal
+  const { labels, ornament, coupleImage } = siteConfig.proposal
+  const roleMessages: Record<string, string> =
+    siteConfig.proposal.roleMessages ?? defaultSiteConfig.proposal.roleMessages
+
+  const groom = siteConfig.couple.groomNickname || siteConfig.couple.groom
+  const bride = siteConfig.couple.brideNickname || siteConfig.couple.bride
+  const dateStr = siteConfig.ceremony.date ?? siteConfig.wedding.date ?? defaultSiteConfig.ceremony.date
+  const venueName = siteConfig.ceremony.location ?? defaultSiteConfig.ceremony.location
+  const detailsLine = [dateStr, venueName].filter(Boolean).join(" · ")
+  const greetingName = inviteeName.trim() || "Friend"
+  // Personal note for this role (site.ts → proposal.roleMessages), else the type's askNote
+  const noteSource = roleMessages[role.id] || copy.askNote || ""
+  const note = noteSource ? fill(noteSource) : ""
 
   return (
-    <div className="relative mx-auto mt-9 w-full max-w-lg px-1 sm:mt-11">
+    <motion.div
+      className="mx-auto w-full max-w-lg text-center"
+      variants={headerStagger}
+      initial={reduceMotion ? false : "hidden"}
+      animate={revealed ? "show" : "hidden"}
+    >
+      {ornament ? (
+        <motion.div variants={headerItem}>
+          <TintedDeco src={ornament} className="mx-auto mb-3 block h-auto w-20 select-none sm:mb-4 sm:w-28" />
+        </motion.div>
+      ) : null}
+
+      <motion.div variants={headerItem}>
+        <DirectTitle as="h1" eyebrow={labels.headerEyebrow} title={fill(labels.headline ?? "")} />
+      </motion.div>
+
+      {/* Wedding party illustration (site.ts → proposal.coupleImage) — shown as is, no frame */}
       {coupleImage ? (
-        <Reveal className="relative mx-auto mb-5 w-[7.5rem] sm:mb-7 sm:w-[9.5rem]">
-          <div className="absolute -inset-3 rounded-full opacity-70 blur-xl" style={ambientGlowStyle} aria-hidden />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={coupleImage}
-            alt="The couple"
-            className="relative mx-auto block h-auto w-full select-none"
-            style={{ filter: "drop-shadow(0 14px 28px var(--invite-shadow))" }}
+        <motion.div variants={headerItem} className="relative -mx-2 mt-4 sm:mx-0 sm:mt-6">
+          <Image
+            src={encodeURI(coupleImage)}
+            alt="Our wedding party"
+            width={1536}
+            height={1024}
+            sizes="(max-width: 640px) 92vw, 512px"
+            className="block h-auto w-full select-none"
+            draggable={false}
+            priority
           />
-        </Reveal>
+        </motion.div>
       ) : null}
 
-      <Reveal>
-        <h2 className={`${theSeasons.className} mx-auto max-w-md text-[clamp(1.15rem,5.2vw,1.6rem)] leading-snug tracking-[0.04em]`} style={{ color: INK }}>
-          <T text={labels.askQuestion} />
-          <span className="block pt-1 text-[1.3em] capitalize [overflow-wrap:anywhere]" style={goldGradientText}>
-            <T text={`${roleTitle}?`} />
-          </span>
-        </h2>
-      </Reveal>
+      <motion.div variants={headerItem} className="mt-6 sm:mt-7">
+        <DirectTitle eyebrow={labels.placeEyebrow ?? ""} title={fill(labels.placeTitle ?? "")} />
+        {detailsLine ? (
+          <SmallCaps className="mt-2 text-[0.58rem] tracking-[0.22em] sm:text-[0.64rem]" color={palette.bodySoft}>
+            <T text={detailsLine} />
+          </SmallCaps>
+        ) : null}
+      </motion.div>
 
-      {copy.askNote ? (
-        <div className="mt-4">
-          <Paragraphs lines={[fill(copy.askNote)]} className={bodyClass} />
-        </div>
+      <motion.div variants={headerItem} className="mt-5 sm:mt-6">
+        <OrnamentalDivider compact />
+      </motion.div>
+
+      <motion.p
+        variants={headerItem}
+        className={`${aboveTheBeyond.className} mt-4 text-[clamp(1.6rem,7.4vw,2.35rem)] leading-[1.15] [overflow-wrap:anywhere]`}
+        style={{ color: SCRIPT_GREEN }}
+      >
+        <T text={`${fill(copy.greeting)} ${greetingName},`} />
+      </motion.p>
+
+      <motion.h2
+        variants={headerItem}
+        className={`${theSeasons.className} mx-auto mt-2 max-w-md text-[clamp(1.15rem,5.2vw,1.6rem)] leading-snug tracking-[0.03em] [overflow-wrap:anywhere]`}
+        style={{ color: INK }}
+      >
+        <T text={`${labels.askQuestion} `} />
+        <span className="capitalize" style={{ color: "var(--color-welcome-heading)" }}>
+          <T text={`${role.title}?`} />
+        </span>
+      </motion.h2>
+
+      {note ? (
+        <motion.p variants={headerItem} className={`mx-auto mt-4 max-w-md text-pretty ${bodyClass}`} style={{ color: palette.body }}>
+          <T text={note} />
+        </motion.p>
       ) : null}
 
-      <Reveal className="mx-auto mt-7 flex w-full max-w-sm flex-col gap-3 sm:mt-9">
+      {/* Sign-off: the line in Goudy italic, the couple's names kept in script */}
+      <motion.div variants={headerItem} className="mt-5 sm:mt-6">
+        {copy.signOff ? (
+          <p className="font-goudy-italic text-[0.95rem] leading-snug sm:text-[1.05rem]" style={{ color: palette.body }}>
+            <T text={fill(copy.signOff)} />
+          </p>
+        ) : null}
+        <p
+          className={`${aboveTheBeyond.className} mt-0.5 text-[clamp(1.5rem,6.6vw,2.1rem)] leading-[1.2]`}
+          style={{ color: SCRIPT_GREEN }}
+        >
+          <T text={`${groom} & ${bride}`} />
+        </p>
+      </motion.div>
+
+      <motion.div variants={headerItem} className="mx-auto mt-7 flex w-full max-w-sm flex-col gap-3 sm:mt-8">
         <button type="button" disabled={submitting} onClick={onYes} className={primaryBtnClass} style={primaryBtnStyle}>
           {submitting ? labels.saving : <T text={fill(copy.yesButton)} />}
         </button>
         <button type="button" disabled={submitting} onClick={onNo} className={secondaryBtnClass} style={secondaryBtnStyle}>
           <T text={fill(copy.noButton)} />
         </button>
-      </Reveal>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
 
@@ -829,13 +631,6 @@ function FlowHeader({
       ) : null}
     </div>
   )
-}
-
-/** "rgb(r, g, b)" → "#rrggbb" (canvas-only consumers such as Silk). */
-function rgbToHex(rgb: string) {
-  const m = rgb.match(/\d+/g)
-  if (!m || m.length < 3 || rgb.startsWith("#")) return rgb
-  return `#${m.slice(0, 3).map((n) => Number(n).toString(16).padStart(2, "0")).join("")}`
 }
 
 /* ── Page ─────────────────────────────────────────────────────────────────── */
@@ -892,8 +687,13 @@ function ProposalPageInner({ role }: ProposalPageProps) {
 
   const siteConfig = useSiteConfig()
   const { labels } = siteConfig.proposal
-  // Silk paints on canvas, so resolve the CSS token to a hex color (dusty blue, like the main invitation)
-  const silkColor = rgbToHex(useCssColor("--color-welcome-heading", "#A8606F"))
+  // Background: the same photo strip as the loader / envelope (shared clock, so it carries on seamlessly)
+  const loaderContent = siteConfig.loadingScreen ?? defaultSiteConfig.loadingScreen
+  const bgPhotos = useMemo(() => (loaderContent.backgroundPhotos ?? []).map((src) => encodeURI(src)), [loaderContent.backgroundPhotos])
+  const bgPhotosDesktop = useMemo(
+    () => (loaderContent.backgroundPhotosDesktop ?? []).map((src) => encodeURI(src)),
+    [loaderContent.backgroundPhotosDesktop],
+  )
   const copyKey = copyKeyFor(role)
   const copy = siteConfig.proposal.copy[copyKey]
   const confirmedDisplayName = (inviteeFromLink || preferredName).trim()
@@ -1006,13 +806,11 @@ function ProposalPageInner({ role }: ProposalPageProps) {
 
   return (
     <div
-      className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative min-h-[100dvh] select-none px-3 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] sm:px-6 sm:py-16 md:py-20 ${pageScrollLocked ? "overflow-hidden" : "overflow-x-hidden"}`}
+      className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative min-h-[100dvh] select-none px-2.5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] sm:px-6 sm:py-16 md:py-20 ${pageScrollLocked ? "overflow-hidden" : "overflow-x-hidden"}`}
       style={{ background: sectionBackground, color: CREAM }}
     >
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.32]" aria-hidden>
-        <Suspense fallback={<div className="h-full w-full" style={{ background: sectionBackground }} />}>
-          <Silk speed={6} scale={1} color={silkColor} noiseIntensity={0} rotation={0.25} />
-        </Suspense>
+      <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
+        <PhotoBackground photos={bgPhotos} desktopPhotos={bgPhotosDesktop} />
       </div>
 
       {loadingOverlayVisible && (
@@ -1051,24 +849,19 @@ function ProposalPageInner({ role }: ProposalPageProps) {
         initial={false}
         animate={proposalVisible ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 40, filter: "blur(8px)" }}
         transition={cinematicEntry ? { duration: 1.08, ease: proposalEntryEase, delay: 0.86 } : { duration: 0.01 }}
-        className={`relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center justify-start pt-6 pb-4 sm:min-h-[calc(100dvh-8rem)] sm:justify-center sm:pt-0 ${proposalVisible ? "" : "pointer-events-none"}`}
+        // Centered on every screen: fills the viewport height (minus the page padding) and
+        // centers the card; taller cards simply grow and scroll from the top, never clipped
+        className={`relative z-10 mx-auto flex min-h-[calc(100dvh-max(1rem,env(safe-area-inset-top))-max(1.5rem,env(safe-area-inset-bottom)))] w-full max-w-3xl flex-col items-center justify-center py-3 sm:min-h-[calc(100dvh-8rem)] sm:py-0 ${proposalVisible ? "" : "pointer-events-none"}`}
         style={{ color: palette.body }}
       >
         <AnimatePresence mode="wait">
           {flowState === "question" && (
             <motion.div key="question" className="relative z-10 w-full" {...cardMotion}>
               <ProposalCard>
-                <CardHeader />
-                <ProposalLetter
+                <ProposalDirectAsk
                   copyKey={copyKey}
+                  role={role}
                   inviteeName={inviteeFromLink || preferredName}
-                  roleTitle={role.title}
-                  fill={fill}
-                  bodyClass={bodyClass}
-                />
-                <ProposalAsk
-                  copyKey={copyKey}
-                  roleTitle={role.title}
                   submitting={submitting}
                   onYes={() => void handleYesClick()}
                   onNo={() => goTo("no_clicked")}
@@ -1076,10 +869,6 @@ function ProposalPageInner({ role }: ProposalPageProps) {
                   bodyClass={bodyClass}
                 />
                 {errorLine}
-                <Reveal className="mt-9 space-y-4 sm:mt-10">
-                  <OrnamentalDivider compact />
-                  <SignOff line={fill(copy.signOff)} />
-                </Reveal>
               </ProposalCard>
             </motion.div>
           )}
@@ -1109,7 +898,7 @@ function ProposalPageInner({ role }: ProposalPageProps) {
                     value={preferredName}
                     onChange={(e) => setPreferredName(e.target.value)}
                     // 16px text on phones so iOS doesn't zoom in while typing
-                    className="font-goudy-italic w-full select-text rounded-xl px-4 py-3 text-base transition-all focus:outline-none focus:ring-2 focus:ring-[color-mix(in_srgb,var(--color-motif-medium)_45%,transparent)] placeholder:text-[color-mix(in_srgb,var(--color-welcome-text)_55%,white)] focus:border-[var(--color-welcome-heading)]"
+                    className="font-goudy-italic w-full select-text rounded-full px-5 py-3 text-base transition-all focus:outline-none focus:ring-2 focus:ring-[color-mix(in_srgb,var(--color-motif-medium)_45%,transparent)] placeholder:text-[color-mix(in_srgb,var(--color-welcome-text)_55%,white)] focus:border-[var(--color-welcome-heading)]"
                     style={{
                       color: INK,
                       backgroundColor: IVORY,
@@ -1144,7 +933,7 @@ function ProposalPageInner({ role }: ProposalPageProps) {
                 />
 
                 <div
-                  className="mx-auto mb-7 max-w-sm rounded-2xl border px-5 py-4"
+                  className="mx-auto mb-7 max-w-sm rounded-[1.4rem] border px-5 py-4"
                   style={{ borderColor: GOLD_BORDER_SOFT, backgroundColor: INNER_SURFACE }}
                 >
                   {confirmedDisplayName && !isPlayful(copyKey) ? (

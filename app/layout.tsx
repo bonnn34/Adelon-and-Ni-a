@@ -20,6 +20,12 @@ const desktopHero = siteConfig.linkPreviewImage
 const mobileHero = siteConfig.linkPreviewImage
 const eventImageUrl = `${canonicalUrl}${desktopHero}`
 const OG_IMAGE_FALLBACK = `${canonicalUrl}${desktopHero}`
+// og:image:type must match the real file — Facebook / Messenger drop the image on a mismatch
+const OG_IMAGE_TYPE = /\.png$/i.test(desktopHero)
+  ? "image/png"
+  : /\.webp$/i.test(desktopHero)
+    ? "image/webp"
+    : "image/jpeg"
 
 const coupleNames = `${siteConfig.couple.groomNickname} & ${siteConfig.couple.brideNickname}`
 const eventTitle = `${coupleNames} - Wedding Invitation`
@@ -29,8 +35,8 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Event",
   name: `${siteConfig.couple.groomNickname} & ${siteConfig.couple.brideNickname} Wedding`,
-  startDate: "2026-04-18T14:00:00+08:00",
-  endDate: "2026-04-18T22:00:00+08:00",
+  startDate: "2026-12-06T16:00:00+08:00",
+  endDate: "2026-12-06T23:00:00+08:00",
   eventStatus: "https://schema.org/EventScheduled",
   eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
   location: [
@@ -135,7 +141,7 @@ export const metadata: Metadata = {
         secureUrl: OG_IMAGE_FALLBACK,
         width: 1200,
         height: 630,
-        type: "image/jpeg",
+        type: OG_IMAGE_TYPE,
         alt: `${coupleNames} Wedding Invitation - ${siteConfig.wedding.date}`,
       },
     ],
