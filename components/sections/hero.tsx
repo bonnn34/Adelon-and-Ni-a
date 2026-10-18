@@ -266,7 +266,7 @@ export function Hero() {
     >
       {isPlain ? (
         <>
-          <PhotoBackground photos={plainPhotos} desktopPhotos={plainPhotosDesktop} veil={0.45} />
+          <PhotoBackground photos={plainPhotos} desktopPhotos={plainPhotosDesktop} />
           <div className="home-hero-plain-corners" aria-hidden="true">
             {(
               [

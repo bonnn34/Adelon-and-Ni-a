@@ -5,6 +5,7 @@ import { siteConfig } from "@/content/site"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
 import { TintedDeco } from "@/components/tinted-deco"
 import { DecoCorners } from "@/components/deco-corners"
+import { SectionBackdrop } from "@/components/section-backdrop"
 import localFont from "next/font/local"
 import { Cinzel } from "next/font/google"
 import { Camera } from "lucide-react"
@@ -36,14 +37,17 @@ const SUN = "var(--color-motif-accent)"
 // Soft white edge so text stays crisp over the circle pattern
 const onBgGlow = "0 1px 0 rgb(255 255 255 / 85%), 0 0 12px rgb(255 255 255 / 70%)"
 
-// Sage hairlines
+// Warm-gray hairlines (same as the love story divider)
 const sageDividerStyle = {
-  background: "linear-gradient(to right, transparent, var(--color-motif-yellow))",
+  background: "linear-gradient(to right, transparent, var(--color-motif-medium))",
 } as const
 
 const sageDividerStyleLeft = {
-  background: "linear-gradient(to left, transparent, var(--color-motif-yellow))",
+  background: "linear-gradient(to left, transparent, var(--color-motif-medium))",
 } as const
+
+const HEART_PATH =
+  "M12 21s-7.5-4.6-9.6-9.2C1 8.6 3 5 6.5 5c2 0 3.5 1.1 4.3 2.6h2.4C14 6.1 15.5 5 17.5 5 21 5 23 8.6 21.6 11.8 19.5 16.4 12 21 12 21z"
 
 export const dynamic = "force-static"
 
@@ -51,7 +55,9 @@ function OutsideDivider() {
   return (
     <div className="flex items-center justify-center gap-1.5">
       <span className="h-px w-10 sm:w-16" style={sageDividerStyle} />
-      <span className="h-1 w-1 rounded-full sm:h-1.5 sm:w-1.5" style={{ background: SUN }} aria-hidden />
+      <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill={SUN} aria-hidden>
+        <path d={HEART_PATH} />
+      </svg>
       <span className="h-px w-10 sm:w-16" style={sageDividerStyleLeft} />
     </div>
   )
@@ -117,11 +123,11 @@ export default async function GalleryPage() {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative min-h-screen overflow-x-hidden`}
       style={{ background: "var(--color-bg-pattern-base)" }}
     >
-      {/* Same circle pattern as the invitation sections, softened by a light
-          white-dusty-blue wash, with the loader's border and corner florals
+      {/* Same circle pattern, paper wash + grain and rising pink hearts as the
+          love story, with the loader's border and corner florals
           (content/site.ts → gallery.decos / showFrame) */}
       <PlainBubbles />
-      <div className="section-wash" aria-hidden="true" />
+      <SectionBackdrop />
       {gallery.showFrame && <div className="deco-frame" aria-hidden="true" />}
       <DecoCorners decos={decos} />
 
@@ -159,7 +165,7 @@ export default async function GalleryPage() {
             <span className="h-px w-8 sm:w-12 md:w-16" style={sageDividerStyle} />
             <span
               className="flex h-7 w-7 items-center justify-center rounded-full sm:h-8 sm:w-8"
-              style={{ background: "var(--color-motif-soft)", boxShadow: "inset 0 0 0 1px color-mix(in srgb, var(--color-motif-medium) 55%, transparent)" }}
+              style={{ background: "var(--color-motif-soft)", boxShadow: "inset 0 0 0 1px color-mix(in srgb, var(--color-motif-blush) 90%, transparent)" }}
               aria-hidden
             >
               <Camera className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: BLUE }} />

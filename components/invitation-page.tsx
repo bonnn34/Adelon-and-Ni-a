@@ -14,6 +14,7 @@ import { prefetchInvitationData } from "@/lib/invitation-data"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { WeddingPlaylist } from "@/components/sections/wedding-playlist"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
+import { SectionBackdrop } from "@/components/section-backdrop"
 import type { SponsorsList } from "@/components/sections/entourage"
 
 const Silk = dynamic(() => import("@/components/silk"), { ssr: false })
@@ -278,8 +279,8 @@ export function InvitationPage({ sponsorsList, showEntourage = true }: Invitatio
               <div className="relative isolate" style={{ background: "var(--color-bg-pattern-base)" }}>
                 {/* Pattern repeated down the height so circles stay dense across both sections */}
                 <PlainBubbles bands={3} />
-                {/* Light white-dusty-blue wash + one double border around both sections */}
-                <div className="section-wash" aria-hidden="true" />
+                {/* Pink paper wash + rising hearts (section-backdrop.tsx) + one double border around both sections */}
+                <SectionBackdrop />
                 {siteConfig.bookOfGuests.showFrame && <div className="deco-frame" aria-hidden="true" />}
                 <BookOfGuests background={false} />
                 <FAQ background={false} />
@@ -290,8 +291,8 @@ export function InvitationPage({ sponsorsList, showEntourage = true }: Invitatio
               {/* One continuous circle pattern behind See You There and the footer — no seam between them */}
               <div className="relative isolate" style={{ background: "var(--color-bg-pattern-base)" }}>
                 <PlainBubbles bands={3} />
-                {/* Light white-dusty-blue wash + one double border around both sections */}
-                <div className="section-wash" aria-hidden="true" />
+                {/* Pink paper wash + rising hearts (section-backdrop.tsx) + one double border around both sections */}
+                <SectionBackdrop />
                 {siteConfig.seeYouThere.plain.showFrame && <div className="deco-frame" aria-hidden="true" />}
                 <SeeYouThere background={false} />
                 <Footer background={false} />

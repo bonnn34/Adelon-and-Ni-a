@@ -21,6 +21,7 @@ import { parseWeddingDate } from '@/lib/wedding-date';
 import { InviteParticles } from '@/components/loader/InviteParticles';
 import { InvitePhotoBackdrop, PhotoBackground } from '@/components/loader/invite-photo-backdrop';
 import { TintedDeco } from '@/components/tinted-deco';
+import { SectionBackdrop } from '@/components/section-backdrop';
 import './envelope-invite.css';
 
 const theSeasons = localFont({
@@ -634,7 +635,7 @@ export const Hero: React.FC<HeroProps> = ({
 
       {isPlain && (
         <>
-          <PhotoBackground photos={backgroundPhotos} desktopPhotos={backgroundPhotosDesktop} veil={0.5} />
+          <PhotoBackground photos={backgroundPhotos} desktopPhotos={backgroundPhotosDesktop} />
           <div className="env-invite-plain-corners" aria-hidden="true">
             {(
               [
@@ -655,6 +656,9 @@ export const Hero: React.FC<HeroProps> = ({
             ))}
           </div>
           <div className="env-invite-plain-frame" aria-hidden="true" />
+          {/* Paper grain + rising pink hearts, same as the loader and invitation sections
+              (section-backdrop.tsx); no extra wash — the photo background has its blush veil */}
+          <SectionBackdrop wash={false} overlay />
         </>
       )}
 

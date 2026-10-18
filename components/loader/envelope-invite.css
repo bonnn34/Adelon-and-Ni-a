@@ -3431,8 +3431,10 @@
   }
 }
 
-/* Readable text over the photos — no box behind it: deep burgundy type with
-   a tight ivory outline plus a soft wide glow that lifts it off busy images */
+/* Readable text over the photos and hearts — no box behind it. Deep charcoal type
+   carries the contrast; only a thin, soft ivory halo (no solid outline, no wide
+   white haze) lifts it off busy photos.
+   "Tap the seal to open" / "{n} more days to go" / "We can't wait to celebrate with you" */
 .env-invite-screen--plain .env-invite-hint,
 .env-invite-screen--plain .env-invite-days-to-go,
 .env-invite-screen--plain .env-invite-reveal-copy h2,
@@ -3440,21 +3442,37 @@
   background: none;
   border: none;
   box-shadow: none;
-  color: #4A4546;
-  -webkit-text-fill-color: #4A4546;
+  color: #2A2627;
+  -webkit-text-fill-color: #2A2627;
   font-weight: 700;
+  -webkit-font-smoothing: antialiased;
   text-shadow:
-    0 0 1px #FBF7F5,
-    0 0 2px #FBF7F5,
-    0 0 4px rgb(247 244 239 / 95%),
-    0 0 10px rgb(247 244 239 / 90%),
-    0 0 22px rgb(247 244 239 / 80%),
-    0 0 36px rgb(236 229 219 / 70%);
+    0 0 1px rgb(251 247 245 / 75%),
+    0 0 3px rgb(251 247 245 / 60%),
+    0 0 9px rgb(251 247 245 / 45%),
+    0 1px 2px rgb(42 38 39 / 12%);
+}
+
+.env-invite-screen--plain .env-invite-hint {
+  font-size: clamp(0.8rem, 3.2vw, 0.98rem);
+  letter-spacing: 0.14em;
+  max-height: 3rem;
 }
 
 .env-invite-screen--plain .env-invite-days-to-go {
-  color: #A8606F;
-  -webkit-text-fill-color: #A8606F;
+  color: #7E3F4D;
+  -webkit-text-fill-color: #7E3F4D;
+  font-size: clamp(1.05rem, 4.5vw, 1.42rem);
+  letter-spacing: 0.1em;
+}
+
+/* Long line: a touch smaller with tighter tracking so it sits comfortably inside the
+   screen on phones (wraps onto two lines if it still doesn't fit) */
+.env-invite-screen--plain .env-invite-reveal-copy h2 {
+  font-size: clamp(0.7rem, 2.9vw, 0.95rem);
+  letter-spacing: 0.08em;
+  line-height: 1.55;
+  text-wrap: balance;
 }
 
 /* Portraits + bouquets spread slightly further apart so they clear the couple's names.

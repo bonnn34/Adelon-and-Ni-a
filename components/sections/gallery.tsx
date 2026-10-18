@@ -13,6 +13,8 @@ import { useSiteConfig } from "@/hooks/use-site-config"
 import { TintedDeco } from "@/components/tinted-deco"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
 import { DecoCorners } from "@/components/deco-corners"
+import { HEART_PATH } from "@/components/rising-hearts"
+import { SectionBackdrop } from "@/components/section-backdrop"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -52,18 +54,19 @@ const sectionBg = "var(--color-bg-pattern-base)"
 // Soft white edge so text stays crisp over the circles
 const onBgGlow = "0 1px 0 rgb(255 255 255 / 85%), 0 0 12px rgb(255 255 255 / 70%)"
 
-// Sage hairlines either side of a sunshine diamond
+// Warm-gray hairlines either side of a dusty-rose heart (same as the love story divider)
 const lineRight = {
-  background: "linear-gradient(to right, transparent, var(--color-motif-yellow))",
+  background: "linear-gradient(to right, transparent, var(--color-motif-medium))",
 } as const
 const lineLeft = {
-  background: "linear-gradient(to left, transparent, var(--color-motif-yellow))",
+  background: "linear-gradient(to left, transparent, var(--color-motif-medium))",
 } as const
 
+// Paper photo frame with a blush edge (matches .story-open-photo)
 const frameStyle: React.CSSProperties = {
-  background: "#FFFFFF",
-  border: "1px solid color-mix(in srgb, var(--color-motif-medium) 70%, transparent)",
-  boxShadow: "0 14px 30px -18px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
+  background: "var(--color-motif-soft)",
+  border: "1px solid color-mix(in srgb, var(--color-motif-blush) 85%, transparent)",
+  boxShadow: "0 18px 34px -16px color-mix(in srgb, var(--color-welcome-navy) 32%, transparent)",
 }
 
 const innerFrameStyle: React.CSSProperties = {
@@ -85,7 +88,9 @@ function DiamondDivider({ children }: { children?: React.ReactNode }) {
     <div className="flex items-center justify-center gap-2">
       <span className="h-px w-10 sm:w-16 md:w-20" style={lineRight} />
       {children ?? (
-        <span className="h-1.5 w-1.5 rotate-45" style={{ background: C.accent }} aria-hidden />
+        <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill={C.accent} aria-hidden>
+          <path d={HEART_PATH} />
+        </svg>
       )}
       <span className="h-px w-10 sm:w-16 md:w-20" style={lineLeft} />
     </div>
@@ -401,8 +406,8 @@ export function Gallery() {
       style={{ background: sectionBg }}
     >
       <PlainBubbles />
-      {/* Light white-dusty-blue wash over the circles (globals.css → .section-wash) */}
-      <div className="section-wash" aria-hidden="true" />
+      {/* Pink paper wash + grain and rising hearts, same as the love story (section-backdrop.tsx) */}
+      <SectionBackdrop />
       <Section
         id="gallery"
         className="relative z-10 overflow-hidden pt-14 pb-10 sm:pt-16 sm:pb-12 md:pt-20 md:pb-16 lg:pt-24 lg:pb-20"
@@ -439,8 +444,8 @@ export function Gallery() {
             <span
               className="flex h-7 w-7 items-center justify-center rounded-full sm:h-8 sm:w-8"
               style={{
-                border: "1px solid color-mix(in srgb, var(--color-motif-yellow) 70%, transparent)",
-                background: "#FFFFFF",
+                border: "1px solid color-mix(in srgb, var(--color-motif-blush) 90%, transparent)",
+                background: "var(--color-motif-soft)",
               }}
             >
               <Camera className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: C.blue }} aria-hidden />
@@ -456,7 +461,7 @@ export function Gallery() {
             <div
               className="h-12 w-12 animate-spin rounded-full border-[3px]"
               style={{
-                borderColor: "color-mix(in srgb, var(--color-motif-medium) 35%, transparent)",
+                borderColor: "color-mix(in srgb, var(--color-motif-blush) 70%, transparent)",
                 borderTopColor: C.blue,
               }}
             />

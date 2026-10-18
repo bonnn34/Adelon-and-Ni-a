@@ -8,6 +8,7 @@ import localFont from "next/font/local"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
+import { SectionBackdrop } from "@/components/section-backdrop"
 import { TintedDeco } from "@/components/tinted-deco"
 import { DecoCorners } from "@/components/deco-corners"
 
@@ -226,7 +227,7 @@ export function FAQ({ background = true }: { background?: boolean } = {}) {
       {/* Same circle pattern as the gallery, with the light wash + double border
           (on the invitation page the shared wrapper paints these behind Book of Guests and FAQ) */}
       {background && <PlainBubbles />}
-      {background && <div className="section-wash" aria-hidden="true" />}
+      {background && <SectionBackdrop />}
       {background && content.showFrame && <div className="deco-frame" aria-hidden="true" />}
       <section
         id="faq"

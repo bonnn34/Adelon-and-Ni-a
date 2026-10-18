@@ -5,6 +5,7 @@ import {
 
 export type TimelineIconName =
   | "arrival"
+  | "guests"
   | "rings"
   | "departure"
   | "cocktail"
@@ -73,19 +74,19 @@ const COUPLE = {
 }
 
 // ── Date & times ────────────────────────────────────────────────────────────
-const WEDDING_DATE = "December 6,2026" // e.g. "June 5, 2027"
+const WEDDING_DATE = "December 6, 2026" // e.g. "June 5, 2027"
 const WEDDING_DAY = "Sunday"
 const TIMES = {
   entourageCall: "3:00 PM", // entourage assembly
   guestArrival: "3:30 PM", // guests arrival / assembly (shown in Event Details + reminders)
-  ceremony: "4:00 AM",
+  ceremony: "4:00 PM",
   reception: "6:30 PM", // start of program
 }
 
 // ── Venues ──────────────────────────────────────────────────────────────────
 
 const CEREMONY_VENUE = {
-  name: "The Vistas-Pampanga: Vista Mons",
+  name: "Vista-Mons Private Resort",
   address: "San Pablo, Magalang, 2011 Pampanga",
   map: "https://maps.app.goo.gl/SY5NAMKACySL8aZ96",
   photos: ["/Details/reception (1).png", "/Details/reception (2).png", "/Details/reception (3).jpg", "/Details/reception (4).jpg", "/Details/reception (5).jpg", "/Details/reception (6).jpg"],
@@ -163,10 +164,12 @@ const HASHTAGS = ["#CidnyJasmine2026"] // ⚠ check — looks like it's from a p
 //     highlight: phrase inside details shown bold + underlined ("" for none)
 // Guest dress code colors — also shown in the "Dress Code" gentle reminder
 const DRESS_CODE_PALETTE: AttireColor[] = [
-  { name: "Warm Gray", hex: "#9A9294" },
-  { name: "Dusty Rose", hex: "#A8606F" },
   { name: "Blush Pink", hex: "#EBCBCF" },
-  { name: "Blush Cream", hex: "#F3E8E6" },
+  { name: "Dusty Pink", hex: "#D49AA3" },
+  { name: "Dusty Rose", hex: "#A8606F" },
+  { name: "Light Gray", hex: "#BEBBBD" },
+  { name: "Warm Gray", hex: "#9A9294" },
+  { name: "Charcoal", hex: "#5E5A5C" },
 ];
 
 // Attire groups shown in the Details section (components/sections/details.tsx).
@@ -176,24 +179,29 @@ const DRESS_CODE_PALETTE: AttireColor[] = [
 //   Each side (ladies / gentlemen) has a label, an optional intro (details, with an
 //   optional highlighted phrase) and an optional list of roles with what they wear.
 const ATTIRE = {
-  show: ["sponsors", "guests"] as AttireGroupId[],
+  show: ["entourage", "sponsors", "guests"] as AttireGroupId[],
 
   entourage: {
     title: "Entourage",
     image: "/Details/entourage.png",
     dressCode: "Formal Attire",
-    palette: [] as AttireColor[], // no palette on the entourage card
-    note: "",
+    palette: [
+      { name: "Blush Pink", hex: "#EBCBCF" },
+      { name: "Dusty Pink", hex: "#D49AA3" },
+      { name: "Light Gray", hex: "#BEBBBD" },
+      { name: "Gray", hex: "#8E8A8C" },
+    ] as AttireColor[],
+    note: "Soft dusty pink beside classic gray — the heart of our wedding palette, worn by the ones standing closest to us.",
     ladies: {
-      label: "Ladies",
-      details: "Floor-length gowns in warm gray, dusty rose, blush pink or blush cream. Soft, flowy fabrics like chiffon or tulle are perfect, and each of you may wear a different shade from the palette.",
-      highlight: "Floor-length gowns",
+      label: "Bridesmaids & Flower Girls",
+      details: "Dusty pink gowns, soft and flowing, in the same romantic shade as our day.",
+      highlight: "Dusty pink gowns",
       roles: [] as { role: string; attire: string }[],
     },
     gentlemen: {
-      label: "Gentlemen",
-      details: "A classic black suit with a white dress shirt, a Dusty Rose necktie and black formal shoes.",
-      highlight: "classic black suit",
+      label: "Groomsmen & Bearers",
+      details: "Gray suits — clean, classic and polished, the perfect match for the pink.",
+      highlight: "Gray suits",
       roles: [] as { role: string; attire: string }[],
     },
   },
@@ -230,20 +238,25 @@ const ATTIRE = {
 
   sponsors: {
     title: "Principal Sponsors",
-    image: "/Details/entourage.png",
+    image: "/Details/sponsors.png",
     dressCode: "Formal Attire",
-    palette: [] as AttireColor[], // no palette on the sponsors card
-    note: "We invite our principal sponsors to dress elegantly in dusty rose and classic black to complement our wedding motif.",
+    palette: [
+      { name: "Ivory Cream", hex: "#F4EBDD" },
+      { name: "Cream", hex: "#EADBC6" },
+      { name: "Beige", hex: "#D9C4A8" },
+      { name: "Black", hex: "#2B2627" },
+    ] as AttireColor[],
+    note: "We invite our principal sponsors to dress in soft cream and beige — a warm, timeless frame around our dusty pink celebration.",
     ladies: {
       label: "Ninang",
-      details: "Floor-length formal gowns in Dusty Rose, in soft, flowy fabrics like chiffon or tulle.",
-      highlight: "Floor-length formal gowns",
+      details: "A formal dress or long gown in shades of cream or beige.",
+      highlight: "formal dress or long gown",
       roles: [] as { role: string; attire: string }[],
     },
     gentlemen: {
       label: "Ninong",
-      details: "Classic black suits with a white dress shirt, a Dusty Rose necktie and black formal shoes.",
-      highlight: "Classic black suits",
+      details: "A long-sleeve barong paired with black pants.",
+      highlight: "long-sleeve barong",
       roles: [] as { role: string; attire: string }[],
     },
   },
@@ -251,19 +264,19 @@ const ATTIRE = {
   guests: {
     title: "Wedding Guests",
     image: "/Details/guest.png",
-    dressCode: "Formal / Semi-Formal Attire",
+    dressCode: "Semi-Formal Attire",
     palette: DRESS_CODE_PALETTE,
-    note: "We encourage everyone to follow our color palette to create a beautiful and harmonious look for our special day.",
+    note: "Any shade of dusty pink or gray from the palette below — mix and match, and come as you are, comfortable and lovely.",
     ladies: {
       label: "Ladies",
-      details: "Flowy long or mini dresses in any of our wedding palette colors: Warm Gray, Dusty Rose, Blush Pink, or Blush Cream.",
-      highlight: "Flowy long or mini dresses",
+      details: "A short or long dress in dusty pink, blush or gray.",
+      highlight: "short or long dress",
       roles: [] as { role: string; attire: string }[],
     },
     gentlemen: {
       label: "Gentlemen",
-      details: "Long-sleeved collared shirts in Warm Gray, Dusty Rose, Blush Pink, or Blush Cream, paired with Khaki, Navy, or Black slacks.",
-      highlight: "Long-sleeved collared shirts",
+      details: "A polo or long-sleeve shirt with pants, in pink or gray tones.",
+      highlight: "polo or long-sleeve shirt",
       roles: [] as { role: string; attire: string }[],
     },
   },
@@ -289,7 +302,7 @@ const BRAND = {
   monogram: "/monogram/monog-ram.png",
   coupleNameImage: "/Details/newcoupelNames.png", // couple-name lettering (loader, envelope)
   seal: "/monogram/new-seal.png", // envelope wax seal
-  backgroundMusic: "/background_music/Libu-Libong Buwan (Uuwian) - Kyle Raphael (Lyric Video).mp3",
+  backgroundMusic: "/background_music/Your Love - Juris Piano Cover by Gerard Chua (mp3cut.net).mp3",
 }
 
 // Couple photos reused across the site (gallery, loader, reminders, snap & share, closing)
@@ -691,7 +704,7 @@ export const siteConfig = {
     // Cards, colors, images and which groups show → QUICK SETUP → ATTIRE
     attire: {
       title: "Attire Guidelines",
-      description: "Our day is dressed in warm, romantic tones, and we would love for you to wear them with us. Please follow the guide for your role below.",
+      description: "Our day is dressed in soft dusty pinks, gentle grays and warm creams, and we would love for you to wear them with us. Please find your role below.",
       // Shown above a card's palette
       paletteTitle: "Dress Code Palette",
       paletteSubtitle: "", // script line under the palette title — "" hides it
@@ -709,10 +722,10 @@ export const siteConfig = {
       description: "A few thoughtful notes to help everyone enjoy our celebration.",
       // Small photos that take turns above the "Gentle Reminders" title (files in /public/box)
       images: [
-        "/box/box (1).jpg",
-        "/box/box (2).jpg",
-        "/box/box (3).png",
-        "/box/box (4).jpg",
+        "/box/box(1).jpg",
+        "/box/box(2).jpg",
+        "/box/box(3).jpg",
+        "/box/box(4).jpg",
       ],
       // showPalette: shows the dress code palette after the first paragraph
       items: [
@@ -761,7 +774,7 @@ export const siteConfig = {
           variant: "accent" as "accent" | "soft",
           showPalette: true,
           paragraphs: [
-            "Guests, kindly come in semi-formal attire in any of our palette colors: warm gray, dusty rose, blush pink or blush cream.",
+            "Guests, kindly come in semi-formal attire in shades of dusty pink or gray from our palette.",
             "Please avoid casual clothes and all-white outfits.",
           ],
         },
@@ -808,7 +821,7 @@ export const siteConfig = {
     //             with ceremony.location / reception.location ("" to hide)
     //   image:    line-art illustration from /public/weddingtimeline; "" to use the icon instead
     //   icon:     fallback icon when there is no image —
-    //             "arrival" | "rings" | "departure" | "cocktail" | "fireworks" | "dance"
+    //             "arrival" | "guests" | "rings" | "departure" | "cocktail" | "fireworks" | "dance"
     //   description: not shown on the site (kept only as a note)
     events: [
       {
@@ -817,7 +830,7 @@ export const siteConfig = {
         title: "Entourage Call Time",
         description: "The couple and entourage gather and get ready.",
         location: "{ceremony}",
-        image: "/weddingtimeline/arrivalimage.png",
+        image: "/weddingtimeline/Wedding Entourage Call Time Logo.png",
         icon: "arrival" as TimelineIconName,
       },
       {
@@ -826,8 +839,8 @@ export const siteConfig = {
         title: "Guests Arrive",
         description: "Kindly be seated before the ceremony begins.",
         location: "{ceremony}",
-        image: "/weddingtimeline/arrival.png",
-        icon: "arrival" as TimelineIconName,
+        image: "/weddingtimeline/Elegant Wedding Guests Arrive Sign.png",
+        icon: "guests" as TimelineIconName,
       },
       {
         show: true,
@@ -1147,97 +1160,97 @@ export const siteConfig = {
     // {deadline} {coordinator} {contact} {groom} {bride} are filled in automatically.
     items: [
       {
-        question: "When is the wedding?",
-        answer: `Our wedding will be held on ${WEDDING_DAY}, ${WEDDING_DATE}. The ceremony begins at ${TIMES.ceremony}, and the reception follows at ${TIMES.reception}.`,
+        question: "When and where is the wedding?",
+        answer: `Our wedding will be on ${WEDDING_DAY}, ${WEDDING_DATE}. The ceremony begins at ${TIMES.ceremony}, followed by the reception at ${TIMES.reception}.\n\nBoth the ceremony and the reception will be held at ${CEREMONY_VENUE.name}, ${CEREMONY_VENUE.address}, so there is no need to travel between venues. [Open in Google Maps](${CEREMONY_VENUE.map})`,
       },
       {
-        question: "What time should I arrive for the ceremony?",
-        answer: `Please arrive by ${TIMES.guestArrival} so you have time to find your seat and settle in. The ceremony will begin promptly at ${TIMES.ceremony}. Entourage members are requested to assemble at ${TIMES.entourageCall}.`,
-      },
-      {
-        question: "Where will the ceremony and reception take place?",
-        answer: `Both the ceremony and the reception will be held at ${CEREMONY_VENUE.name}, ${CEREMONY_VENUE.address}. [Open in Google Maps](${CEREMONY_VENUE.map})`,
+        question: "What time should I arrive?",
+        answer: `Please arrive by ${TIMES.guestArrival} so you have time to park, find your seat and settle in. The ceremony will begin promptly at ${TIMES.ceremony}.\n\nEntourage members are kindly requested to be at the venue by ${TIMES.entourageCall}.`,
       },
       {
         question: "How do I RSVP?",
         answer:
-          "Please RSVP using the [guest list](#guest-list) on this invitation: search for your name and confirm your attendance.\n\nPlease respond by {deadline}.\n\nIf you have questions, please contact {coordinator}{contact}.",
+          "Please RSVP through the [guest list](#guest-list) on this invitation: search for your name and confirm your attendance.\n\nKindly respond by {deadline}.\n\nFor questions, please reach out to {coordinator}{contact}.",
       },
       {
-        question: 'Do we really need to RSVP? We already said "Yes" to the couple.',
+        question: 'Do we still need to RSVP if we already said "Yes" to the couple?',
         answer:
-          "Yes, please. We will be needing your formal RSVP to consolidate guest details and finalize the headcount for catering and seating purposes.",
+          "Yes, please. Your formal RSVP helps us finalize the headcount for catering and seating, so every guest has a place prepared for them.",
+      },
+      {
+        question: "What if I RSVP'd but can no longer attend?",
+        answer:
+          "We will miss you, and we understand that some things are beyond our control. Please let us know as soon as possible so we can reallocate your seat/s.",
+      },
+      {
+        question: 'I said "No" but my plans changed. Can I still come?',
+        answer:
+          "Please message us first, as our guest list is limited. If a seat becomes available, we will let you know as soon as we can. Kindly do not attend unannounced, as we may not have a seat prepared for you.",
+      },
+      {
+        question: 'Can I bring a "Plus One"?',
+        answer:
+          "As much as we would love to celebrate with everyone, our venue and guest list are limited. Our wedding is strictly by invitation, and only the names reserved for you on the guest list can be accommodated.",
+      },
+      {
+        question: "Are children invited?",
+        answer:
+          "We love your little ones, but apart from the children in our entourage, our celebration is adults-only. We hope this gives you a relaxing evening off to celebrate with us!",
+      },
+      {
+        question: "What should I wear?",
+        answer:
+          "Please follow the [attire guide](#details) in Event Details.\n\n• Guests: semi-formal in shades of dusty pink or gray. Ladies may wear a short or long dress; gentlemen may wear a polo or long-sleeve shirt with pants.\n• Principal sponsors: Ninang in a formal dress or long gown in cream or beige; Ninong in a long-sleeve barong with black pants.\n• Entourage: dusty pink gowns for the bridesmaids and flower girls; gray suits for the groomsmen and bearers.\n\nKindly avoid casual clothes and all-white outfits.",
       },
       {
         question: "May we choose our own seats at the reception?",
         answer:
-          "We kindly ask that you take the place reserved for you. Each seat has been arranged with care so everyone may be comfortably seated with those we hoped you would share the evening with.",
+          "We kindly ask that you take the seat reserved for you. Each table has been arranged with care so you can share the evening with the people we hoped you would sit with.",
       },
       {
-        question: 'Can I bring a "Plus One" to the event?',
+        question: "Is there parking at the venue?",
         answer:
-          "As much as we would love to accommodate all our friends and family, we have a limited number of guests. Please understand that this event is strictly by invitation only.",
-      },
-      {
-        question: "Can I bring my child to the event?",
-        answer:
-          "We love your kids, but consider this your night off! Please note that our celebration is adults-only.",
-      },
-      {
-        question: "May I make an announcement or a proposal during the wedding?",
-        answer:
-          "To keep the focus on the celebration, we kindly ask that there be no surprise announcements or proposals during our wedding.",
-      },
-      {
-        question: "Can I share the invitation online?",
-        answer:
-          "Please keep this just between us! Kindly refrain from posting our invitation online.",
-      },
-      {
-        question:
-          'I said "No" to the RSVP but I had a change of plans—I can attend now! What should I do?',
-        answer:
-          "Please check with us first as we have a strict guest list. If seats become available, we will let you know as soon as possible. Please do not attend unannounced, as we may not have any available seats for you.",
-      },
-      {
-        question: "What if I RSVP'd but cannot attend?",
-        answer:
-          "We would love to have you at our wedding, but we understand that there are circumstances beyond our control. However, please let us know as soon as possible so we can reallocate your seat/s.",
-      },
-      {
-        question: "Is there parking available?",
-        answer:
-          "Yes, parking for both cars and motorcycles is available inside the venue. Please arrive a little early so you have time to park comfortably.",
-      },
-      {
-        question: "What is the dress code?",
-        answer:
-          "Please follow the [attire guide](#details) in Event Details. Our guest dress code is semi-formal in warm gray, dusty rose, blush pink or blush cream. Ladies may wear a flowy long or midi dress in any of these colors. Gentlemen may wear a long-sleeve collared shirt in warm gray, dusty rose, blush pink or blush cream with khaki, navy or black slacks. Kindly avoid casual clothes and all-white outfits.",
+          "Yes, parking for cars and motorcycles is available inside the venue. Arriving a little early will give you time to park comfortably.",
       },
       {
         question: "Will the ceremony be unplugged?",
         answer:
-          "Mostly. You may take a few photos, but we kindly ask that you keep it minimal and avoid blocking or crowding our official photographers. We would love for everyone to stay present and share the moment with us. Don't worry—professional photos will be shared with you after the event.",
+          "Mostly. You may take a few photos, but please keep it minimal and avoid blocking or crowding our official photographers. We would love for everyone to stay present with us in the moment — professional photos will be shared after the wedding.",
       },
       {
-        question: "Can I take photos or videos during the reception?",
+        question: "Can I take photos and videos during the reception?",
         answer:
-          "Yes. We would love for you to capture the joy throughout the reception. We prepared this celebration wholeheartedly and we want everyone to enjoy it fully.",
-      },
-      {
-        question: "When would it be most thoughtful to take our leave?",
-        answer:
-          "It would mean so much if you could stay with us through the end of the program. We have prepared the evening with love, and we hope you will laugh, take photos, and celebrate until the night draws to a close.",
+          "Absolutely! Capture all the joy you can. We would love to see your snaps, so please upload them through [Snap and Share](#snap-share).",
       },
       {
         question: "What if I have dietary restrictions or allergies?",
         answer:
-          "Please let us know about any dietary restrictions or allergies when you RSVP. We want to ensure everyone can enjoy the celebration comfortably.",
+          "Please let us know about any dietary restrictions or allergies when you RSVP so we can make sure you enjoy the celebration comfortably.",
       },
       {
-        question: "How can I help the couple have a great time during their wedding?",
+        question: "What gift should we give?",
         answer:
-          "• Pray with us for favorable weather and the continuous blessings of our Lord as we enter this new chapter of our lives as husband and wife.\n• RSVP as soon as your schedule is cleared.\n• Dress according to the attire guide and color palette.\n• Arrive on time.\n• Follow the seating arrangement at the reception.\n• Stay until the end of the program.\n• Join the activities and enjoy!",
+          "Your presence and prayers are the greatest gifts of all. Should you wish to bless us further, please see our [gift guide](#registry).",
+      },
+      {
+        question: "Can I share the invitation online?",
+        answer:
+          "Please keep this one just between us! Kindly refrain from posting our invitation on social media.",
+      },
+      {
+        question: "May I make an announcement or a proposal during the wedding?",
+        answer:
+          "To keep the day centered on our celebration, we kindly ask that there be no surprise announcements or proposals during our wedding.",
+      },
+      {
+        question: "When is the best time to take our leave?",
+        answer:
+          "It would mean so much if you could stay with us until the end of the program. We have prepared the evening with love, and we hope you will laugh, take photos and celebrate with us until the very last dance.",
+      },
+      {
+        question: "How can I help make the day special?",
+        answer:
+          "• Pray with us for good weather and the Lord's continued blessings as we begin this new chapter as husband and wife.\n• RSVP as soon as your schedule is cleared.\n• Dress according to the attire guide and color palette.\n• Arrive on time.\n• Follow the seating arrangement at the reception.\n• Stay until the end of the program.\n• Join the activities and enjoy!",
       },
     ],
   },
@@ -1668,8 +1681,8 @@ Now, as they prepare to say yes before God and the people they love most, Cather
     showFrame: true,
     embedUrl:
     //https://open.spotify.com/embed/playlist/5sT43YjdM8pJ3xtEkrxyEY?utm_source=generator&si=e5e64aa63fd04356
-      "https://open.spotify.com/embed/playlist/3LP3qW6rWkhFHXqcuf94q6?utm_source=generator&si=89972f4d1040447f",
-    spotifyUrl: "https://open.spotify.com/playlist/3LP3qW6rWkhFHXqcuf94q6",
+      "https://open.spotify.com/embed/playlist/0SdYLUZpEHZGMo1owKcjxI?utm_source=generator&si=6da5134092444970",
+    spotifyUrl: "https://open.spotify.com/playlist/0SdYLUZpEHZGMo1owKcjxI",
   },
   // Closing "See you there!" section (components/sections/see-you-there.tsx).
   //   photos mode (loadingScreen.display "photos") → full-screen couple photo

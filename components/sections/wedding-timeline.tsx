@@ -6,8 +6,8 @@ import type { TimelineIconName } from "@/content/site"
 import { motion } from "motion/react"
 import { Cinzel } from "next/font/google"
 import localFont from "next/font/local"
-import Image from "next/image"
 import { TintedDeco } from "@/components/tinted-deco"
+import { HEART_PATH } from "@/components/rising-hearts"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -29,15 +29,16 @@ const aboveTheBeyond = localFont({
 const CORNER_DECO_CLASS =
   "block h-auto w-auto max-w-[80px] sm:max-w-[120px] md:max-w-[170px] lg:max-w-[205px] xl:max-w-[245px] select-none"
 
-// Light palette — the section has no background and sits on the dusty-blue Silk backdrop.
-// White titles, butter-yellow times (readable on blue), soft navy halos.
-const IVORY = "var(--color-motif-soft)"
-const CREAM = "var(--color-motif-cream)"
-const PALE = "var(--color-motif-silver)"
+// Light palette — the section has no background and sits on the dusty-rose Silk backdrop.
+// Ivory titles, silver times / kicker, cream script + locations, soft charcoal halos.
+const INK = "var(--color-motif-soft)"
+const ROSE = "var(--color-motif-silver)"
+const SCRIPT = "var(--color-motif-cream)"
+const BODY = "var(--color-motif-soft)"
 const LINE = "color-mix(in srgb, var(--color-motif-soft) 70%, transparent)"
 const entryEase = [0.22, 1, 0.36, 1] as const
 
-// Navy halo keeps light text readable over the moving backdrop
+// Charcoal halo keeps light text readable over the moving backdrop
 const titleShadow =
   "0 1px 0 color-mix(in srgb, var(--color-welcome-navy) 45%, transparent), 0 2px 10px color-mix(in srgb, var(--color-welcome-navy) 40%, transparent), 0 8px 28px color-mix(in srgb, var(--color-welcome-navy) 28%, transparent)"
 const textShadow =
@@ -83,7 +84,9 @@ function OutsideDivider() {
   return (
     <div className="flex items-center justify-center gap-2">
       <span className="h-px w-10 sm:w-16" style={lineRight} />
-      <span className="h-1.5 w-1.5 rotate-45" style={{ background: "var(--color-motif-accent)" }} aria-hidden />
+      <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="var(--color-motif-accent)" aria-hidden>
+        <path d={HEART_PATH} />
+      </svg>
       <span className="h-px w-10 sm:w-16" style={lineLeft} />
     </div>
   )
@@ -104,7 +107,7 @@ function TimelineKicker({ text }: { text: string }) {
   return (
     <p
       className={`${cinzel.className} mx-auto mt-4 max-w-[20rem] px-2 text-[0.6875rem] font-semibold leading-snug tracking-[0.12em] min-[400px]:max-w-none min-[400px]:text-[0.75rem] min-[400px]:tracking-[0.16em] sm:mt-6 sm:text-[0.875rem] sm:tracking-[0.2em] md:text-[0.9375rem] md:tracking-[0.22em]`}
-      style={{ color: PALE, textShadow }}
+      style={{ color: ROSE, textShadow }}
     >
       {text}
     </p>
@@ -128,7 +131,7 @@ function TimelineTitle({ title, subtitle }: { title: string; subtitle: string })
         className={`${theSeasons.className} block uppercase leading-[0.9] tracking-[0.04em] min-[400px]:tracking-[0.08em] sm:tracking-[0.12em] md:tracking-[0.14em]`}
         style={{
           fontSize: "var(--title-size)",
-          color: IVORY,
+          color: INK,
           textShadow: titleShadow,
         }}
       >
@@ -139,7 +142,7 @@ function TimelineTitle({ title, subtitle }: { title: string; subtitle: string })
         className={`${aboveTheBeyond.className} relative z-10 mx-auto mt-1.5 block w-fit max-w-[min(100%,22rem)] px-1 leading-[0.88] sm:mt-2 sm:max-w-none sm:leading-[0.9]`}
         style={{
           fontSize: "var(--script-size)",
-          color: CREAM,
+          color: SCRIPT,
           textShadow: titleShadow,
         }}
       >
@@ -151,6 +154,7 @@ function TimelineTitle({ title, subtitle }: { title: string; subtitle: string })
 
 const ICONS: Record<TimelineIconName, TimelineIcon> = {
   arrival: ArrivalIcon,
+  guests: GuestsIcon,
   rings: RingsIcon,
   departure: DepartureIcon,
   cocktail: CocktailIcon,
@@ -212,7 +216,7 @@ export function WeddingTimeline() {
         </div>
         <p
           className={`font-goudy-italic mx-auto mt-4 max-w-xl px-2 sm:mt-5 md:mt-6 ${timelineType.textRelaxed}`}
-          style={{ color: IVORY, textShadow }}
+          style={{ color: BODY, textShadow }}
         >
           {content.description}
         </p>
@@ -247,14 +251,14 @@ export function WeddingTimeline() {
           <blockquote>
             <p
               className={`font-goudy-italic ${timelineType.textRelaxed} italic leading-relaxed`}
-              style={{ color: IVORY, textShadow }}
+              style={{ color: BODY, textShadow }}
             >
               &ldquo;{content.quote}&rdquo;
             </p>
             {content.quoteCitation ? (
               <footer
                 className={`font-goudy-italic mt-2 sm:mt-3 ${timelineType.label} not-italic tracking-wide`}
-                style={{ color: PALE, textShadow }}
+                style={{ color: ROSE, textShadow }}
               >
                 — {content.quoteCitation}
               </footer>
@@ -378,13 +382,13 @@ function TimelineText({
     <div className={`max-w-md ${textAlign} ${align === "right" ? "ml-auto" : "mr-auto"}`}>
       <p
         className={`${cinzel.className} ${timelineType.label} font-semibold tracking-[0.2em] uppercase`}
-        style={{ color: PALE, textShadow }}
+        style={{ color: ROSE, textShadow }}
       >
         {event.time}
       </p>
       <p
         className={`${theSeasons.className} mt-1 text-[1.15rem] leading-tight tracking-[0.04em] sm:text-[1.25rem] md:text-[1.175rem]`}
-        style={{ color: IVORY, textShadow: titleShadow }}
+        style={{ color: INK, textShadow: titleShadow }}
       >
         <SpecialCharFont text={event.title} />
       </p>
@@ -392,7 +396,7 @@ function TimelineText({
       {event.location && (
         <p
           className={`font-goudy-italic ${timelineType.text} mt-1.5 leading-relaxed`}
-          style={{ color: CREAM, textShadow }}
+          style={{ color: SCRIPT, textShadow }}
         >
           {event.location}
         </p>
@@ -411,17 +415,18 @@ function IconMark({
   imageSrc?: string
 }) {
   if (imageSrc) {
+    // Black line art painted ivory through the image's alpha (mask), with a soft charcoal halo
+    const mask = `url("${encodeURI(imageSrc)}") center / contain no-repeat`
     return (
-      <Image
-        src={imageSrc}
-        alt=""
-        width={160}
-        height={160}
-        className={`${
-          mobile ? "h-24 w-24 sm:h-28 sm:w-28" : "h-18 w-18 lg:h-22 lg:w-22"
-        } object-contain`}
-        // Black line art → white, with a soft navy halo
-        style={{ filter: "brightness(0) invert(1) drop-shadow(0 2px 6px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent))" }}
+      <span
+        aria-hidden
+        className={`${mobile ? "h-24 w-24 sm:h-28 sm:w-28" : "h-18 w-18 lg:h-22 lg:w-22"} block shrink-0`}
+        style={{
+          background: INK,
+          WebkitMask: mask,
+          mask,
+          filter: "drop-shadow(0 2px 6px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent))",
+        }}
       />
     )
   }
@@ -451,6 +456,20 @@ function ArrivalIcon(props: React.SVGProps<SVGSVGElement>) {
       <path d="M6 28V14L16 6l10 8v14" />
       <path d="M12 28v-8h8v8" />
       <path d="M16 6v-2" />
+    </svg>
+  )
+}
+
+// Guests arriving: two figures under a small heart (no building — ceremony and
+// reception share one venue)
+function GuestsIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" stroke={iconStroke} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <circle cx="11" cy="14" r="3" />
+      <circle cx="21" cy="14" r="3" />
+      <path d="M5 27v-2a5 5 0 0 1 5-5h2a5 5 0 0 1 5 5v2" />
+      <path d="M15 27v-2a5 5 0 0 1 5-5h2a5 5 0 0 1 5 5v2" />
+      <path d="M16 8.5s-2.5-1.5-2.5-3.1A1.4 1.4 0 0 1 16 4.6a1.4 1.4 0 0 1 2.5.8c0 1.6-2.5 3.1-2.5 3.1Z" />
     </svg>
   )
 }

@@ -6,6 +6,7 @@ import { Cinzel } from "next/font/google"
 import localFont from "next/font/local"
 import { ChevronLeft } from "lucide-react"
 import { useSiteConfig } from "@/hooks/use-site-config"
+import { HEART_PATH } from "@/components/rising-hearts"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -17,9 +18,9 @@ const aboveTheBeyond = localFont({
   display: "swap",
 })
 
-// Top bar: white → light powder blue, deep slate lettering, dusty-blue hairline
+// Top bar: white → blush pink, charcoal lettering, warm-gray / blush hairline
 const BAR_BG =
-  "linear-gradient(180deg, rgb(255 255 255 / 94%) 0%, color-mix(in srgb, #EBCBCF 55%, white) 100%)"
+  "linear-gradient(180deg, rgb(255 255 255 / 94%) 0%, color-mix(in srgb, var(--color-motif-blush) 55%, white) 100%)"
 
 export default function GalleryLayout({ children }: { children: React.ReactNode }) {
   const { couple, gallery } = useSiteConfig()
@@ -41,7 +42,7 @@ export default function GalleryLayout({ children }: { children: React.ReactNode 
           background: BAR_BG,
           WebkitBackdropFilter: "blur(10px)",
           backdropFilter: "blur(10px)",
-          boxShadow: "0 10px 24px color-mix(in srgb, var(--color-motif-medium) 22%, transparent)",
+          boxShadow: "0 10px 24px color-mix(in srgb, var(--color-motif-blush) 45%, transparent)",
         }}
       >
         <div className="mx-auto flex h-12 max-w-7xl items-center justify-between gap-3 px-3 sm:h-14 sm:px-6 lg:px-8">
@@ -67,7 +68,9 @@ export default function GalleryLayout({ children }: { children: React.ReactNode 
             >
               {couple.groomNickname} &amp; {couple.brideNickname}
             </span>
-            <span className="hidden h-3 w-px bg-[color-mix(in_srgb,var(--color-motif-medium)_60%,transparent)] sm:inline-block" aria-hidden />
+            <svg viewBox="0 0 24 24" className="hidden h-2.5 w-2.5 self-center sm:inline-block" fill="var(--color-motif-accent)" aria-hidden>
+              <path d={HEART_PATH} />
+            </svg>
             <span
               className={`${cinzel.className} text-[0.625rem] font-semibold uppercase tracking-[0.24em] sm:text-[0.6875rem] sm:tracking-[0.28em]`}
             >
@@ -75,7 +78,7 @@ export default function GalleryLayout({ children }: { children: React.ReactNode 
             </span>
           </div>
         </div>
-        {/* Hairline along the bottom edge: dusty blue → powder blue → dusty blue */}
+        {/* Hairline along the bottom edge: warm gray → blush → warm gray */}
         <div
           className="h-[2px] w-full"
           style={{

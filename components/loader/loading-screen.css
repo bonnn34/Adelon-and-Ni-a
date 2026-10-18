@@ -83,6 +83,12 @@
   animation: ls-slide-right 108s linear infinite;
 }
 
+/* Shared clock (invite-photo-backdrop.tsx → --marquee-elapsed): every strip starts
+   that far into its slide, so loader → envelope → home hero line up exactly */
+.loading-screen__marquee .loading-screen__slide-track {
+  animation-delay: calc(var(--marquee-elapsed, 0s) * -1);
+}
+
 .loading-screen__slide-strip {
   display: flex;
   height: 100%;
@@ -144,6 +150,21 @@
 .invite-photo-backdrop .loading-screen__slide-photo {
   background: color-mix(in srgb, var(--color-motif-cream) 45%, white);
   filter: sepia(0.04) saturate(0.92) brightness(1.08) contrast(1.02) hue-rotate(-8deg);
+}
+
+/* Plain loader / envelope strip: soft rounded tiles with a faint blush edge,
+   so it reads as a gentle photo wall rather than hard-edged blocks */
+.background-video .loading-screen__marquee {
+  padding: 0.45rem 0;
+}
+
+.background-video .loading-screen__slide-photo {
+  border-radius: 0.85rem;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-motif-blush) 55%, transparent);
+}
+
+.background-video .loading-screen__slide-photo > img {
+  border-radius: inherit;
 }
 
 @keyframes ls-slide-left {

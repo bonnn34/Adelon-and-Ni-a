@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useReducedMotion } from 'motion/react';
 import {
@@ -18,6 +18,27 @@ export const MOBILE_BG_PHOTOS = MOBILE_BACKGROUND_PHOTOS;
 
 const MARQUEE_SAMPLE_SIZE = 24;
 const MARQUEE_EAGER_COUNT = 3;
+
+/** White wash over the photo strip — one value for the loader and the envelope so the
+ *  hand-off between them doesn't shift the tone. */
+export const PHOTO_BACKGROUND_VEIL = 0.48;
+
+// One clock for every photo strip on the page: each marquee starts its slide that many
+// seconds in (negative animation-delay, see --marquee-elapsed in loading-screen.css), so
+// the loader, the envelope and the home hero always show the strip at the same spot and
+// cross-fade without the photos jumping.
+let marqueeEpoch: number | null = null;
+function marqueeElapsedSeconds() {
+  const now = performance.now();
+  if (marqueeEpoch === null) marqueeEpoch = now;
+  return (now - marqueeEpoch) / 1000;
+}
+
+// Photos that have already decoded once show straight away in later strips
+// (no second fade-in from blank during the loader → envelope cross-fade)
+const loadedPhotos = new Set<string>();
+
+const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 function pickRandomPhotos(photos: readonly string[], count: number) {
   const next = [...photos];
@@ -58,6 +79,7 @@ function MarqueeRow({
               return (
                 <div key={`${copy}-${src}`} className="loading-screen__slide-photo">
                   <Image
+                    data-loaded={loadedPhotos.has(src) ? '' : undefined}
                     src={src}
                     alt=""
                     fill
@@ -69,7 +91,10 @@ function MarqueeRow({
                     fetchPriority={copy === 0 && index < 2 ? 'high' : 'low'}
                     className="object-cover"
                     // Each photo fades in once it has decoded instead of popping in
-                    onLoad={(e) => e.currentTarget.setAttribute('data-loaded', '')}
+                    onLoad={(e) => {
+                      loadedPhotos.add(src);
+                      e.currentTarget.setAttribute('data-loaded', '');
+                    }}
                   />
                 </div>
               );
@@ -111,8 +136,14 @@ export function PhotoMarquee({
   // Only the first tiles on screen load eagerly; the rest wait their turn
   const eagerCount = Math.min(selected.length, MARQUEE_EAGER_COUNT);
 
+  // Join the shared clock before the first paint (see marqueeElapsedSeconds)
+  const rootRef = useRef<HTMLDivElement>(null);
+  useIsomorphicLayoutEffect(() => {
+    rootRef.current?.style.setProperty('--marquee-elapsed', `${marqueeElapsedSeconds().toFixed(3)}s`);
+  }, []);
+
   return (
-    <div className={`loading-screen__marquee loading-screen__marquee--${variant}`}>
+    <div ref={rootRef} className={`loading-screen__marquee loading-screen__marquee--${variant}`}>
       <MarqueeRow photos={top} copies={copies} direction="left" eagerCount={eagerCount} />
       <MarqueeRow photos={bottom} copies={copies} direction="right" eagerCount={eagerCount} />
     </div>
@@ -139,7 +170,7 @@ function useIsDesktop() {
 export function PhotoBackground({
   photos,
   desktopPhotos,
-  veil = 0.55,
+  veil = PHOTO_BACKGROUND_VEIL,
 }: {
   /** Portrait photos (public/mobile-background) — phones */
   photos: readonly string[];

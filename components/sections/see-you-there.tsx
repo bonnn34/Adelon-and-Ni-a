@@ -6,6 +6,7 @@ import Image from "next/image"
 import { motion, useReducedMotion, type Variants } from "motion/react"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
+import { SectionBackdrop } from "@/components/section-backdrop"
 import { TintedDeco } from "@/components/tinted-deco"
 import { DecoCorners } from "@/components/deco-corners"
 
@@ -93,7 +94,7 @@ function PlainSeeYouThere({ background = true }: { background?: boolean }) {
       {/* Same circle pattern as the gallery, with the light wash + double border
           (on the invitation page the shared wrapper paints these behind See You There and the footer) */}
       {background && <PlainBubbles />}
-      {background && <div className="section-wash" aria-hidden="true" />}
+      {background && <SectionBackdrop />}
       {background && plain.showFrame && <div className="deco-frame" aria-hidden="true" />}
 
       {/* Corner florals (content/site.ts → seeYouThere.plain.decos) — top only; the footer continues below */}

@@ -10,6 +10,7 @@ import { useSiteConfig } from "@/hooks/use-site-config"
 import { fetchUntilReady, isAbortError } from "@/lib/fetch-until-ready"
 import { fetchInvitationList, readCachedInvitationList } from "@/lib/invitation-data"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
+import { SectionBackdrop } from "@/components/section-backdrop"
 import { TintedDeco } from "@/components/tinted-deco"
 import { DecoCorners } from "@/components/deco-corners"
 
@@ -84,21 +85,30 @@ function OutsideDivider() {
   )
 }
 
-const SECTION_TITLE_CLASS = `${theSeasons.className} text-[0.8rem] sm:text-[0.85rem] md:text-[0.95rem] tracking-[0.08em] sm:tracking-[0.12em] md:tracking-[0.14em] uppercase leading-tight`
+// Role category headings: one font (Cinzel capitals) for every heading — it has all
+// the glyphs ("&", "-", …), so nothing switches font mid-heading
+const SECTION_TITLE_CLASS = `${cinzel.className} font-semibold text-[0.64rem] sm:text-[0.8rem] md:text-[0.9rem] tracking-[0.14em] sm:tracking-[0.16em] md:tracking-[0.18em] uppercase leading-tight`
 
-// Headings shown in the Above the Beyond script instead of the uppercase serif
-const SCRIPT_TITLE_CATEGORIES = new Set(["Principal Sponsors", "Best Man", "Maid of Honor"])
-const SCRIPT_TITLE_CLASS = `${aboveTheBeyond.className} text-[1.35rem] sm:text-[1.6rem] md:text-[1.85rem] normal-case tracking-normal leading-[1.1]`
+// Names in Cormorant Garamond (loaded in app/layout.tsx) — an elegant serif that
+// stays readable at small sizes; slightly smaller on phones
+const NAME_FONT = '"Cormorant Garamond", "SortsMillGoudy", Georgia, serif'
 
 const nameStyle: React.CSSProperties = {
-  fontSize: "clamp(0.9rem, min(3.8vw, 4.8cqi), 1.02rem)",
+  fontFamily: NAME_FONT,
+  fontWeight: 600,
+  fontSize: "clamp(0.8rem, min(3.4vw, 4.4cqi), 1.12rem)",
   lineHeight: 1.2,
-  letterSpacing: "0.02em",
+  letterSpacing: "0.01em",
 }
 
+const featuredNameSize = "clamp(0.9rem, min(3.8vw, 4.8cqi), 1.24rem)"
+
+// Role titles: small engraved capitals in Cinzel
 const roleTitleStyle: React.CSSProperties = {
-  fontSize: "clamp(0.7rem, min(2.9vw, 3.5cqi), 0.78rem)",
-  lineHeight: 1.1,
+  fontSize: "clamp(0.5rem, min(2.15vw, 2.7cqi), 0.68rem)",
+  lineHeight: 1.25,
+  letterSpacing: "0.12em",
+  textTransform: "uppercase",
 }
 
 const ROMAN_NUMERAL = /^(I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII|XIII|XIV|XV)$/i
@@ -180,13 +190,13 @@ function CouplePromiseMark({ kicker, line }: { kicker: string; line: string }) {
   return (
     <div className="-mt-2 mb-3 text-center sm:-mt-4 sm:mb-5 md:-mt-5 md:mb-6">
       <p
-        className={`${cinzel.className} text-[0.6875rem] font-semibold uppercase tracking-[0.2em] sm:text-[0.6875rem] sm:tracking-[0.24em] md:text-[0.6875rem] md:tracking-[0.28em]`}
+        className={`${cinzel.className} text-[0.62rem] font-semibold uppercase tracking-[0.18em] sm:text-[0.6875rem] sm:tracking-[0.24em] md:tracking-[0.28em]`}
         style={{ color: ACCENT }}
       >
         {kicker}
       </p>
       <p
-        className={`font-goudy-italic mx-auto mt-1.5 max-w-[16rem] text-sm sm:text-sm sm:mt-2`}
+        className={`font-goudy-italic mx-auto mt-1.5 max-w-[16rem] text-[0.76rem] sm:text-sm sm:mt-2`}
         style={{ color: BODY }}
       >
         {line}
@@ -201,7 +211,7 @@ function EntourageTitle({ title, subtitle }: { title: string; subtitle: string }
       className="welcome-title-lockup relative mx-auto w-full max-w-full text-center"
       style={
         {
-          "--title-size": "clamp(1.35rem, min(6.2vw, 8.5cqi), 3rem)",
+          "--title-size": "clamp(1.25rem, min(5.8vw, 8cqi), 3rem)",
           "--script-size": "clamp(0.78rem, min(3.2vw, 4.8cqi), 1.85rem)",
         } as React.CSSProperties
       }
@@ -599,23 +609,12 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
   }) => {
     const textAlign =
       align === "right" ? "text-right" : align === "left" ? "text-left" : "text-center"
-    const titleClass =
-      typeof children === "string" && SCRIPT_TITLE_CATEGORIES.has(children)
-        ? SCRIPT_TITLE_CLASS
-        : SECTION_TITLE_CLASS
     return (
       <h3
-        className={`relative ${titleClass} mb-1 sm:mb-2 md:mb-2.5 ${textAlign} ${className} transition-all duration-300`}
+        className={`relative ${SECTION_TITLE_CLASS} mb-1 sm:mb-2 md:mb-2.5 ${textAlign} ${className} transition-all duration-300`}
         style={{ color: NAVY }}
       >
-        {typeof children === "string" ? (
-          <MixedFontText
-            text={content.headingLabels[children] ?? children}
-            specialClassName="font-goudy-italic normal-case tracking-normal"
-          />
-        ) : (
-          children
-        )}
+        {typeof children === "string" ? content.headingLabels[children] ?? children : children}
       </h3>
     )
   }
@@ -623,7 +622,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
   // Short italic line under a heading (e.g. what the role means)
   const SectionCaption = ({ children }: { children: React.ReactNode }) => (
     <p
-      className="font-goudy-italic mx-auto -mt-0.5 mb-2 max-w-md px-4 text-center text-[0.85rem] leading-snug sm:mb-3 sm:text-sm md:text-[0.95rem]"
+      className="font-goudy-italic mx-auto -mt-0.5 mb-2 max-w-md px-4 text-center text-[0.74rem] leading-snug sm:mb-3 sm:text-sm md:text-[0.95rem]"
       style={{ color: SCRIPT }}
     >
       {children}
@@ -656,14 +655,10 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
           style={{ background: "linear-gradient(to right, transparent, color-mix(in srgb, var(--color-motif-silver) 70%, transparent), transparent)" }}
         />
         <p
-          className={`${theSeasons.className} relative ${textAlign} transition-all duration-300 max-w-full break-words`}
+          className={`relative ${textAlign} transition-all duration-300 max-w-full break-words`}
           style={{
             ...nameStyle,
-            ...(featured
-              ? {
-                  fontSize: "clamp(1rem, min(4.2vw, 5.2cqi), 1.12rem)",
-                }
-              : {}),
+            ...(featured ? { fontSize: featuredNameSize } : {}),
             color: NAVY,
           }}
           title={displayName.replace(/\+/g, "†")}
@@ -671,19 +666,19 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
           {displayName ? (
             <MixedFontText
               text={displayName}
-              specialClassName="font-goudy-italic tracking-normal"
+              specialClassName="tracking-normal"
             />
           ) : null}
         </p>
         {showRole && displayRole && (
           <p
-            className={`${theSeasons.className} relative mt-0.5 ${textAlign} max-w-full break-words`}
+            className={`${cinzel.className} relative mt-0.5 font-semibold ${textAlign} max-w-full break-words`}
             style={{ ...roleTitleStyle, color: SCRIPT }}
             title={displayRole}
           >
             <MixedFontText
               text={displayRole}
-              specialClassName="font-goudy-italic tracking-normal"
+              specialClassName="tracking-normal"
             />
           </p>
         )}
@@ -772,8 +767,8 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
     >
       {/* Same circle pattern as the gallery */}
       <PlainBubbles />
-      {/* Light white-dusty-blue wash over the circles (globals.css → .section-wash) */}
-      <div className="section-wash" aria-hidden="true" />
+      {/* Pink paper wash + grain and rising hearts, same as the love story (section-backdrop.tsx) */}
+      <SectionBackdrop />
       <Section
         id="entourage"
         className="relative z-10 overflow-hidden pt-5 pb-5 sm:pt-10 sm:pb-10 md:pt-12 md:pb-12 lg:pt-14 lg:pb-14"
@@ -801,7 +796,7 @@ export function Entourage({ sponsorsList }: { sponsorsList?: SponsorsList } = {}
         </div>
 
         <p
-          className="font-goudy-italic mx-auto mt-2.5 max-w-xl px-2 text-[0.9rem] leading-snug sm:mt-5 sm:text-base sm:leading-relaxed md:mt-6"
+          className="font-goudy-italic mx-auto mt-2.5 max-w-xl px-2 text-[0.78rem] leading-snug sm:mt-5 sm:text-base sm:leading-relaxed md:mt-6"
           style={{ ...onBg, fontWeight: 600 }}
         >
           {content.description}

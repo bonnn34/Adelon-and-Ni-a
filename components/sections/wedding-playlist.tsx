@@ -8,6 +8,7 @@ import localFont from "next/font/local"
 import { Music2, Disc3 } from "lucide-react"
 import { motion, useReducedMotion, type Variants } from "motion/react"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
+import { SectionBackdrop } from "@/components/section-backdrop"
 import { TintedDeco } from "@/components/tinted-deco"
 import { DecoCorners } from "@/components/deco-corners"
 
@@ -302,8 +303,8 @@ export function WeddingPlaylist() {
     >
       {/* Same circle pattern as the gallery */}
       <PlainBubbles />
-      {/* Light white-dusty-blue wash over the circles (globals.css → .section-wash) */}
-      <div className="section-wash" aria-hidden="true" />
+      {/* Pink paper wash + grain and rising hearts, same as the love story (section-backdrop.tsx) */}
+      <SectionBackdrop />
       <section
         id="playlist"
         className="relative z-10 overflow-hidden pt-10 pb-9 sm:pt-16 sm:pb-14 md:pt-20 md:pb-16 lg:pt-24 lg:pb-20"

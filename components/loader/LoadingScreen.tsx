@@ -8,6 +8,7 @@ import { useSiteConfig } from '@/hooks/use-site-config';
 import { siteConfig as defaultSiteConfig } from '@/content/site';
 import { PhotoBackground, PhotoMarquee } from '@/components/loader/invite-photo-backdrop';
 import { TintedDeco } from '@/components/tinted-deco';
+import { SectionBackdrop } from '@/components/section-backdrop';
 import './loading-screen.css';
 
 const theSeasons = localFont({
@@ -256,7 +257,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
 
       {isPlain && (
         <>
-          <PhotoBackground photos={backgroundPhotos} desktopPhotos={backgroundPhotosDesktop} veil={0.45} />
+          <PhotoBackground photos={backgroundPhotos} desktopPhotos={backgroundPhotosDesktop} />
           <div className="loading-screen__plain-corners" aria-hidden="true">
             {(
               [
@@ -278,6 +279,9 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
           </div>
           <div className="loading-screen__plain-frame" aria-hidden="true" />
           <div className="ls-plain-glow" aria-hidden="true" />
+          {/* Paper grain + rising pink hearts, same as the invitation sections (section-backdrop.tsx);
+              no extra wash — the photo background already has its blush veil */}
+          <SectionBackdrop wash={false} overlay />
           {!reduceMotion && (
             <div className="ls-plain-motes" aria-hidden="true">
               {PLAIN_MOTES.map((m, i) => (

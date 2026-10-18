@@ -14,6 +14,7 @@ import { motion, useReducedMotion, type Variants } from "motion/react"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
 import { TintedDeco } from "@/components/tinted-deco"
 import { DecoCorners } from "@/components/deco-corners"
+import { SectionBackdrop } from "@/components/section-backdrop"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -58,22 +59,20 @@ const onBgLabel = { color: C.blue, textShadow: onBgGlow } as const
 const onBgBody = { color: C.body, textShadow: onBgGlow } as const
 
 const hairline = "color-mix(in srgb, var(--color-motif-medium) 55%, transparent)"
+const blushEdge = "color-mix(in srgb, var(--color-motif-blush) 90%, transparent)"
 
+// Paper cards with a blush edge (same paper as the love story / gallery photo frames)
 const cardStyle = {
-  background: "#FFFFFF",
-  borderColor: "color-mix(in srgb, var(--color-motif-medium) 70%, transparent)",
-  borderWidth: "1px",
-  borderStyle: "solid",
+  background: "var(--color-motif-soft)",
   boxShadow:
-    "0 22px 48px -26px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent), inset 0 1px 0 rgb(255 255 255 / 80%)",
+    `0 0 0 1px ${blushEdge}, 0 22px 48px -26px color-mix(in srgb, var(--color-welcome-navy) 40%, transparent), inset 0 1px 0 rgb(255 255 255 / 80%)`,
 } as const
 
 const softPanelStyle = {
-  borderColor: hairline,
-  backgroundColor: "color-mix(in srgb, var(--color-motif-medium) 14%, white)",
+  backgroundColor: "color-mix(in srgb, var(--color-motif-blush) 28%, white)",
 } as const
 
-// Primary button: dusty blue → navy with white text (matches the rest of the invitation)
+// Primary button: dusty rose → charcoal with white text (matches the rest of the invitation)
 const primaryButtonBg =
   "linear-gradient(180deg, var(--color-welcome-heading) 0%, color-mix(in srgb, var(--color-welcome-heading) 72%, var(--color-welcome-navy)) 100%)"
 
@@ -84,7 +83,7 @@ function DecoImg({ src, className }: { src: string; className: string }) {
   return <TintedDeco src={src} className={className} />
 }
 
-// Soft dusty-blue hairlines either side of a round icon
+// Warm-gray hairlines either side of a round blush-edged icon
 function SectionIconDivider({ icon }: { icon: ReactNode }) {
   return (
     <div className="flex items-center justify-center gap-2 pt-1 sm:pt-2">
@@ -94,7 +93,7 @@ function SectionIconDivider({ icon }: { icon: ReactNode }) {
       />
       <span
         className="flex h-7 w-7 items-center justify-center rounded-full sm:h-8 sm:w-8"
-        style={{ border: `1px solid ${hairline}`, background: "#FFFFFF" }}
+        style={{ border: `1px solid ${blushEdge}`, background: "var(--color-motif-soft)" }}
       >
         {icon}
       </span>
@@ -207,6 +206,14 @@ function DressCodePaletteHeader({
   )
 }
 
+// Light swatches (cream, blush) get charcoal names; darker ones get white
+function isLightHex(hex: string) {
+  const h = hex.replace("#", "")
+  if (h.length !== 6) return false
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16))
+  return 0.299 * r + 0.587 * g + 0.114 * b > 186
+}
+
 // Full-width color strip: every color gets an equal share of the card width
 function DressCodePaletteSwatches({ palette }: { palette: readonly PaletteColor[] }) {
   const named = palette.filter((c) => c.name)
@@ -216,7 +223,7 @@ function DressCodePaletteSwatches({ palette }: { palette: readonly PaletteColor[
       style={{
         borderColor: "#FFFFFF",
         boxShadow:
-          "0 0 0 1px color-mix(in srgb, var(--color-motif-medium) 60%, transparent), 0 10px 22px -14px color-mix(in srgb, var(--color-welcome-navy) 50%, transparent)",
+          "0 0 0 1px color-mix(in srgb, var(--color-motif-blush) 90%, transparent), 0 10px 22px -14px color-mix(in srgb, var(--color-welcome-navy) 45%, transparent)",
       }}
       role="img"
       aria-label={`Dress code color palette: ${(named.length ? named.map((c) => c.name) : palette.map((c) => c.hex)).join(", ")}`}
@@ -232,11 +239,13 @@ function DressCodePaletteSwatches({ palette }: { palette: readonly PaletteColor[
         >
           {color.name ? (
             <span
-              className="text-[6px] font-semibold uppercase tracking-[0.08em] text-white sm:text-[7px] md:text-[8px] lg:text-[9px]"
+              className="text-[6px] font-semibold uppercase tracking-[0.08em] sm:text-[7px] md:text-[8px] lg:text-[9px]"
               style={{
                 writingMode: "vertical-rl",
                 textOrientation: "mixed",
-                textShadow: "0 1px 2px rgb(0 0 0 / 45%), 0 0 6px rgb(0 0 0 / 25%)",
+                ...(isLightHex(color.hex)
+                  ? { color: "var(--color-motif-deep)", textShadow: "0 1px 0 rgb(255 255 255 / 60%)" }
+                  : { color: "#FFFFFF", textShadow: "0 1px 2px rgb(0 0 0 / 45%), 0 0 6px rgb(0 0 0 / 25%)" }),
               }}
             >
               {color.name}
@@ -254,7 +263,7 @@ function ColorPalette({ colors }: { colors: readonly string[] }) {
   return (
     <div
       className={`mx-auto flex h-8 w-full overflow-hidden rounded-full border-2 shadow-sm sm:h-9 ${widthClass}`}
-      style={{ borderColor: C.light }}
+      style={{ borderColor: C.light, boxShadow: `0 0 0 1px ${blushEdge}` }}
       role="img"
       aria-label={`Color palette: ${colors.join(", ")}`}
     >
@@ -368,14 +377,14 @@ function AttirePaletteGroup({
   return (
     <div className="mx-auto w-full max-w-md space-y-1.5 sm:space-y-2">
       <div className="flex items-center justify-center gap-2">
-        <span className="h-px w-6 sm:w-10" style={{ background: "linear-gradient(to right, transparent, var(--color-motif-yellow))" }} />
+        <span className="h-px w-6 sm:w-10" style={{ background: "linear-gradient(to right, transparent, var(--color-motif-medium))" }} />
         <p
           className={`${cinzel.className} text-center text-[0.62rem] font-semibold uppercase tracking-[0.22em] sm:text-[0.7rem]`}
           style={{ color: C.label }}
         >
           {label}
         </p>
-        <span className="h-px w-6 sm:w-10" style={{ background: "linear-gradient(to left, transparent, var(--color-motif-yellow))" }} />
+        <span className="h-px w-6 sm:w-10" style={{ background: "linear-gradient(to left, transparent, var(--color-motif-medium))" }} />
       </div>
       {description ? (
         <p className="font-goudy-italic text-center text-[0.78rem] leading-snug sm:text-sm" style={{ color: C.body }}>
@@ -442,8 +451,8 @@ function AttireCard({
               className={`${cinzel.className} rounded-full px-2.5 py-0.5 text-[0.55rem] font-semibold uppercase tracking-[0.18em] sm:text-[0.62rem]`}
               style={{
                 color: C.blue,
-                background: "color-mix(in srgb, var(--color-motif-medium) 16%, white)",
-                border: `1px solid ${hairline}`,
+                background: "color-mix(in srgb, var(--color-motif-blush) 35%, white)",
+                border: "1px solid color-mix(in srgb, var(--color-motif-blush) 90%, transparent)",
               }}
             >
               {dressCode}
@@ -456,7 +465,7 @@ function AttireCard({
             className="relative flex w-full shrink-0 items-center justify-center overflow-hidden"
             style={{
               background:
-                "radial-gradient(70% 80% at 50% 40%, #FFFFFF 0%, color-mix(in srgb, var(--color-motif-medium) 16%, white) 100%)",
+                "radial-gradient(70% 80% at 50% 40%, #FFFFFF 0%, color-mix(in srgb, var(--color-motif-blush) 30%, white) 100%)",
             }}
           >
             {/* Any image shape works: the 3/2 size is only a placeholder until the
@@ -570,7 +579,7 @@ function EventVenueCard({
         className="relative overflow-hidden rounded-[1.5rem] sm:rounded-[2rem]"
         style={{ background: cardStyle.background, boxShadow: cardStyle.boxShadow }}
       >
-        <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 xl:h-[30rem] overflow-hidden" style={{ background: "color-mix(in srgb, var(--color-motif-medium) 25%, white)" }}>
+        <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 xl:h-[30rem] overflow-hidden" style={{ background: "color-mix(in srgb, var(--color-motif-blush) 40%, white)" }}>
           {images.map((src, index) => {
             const isActive = index === activeImageIndex
             return (
@@ -732,8 +741,8 @@ function EventVenueCard({
               className={`${cinzel.className} flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 md:py-3.5 border rounded-full font-semibold uppercase tracking-[0.12em] ${ct.btn} transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]`}
               style={{
                 color: C.heading,
-                backgroundColor: "#FFFFFF",
-                borderColor: "color-mix(in srgb, var(--color-motif-medium) 80%, transparent)",
+                backgroundColor: "var(--color-motif-soft)",
+                borderColor: blushEdge,
               }}
               aria-label={`Copy ${badge.toLowerCase()} venue address`}
             >
@@ -828,10 +837,9 @@ export function Details() {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden`}
       style={{ background: sectionBg }}
     >
-      {/* Same circle pattern as the gallery */}
+      {/* Circle pattern + pink paper wash and rising hearts, same as the love story (section-backdrop.tsx) */}
       <PlainBubbles />
-      {/* Light white-dusty-blue wash over the circles (globals.css → .section-wash) */}
-      <div className="section-wash" aria-hidden="true" />
+      <SectionBackdrop />
       <Section
         id="details"
         className="relative z-10 pt-14 pb-12 sm:pt-16 sm:pb-14 md:pt-20 md:pb-16 lg:pt-24 lg:pb-20 overflow-hidden"
