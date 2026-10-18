@@ -80,6 +80,46 @@ function PlainChapterDivider({ dark }: { dark: boolean }) {
   )
 }
 
+// Pink particles drifting up behind each chapter (globals.css → .story-rise)
+const RISE_COLORS = [
+  "var(--color-motif-blush)",
+  "color-mix(in srgb, var(--color-highlight-deep) 55%, white)",
+  "#F6D3D8",
+  "#FFFFFF",
+] as const
+
+const RISE_PARTICLES = Array.from({ length: 16 }, (_, i) => ({
+  left: `${((i * 37 + 9) % 94) + 3}%`,
+  size: 3 + (i % 4) * 1.5,
+  delay: -((i * 1.3) % 12),
+  duration: 10 + (i % 5) * 2.2,
+  drift: `${((i % 2 ? 1 : -1) * (8 + (i % 4) * 6))}px`,
+  color: RISE_COLORS[i % RISE_COLORS.length],
+  petal: i % 3 === 0,
+}))
+
+function StoryRisingParticles() {
+  return (
+    <div className="story-rise" aria-hidden>
+      {RISE_PARTICLES.map((p, i) => (
+        <span
+          key={i}
+          className={`story-rise__particle${p.petal ? " story-rise__particle--petal" : ""}`}
+          style={{
+            left: p.left,
+            width: p.size,
+            height: p.size,
+            background: p.color,
+            animationDelay: `${p.delay}s`,
+            animationDuration: `${p.duration}s`,
+            ["--drift" as string]: p.drift,
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
 /**
  * Plain mode: open layout, no card. Photo and text sit side by side and swap
  * sides each chapter (layout "image-left" / "image-right"); text aligns toward
@@ -121,8 +161,9 @@ function PlainOpenChapter({
     <div className={`${theSeasons.variable} story-open relative z-[2] px-5 sm:px-8 md:px-10`}>
       {/* Soft powder-blue wash behind each chapter, on the photo's side */}
       <span className={`story-open-wash ${photoLeft ? "story-open-wash--left" : "story-open-wash--right"}`} aria-hidden />
+      {!reduceMotion && <StoryRisingParticles />}
       <div
-        className={`mx-auto flex max-w-5xl items-center gap-5 py-10 sm:gap-10 sm:py-14 md:gap-14 md:py-16 ${
+        className={`relative mx-auto flex max-w-5xl items-center gap-5 py-10 sm:gap-10 sm:py-14 md:gap-14 md:py-16 ${
           photoLeft ? "flex-row" : "flex-row-reverse"
         }`}
       >
@@ -187,12 +228,12 @@ function PlainOpenChapter({
 
       {showDivider && !isLast && (
         <div className="story-open-divider flex items-center justify-center gap-2" aria-hidden>
-          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, #8799A7)" }} />
+          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, #9A9294)" }} />
           {/* Deep slate heart — the one accent between chapters */}
-          <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="#2C3E4F">
+          <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="#4A4546">
             <path d="M12 21s-7.5-4.6-9.6-9.2C1 8.6 3 5 6.5 5c2 0 3.5 1.1 4.3 2.6h2.4C14 6.1 15.5 5 17.5 5 21 5 23 8.6 21.6 11.8 19.5 16.4 12 21 12 21z" />
           </svg>
-          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, #8799A7)" }} />
+          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, #9A9294)" }} />
         </div>
       )}
     </div>

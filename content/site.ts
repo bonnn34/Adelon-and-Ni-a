@@ -66,35 +66,35 @@ export type AttireColor = string | { name: string; hex: string }
 
 // ── The couple ──────────────────────────────────────────────────────────────
 const COUPLE = {
-  bride: "Jasmine M. Marcellana",
-  brideNickname: "Jasmine",
-  groom: "Cidny S. Loveres",
-  groomNickname: "Cidny",
+  bride: "Breichelle",
+  brideNickname: "Breichelle",
+  groom: "Jeff Ren",
+  groomNickname: "Jeff",
 }
 
 // ── Date & times ────────────────────────────────────────────────────────────
-const WEDDING_DATE = "December 26,2026" // e.g. "June 5, 2027"
-const WEDDING_DAY = "Saturday"
+const WEDDING_DATE = "December 6,2026" // e.g. "June 5, 2027"
+const WEDDING_DAY = "Sunday"
 const TIMES = {
-  entourageCall: "9:00 AM", // entourage assembly
-  guestArrival: "9:30 AM", // guests arrival / assembly (shown in Event Details + reminders)
-  ceremony: "10:00 AM",
-  reception: "12:30 PM", // start of program
+  entourageCall: "3:00 PM", // entourage assembly
+  guestArrival: "3:30 PM", // guests arrival / assembly (shown in Event Details + reminders)
+  ceremony: "4:00 AM",
+  reception: "6:30 PM", // start of program
 }
 
 // ── Venues ──────────────────────────────────────────────────────────────────
 
 const CEREMONY_VENUE = {
-  name: "Nuestra Señora de la Portería Parish Church",
-  address: "Sta. Maria Street, Daraga, Albay, Philippines",
-  map: "https://maps.app.goo.gl/Rp5oR3tp7WwrkUSk7",
-  photos: ["/Details/ceremony_1.png", "/Details/ceremony_2.png", "/Details/ceremony_3.png"],
+  name: "The Vistas-Pampanga: Vista Mons",
+  address: "San Pablo, Magalang, 2011 Pampanga",
+  map: "https://maps.app.goo.gl/SY5NAMKACySL8aZ96",
+  photos: ["/Details/reception (1).png", "/Details/reception (2).png", "/Details/reception (3).jpg", "/Details/reception (4).jpg", "/Details/reception (5).jpg", "/Details/reception (6).jpg"],
 }
 const RECEPTION_VENUE = {
-  name: "A.V.P. Catering Services",
-  address: "Imelda Roces Avenue (formerly, Tahao Rd, Legazpi City, 4500 Albay, Philippines",
-  map: "https://maps.app.goo.gl/PoWEEmk4vwpex6Fg6",
-  photos: ["/Details/reception_1.png", "/Details/reception_2.png", "/Details/reception_3.png"],
+  name: "The Vistas-Pampanga: Vista Mons",
+  address: "San Pablo, Magalang, 2011 Pampanga",
+  map: "https://maps.app.goo.gl/SY5NAMKACySL8aZ96",
+  photos: ["/Details/reception (1).png", "/Details/reception (2).png", "/Details/reception (3).jpg", "/Details/reception (4).jpg", "/Details/reception (5).jpg", "/Details/reception (6).jpg"],
 }
 
 // ── Venue cards (Event Details section) ─────────────────────────────────────
@@ -107,7 +107,7 @@ const RECEPTION_VENUE = {
 // showDate     = show the big Month / Day / Year
 // showArrival  = show "Arrival: <guest arrival time>" (otherwise "At <time>")
 const VENUE_CARDS = {
-  layout: "separate" as "separate" | "combined",
+  layout: "combined" as "separate" | "combined",
   // Used when layout is "combined"
   combined: {
     badge: "Ceremony & Reception",
@@ -163,10 +163,10 @@ const HASHTAGS = ["#CidnyJasmine2026"] // ⚠ check — looks like it's from a p
 //     highlight: phrase inside details shown bold + underlined ("" for none)
 // Guest dress code colors — also shown in the "Dress Code" gentle reminder
 const DRESS_CODE_PALETTE: AttireColor[] = [
-  { name: "Dusty Blue", hex: "#8799A7" },
-  { name: "Slate Blue", hex: "#435B70" },
-  { name: "Powder Blue", hex: "#C4D1E2" },
-  { name: "Beige", hex: "#ECE5DB" },
+  { name: "Warm Gray", hex: "#9A9294" },
+  { name: "Dusty Rose", hex: "#A8606F" },
+  { name: "Blush Pink", hex: "#EBCBCF" },
+  { name: "Blush Cream", hex: "#F3E8E6" },
 ];
 
 // Attire groups shown in the Details section (components/sections/details.tsx).
@@ -186,13 +186,13 @@ const ATTIRE = {
     note: "",
     ladies: {
       label: "Ladies",
-      details: "Floor-length gowns in dusty blue, slate blue, powder blue or beige. Soft, flowy fabrics like chiffon or tulle are perfect, and each of you may wear a different shade from the palette.",
+      details: "Floor-length gowns in warm gray, dusty rose, blush pink or blush cream. Soft, flowy fabrics like chiffon or tulle are perfect, and each of you may wear a different shade from the palette.",
       highlight: "Floor-length gowns",
       roles: [] as { role: string; attire: string }[],
     },
     gentlemen: {
       label: "Gentlemen",
-      details: "A classic black suit with a white dress shirt, a Dusty Blue necktie and black formal shoes.",
+      details: "A classic black suit with a white dress shirt, a Dusty Rose necktie and black formal shoes.",
       highlight: "classic black suit",
       roles: [] as { role: string; attire: string }[],
     },
@@ -233,16 +233,16 @@ const ATTIRE = {
     image: "/Details/entourage.png",
     dressCode: "Formal Attire",
     palette: [] as AttireColor[], // no palette on the sponsors card
-    note: "We invite our principal sponsors to dress elegantly in dusty blue and classic black to complement our wedding motif.",
+    note: "We invite our principal sponsors to dress elegantly in dusty rose and classic black to complement our wedding motif.",
     ladies: {
       label: "Ninang",
-      details: "Floor-length formal gowns in Dusty Blue, in soft, flowy fabrics like chiffon or tulle.",
+      details: "Floor-length formal gowns in Dusty Rose, in soft, flowy fabrics like chiffon or tulle.",
       highlight: "Floor-length formal gowns",
       roles: [] as { role: string; attire: string }[],
     },
     gentlemen: {
       label: "Ninong",
-      details: "Classic black suits with a white dress shirt, a Dusty Blue necktie and black formal shoes.",
+      details: "Classic black suits with a white dress shirt, a Dusty Rose necktie and black formal shoes.",
       highlight: "Classic black suits",
       roles: [] as { role: string; attire: string }[],
     },
@@ -256,13 +256,13 @@ const ATTIRE = {
     note: "We encourage everyone to follow our color palette to create a beautiful and harmonious look for our special day.",
     ladies: {
       label: "Ladies",
-      details: "Flowy long or mini dresses in any of our wedding palette colors: Dusty Blue, Slate Blue, Powder Blue, or Beige.",
+      details: "Flowy long or mini dresses in any of our wedding palette colors: Warm Gray, Dusty Rose, Blush Pink, or Blush Cream.",
       highlight: "Flowy long or mini dresses",
       roles: [] as { role: string; attire: string }[],
     },
     gentlemen: {
       label: "Gentlemen",
-      details: "Long-sleeved collared shirts in Dusty Blue, Slate Blue, Powder Blue, or Beige, paired with Khaki, Navy, or Black slacks.",
+      details: "Long-sleeved collared shirts in Warm Gray, Dusty Rose, Blush Pink, or Blush Cream, paired with Khaki, Navy, or Black slacks.",
       highlight: "Long-sleeved collared shirts",
       roles: [] as { role: string; attire: string }[],
     },
@@ -286,9 +286,9 @@ const DISPLAY_MODE = "plain" as "photos" | "plain"
 
 // ── Shared images ───────────────────────────────────────────────────────────
 const BRAND = {
-  monogram: "/monogram/monogram.png",
+  monogram: "/monogram/monog-ram.png",
   coupleNameImage: "/Details/newcoupelNames.png", // couple-name lettering (loader, envelope)
-  seal: "/monogram/seal.png", // envelope wax seal
+  seal: "/monogram/new-seal.png", // envelope wax seal
   backgroundMusic: "/background_music/Libu-Libong Buwan (Uuwian) - Kyle Raphael (Lyric Video).mp3",
 }
 
@@ -301,9 +301,9 @@ const COUPLE_PHOTOS = Array.from(
 
 // Portraits for the envelope reveal + the main cover photo (soft natural light, no heavy filters)
 const COUPLE_PORTRAITS = {
-  groom: "/mobile-background/couples (1).webp", // TODO: pick the groom shot — (61) no longer exists
-  bride: "/mobile-background/couples (2).webp", // TODO: pick the bride shot — (52) no longer exists
-  cover: "/mobile-background/couples (11).webp", // photo pulled out of the envelope + home hero cover photo
+  groom: "/mobile-background/couples (2).webp", // left photo in the envelope
+  bride: "/mobile-background/couples (15).webp", // right photo in the envelope
+  cover: "/mobile-background/couples (18).webp", // photo pulled out of the envelope + home hero cover photo
 }
 
 // Sliding photo marquee behind the loader and envelope.
@@ -324,14 +324,14 @@ const MARQUEE_PHOTOS_DESKTOP = Array.from(
 // Change a path here to swap it on every section at once.
 // To change ONE section only, override it there, e.g. decos: { ...SECTION_DECOS, footerVine: "" }
 const DECOR = {
-  cornerTopLeft: "/deco/left-top-corner.png",
-  cornerTopRight: "/deco/right-top-corner.png",
-  cornerBottomLeft: "/deco/left-bottom-corner.png",
-  cornerBottomRight: "/deco/right-bottom-corner.png",
-  cornerOverlayTopLeft: "/deco/left-top-corner.png", // floral corner layered over the top vines (loader + envelope)
-  cornerOverlayTopRight: "/deco/right-top-corner.png",
-  headerOrnament: "/deco/top-header.png", // small sprig above titles
-  footerVine: "/deco/long-center.png", // long vine at section ends
+  cornerTopLeft: "/deco/cornerTopLeft.png",
+  cornerTopRight: "/deco/cornerTopRight.png",
+  cornerBottomLeft: "/deco/cornerBottomLeft.png",
+  cornerBottomRight: "/deco/cornerBottomRight.png",
+  cornerOverlayTopLeft: "/deco/cornerOverlayTopLeft.png", // floral corner layered over the top vines (loader + envelope)
+  cornerOverlayTopRight: "/deco/cornerOverlayTopRight.png",
+  headerOrnament: "/deco/headerOrnament.png", // small sprig above titles
+  footerVine: "/deco/footerVine.png", // long vine at section ends
   sideLeft: "/deco/lovestorydeco/Elegant-Eucalyptus-Left.png", // love story side sprigs
   sideRight: "/deco/lovestorydeco/Elegant-Eucalyptus-Right.png",
 }
@@ -400,8 +400,8 @@ export const siteConfig = {
     time: TIMES.ceremony,
     venue: CEREMONY_VENUE.name,
     tagline: "are getting married!!!!!",
-    theme: "Dusty Blue",
-    motif: "#8799A7, #435B70, #C4D1E2, #ECE5DB",
+    theme: "Gray & Blush Pink",
+    motif: "#9A9294, #A8606F, #EBCBCF, #F3E8E6",
   },
   // Opening "Save the Date" loading screen (components/loader/LoadingScreen.tsx).
   // Couple names, wedding date and ceremony details come from couple / wedding / ceremony above.
@@ -497,29 +497,29 @@ export const siteConfig = {
     thumbnailAlt: `${COUPLE_LABEL} — video cover`,
     playLabel: "Play our video",
   },
-  // Love story timeline (components/sections/love-story.tsx + StorySection)
+  // Thank-you messages to family and friends (components/sections/love-story.tsx + StorySection)
   loveStory: {
-    title: "Our Love Story",
-    subtitle: "from classmates to forever",
+    title: "With Gratitude",
+    subtitle: "to the people we love",
     // Short opening line under the title ("" hides it)
     intro:
-      "It all started with something very simple: getting to know each other day by day and spending more time together. So how did two people who were simply getting to know each other end up in a true love story?",
+      "Before we say “I do,” we want to say “thank you.” To our families, our friends and everyone who has loved, guided and prayed for us: this day is as much yours as it is ours, and we would be so happy to celebrate it with you.",
     // Small sprig above the title ("" hides it)
     headerOrnament: DECOR.headerOrnament,
     // Shown above a chapter's title when it has no date, e.g. "Chapter 03"
-    chapterLabel: "Chapter",
+    chapterLabel: "With Love",
     // Photo description used when a chapter has no imageAlt
-    photoAlt: "Cid and Jas",
+    photoAlt: "{groom} and {bride}",
     // Large faint chapter number (01, 02 …) behind each chapter's text
-    showChapterNumbers: true,
+    showChapterNumbers: false,
     // Small heart divider between chapters
     showChapterDividers: true,
     // Closing block: big word, hashtag, then the verse (also shown in Snap & Share)
     closingEyebrow: "", // large word on top (was "Puhon") — "" hides it
     closingHashtag: "", // hashtag under it (was HASHTAGS[0]) — "" hides it
-    closingQuoteLead: "He hath made every thing beautiful in his time", // bold first line ("" for none)
-    closingQuote: "also he hath set the world in their heart, so that no man can find out the work that God maketh from the beginning to the end.",
-    closingCitation: "Ecclesiastes 3:11 KJV",
+    closingQuoteLead: "", // bold first line ("" for none)
+    closingQuote: "“He has made everything beautiful in its time.”",
+    closingCitation: "Ecclesiastes 3:11",
     // Four corner florals framing the section, sized per corner like the loader ("" hides a corner)
     decos: { ...CORNER_DECOS },
     // Thin double border around the section, under the corner florals (false hides it)
@@ -534,89 +534,91 @@ export const siteConfig = {
     // /public/mobile-background. Add, remove or reorder chapters freely — sides alternate on their own.
     chapters: [
       {
-        date: "2013",
-        title: "Just Classmates",
+        date: "To Our Parents",
+        title: "Thank You for Everything",
         image: "/mobile-background/couples (5).webp",
-        imageAlt: "Cid and Jas smiling together at a café",
+        imageAlt: "{groom} and {bride} smiling together",
         imagePosition: "center 25%",
         paragraphs: [
-          "In 2013, Jas and Cid became classmates in their first year of college. She was one of the friendliest people he had ever met, and back then they were simply typical classmates.",
-          "As time passed, the friendship grew, along with all the jokes shared with their friends. Cid even told them, “One day, Jasmine will be mine.”",
+          "To our dearest parents: thank you for your unconditional love, your countless sacrifices and the faith you planted in our hearts. You showed us what it means to love patiently and to stay together through every season.",
+          "Everything we bring into our marriage, we first learned from you. We hope to make you proud.",
         ],
       },
       {
-        date: "Festival Days",
-        title: "Dancing Into Friendship",
+        date: "To Our Families",
+        title: "Our Home and Our Roots",
         image: "/mobile-background/couples (8).webp",
-        imageAlt: "Cid and Jas laughing together, dressed in white",
+        imageAlt: "{groom} and {bride} laughing together",
         imagePosition: "center 35%",
         paragraphs: [
-          "Then came the Ibalong Festival: Jas joined as a dancer while Cid worked as a propsman. They both danced in the Cagsawa Festival too.",
-          "Through rehearsals, long days and late nights, they grew closer and eventually became good friends.",
+          "To our siblings, grandparents, aunts, uncles and cousins: thank you for the warmth, the laughter and the support you have always given us.",
+          "Today our two families become one, and we are grateful to be welcomed with such open arms.",
         ],
       },
       {
-        date: "January 14, 2014",
-        title: "Officially Us",
+        date: "To Our Sponsors",
+        title: "Our Guides and Mentors",
         image: "/mobile-background/couples (6).webp",
-        imageAlt: "Jas laughing as she leans on Cid",
+        imageAlt: "{bride} leaning on {groom}",
         imagePosition: "center 20%",
         paragraphs: [
-          "On January 14, 2014, they officially became a couple. Cid could not bring himself to confess. He was too shy, and too scared, to say what he really felt.",
-          "Jas, playful and straightforward, would always tease him: “Maybe you’re just joking. Maybe you just want to eat first!”",
+          "To our beloved Ninongs and Ninangs: thank you for agreeing to stand with us as we make our vows. Your wisdom and example mean so much to us.",
+          "We are honored to have you guide us as we begin our life as husband and wife.",
         ],
       },
       {
-        date: "2014",
-        title: "Our First Distance",
-        image: "/mobile-background/couples (3).webp",
-        imageAlt: "Cid standing on a ledge above Jas, both dressed in navy",
-        imagePosition: "center 40%",
-        paragraphs: [
-          "Just a few months into the relationship, Cid stopped going to school, and they found themselves in their first long-distance relationship.",
-        ],
-      },
-      {
-        date: "2016",
-        title: "Different Schedules, Same Heart",
-        image: "/mobile-background/couples (11).webp",
-        imageAlt: "Cid standing in an archway while Jas sits below",
-        imagePosition: "center 45%",
-        paragraphs: [
-          "In 2016, Cid went back to college just as Jas was about to finish. She graduated first and started working right away, while he studied at night.",
-          "Their routines no longer matched and time together was rare. It was complicated, but despite all of it, Cid finished college.",
-        ],
-      },
-      {
-        date: "2021",
-        title: "A Very Long Distance",
+        date: "To Our Entourage",
+        title: "Walking Beside Us",
         image: "/mobile-background/couples (9).webp",
-        imageAlt: "Cid and Jas holding hands as they cross a city street",
+        imageAlt: "{groom} and {bride} holding hands",
         imagePosition: "center 55%",
         paragraphs: [
-          "In 2021, Cid started working in Manila, and their long-distance relationship became what Jas calls a “very long-distance relationship.” Being apart became a big part of their story, and so did the challenges that came with it.",
-          "In 12 years together, they have spent more years apart than side by side. There were many difficult moments, but they kept choosing each other.",
+          "To our bridesmaids, groomsmen, flower girls, ring bearers and everyone in our entourage: thank you for saying yes to standing with us on the most important day of our lives.",
+          "Your time, your effort and your joy make this celebration even more beautiful.",
         ],
       },
       {
-        date: "2025",
-        title: "Ready for Forever",
+        date: "To Our Friends",
+        title: "Our Chosen Family",
+        image: "/mobile-background/couples (3).webp",
+        imageAlt: "{groom} and {bride} together outdoors",
+        imagePosition: "center 40%",
+        paragraphs: [
+          "To our friends: thank you for the encouragement, the advice, the endless jokes and for always showing up for us. You made our days lighter and our hearts fuller.",
+          "We cannot imagine celebrating this day without you.",
+        ],
+      },
+      {
+        date: "To Everyone",
+        title: "Thank You for Your Prayers",
         image: "/mobile-background/couples (10).webp",
-        imageAlt: "Cid and Jas in formal wear in front of a stone church",
+        imageAlt: "{groom} and {bride} in formal wear",
         imagePosition: "center 30%",
         paragraphs: [
-          "In 2025, they decided they were ready to take the next step: to formally share their plans and, with the blessing of both families, say goodbye to their single lives in 2026.",
+          "To our church family, our colleagues and everyone who has sent a kind word, a warm wish or a quiet prayer our way: thank you. Every kindness has been a blessing to us.",
+          "Whether you are traveling far or joining us from near, thank you for making time to share this day with us.",
         ],
       },
       {
-        date: "Today",
-        title: "Still Choosing Each Other",
+        date: "To Our Wedding Team",
+        title: "The Hands Behind the Day",
+        image: "/mobile-background/couples (11).webp",
+        imageAlt: "{groom} and {bride} together in an archway",
+        imagePosition: "center 45%",
+        paragraphs: [
+          "To our coordinators, suppliers and everyone working behind the scenes: thank you for turning our dreams into something real, and for caring about every little detail.",
+          "Because of you, we can simply be present and enjoy every moment with the people we love.",
+        ],
+      },
+      {
+        date: "Our Invitation",
+        title: "Please Celebrate With Us",
         image: "/mobile-background/couples (7).webp",
-        imageAlt: "Jas smiling as Cid leans in close",
+        imageAlt: "{bride} smiling as {groom} leans in close",
         imagePosition: "center 30%",
         paragraphs: [
-          "Looking back, their simple story of getting to know each other slowly turned into something deeper. What began as friendship, jokes and time spent together became a love filled with patience, distance, challenges and commitment.",
-          "It was not always easy, but through all the years and all the miles, they kept loving and choosing each other. Their simple “getting to know each other” became a meaningful love story. ♡",
+          "With grateful hearts, we warmly invite you to join us as we exchange our vows before God, our families and our friends.",
+          "Your presence is the greatest gift we could ask for. We look forward to celebrating, laughing and giving thanks together with you. With all our love, {groom} & {bride}. ♡",
         ],
       },
     ] as StoryChapter[],
@@ -759,7 +761,7 @@ export const siteConfig = {
           variant: "accent" as "accent" | "soft",
           showPalette: true,
           paragraphs: [
-            "Guests, kindly come in semi-formal attire in any of our palette colors: dusty blue, slate blue, powder blue or beige.",
+            "Guests, kindly come in semi-formal attire in any of our palette colors: warm gray, dusty rose, blush pink or blush cream.",
             "Please avoid casual clothes and all-white outfits.",
           ],
         },
@@ -789,7 +791,7 @@ export const siteConfig = {
     subtitle: "our wedding day",
     description:
       "From the first arrival to the last farewell, here is how we will spend this day together.",
-    // "" hides the verse — Isaiah 60:22 is already shown in the Love Story
+    // "" hides the verse — Ecclesiastes 3:11 is already shown in the Love Story
     quote: "",
     quoteCitation: "",
     // Optional corner decorations — leave "" to hide
@@ -1210,7 +1212,7 @@ export const siteConfig = {
       {
         question: "What is the dress code?",
         answer:
-          "Please follow the [attire guide](#details) in Event Details. Our guest dress code is semi-formal in dusty blue, slate blue, powder blue or beige. Ladies may wear a flowy long or midi dress in any of these colors. Gentlemen may wear a long-sleeve collared shirt in dusty blue, slate blue, powder blue or beige with khaki, navy or black slacks. Kindly avoid casual clothes and all-white outfits.",
+          "Please follow the [attire guide](#details) in Event Details. Our guest dress code is semi-formal in warm gray, dusty rose, blush pink or blush cream. Ladies may wear a flowy long or midi dress in any of these colors. Gentlemen may wear a long-sleeve collared shirt in warm gray, dusty rose, blush pink or blush cream with khaki, navy or black slacks. Kindly avoid casual clothes and all-white outfits.",
       },
       {
         question: "Will the ceremony be unplugged?",

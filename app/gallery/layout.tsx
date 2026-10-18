@@ -19,7 +19,7 @@ const aboveTheBeyond = localFont({
 
 // Top bar: white → light powder blue, deep slate lettering, dusty-blue hairline
 const BAR_BG =
-  "linear-gradient(180deg, rgb(255 255 255 / 94%) 0%, color-mix(in srgb, #C4D1E2 55%, white) 100%)"
+  "linear-gradient(180deg, rgb(255 255 255 / 94%) 0%, color-mix(in srgb, #EBCBCF 55%, white) 100%)"
 
 export default function GalleryLayout({ children }: { children: React.ReactNode }) {
   const { couple, gallery } = useSiteConfig()
