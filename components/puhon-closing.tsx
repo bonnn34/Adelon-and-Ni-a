@@ -20,11 +20,11 @@ const theSeasons = localFont({
 })
 
 const BURGUNDY = "var(--color-welcome-navy)"
-const ROSE = "var(--color-welcome-heading)"
-const INK = "#5A5455" // soft cocoa for the long verse line — gentler than burgundy, still high contrast
-const QUOTE_MARK = "color-mix(in srgb, #9A9294 70%, transparent)"
+const ROSE = "#C58F9D"
+const INK = "#172D4E" // soft cocoa for the long verse line — gentler than burgundy, still high contrast
+const QUOTE_MARK = "color-mix(in srgb, #E9CAD2 70%, transparent)"
 // Soft ivory edge keeps burgundy text crisp over pink or photos
-const glow = "0 1px 0 rgb(247 244 239 / 90%), 0 0 14px rgb(247 244 239 / 85%)"
+const glow = "0 1px 0 rgb(248 243 241 / 90%), 0 0 14px rgb(248 243 241 / 85%)"
 
 // Two looks: burgundy on light pink (love story) or ivory over photos (Snap & Share banner)
 const TONES = {
@@ -34,7 +34,7 @@ const TONES = {
     lead: BURGUNDY,
     body: INK,
     mark: QUOTE_MARK,
-    rule: "#9A9294",
+    rule: "#D4B47C",
     shadow: glow,
   },
   light: {

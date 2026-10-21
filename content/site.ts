@@ -67,35 +67,35 @@ export type AttireColor = string | { name: string; hex: string }
 
 // ── The couple ──────────────────────────────────────────────────────────────
 const COUPLE = {
-  bride: "Breichelle Lyn Acordon",
-  brideNickname: "Breichelle",
-  groom: "Jeff Ren Liwalas",
-  groomNickname: "Jeff",
+  bride: "Niña Perez",
+  brideNickname: "Niña",
+  groom: "Adelon Townsend",
+  groomNickname: "Adelon",
 }
 
 // ── Date & times ────────────────────────────────────────────────────────────
-const WEDDING_DATE = "December 6, 2026" // e.g. "June 5, 2027"
-const WEDDING_DAY = "Sunday"
+const WEDDING_DATE = "December 29, 2026" // e.g. "June 5, 2027"
+const WEDDING_DAY = "Tuesday" // 
 const TIMES = {
-  entourageCall: "3:00 PM", // entourage assembly
-  guestArrival: "3:30 PM", // guests arrival / assembly (shown in Event Details + reminders)
-  ceremony: "4:00 PM",
-  reception: "6:30 PM", // start of program
+  entourageCall: "1:00 PM", // entourage assembly
+  guestArrival: "1:30 PM", // guests arrival / assembly (shown in Event Details + reminders)
+  ceremony: "2:00 PM",
+  reception: "4:00 PM", // start of program
 }
 
 // ── Venues ──────────────────────────────────────────────────────────────────
 
 const CEREMONY_VENUE = {
-  name: "Vista-Mons Private Resort",
-  address: "San Pablo, Magalang, 2011 Pampanga",
-  map: "https://maps.app.goo.gl/SY5NAMKACySL8aZ96",
-  photos: ["/Details/reception (1).png", "/Details/reception (2).png", "/Details/reception (3).jpg", "/Details/reception (4).jpg", "/Details/reception (5).jpg", "/Details/reception (6).jpg"],
+  name: "Church St. Augustine Parish Church",
+  address: "Benigno S. Aquino Avenue, Baliwag, Bulacan, Philippines",
+  map: "https://maps.app.goo.gl/PgiHbPDC5Jj9CpQQ6",
+  photos: ["/Details/ceremony (1).webp", "/Details/ceremony (2).webp"],
 }
 const RECEPTION_VENUE = {
-  name: "The Vistas-Pampanga: Vista Mons",
-  address: "San Pablo, Magalang, 2011 Pampanga",
-  map: "https://maps.app.goo.gl/SY5NAMKACySL8aZ96",
-  photos: ["/Details/reception (1).png", "/Details/reception (2).png", "/Details/reception (3).jpg", "/Details/reception (4).jpg", "/Details/reception (5).jpg", "/Details/reception (6).jpg"],
+  name: " Sheperds Palace, Dalayap, Candaba, Pampanga",
+  address: "brgy Candaba, Pampanga, Philippines",
+  map: "https://maps.app.goo.gl/buRWssEcVn2vuJxf7",
+  photos: ["/Details/reception (4).jpg", "/Details/reception (5).jpg", "/Details/reception (6).jpg"],
 }
 
 // ── Venue cards (Event Details section) ─────────────────────────────────────
@@ -108,7 +108,7 @@ const RECEPTION_VENUE = {
 // showDate     = show the big Month / Day / Year
 // showArrival  = show "Arrival: <guest arrival time>" (otherwise "At <time>")
 const VENUE_CARDS = {
-  layout: "combined" as "separate" | "combined",
+  layout: "separate" as "separate" | "combined",
   // Used when layout is "combined"
   combined: {
     badge: "Ceremony & Reception",
@@ -144,7 +144,7 @@ const RSVP = {
   coordinator: "{groom} / {bride}", // {groom} / {bride} → couple nicknames
   phone: "to be announced",
 }
-const HASHTAGS = ["#CidnyJasmine2026"] // ⚠ check — looks like it's from a previous couple
+const HASHTAGS = ["#destiNIÑAsiADELON"] // ⚠ check — looks like it's from a previous couple
 
 // ── Attire guide (Event Details → Attire Guidelines) ────────────────────────
 // SHOW = which cards to display AND their order, top to bottom. Examples:
@@ -164,12 +164,11 @@ const HASHTAGS = ["#CidnyJasmine2026"] // ⚠ check — looks like it's from a p
 //     highlight: phrase inside details shown bold + underlined ("" for none)
 // Guest dress code colors — also shown in the "Dress Code" gentle reminder
 const DRESS_CODE_PALETTE: AttireColor[] = [
-  { name: "Blush Pink", hex: "#EBCBCF" },
   { name: "Dusty Pink", hex: "#D49AA3" },
-  { name: "Dusty Rose", hex: "#A8606F" },
-  { name: "Light Gray", hex: "#BEBBBD" },
-  { name: "Warm Gray", hex: "#9A9294" },
-  { name: "Charcoal", hex: "#5E5A5C" },
+  { name: "Blush Pink", hex: "#E7B8BE" },
+  { name: "Champagne Beige", hex: "#DCC3AD" },
+  { name: "Charcoal Gray", hex: "#666269" },
+  { name: "Navy Blue", hex: "#29364F" },
 ];
 
 // Attire groups shown in the Details section (components/sections/details.tsx).
@@ -179,29 +178,34 @@ const DRESS_CODE_PALETTE: AttireColor[] = [
 //   Each side (ladies / gentlemen) has a label, an optional intro (details, with an
 //   optional highlighted phrase) and an optional list of roles with what they wear.
 const ATTIRE = {
-  show: ["entourage", "sponsors", "guests"] as AttireGroupId[],
+  show: ["entourage", "sponsors"] as AttireGroupId[],
 
   entourage: {
     title: "Entourage",
-    image: "/Details/entourage.png",
+    image: "/Details/new-entourage (3).png",
     dressCode: "Formal Attire",
     palette: [
-      { name: "Blush Pink", hex: "#EBCBCF" },
+      { name: "Rose Gold", hex: "#DDA49D" },
       { name: "Dusty Pink", hex: "#D49AA3" },
-      { name: "Light Gray", hex: "#BEBBBD" },
-      { name: "Gray", hex: "#8E8A8C" },
+      { name: "Navy Blue", hex: "#1E3051" },
+      { name: "Deep Navy", hex: "#14243F" },
     ] as AttireColor[],
-    note: "Soft dusty pink beside classic gray — the heart of our wedding palette, worn by the ones standing closest to us.",
+
+    note: "Romantic rose gold gowns paired with sophisticated navy blue suits, beautifully accented with soft dusty pink details.",
+
     ladies: {
       label: "Bridesmaids & Flower Girls",
-      details: "Dusty pink gowns, soft and flowing, in the same romantic shade as our day.",
-      highlight: "Dusty pink gowns",
+      details:
+        "Elegant floor-length rose gold gowns in soft, flowing fabrics such as chiffon, satin, or tulle. Flower girls may wear matching rose gold dresses with delicate floral accents.",
+      highlight: "Rose Gold Formal Gowns",
       roles: [] as { role: string; attire: string }[],
     },
+
     gentlemen: {
       label: "Groomsmen & Bearers",
-      details: "Gray suits — clean, classic and polished, the perfect match for the pink.",
-      highlight: "Gray suits",
+      details:
+        "Classic navy blue three-piece suits paired with crisp white shirts, dusty pink bow ties, matching pocket squares, and polished black formal shoes. Bearers may wear coordinating navy blue suits.",
+      highlight: "Navy Blue Suits with Dusty Pink Bow Ties",
       roles: [] as { role: string; attire: string }[],
     },
   },
@@ -237,49 +241,59 @@ const ATTIRE = {
   },
 
   sponsors: {
-    title: "Principal Sponsors",
-    image: "/Details/sponsors.png",
-    dressCode: "Formal Attire",
-    palette: [
-      { name: "Ivory Cream", hex: "#F4EBDD" },
-      { name: "Cream", hex: "#EADBC6" },
-      { name: "Beige", hex: "#D9C4A8" },
-      { name: "Black", hex: "#2B2627" },
-    ] as AttireColor[],
-    note: "We invite our principal sponsors to dress in soft cream and beige — a warm, timeless frame around our dusty pink celebration.",
-    ladies: {
-      label: "Ninang",
-      details: "A formal dress or long gown in shades of cream or beige.",
-      highlight: "formal dress or long gown",
-      roles: [] as { role: string; attire: string }[],
-    },
-    gentlemen: {
-      label: "Ninong",
-      details: "A long-sleeve barong paired with black pants.",
-      highlight: "long-sleeve barong",
-      roles: [] as { role: string; attire: string }[],
-    },
+  title: "Principal Sponsors",
+  image: "/Details/new-sponsor-.png",
+  dressCode: "Formal Attire",
+  palette: [
+    { name: "Old Rose", hex: "#D49AA3" },
+    { name: "Dusty Pink", hex: "#C98F9A" },
+    { name: "Black", hex: "#242124" },
+    { name: "Navy Blue", hex: "#1E3051" },
+  ] as AttireColor[],
+
+  note: "Elegant old rose gowns paired with classic black suits and navy blue neckties, creating a timeless and sophisticated look for our principal sponsors.",
+
+  ladies: {
+    label: "Ninang",
+    details:
+      "Elegant floor-length formal gowns in shades of old rose or dusty pink. Soft, flowing fabrics such as chiffon, satin, or tulle with delicate floral details are welcome.",
+    highlight: "Old Rose Formal Gowns",
+    roles: [] as { role: string; attire: string }[],
   },
 
-  guests: {
-    title: "Wedding Guests",
-    image: "/Details/guest.png",
-    dressCode: "Semi-Formal Attire",
-    palette: DRESS_CODE_PALETTE,
-    note: "Any shade of dusty pink or gray from the palette below — mix and match, and come as you are, comfortable and lovely.",
-    ladies: {
-      label: "Ladies",
-      details: "A short or long dress in dusty pink, blush or gray.",
-      highlight: "short or long dress",
-      roles: [] as { role: string; attire: string }[],
-    },
-    gentlemen: {
-      label: "Gentlemen",
-      details: "A polo or long-sleeve shirt with pants, in pink or gray tones.",
-      highlight: "polo or long-sleeve shirt",
-      roles: [] as { role: string; attire: string }[],
-    },
+  gentlemen: {
+    label: "Ninong",
+    details:
+      "Classic black formal suits paired with crisp white dress shirts, navy blue neckties, and polished black leather shoes. A simple boutonniere may complete the look.",
+    highlight: "Black Suits with Navy Blue Neckties",
+    roles: [] as { role: string; attire: string }[],
   },
+},
+
+  guests: {
+  title: "Wedding Guests",
+  image: "/Details/guest.png",
+  dressCode: "Semi-Formal Attire",
+  palette: DRESS_CODE_PALETTE,
+
+  note: "Celebrate with us in soft dusty pink, blush, champagne beige, charcoal gray, or navy blue. Choose a shade from our wedding palette for an elegant and coordinated celebration.",
+
+  ladies: {
+    label: "Ladies",
+    details:
+      "Elegant midi or long dresses in shades of dusty pink, blush pink, champagne beige, or navy blue. Soft, flowing fabrics such as chiffon, satin, or tulle are encouraged.",
+    highlight: "Midi or Long Dresses",
+    roles: [] as { role: string; attire: string }[],
+  },
+
+  gentlemen: {
+    label: "Gentlemen",
+    details:
+      "Long-sleeved or short-sleeved collared shirts in dusty pink, blush pink, charcoal gray, or navy blue, paired with tailored trousers in charcoal gray, beige, or dark neutral tones. Complete the look with formal or smart-casual shoes.",
+    highlight: "Collared Shirts with Tailored Trousers",
+    roles: [] as { role: string; attire: string }[],
+  },
+},
 }
 
 // ── Website address (used for QR codes, link previews, table finder) ────────
@@ -299,51 +313,51 @@ const DISPLAY_MODE = "plain" as "photos" | "plain"
 
 // ── Shared images ───────────────────────────────────────────────────────────
 const BRAND = {
-  monogram: "/monogram/monog-ram.png",
+  monogram: "/monogram/monogram.png", // monogram (loader, envelope, closing)
   coupleNameImage: "/Details/newcoupelNames.png", // couple-name lettering (loader, envelope)
-  seal: "/monogram/new-seal.png", // envelope wax seal
-  backgroundMusic: "/background_music/Your Love - Juris Piano Cover by Gerard Chua (mp3cut.net).mp3",
+  seal: "/monogram/seal.png", // envelope wax seal
+  backgroundMusic: "/background_music/Every Time I Close My Eyes.mp3",
 }
 
 // Couple photos reused across the site (gallery, loader, reminders, snap & share, closing)
 // — every portrait in /public/mobile-background
 const COUPLE_PHOTOS = Array.from(
-  { length: 11 },
-  (_, i) => `/mobile-background/couples (${i + 1}).webp`,
+  { length: 12 },
+  (_, i) => `/mobile-background/couple (${i + 1}).webp`,
 )
 
 // Portraits for the envelope reveal + the main cover photo (soft natural light, no heavy filters)
 const COUPLE_PORTRAITS = {
-  groom: "/mobile-background/couples (2).webp", // left photo in the envelope
-  bride: "/mobile-background/couples (15).webp", // right photo in the envelope
-  cover: "/mobile-background/couples (18).webp", // photo pulled out of the envelope + home hero cover photo
+  groom: "/mobile-background/couple (6).webp", // left photo in the envelope
+  bride: "/mobile-background/couple (4).webp", // right photo in the envelope
+  cover: "/mobile-background/couple (9).webp", // photo pulled out of the envelope + home hero cover photo
 }
 
 // Sliding photo marquee behind the loader and envelope.
 // Phones use the portrait shots in /public/mobile-background, desktop the landscape
 // shots in /public/desktop-background — update the counts when files are added/removed.
-const MARQUEE_PHOTO_COUNT = 11
+const MARQUEE_PHOTO_COUNT = 12
 const MARQUEE_PHOTOS = Array.from(
   { length: MARQUEE_PHOTO_COUNT },
-  (_, i) => `/mobile-background/couples (${i + 1}).webp`,
+  (_, i) => `/mobile-background/couple (${i + 1}).webp`,
 )
-const MARQUEE_PHOTO_COUNT_DESKTOP = 51
+const MARQUEE_PHOTO_COUNT_DESKTOP = 20
 const MARQUEE_PHOTOS_DESKTOP = Array.from(
   { length: MARQUEE_PHOTO_COUNT_DESKTOP },
-  (_, i) => `/desktop-background/couples (${i + 1}).webp`,
+  (_, i) => `/desktop-background/couple (${i + 1}).webp`,
 )
 
 // ── Decorations ─────────────────────────────────────────────────────────────
 // Change a path here to swap it on every section at once.
 // To change ONE section only, override it there, e.g. decos: { ...SECTION_DECOS, footerVine: "" }
 const DECOR = {
-  cornerTopLeft: "/deco/cornerTopLeft.png",
-  cornerTopRight: "/deco/cornerTopRight.png",
-  cornerBottomLeft: "/deco/cornerBottomLeft.png",
-  cornerBottomRight: "/deco/cornerBottomRight.png",
+  cornerTopLeft: "/deco/new-deco/corner-top-left.png", // floral corner tucked under the top vines (loader + envelope)
+  cornerTopRight: "/deco/new-deco/corner-top-right.png",
+  cornerBottomLeft: "/deco/new-deco/corner-bottom-left.png",
+  cornerBottomRight: "/deco/new-deco/corner-bottom-right.png",
   cornerOverlayTopLeft: "/deco/cornerOverlayTopLeft.png", // floral corner layered over the top vines (loader + envelope)
   cornerOverlayTopRight: "/deco/cornerOverlayTopRight.png",
-  headerOrnament: "/deco/headerOrnament.png", // small sprig above titles
+  headerOrnament: "/deco/new-deco/new-header-ornament.png", // small sprig above titles
   footerVine: "/deco/footerVine.png", // long vine at section ends
   sideLeft: "/deco/lovestorydeco/Elegant-Eucalyptus-Left.png", // love story side sprigs
   sideRight: "/deco/lovestorydeco/Elegant-Eucalyptus-Right.png",
@@ -383,7 +397,7 @@ const COUPLE_LABEL = `${COUPLE.groomNickname} & ${COUPLE.brideNickname}`
    ============================================================================ */
 
 // Principal sponsors Google Apps Script — used by the main page and /inviteone
-const SPONSORS_API = "https://script.google.com/macros/s/AKfycby7M6t7JviMyLoKJsB1FvvG1rWkbiH015la4oz0GSjCc-gUYPqSXyyf6EU1V6w6jYmh/exec"
+const SPONSORS_API = "https://script.google.com/macros/s/AKfycbwTAUtQOzUZBK5b4XMPAUqh8rUMqXdUNwsftL_JK86f14KBt0x8J4clg1mV9B7RIQWfjA/exec"
 
 export const siteConfig = {
   siteUrl: SITE_URL,
@@ -394,15 +408,15 @@ export const siteConfig = {
     backgroundMusic: BRAND.backgroundMusic,
   },
   googleAPI:{
-    messageForm: "https://docs.google.com/forms/d/e/1FAIpQLSc810xSLNaREulbPIVCNLPdg56Mlpwp2e4qeF6-nHbyjPI74w/formResponse",   //done
-    message: "https://script.google.com/macros/s/AKfycbzg5yVfq3uKuUhEmJzIN1r45931eG7e5jUqqlM0devYirCrtWFRZ-c3TyIdSW6iKR_2/exec",  //done
-    guestList: "https://script.google.com/macros/s/AKfycbw4Tan1N6kU2sc5xJ1rLInqRY1QtbqMkPFfGMlUA7tIZZlbIWdlFfO_EFQ1i3T_q1dQ/exec",  //done
-    guestRequest: "https://script.google.com/macros/s/AKfycbztTh-VUhzAljOhuBpUONxje5ZcdX3bIETFStQRgylkIh5VEyY0h-zU12iIFK0t28k/exec",   //done
-    entourage: "https://script.google.com/macros/s/AKfycbziOpP366r3Oot92Mgcdu5FpvEQdM5WL4bXdc-kRRIEZLGIM2d6eNJ1oalmlbdNcG7F/exec",  //done
+    messageForm: "https://docs.google.com/forms/d/e/1FAIpQLSfHSGupL60oeZrkuORMpqwxx63xQRDRSgg017I1gU0qrtJGkw/formResponse",   //done
+    message: "https://script.google.com/macros/s/AKfycbwi_cQ27e-QBQeivw7c1oCiRkx2EnbssUsD9uSeC88bk78fbCGmFlYMsQBYdBkGWEGJWw/exec",  //done
+    guestList: "https://script.google.com/macros/s/AKfycbwszIj69sCXNOn7OKxcQe6IYY32DvwrfxR32Jqqny30pitoDpudWrnqcqtZ3N2NZIKGaA/exec",  //done
+    guestRequest: "https://script.google.com/macros/s/AKfycbyDI92C9B4XARwOL_VrU7oroCzoZI3qgckWDSAYrfs7rkZ5m2aRbLxVD0miHD6Q4vYmLg/exec",  //done 
+    entourage: "https://script.google.com/macros/s/AKfycbwHzHtJqZByKHobleFwO0WbtDhmYd3GGtVSyMO8u23H7yvLx_5aH-HNjcryH0sbdqM_Gw/exec",  
     sponsors: SPONSORS_API,  //done 
     // Principal sponsors shown on /inviteone and /invitetwo (entourage section)
     sponsorsInviteOne: SPONSORS_API, // same sheet as sponsors above
-    sponsorsInviteTwo: "https://script.google.com/macros/s/AKfycby7M6t7JviMyLoKJsB1FvvG1rWkbiH015la4oz0GSjCc-gUYPqSXyyf6EU1V6w6jYmh/exec",
+    sponsorsInviteTwo: "https://script.google.com/macros/s/AKfycbwTAUtQOzUZBK5b4XMPAUqh8rUMqXdUNwsftL_JK86f14KBt0x8J4clg1mV9B7RIQWfjA/exec",
 ////google share 
     googleShare: "https://docs.google.com/spreadsheets/d/1l0KK55B5AL70ESWv1Omxa-PE7b5dNvTSaYojf5l5CN4/edit?usp=sharing",
     videoMessageForm:
@@ -472,7 +486,7 @@ export const siteConfig = {
       bride: COUPLE_PORTRAITS.bride,
     },
     // Bouquet tucked inside the open envelope, peeking out on both sides ("" to hide)
-    envelopeFlowers: "/deco/new-deco/Blush Garden Rose Corner Bouquet.png",
+    envelopeFlowers: "deco/new-deco/bottom-L.png",
     // Main page cover photo (home hero, plain display) — one natural, candid couple photo
     coverPhoto: COUPLE_PORTRAITS.cover,
     coverPhotoAlt: COUPLE_LABEL,
@@ -506,7 +520,7 @@ export const siteConfig = {
     // YouTube video ID — the part after "watch?v=" (or after "youtu.be/")
     youtubeId: "YPyS5XS-9Ck",
     // Cover image shown before the video plays
-    thumbnail: "/desktop-background/couples (49).webp",
+    thumbnail: "/desktop-background/couples (20).webp",
     thumbnailAlt: `${COUPLE_LABEL} — video cover`,
     playLabel: "Play our video",
   },
@@ -547,91 +561,46 @@ export const siteConfig = {
     // /public/mobile-background. Add, remove or reorder chapters freely — sides alternate on their own.
     chapters: [
       {
-        date: "To Our Parents",
-        title: "Thank You for Everything",
-        image: "/mobile-background/couples (5).webp",
-        imageAlt: "{groom} and {bride} smiling together",
+        date: "Our Love Story",
+        title: "Where It All Began",
+        image: "/mobile-background/couple (7).webp",
+        imageAlt: "{groom} and {bride} together",
         imagePosition: "center 25%",
         paragraphs: [
-          "To our dearest parents: thank you for your unconditional love, your countless sacrifices and the faith you planted in our hearts. You showed us what it means to love patiently and to stay together through every season.",
-          "Everything we bring into our marriage, we first learned from you. We hope to make you proud.",
-        ],
+          "From a simple message to forever.",
+          "What began with a simple message turned into a love story only God could have written.",
+            ],
       },
       {
-        date: "To Our Families",
-        title: "Our Home and Our Roots",
-        image: "/mobile-background/couples (8).webp",
-        imageAlt: "{groom} and {bride} laughing together",
+        date: "Faith, Healing, and Love",
+        title: "A Love Written by God",
+        image: "/mobile-background/couple (8).webp",
+        imageAlt: "{groom} and {bride} smiling together",
         imagePosition: "center 35%",
         paragraphs: [
-          "To our siblings, grandparents, aunts, uncles and cousins: thank you for the warmth, the laughter and the support you have always given us.",
-          "Today our two families become one, and we are grateful to be welcomed with such open arms.",
+          "Adelon was praying for someone to spend forever with, while I was learning to love again.",
+          "Through unexpected turns, little adventures, milk tea dates, and beautiful and difficult days, we found healing, faith, and a love worth choosing every single day.",
         ],
       },
       {
-        date: "To Our Sponsors",
-        title: "Our Guides and Mentors",
-        image: "/mobile-background/couples (6).webp",
-        imageAlt: "{bride} leaning on {groom}",
+        date: "August 9, 2023",
+        title: "The Day We Became Us",
+        image: "/mobile-background/couple (11).webp",
+        imageAlt: "{groom} and {bride} together",
         imagePosition: "center 20%",
         paragraphs: [
-          "To our beloved Ninongs and Ninangs: thank you for agreeing to stand with us as we make our vows. Your wisdom and example mean so much to us.",
-          "We are honored to have you guide us as we begin our life as husband and wife.",
-        ],
+          "From June 13, 2022, to the day we became us on August 9, 2023, God was quietly writing our story.",
+            ],
       },
       {
-        date: "To Our Entourage",
-        title: "Walking Beside Us",
-        image: "/mobile-background/couples (9).webp",
-        imageAlt: "{groom} and {bride} holding hands",
-        imagePosition: "center 55%",
+        date: "Our Answered Prayer",
+        title: "The Beginning of Forever",
+        image: "/mobile-background/couple (12).webp",
+        imageAlt: "{groom} and {bride} together",
+        imagePosition: "center 25%",
         paragraphs: [
-          "To our bridesmaids, groomsmen, flower girls, ring bearers and everyone in our entourage: thank you for saying yes to standing with us on the most important day of our lives.",
-          "Your time, your effort and your joy make this celebration even more beautiful.",
-        ],
-      },
-      {
-        date: "To Our Friends",
-        title: "Our Chosen Family",
-        image: "/mobile-background/couples (3).webp",
-        imageAlt: "{groom} and {bride} together outdoors",
-        imagePosition: "center 40%",
-        paragraphs: [
-          "To our friends: thank you for the encouragement, the advice, the endless jokes and for always showing up for us. You made our days lighter and our hearts fuller.",
-          "We cannot imagine celebrating this day without you.",
-        ],
-      },
-      {
-        date: "To Everyone",
-        title: "Thank You for Your Prayers",
-        image: "/mobile-background/couples (10).webp",
-        imageAlt: "{groom} and {bride} in formal wear",
-        imagePosition: "center 30%",
-        paragraphs: [
-          "To our church family, our colleagues and everyone who has sent a kind word, a warm wish or a quiet prayer our way: thank you. Every kindness has been a blessing to us.",
-          "Whether you are traveling far or joining us from near, thank you for making time to share this day with us.",
-        ],
-      },
-      {
-        date: "To Our Wedding Team",
-        title: "The Hands Behind the Day",
-        image: "/mobile-background/couples (11).webp",
-        imageAlt: "{groom} and {bride} together in an archway",
-        imagePosition: "center 45%",
-        paragraphs: [
-          "To our coordinators, suppliers and everyone working behind the scenes: thank you for turning our dreams into something real, and for caring about every little detail.",
-          "Because of you, we can simply be present and enjoy every moment with the people we love.",
-        ],
-      },
-      {
-        date: "Our Invitation",
-        title: "Please Celebrate With Us",
-        image: "/mobile-background/couples (7).webp",
-        imageAlt: "{bride} smiling as {groom} leans in close",
-        imagePosition: "center 30%",
-        paragraphs: [
-          "With grateful hearts, we warmly invite you to join us as we exchange our vows before God, our families and our friends.",
-          "Your presence is the greatest gift we could ask for. We look forward to celebrating, laughing and giving thanks together with you. With all our love, {groom} & {bride}. ♡",
+          "And now, with hearts full of gratitude and loved ones we carry in our hearts, we’re ready to begin our greatest adventure yet.",
+          "This is our answered prayer, our favorite love story, and the beginning of forever.",
         ],
       },
     ] as StoryChapter[],
@@ -722,21 +691,21 @@ export const siteConfig = {
       description: "A few thoughtful notes to help everyone enjoy our celebration.",
       // Small photos that take turns above the "Gentle Reminders" title (files in /public/box)
       images: [
-        "/box/box(1).jpg",
-        "/box/box(2).jpg",
-        "/box/box(3).jpg",
-        "/box/box(4).jpg",
+        "/box/box(1).webp",
+        "/box/box(2).webp",
+        "/box/box(3).webp",
+        "/box/box(4).webp",
       ],
       // showPalette: shows the dress code palette after the first paragraph
       items: [
-        {
+        /*{
           title: "Adults-Only Celebration",
           variant: "accent" as "accent" | "soft",
           showPalette: false,
           paragraphs: [
             "We love your kids, but consider this your night off! Please note that our celebration is adults-only.",
           ],
-        },
+        },*/
         {
           title: "No Surprise Announcements",
           variant: "soft" as "accent" | "soft",
@@ -1298,8 +1267,8 @@ export const siteConfig = {
     //   /QR/BDO.png → pays the GCash account (G-Xchange, "BR*******E L** A.")
     //   /QR/BPI.png → pays the BDO account (Banco de Oro, "Brei", account ending 8451)
     accounts: [
-      { show: true, label: "GCash", accountName: "BR***", accountNumber: "0938 662 ****", qr: "/QR/BDO.png" },
-      { show: true, label: "BDO", accountName: "Brei", accountNumber: "********8451", qr: "/QR/BPI.png" },
+      { show: true, label: "GCash", accountName: "NI*A", accountNumber: "0955 087 ****", qr: "/QR/gcash1.jpg" },
+      { show: true, label: "GCash", accountName: "AD***N", accountNumber: "0927 170 ****", qr: "/QR/gcash2.jpg" },
     ] as { show: boolean; label: string; accountName: string; accountNumber: string; qr: string }[],
     // Leave any path "" to hide that decoration
     decos: { ...SECTION_DECOS },
@@ -1311,7 +1280,7 @@ export const siteConfig = {
     // {couple} → "Groom & Bride" nicknames. "" hides a line or image.
     qrCard: {
       coupleNameImage: BRAND.coupleNameImage, // unused: the card sets the names in type like the loader
-      coupleImage: "/Details/specialInvitation.png", // couple illustration beside the text
+      coupleImage: "/Details/coupleimage.png", // couple illustration beside the text
       eyebrow: "The wedding of",
       title: "Find Your Table",
       script: "please be seated",
@@ -1683,8 +1652,8 @@ Now, as they prepare to say yes before God and the people they love most, Cather
     showFrame: true,
     embedUrl:
     //https://open.spotify.com/embed/playlist/5sT43YjdM8pJ3xtEkrxyEY?utm_source=generator&si=e5e64aa63fd04356
-      "https://open.spotify.com/embed/playlist/0SdYLUZpEHZGMo1owKcjxI?utm_source=generator&si=6da5134092444970",
-    spotifyUrl: "https://open.spotify.com/playlist/0SdYLUZpEHZGMo1owKcjxI",
+      "https://open.spotify.com/embed/playlist/5ZNTnGQuZwJF7qehJGyjrt?utm_source=generator&si=f625387fd73f4c1e",
+    spotifyUrl: "https://open.spotify.com/playlist/5ZNTnGQuZwJF7qehJGyjrt?si=t-J1gI0TRW2k8PDANn4iPQ",
   },
   // Closing "See you there!" section (components/sections/see-you-there.tsx).
   //   photos mode (loadingScreen.display "photos") → full-screen couple photo
@@ -1836,9 +1805,9 @@ Now, as they prepare to say yes before God and the people they love most, Cather
     puhon: {
       show: true,
       images: [
-        "/desktop-background/couples (18).webp",
-        "/desktop-background/couples (20).webp",
-        "/desktop-background/couples (3).webp",
+       "/desktop-background/couple (19).webp",
+       "/desktop-background/couple (13).webp",
+        "/desktop-background/couple (13).webp",
       ],
       intervalMs: 5000, // time each photo stays before fading to the next
     },
