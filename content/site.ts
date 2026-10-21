@@ -328,7 +328,7 @@ const COUPLE_PHOTOS = Array.from(
 
 // Portraits for the envelope reveal + the main cover photo (soft natural light, no heavy filters)
 const COUPLE_PORTRAITS = {
-  groom: "/mobile-background/couple (6).webp", // left photo in the envelope
+  groom: "/mobile-background/couple (5).webp", // left photo in the envelope
   bride: "/mobile-background/couple (4).webp", // right photo in the envelope
   cover: "/mobile-background/couple (9).webp", // photo pulled out of the envelope + home hero cover photo
 }
