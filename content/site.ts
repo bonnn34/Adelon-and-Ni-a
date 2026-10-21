@@ -301,7 +301,7 @@ const ATTIRE = {
 const SITE_URL = "https://adelon-and-nina-smoky.vercel.app"
 // Image shown when the link is shared (Facebook, Messenger, Viber, X, …) — 1200×630 JPG in /public
 // Use a NEW filename whenever the image changes — Facebook caches images by URL.
-const LINK_PREVIEW_IMAGE = "/Details/thumpnail.png"
+const LINK_PREVIEW_IMAGE = "/Details/imagepreview.png"
 
 // Site address with env override applied and no trailing slash — no need to edit
 export const canonicalSiteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? SITE_URL).replace(/\/$/, "")
