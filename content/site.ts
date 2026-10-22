@@ -69,7 +69,7 @@ export type AttireColor = string | { name: string; hex: string }
 const COUPLE = {
   bride: "Niña Perez",
   brideNickname: "Niña",
-  groom: "Adelon Townsend",
+  groom: "Adelon Sanchez",
   groomNickname: "Adelon",
 }
 
