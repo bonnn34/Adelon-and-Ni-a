@@ -397,7 +397,7 @@ const COUPLE_LABEL = `${COUPLE.groomNickname} & ${COUPLE.brideNickname}`
    ============================================================================ */
 
 // Principal sponsors Google Apps Script — used by the main page and /inviteone
-const SPONSORS_API = "https://script.google.com/macros/s/AKfycbwTAUtQOzUZBK5b4XMPAUqh8rUMqXdUNwsftL_JK86f14KBt0x8J4clg1mV9B7RIQWfjA/exec"
+const SPONSORS_API = "https://script.google.com/macros/s/AKfycbyWiQ_zc4OSASe-b2lROjX7fFqELcrKyCIsIc7RTMMKUXAo12ymOmkE8Z0VOs9PoRF0/exec"
 
 export const siteConfig = {
   siteUrl: SITE_URL,
@@ -408,15 +408,15 @@ export const siteConfig = {
     backgroundMusic: BRAND.backgroundMusic,
   },
   googleAPI:{
-    messageForm: "https://docs.google.com/forms/d/e/1FAIpQLSfHSGupL60oeZrkuORMpqwxx63xQRDRSgg017I1gU0qrtJGkw/formResponse",   //done
-    message: "https://script.google.com/macros/s/AKfycbwi_cQ27e-QBQeivw7c1oCiRkx2EnbssUsD9uSeC88bk78fbCGmFlYMsQBYdBkGWEGJWw/exec",  //done
-    guestList: "https://script.google.com/macros/s/AKfycbwszIj69sCXNOn7OKxcQe6IYY32DvwrfxR32Jqqny30pitoDpudWrnqcqtZ3N2NZIKGaA/exec",  //done
-    guestRequest: "https://script.google.com/macros/s/AKfycbyDI92C9B4XARwOL_VrU7oroCzoZI3qgckWDSAYrfs7rkZ5m2aRbLxVD0miHD6Q4vYmLg/exec",  //done 
-    entourage: "https://script.google.com/macros/s/AKfycbwHzHtJqZByKHobleFwO0WbtDhmYd3GGtVSyMO8u23H7yvLx_5aH-HNjcryH0sbdqM_Gw/exec",  
+    messageForm: "https://docs.google.com/forms/d/e/1FAIpQLSdqXwihA8JtGkGozE3vGB4RikuveCEWqkzxANxurFKp6Ggidw/formResponse",   //done
+    message: "https://script.google.com/macros/s/AKfycbykox1Xd0yd-P2-zgujTgXyerVZIbiI9BUJLKTdm9c7SUwTHWGmJ46Me0xw3Usk2G3D/exec", //done 
+    guestList: "https://script.google.com/macros/s/AKfycbwEltgdo-7tNonWYV6mUPUE17PWlNJ8RT-YoBxX2JNXrIhoLjW__Y4fy7_sxaRMOlZ9/exec",  //done
+    guestRequest: "https://script.google.com/macros/s/AKfycbzLdB2g2dS7hKpMbrsvpFUXWx3NvzxtSW4R-Cb8V0FU1nOEehVzoGEQIrGnnc2qkbAp/exec",  //done
+    entourage: "https://script.google.com/macros/s/AKfycbwE_QyqKim4B234TTxks7ecoFP1KeYJj6Kq_JybU_APXT_7PRdNcoVTxf9e-bZ--m-e/exec",  //done
     sponsors: SPONSORS_API,  //done 
     // Principal sponsors shown on /inviteone and /invitetwo (entourage section)
     sponsorsInviteOne: SPONSORS_API, // same sheet as sponsors above
-    sponsorsInviteTwo: "https://script.google.com/macros/s/AKfycbwTAUtQOzUZBK5b4XMPAUqh8rUMqXdUNwsftL_JK86f14KBt0x8J4clg1mV9B7RIQWfjA/exec",
+    sponsorsInviteTwo: "https://script.google.com/macros/s/AKfycbyWiQ_zc4OSASe-b2lROjX7fFqELcrKyCIsIc7RTMMKUXAo12ymOmkE8Z0VOs9PoRF0/exec",
 ////google share 
     googleShare: "https://docs.google.com/spreadsheets/d/1l0KK55B5AL70ESWv1Omxa-PE7b5dNvTSaYojf5l5CN4/edit?usp=sharing",
     videoMessageForm:
@@ -813,7 +813,7 @@ export const siteConfig = {
       },
       {
         show: true,
-        time: TIMES.ceremony,
+        time: "3:00 PM", //TIMES.ceremony
         title: "Wedding Ceremony",
         description: "We exchange our vows before God, family and friends.",
         location: "{ceremony}",
@@ -822,7 +822,7 @@ export const siteConfig = {
       },
       {
         show: true,
-        time: "11:00 AM",
+        time: "3:30 PM",
         title: "Photo Session",
         description: "Join us for pictures with the newlyweds.",
         location: "{ceremony}",
@@ -831,7 +831,7 @@ export const siteConfig = {
       },
       {
         show: true,
-        time: "11:45 AM",
+        time: "4:00 PM",
         title: "Cocktail Hour",
         description: "Refreshments while we make our way to the reception.",
         location: "{reception}",
@@ -849,7 +849,7 @@ export const siteConfig = {
       },
       {
         show: true,
-        time: "12:45 PM",
+        time: "4:30 PM",
         title: "Grand Entrance",
         description: "Welcome the newlyweds as husband and wife.",
         location: "{reception}",
@@ -858,7 +858,7 @@ export const siteConfig = {
       },
       {
         show: true,
-        time: "1:00 PM",
+        time: "5:00 PM",
         title: "Wedding Feast",
         description: "Let's share a meal and celebrate together.",
         location: "{reception}",
@@ -867,7 +867,7 @@ export const siteConfig = {
       },
       {
         show: true,
-        time: "2:00 PM",
+        time: "5:20 PM",
         title: "Cake Cutting",
         description: "",
         location: "{reception}",
@@ -876,7 +876,7 @@ export const siteConfig = {
       },
       {
         show: true,
-        time: "2:30 PM",
+        time: "5:40 PM",
         title: "First Dance",
         description: "Our first dance as husband and wife.",
         location: "{reception}",
@@ -885,7 +885,7 @@ export const siteConfig = {
       },
       {
         show: true,
-        time: "3:30 PM",
+        time: "6:30 PM",
         title: "Send-off",
         description: "Thank you for celebrating with us!",
         location: "{reception}",

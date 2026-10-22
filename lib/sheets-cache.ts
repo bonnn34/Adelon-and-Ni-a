@@ -171,5 +171,7 @@ export async function postGoogleScriptJson(url: string, payload: unknown): Promi
 }
 
 export const listResponseHeaders = {
-  "Cache-Control": "public, max-age=20, stale-while-revalidate=60",
+  // The server-side cache above already protects Google Sheets. Do not let the
+  // browser/CDN keep an older mutable list after a dashboard edit.
+  "Cache-Control": "no-store, max-age=0",
 } as const

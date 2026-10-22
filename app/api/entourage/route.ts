@@ -5,6 +5,7 @@ import {
   fetchGoogleScriptJson,
   invalidateSheetsCache,
   listResponseHeaders,
+  postGoogleScriptJson,
   SHEETS_CACHE_KEYS,
   withSheetsCache,
 } from "@/lib/sheets-cache"
@@ -65,19 +66,7 @@ export async function POST(request: NextRequest) {
       entourageData.RoleTitle = RoleTitle.trim()
     }
 
-    const response = await fetch(ENTOURAGE_SCRIPT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(entourageData),
-    })
-
-    if (!response.ok) {
-      throw new Error('Failed to add entourage member')
-    }
-
-    const data = await response.json()
+    const data = await postGoogleScriptJson(ENTOURAGE_SCRIPT_URL, entourageData)
     invalidateSheetsCache(SHEETS_CACHE_KEYS.entourage)
     return NextResponse.json(data, { status: 201 })
   } catch (error) {
@@ -112,19 +101,7 @@ export async function PUT(request: NextRequest) {
       Email: Email?.trim() || '',
     }
 
-    const response = await fetch(ENTOURAGE_SCRIPT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updateData),
-    })
-
-    if (!response.ok) {
-      throw new Error('Failed to update entourage member')
-    }
-
-    const data = await response.json()
+    const data = await postGoogleScriptJson(ENTOURAGE_SCRIPT_URL, updateData)
     invalidateSheetsCache(SHEETS_CACHE_KEYS.entourage)
     return NextResponse.json(data, { status: 200 })
   } catch (error) {
@@ -155,19 +132,7 @@ export async function DELETE(request: NextRequest) {
       Name: Name.trim(),
     }
 
-    const response = await fetch(ENTOURAGE_SCRIPT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(deleteData),
-    })
-
-    if (!response.ok) {
-      throw new Error('Failed to delete entourage member')
-    }
-
-    const data = await response.json()
+    const data = await postGoogleScriptJson(ENTOURAGE_SCRIPT_URL, deleteData)
     invalidateSheetsCache(SHEETS_CACHE_KEYS.entourage)
     return NextResponse.json(data, { status: 200 })
   } catch (error) {

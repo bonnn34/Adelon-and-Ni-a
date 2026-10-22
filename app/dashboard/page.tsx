@@ -181,7 +181,12 @@ export default function DashboardPage() {
 
   const fetchEntourage = async () => {
     try {
-      const response = await fetch("/api/entourage")
+      const response = await fetch("/api/entourage", {
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      })
       if (!response.ok) {
         throw new Error("Failed to fetch entourage")
       }
