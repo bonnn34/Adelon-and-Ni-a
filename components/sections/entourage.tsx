@@ -323,14 +323,17 @@ const ROLE_CATEGORY_ORDER = [
   "Ribbon Sponsors",
   "Groomsmen",
   "Bridesmaids",
-  // Side-by-side pairs (see PAIRED_COLUMN_SECTIONS)
-  "Little Groomsmen",
-  "Little Bridesmaids",
-  // Ring | Coin side by side, Bible centered below (see BEARER_BLOCK_CATEGORIES)
+  "Bridesmen",
+  // Bearers are rendered as one block: Ring | Coin, then Bible.
   "Ring Bearer",
   "Coin Bearer",
   "Bible Bearer",
   "Flower Ladies",
+  "Escorts",
+  "Petal Maidens",
+  // Side-by-side pairs (see PAIRED_COLUMN_SECTIONS)
+  "Little Groomsmen",
+  "Little Bridesmaids",
 ]
 
 const BEARER_BLOCK_CATEGORIES = ["Ring Bearer", "Coin Bearer", "Bible Bearer"] as const
@@ -403,6 +406,9 @@ function normalizeRoleCategory(category: string): string {
   ) {
     return "Flower Ladies"
   }
+  if (/^bridesm(a|e)n$/i.test(normalized)) return "Bridesmen"
+  if (/^escorts?$/i.test(normalized)) return "Escorts"
+  if (/^petal maidens?$/i.test(normalized)) return "Petal Maidens"
   return normalized
 }
 
