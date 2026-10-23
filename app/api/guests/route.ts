@@ -40,6 +40,60 @@ export interface LegacyGuest {
   Message: string
 }
 
+const VALID_GUEST_STATUSES = new Set<Guest["status"]>([
+  "pending",
+  "confirmed",
+  "declined",
+  "request",
+])
+
+function text(value: unknown): string {
+  return typeof value === "string" ? value.trim() : ""
+}
+
+function normalizeGuest(guest: Record<string, unknown>): Guest | null {
+  // Some older guest sheets used `Name`; unrelated sheet rows (for example,
+  // principal sponsors) have neither field and must not reach the dashboard.
+  const name = text(guest.name) || text(guest.Name)
+  if (!name) return null
+
+  const parsedAllowedGuests = Number.parseInt(String(guest.allowedGuests ?? ""), 10)
+  const rawStatus = text(guest.status).toLowerCase()
+  const status = VALID_GUEST_STATUSES.has(rawStatus as Guest["status"])
+    ? (rawStatus as Guest["status"])
+    : "pending"
+  const companions = Array.isArray(guest.companions)
+    ? guest.companions.map((companion) => {
+        const row = companion && typeof companion === "object"
+          ? companion as Record<string, unknown>
+          : {}
+        return {
+          name: text(row.name),
+          relationship: text(row.relationship),
+        }
+      })
+    : []
+
+  return {
+    id: text(guest.id) || name,
+    name,
+    role: text(guest.role) || "Guest",
+    email: text(guest.email),
+    contact: text(guest.contact),
+    message: text(guest.message),
+    allowedGuests: Number.isFinite(parsedAllowedGuests) && parsedAllowedGuests > 0
+      ? parsedAllowedGuests
+      : 1,
+    companions,
+    tableNumber: text(guest.tableNumber),
+    isVip: guest.isVip === true || String(guest.isVip).toUpperCase() === "TRUE",
+    status,
+    addedBy: text(guest.addedBy),
+    createdAt: text(guest.createdAt) || undefined,
+    updatedAt: text(guest.updatedAt) || undefined,
+  }
+}
+
 // GET: Fetch all guests from Google Sheets
 export async function GET() {
   try {
@@ -51,22 +105,13 @@ export async function GET() {
       }
 
       return Array.isArray(data)
-        ? data.map((guest: Record<string, unknown>) => ({
-            ...guest,
-            id: String(guest.id),
-            role: guest.role || "Guest",
-            email: guest.email || "",
-            contact: guest.contact || "",
-            message: guest.message || "",
-            allowedGuests: parseInt(String(guest.allowedGuests)) || 1,
-            companions: Array.isArray(guest.companions) ? guest.companions : [],
-            tableNumber: guest.tableNumber || "",
-            isVip: guest.isVip === true || guest.isVip === "TRUE",
-            status: guest.status || "pending",
-            addedBy: guest.addedBy || "",
-            createdAt: guest.createdAt || new Date().toISOString(),
-            updatedAt: guest.updatedAt || new Date().toISOString(),
-          }))
+        ? data
+            .map((guest) =>
+              guest && typeof guest === "object"
+                ? normalizeGuest(guest as Record<string, unknown>)
+                : null
+            )
+            .filter((guest): guest is Guest => guest !== null)
         : []
     })
 

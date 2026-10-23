@@ -119,11 +119,17 @@ export const ImprovedGuestList: React.FC<ImprovedGuestListProps> = ({
   }, [formAllowedGuests]);
 
   // Filter guests
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
   const filteredGuests = guests.filter(g => {
-    const matchesSearch = g.status !== 'request' && 
-      (g.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-       g.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       (g.companions && g.companions.some(c => c.name.toLowerCase().includes(searchTerm.toLowerCase()))));
+    const guestName = typeof g.name === 'string' ? g.name.toLowerCase() : '';
+    const guestRole = typeof g.role === 'string' ? g.role.toLowerCase() : '';
+    const companions = Array.isArray(g.companions) ? g.companions : [];
+    const matchesSearch = g.status !== 'request' &&
+      (guestName.includes(normalizedSearchTerm) ||
+       guestRole.includes(normalizedSearchTerm) ||
+       companions.some(c =>
+         (typeof c?.name === 'string' ? c.name.toLowerCase() : '').includes(normalizedSearchTerm)
+       ));
     
     const matchesStatus = statusFilter === 'all' || g.status === statusFilter;
     const matchesVip = vipFilter === 'all' || g.isVip === vipFilter;
