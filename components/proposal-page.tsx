@@ -476,7 +476,7 @@ function ProposalDirectAsk({
   const copy = siteConfig.proposal.copy[copyKey]
   const { labels, ornament, coupleImage } = siteConfig.proposal
   const roleMessages: Record<string, string> =
-    siteConfig.proposal.roleMessages ?? defaultSiteConfig.proposal.roleMessages
+    siteConfig.proposal.roleMessages ?? defaultSiteConfig.proposal.roleMessages ?? {}
 
   const groom = siteConfig.couple.groomNickname || siteConfig.couple.groom
   const bride = siteConfig.couple.brideNickname || siteConfig.couple.bride
